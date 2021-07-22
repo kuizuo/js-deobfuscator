@@ -1,15 +1,40 @@
 {
-  "type": "module",
+  
   "dependencies": {
-    "@babel/core": "^7.14.0",
-    "@babel/generator": "^7.13.16",
-    "@babel/parser": "^7.13.16",
-    "@babel/traverse": "^7.13.17",
-    "@babel/types": "^7.13.17",
-    "@types/babel__traverse": "^7.11.1",
-    "@types/node": "^15.0.1"
+  
+    
+  "@babel/core": "^7.14.0",
+  
+    
+  "@babel/generator": "^7.13.16",
+  
+    
+  "@babel/parser": "^7.13.16",
+  
+    
+  "@babel/traverse": "^7.13.17",
+  
+    
+  "@babel/types": "^7.13.17",
+  
+    
+  "@types/babel__generator": "^7.6.3",
+  
+    
+  "@types/babel__traverse": "^7.11.1",
+  
+    
+  "base64-js": "^1.5.1"
+  
   },
+  
   "devDependencies": {
-    "babel-helpers": "^6.24.1"
+  
+    
+  "@types/node": "^16.3.3",
+  
+    
+  "babel-helpers": "^6.24.1"
+  
   }
 }

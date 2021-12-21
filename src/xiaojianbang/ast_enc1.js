@@ -1,5 +1,3 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
 const t = require("@babel/types");
@@ -132,7 +130,7 @@ ConfoundUtils.prototype.renameIdentifier = function () {
   let newAst = parser.parse(code);
   //生成标识符
   function generatorIdentifier(decNum) {
-    let arr = ['O', 'o', '0'];
+    let arr = ['O', 'o', '0', 'Q'];
     let retval = [];
     while (decNum > 0) {
       retval.push(decNum % 3);
@@ -251,19 +249,19 @@ function base64Encode(e) {
 }
 function main() {
   //读取要混淆的代码
-  const jscode = fs.readFileSync("./src/demo.js", {
+  const jscode = fs.readFileSync(__dirname + '/code.js', {
     encoding: "utf-8"
   });
 
   //读取还原数组乱序的代码
-  const jscodeFront = fs.readFileSync("./src/demoFront.js", {
+  const shuffleCode = fs.readFileSync(__dirname + '/shuffle.js', {
     encoding: "utf-8"
   });
 
   //把要混淆的代码解析成ast
   let ast = parser.parse(jscode);
   //把还原数组乱序的代码解析成astFront
-  let astFront = parser.parse(jscodeFront);
+  let astFront = parser.parse(shuffleCode);
   //初始化类，传递自定义的加密函数进去
   let confoundAst = new ConfoundUtils(ast, base64Encode);
   let confoundAstFront = new ConfoundUtils(astFront);
@@ -292,12 +290,12 @@ function main() {
   confoundAst.appointedCodeLineEncrypt();
   confoundAst.appointedCodeLineAscii();
   //数值常量混淆
-  // confoundAst.numericEncrypt();
+  confoundAst.numericEncrypt();
   ast = confoundAst.getAst();
   //ast转为代码
   let code = generator(ast).code
   //混淆的代码中，如果有十六进制字符串加密，ast转成代码以后会有多余的转义字符，需要替换掉
   code = code.replace(/\\\\x/g, '\\x');
-  fs.writeFileSync('src/newCode.js', code, { flag: 'w' })
+  fs.writeFileSync(__dirname + '/newCode.js', code, { flag: 'w' })
 }
 main();

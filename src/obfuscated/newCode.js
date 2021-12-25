@@ -1,4 +1,4 @@
-const OOOOOO = ["eXl5eS1NTS1kZA==", "RGF0ZQ==", "cHJvdG90eXBl", "Zm9ybWF0", "5pel", "5LiA", "5LqM", "5LiJ", "5Zub", "5LqU", "5YWt", "cmVwbGFjZQ==", "Z2V0RnVsbFllYXI=", "Z2V0TW9udGg=", "dG9TdHJpbmc=", "cGFkU3RhcnQ=", "MA==", "Z2V0RGF0ZQ==", "bG9n"];
+const OOOOOO = ["RGF0ZQ==", "cHJvdG90eXBl", "Zm9ybWF0", "a3VpenVv", "bG9n", "5pel", "5LiA", "5LqM", "5LiJ", "5Zub", "5LqU", "5YWt", "cmVwbGFjZQ==", "Z2V0RnVsbFllYXI=", "Z2V0TW9udGg=", "dG9TdHJpbmc=", "cGFkU3RhcnQ=", "MA==", "Z2V0RGF0ZQ==", "eXl5eS1NTS1kZA=="];
 
 (function (OOOOOO, OOOOO0) {
   var OOOOOo = function (OOOOO0) {
@@ -8,19 +8,24 @@ const OOOOOO = ["eXl5eS1NTS1kZA==", "RGF0ZQ==", "cHJvdG90eXBl", "Zm9ybWF0", "5pe
   };
 
   OOOOOo(++OOOOO0);
-})(OOOOOO, 115918 ^ 115930);
+})(OOOOOO, 609596 ^ 609576);
 
-window[atob(OOOOOO[694578 ^ 694578])][atob(OOOOOO[873625 ^ 873624])][atob(OOOOOO[219685 ^ 219687])] = function (OOOOO0) {
-  function OOOO00(OOOOOO, OOOOO0) {
+window[atob(OOOOOO[582773 ^ 582773])][atob(OOOOOO[436093 ^ 436092])][atob(OOOOOO[919098 ^ 919096])] = function (OOOOO0) {
+  function OOOO0o(OOOOOO, OOOOO0) {
     return OOOOOO + OOOOO0;
   }
 
   var OOOOOo = OOOOO0;
-  var OOOO0O = [atob(OOOOOO[945965 ^ 945966]), atob(OOOOOO[298561 ^ 298565]), atob(OOOOOO[535455 ^ 535450]), atob(OOOOOO[193006 ^ 193000]), atob(OOOOOO[577975 ^ 577968]), atob(OOOOOO[428905 ^ 428897]), atob(OOOOOO[629582 ^ 629575])];
-  OOOOOo = OOOOOo[atob(OOOOOO[607437 ^ 607431])](/yyyy|YYYY/, this[atob(OOOOOO[799010 ^ 799017])]());
-  OOOOOo = OOOOOo[atob(OOOOOO[518363 ^ 518353])](/MM/, OOOO00(this[atob(OOOOOO[862531 ^ 862543])](), 671347 ^ 671346)[atob(OOOOOO[822457 ^ 822452])]()[atob(OOOOOO[974597 ^ 974603])](741860 ^ 741862, atob(OOOOOO[544174 ^ 544161])));
-  OOOOOo = OOOOOo[atob(OOOOOO[406915 ^ 406921])](/dd|DD/, this[atob(OOOOOO[596004 ^ 596020])]()[atob(OOOOOO[705321 ^ 705316])]()[atob(OOOOOO[419232 ^ 419246])](318456 ^ 318458, atob(OOOOOO[662337 ^ 662350])));
+  let OOOO0O = {
+    name: atob(OOOOOO[808503 ^ 808500]),
+    age: 992123 ^ 992111
+  };
+  console[atob(OOOOOO[370734 ^ 370730])](OOOO0O);
+  var OOOO00 = [atob(OOOOOO[573224 ^ 573229]), atob(OOOOOO[125675 ^ 125677]), atob(OOOOOO[858830 ^ 858825]), atob(OOOOOO[911401 ^ 911393]), atob(OOOOOO[861063 ^ 861070]), atob(OOOOOO[101946 ^ 101936]), atob(OOOOOO[841572 ^ 841583])];
+  OOOOOo = OOOOOo[atob(OOOOOO[932200 ^ 932196])](/yyyy|YYYY/, this[atob(OOOOOO[765968 ^ 765981])]());
+  OOOOOo = OOOOOo[atob(OOOOOO[666522 ^ 666518])](/MM/, OOOO0o(this[atob(OOOOOO[223674 ^ 223668])](), 380552 ^ 380553)[atob(OOOOOO[486507 ^ 486500])]()[atob(OOOOOO[688115 ^ 688099])](804237 ^ 804239, atob(OOOOOO[971086 ^ 971103])));
+  OOOOOo = OOOOOo[atob(OOOOOO[263420 ^ 263408])](/dd|DD/, this[atob(OOOOOO[545708 ^ 545726])]()[atob(OOOOOO[702188 ^ 702179])]()[atob(OOOOOO[147032 ^ 147016])](831203 ^ 831201, atob(OOOOOO[292350 ^ 292335])));
   return OOOOOo;
 };
 
-console[atob(OOOOOO[490983 ^ 490998])](new window[atob(OOOOOO[116866 ^ 116866])]()[atob(OOOOOO[386287 ^ 386285])](atob(OOOOOO[530189 ^ 530207])));
+console[atob(OOOOOO[461517 ^ 461513])](new window[atob(OOOOOO[513212 ^ 513212])]()[atob(OOOOOO[857823 ^ 857821])](atob(OOOOOO[157873 ^ 157858])));

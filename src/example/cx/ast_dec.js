@@ -1,33 +1,33 @@
-const parser = require('@babel/parser')
-const traverse = require('@babel/traverse').default
-const t = require('@babel/types')
-const generator = require('@babel/generator').default
-const fs = require('fs')
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const t = require('@babel/types');
+const generator = require('@babel/generator').default;
+const fs = require('fs');
 
 class AstDec {
 	constructor(option) {
-		if (!option.jscode) throw new Error('请载入js代码')
+		if (!option.jscode) throw new Error('请载入js代码');
 
-		let { jscode, encryptFunc } = option
-		this.jscode = jscode
-		this.ast = AstDec.parse(jscode)
-		this.bigArr = []
-		this.shuffleNum = option.shuffleNum || 10
-		this.encryptFunc = encryptFunc
-		this.identifierArr = option.identifierArr
+		let { jscode, encryptFunc } = option;
+		this.jscode = jscode;
+		this.ast = AstDec.parse(jscode);
+		this.bigArr = [];
+		this.shuffleNum = option.shuffleNum || 10;
+		this.encryptFunc = encryptFunc;
+		this.identifierArr = option.identifierArr;
 	}
 
 	get code() {
-		let code = generator(this.ast).code
-		return code
+		let code = generator(this.ast).code;
+		return code;
 	}
 
 	static parse(jscode) {
-		return parser.parse(jscode)
+		return parser.parse(jscode);
 	}
 
-	getCode() {
-		return generator(this.ast, { minified: false, jsescOption: { minimal: true }, compact: false, comments: true }).code
+	getCode(option) {
+		return generator(this.ast, option).code;
 	}
 
 	/**
@@ -35,38 +35,44 @@ class AstDec {
 	 */
 	decStringArr() {
 		// 拿到解密函数所在节点
-		let stringDecryptFuncAst = ast.program.body[2];
-		// 拿到解密函数的名字
+		let stringDecryptFuncAst = this.ast.program.body[2];
+		// 拿到解密函数的名字  也就是_0x3028
 		let DecryptFuncName = stringDecryptFuncAst.declarations[0].id.name;
 
-		let newAst = parse('');
-		newAst.program.body.push(ast.program.body[0]);
-		newAst.program.body.push(ast.program.body[1]);
+		let newAst = parser.parse('');
+		newAst.program.body.push(this.ast.program.body[0]);
+		newAst.program.body.push(this.ast.program.body[1]);
 		newAst.program.body.push(stringDecryptFuncAst);
-		newAst
 		// 把这三部分的代码转为字符串，由于存在格式化检测，需要指定选项，来压缩代码
 		let stringDecryptFunc = generator(newAst, { compact: true }).code;
 		// 将字符串形式的代码执行，这样就可以在 nodejs 中运行解密函数了
-		eval(stringDecryptFunc)
+		global.eval(stringDecryptFunc);
+
 		traverse(this.ast, {
 			VariableDeclarator(path) {
-				// 当变量名与解密函数名相同时，就执行相应操作
-				if (path.node.id.name == DecryptFuncName) { // && path.node.arguments.length === 2
+				// 当变量名与解密函数名相同
+				if (path.node.id.name == DecryptFuncName) {
 					let binding = path.scope.getBinding(DecryptFuncName);
-					binding && binding.referencePaths.map((p) => {
-						// 遍历所有引用的地方 判断父节点是调用表达式 那么就直接替换
-						if (p.parentPath.isCallExpression()) {
-							p.parentPath.replaceWith(t.stringLiteral(eval(p.parentPath.toString())));
-						}
-					});
+					// 通过referencePaths可以获取所有引用的地方
+					binding &&
+						binding.referencePaths.map((p) => {
+							// 判断父节点是调用表达式，且参数为两个
+							if (p.parentPath.isCallExpression() && p.parentPath.node.arguments.length === 2) {
+								// 输出参数与解密后的结果
+								// let args = p.parentPath.node.arguments.map(a => a.value).join(' ')
+								let str = eval(p.parentPath.toString());
+								// console.log(args, str)
+								p.parentPath.replaceWith(t.stringLiteral(str));
+							}
+						});
 				}
-			}
+			},
 		});
 
 		// 将源代码中的解密代码给移除
-		ast.program.body.shift();
-		ast.program.body.shift();
-		ast.program.body.shift();
+		// this.ast.program.body.shift();
+		// this.ast.program.body.shift();
+		// this.ast.program.body.shift();
 	}
 
 	/**
@@ -81,12 +87,12 @@ class AstDec {
 				if (objPropertiesList.length == 0) return;
 				var objName = node.id.name;
 				// 对定义的各个 方法 或 字符串 依次在作用域内查找是否有调用
-				objPropertiesList.forEach(prop => {
+				objPropertiesList.forEach((prop) => {
 					var key = prop.key.value;
 					if (!t.isStringLiteral(prop.value)) {
 						// 对方法属性的遍历
 						if (!prop.value.body) {
-							return
+							return;
 						}
 						var retStmt = prop.value.body.body[0];
 
@@ -96,7 +102,7 @@ class AstDec {
 						fnPath.traverse({
 							CallExpression: function (_path) {
 								if (!t.isMemberExpression(_path.node.callee)) return;
-								// 判断是否符合条件 
+								// 判断是否符合条件
 								var _node = _path.node.callee;
 								if (!t.isIdentifier(_node.object) || _node.object.name !== objName) return;
 								if (!t.isStringLiteral(_node.property) || _node.property.value != key) return;
@@ -105,31 +111,33 @@ class AstDec {
 
 								if (t.isBinaryExpression(retStmt.argument) && args.length === 2) {
 									_path.replaceWith(t.binaryExpression(retStmt.argument.operator, args[0], args[1]));
-								} else if (t.isLogicalExpression(retStmt.argument) && args.length == 2) {// 逻辑运算  
+								} else if (t.isLogicalExpression(retStmt.argument) && args.length == 2) {
+									// 逻辑运算
 									_path.replaceWith(t.logicalExpression(retStmt.argument.operator, args[0], args[1]));
-								} else if (t.isCallExpression(retStmt.argument) && t.isIdentifier(retStmt.argument.callee)) {// 函数调用 
-									_path.replaceWith(t.callExpression(args[0], args.slice(1)))
+								} else if (t.isCallExpression(retStmt.argument) && t.isIdentifier(retStmt.argument.callee)) {
+									// 函数调用
+									_path.replaceWith(t.callExpression(args[0], args.slice(1)));
 								}
-							}
-						})
-					} else {         // 对字符串属性的遍历         
-						var retStmt = prop.value.value; // 该path的最近父节点  
+							},
+						});
+					} else {
+						// 对字符串属性的遍历
+						var retStmt = prop.value.value; // 该path的最近父节点
 						var fnPath = path.getFunctionParent();
 						fnPath.traverse({
 							MemberExpression: function (_path) {
 								var _node = _path.node;
 								if (!t.isIdentifier(_node.object) || _node.object.name !== objName) return;
 								if (!t.isStringLiteral(_node.property) || _node.property.value != key) return;
-								_path.replaceWith(t.stringLiteral(retStmt))
-							}
-						})
+								_path.replaceWith(t.stringLiteral(retStmt));
+							},
+						});
 					}
 				});
-				path.remove();// 遍历过的对象无用了，直接删除。    
-			}
-		})
+				path.remove(); // 遍历过的对象无用了，直接删除。
+			},
+		});
 	}
-
 
 	/**
 	 * 处理switch混淆 一般循环处理10次就行了
@@ -156,13 +164,13 @@ class AstDec {
 
 						let parentPath = whilePath.parent;
 						// path.node.object.value 取到的是 '1|2|4|7|5|3|8|0|6'
-						let shufferArr = path.node.object.value.split("|");
+						let shufferArr = path.node.object.value.split('|');
 						shufferArr.map(function (v) {
 							parentPath.body.push(myArr[v]);
 						});
 						path.stop();
 					}
-				}
+				},
 			});
 		}
 	}
@@ -188,16 +196,16 @@ class AstDec {
 						MemberExpression(_path) {
 							var _node = _path.node;
 							if (!t.isIdentifier(_node.object) || _node.object.name !== paramName) return;
-							// 有对实参的引用则 将形参的名字改为实参的名字               
+							// 有对实参的引用则 将形参的名字改为实参的名字
 							_node.object.name = argumentName;
-						}
+						},
 					});
 				}
-				// 删除实参和形参的列表。    
-				node.expression.arguments = []
+				// 删除实参和形参的列表。
+				node.expression.arguments = [];
 				node.expression.callee.params = [];
-			}
-		})
+			},
+		});
 	}
 
 	/**
@@ -205,25 +213,26 @@ class AstDec {
 	 */
 	traverseStrNumValue() {
 		traverse(this.ast, {
-			"AssignmentExpression|VariableDeclarator"(path) {
-				let _name = null;
-				let _initValue = null;
+			'AssignmentExpression|VariableDeclarator'(path) {
+				let name, initValue
 				if (path.isAssignmentExpression()) {
-					_name = path.node.left.name;
-					_initValue = path.node.right;
+					name = path.node.left.name;
+					initValue = path.node.right;
 				} else {
-					_name = path.node.id.name;
-					_initValue = path.node.init;
+					name = path.node.id.name;
+					initValue = path.node.init;
 				}
-				if (t.isStringLiteral(_initValue) || t.isNumericLiteral(_initValue)) {
-					let binding = path.scope.getBinding(_name);
+
+				if (t.isStringLiteral(initValue) || t.isNumericLiteral(initValue)) {
+					let binding = path.scope.getBinding(name);
 					if (binding && binding.constant && binding.constantViolations.length == 0) {
 						for (let i = 0; i < binding.referencePaths.length; i++) {
-							binding.referencePaths[i].replaceWith(_initValue);
+							binding.referencePaths[i].replaceWith(initValue);
 						}
+						path.remove()
 					}
 				}
-			}
+			},
 		});
 	}
 
@@ -234,106 +243,105 @@ class AstDec {
 		traverse(this.ast, {
 			MemberExpression(path) {
 				if (t.isStringLiteral(path.node.property)) {
-					let name = path.node.property.value
-					path.node.property = t.identifier(name)
-					path.node.computed = false
+					let name = path.node.property.value;
+					path.node.property = t.identifier(name);
+					path.node.computed = false;
 				}
-			}
-		})
+			},
+		});
 	}
 
 	/**
-	 * 还原数值常量与二项式的值
+	 * 计算二项式字面量
 	 */
 
-	traverseNumber() {
+	traverseLiteral() {
 		traverse(this.ast, {
 			BinaryExpression(path) {
-				let { left, right } = path.node
-				let { confident, value } = path.evaluate() // 计算二项式的值
-				confident && path.replaceWith(t.valueToNode(value))
-
-				/*     if (t.isNumericLiteral(left) && t.isNumericLiteral(right)) {
-							let { confident, value } = path.evaluate() // 计算二项式的值
-							confident && path.replaceWith(t.valueToNode(value))
-						}; */
-			}
+				let { left, right } = path.node;
+				// 判断左右两边是否为字面量
+				if (t.isLiteral(left) && t.isLiteral(right)) {
+					let { confident, value } = path.evaluate(); // 计算二项式的值
+					confident && path.replaceWith(t.valueToNode(value));
+					path.skip();
+				}
+			},
 		});
 	}
 
 	/**
 	 *  将!![] 转化为true  ![] 转为false
 	 */
-	traverseBoolean() {
+	traverseUnaryExpression() {
 		traverse(this.ast, {
 			UnaryExpression(path) {
-
-				if (path.node.operator !== '!') return // 避免判断成 void
+				if (path.node.operator !== '!') return; // 避免判断成 void
 
 				// 判断第二个符号是不是!
 				if (t.isUnaryExpression(path.node.argument)) {
-					if (t.isArrayExpression(path.node.argument.argument)) {// !![]
+					if (t.isArrayExpression(path.node.argument.argument)) {
+						// !![]
 						if (path.node.argument.argument.elements.length == 0) {
-							path.replaceWith(t.booleanLiteral(true))
-							path.skip()
+							path.replaceWith(t.booleanLiteral(true));
+							path.skip();
 						}
 					}
-				} else if (t.isArrayExpression(path.node.argument)) { // ![]
+				} else if (t.isArrayExpression(path.node.argument)) {
+					// ![]
 					if (path.node.argument.elements.length == 0) {
-						path.replaceWith(t.booleanLiteral(false))
-						path.skip()
+						path.replaceWith(t.booleanLiteral(false));
+						path.skip();
 					}
-				} else if (t.isNumericLiteral(path.node.argument)) { // !0 or !1
+				} else if (t.isNumericLiteral(path.node.argument)) {
+					// !0 or !1
 					if (path.node.argument.value === 0) {
-						path.replaceWith(t.booleanLiteral(true))
+						path.replaceWith(t.booleanLiteral(true));
 					} else if (path.node.argument.value === 1) {
-						path.replaceWith(t.booleanLiteral(false))
+						path.replaceWith(t.booleanLiteral(false));
 					}
 				} else {
-
 				}
-			}
-		})
+			},
+		});
 	}
 
 	/**
 	 * 处理eval加密
 	 */
 	dealEvalEnc() {
-		this.ast = AstDec.parse(this.code)
+		this.ast = AstDec.parse(this.code);
 
 		traverse(this.ast, {
 			CallExpression(path) {
-				if (path.node.callee.name !== 'eval') return
+				if (path.node.callee.name !== 'eval') return;
 
-				let args = path.node.arguments
-				let code = generator(args[0]).code
+				let args = path.node.arguments;
+				let code = generator(args[0]).code;
 
 				if (t.isStringLiteral(args)) {
-					path.replaceWith(t.identifier(code))
+					path.replaceWith(t.identifier(code));
 				} else {
-					path.replaceWith(t.identifier(eval(code)))
+					path.replaceWith(t.identifier(eval(code)));
 				}
-			}
+			},
 		});
 	}
 
 	/**
-	 * 剔除始终不会执行的代码块  暂时没用
+	 * 剔除始终不会执行的代码块
 	 */
 	removeUnusedBlockStatement() {
 		traverse(this.ast, {
 			IfStatement(path) {
 				if (t.isBooleanLiteral(path.node.test)) {
-					if (path.node.test.value == false) {
-						// path.node.consequent = null
-					} else {
-						if (path.node.test.value == true) {
-
-						}
+					let testValue = path.node.test.value
+					if (testValue === true) {
+						path.replaceInline(path.node.consequent)
+					} else if (testValue === false) {
+						path.replaceInline(path.node.alternate)
 					}
 				}
-			}
+			},
 		});
 	}
 
@@ -344,17 +352,20 @@ class AstDec {
 		traverse(this.ast, {
 			VariableDeclarator(path) {
 				const { id, init } = path.node;
-				if (!(t.isLiteral(init) || t.isObjectExpression(init))) return; //只处理字面量     
-				const binding = path.scope.getBinding(id.name)
-				if (!binding || binding.constantViolations.length > 0) { //如果该变量的值被修改则不能处理
-					return;
-				}
+				if (!(t.isLiteral(init) || t.isObjectExpression(init))) return; //只处理字面量
+				const binding = path.scope.getBinding(id.name);
+				if (!binding || binding.constantViolations.length > 0) return
 
-				for (const refer_path of binding.referencePaths) {
-					refer_path.replaceWith(init);
-				}
+				if (binding.referencePaths.length > 0) return
 				path.remove();
 			},
+			FunctionDeclaration(path) {
+				const binding = path.scope.getBinding(path.node.id.name);
+				if (!binding || binding.constantViolations.length > 0) return
+
+				if (binding.referencePaths.length > 0) return
+				path.remove();
+			}
 		});
 	}
 
@@ -370,8 +381,8 @@ class AstDec {
 			NumericLiteral(path) {
 				var curNode = path.node;
 				delete curNode.extra;
-			}
-		})
+			},
+		});
 	}
 
 	/**
@@ -380,40 +391,58 @@ class AstDec {
 	addComments() {
 		traverse(this.ast, {
 			DebuggerStatement(path) {
-				path.addComment('leading', 'TOLOOK', true)
+				path.addComment('leading', ' TOLOOK', true);
 			},
 			CallExpression(path) {
-				if (!(['setTimeout', 'setInterval'].includes(path.node.callee.name))) return
-				path.addComment('leading', 'TOLOOK', true)
-			}
-		})
+				if (!['setTimeout', 'setInterval'].includes(path.node.callee.name)) return;
+				path.addComment('leading', ' TOLOOK', true);
+			},
+			StringLiteral(path) {
+				if (['debugger'].includes(path.node.value)) {
+					path.addComment('leading', ' TOLOOK', true);
+				}
+			},
+		});
 	}
 
+	renameIdentifier() {
+		let code = this.code
+		let newAst = parser.parse(code);
+		traverse(newAst, {
+			'Program|FunctionExpression|FunctionDeclaration'(path) {
+				path.traverse({
+					Identifier(p) {
+						path.scope.rename(p.node.name, path.scope.generateUidIdentifier('_0xabc').name);
+					}
+				})
+			}
+		});
+		this.ast = newAst;
+	}
 }
 
 (function () {
-	let jscode = fs.readFileSync(__dirname + "/demo.js", {
-		encoding: "utf-8"
+	let jscode = fs.readFileSync(__dirname + '/demo.js', {
+		encoding: 'utf-8',
 	});
 
-	let astDec = new AstDec({ jscode: jscode })
+	let astDec = new AstDec({ jscode: jscode });
 
-	// astEnc.decStringArr()
-	// astEnc.removeObjectAccess()
-	// astEnc.traverseSwitch()
-	astDec.traverseStrNumValue()
-	astDec.traverseBoolean()
-	astDec.convParam()
-	astDec.changeObjectAccessMode()
-	astDec.traverseNumber()
-	astDec.dealEvalEnc()
-	astDec.removeUnusedValue()
-	astDec.removeUnusedBlockStatement()
-	astDec.hexUnicodeToString()
-	astDec.addComments()
+	astDec.decStringArr();
+	// astDec.removeObjectAccess()
+	// astDec.traverseSwitch()
+	// astDec.convParam()
+	// astDec.dealEvalEnc();
+	astDec.traverseUnaryExpression();
+	astDec.traverseLiteral();
+	astDec.traverseStrNumValue();
+	astDec.removeUnusedValue();
+	astDec.removeUnusedBlockStatement();
+	astDec.changeObjectAccessMode();
+	astDec.hexUnicodeToString();
+	astDec.addComments();
+	// astDec.renameIdentifier()
 
-	let code = astDec.getCode()
-	fs.writeFile(__dirname + "/newCode.js", code, (err) => { });
-
-})()
-
+	let code = astDec.getCode({ minified: false, jsescOption: { minimal: true }, compact: false, comments: true });
+	fs.writeFile(__dirname + '/newCode.js', code, (err) => { });
+})();

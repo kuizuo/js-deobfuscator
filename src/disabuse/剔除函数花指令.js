@@ -78,6 +78,22 @@ function findRealValue(node) {
 		return node;
 	}
 }
+
+
+// 遍历所有对象 获取对象表达式
+traverse(ast, {
+	VariableDeclarator(path) {
+		if (t.isObjectExpression(path.node.init)) {
+			path.node.init.properties.map(function (p) {
+				let realNode = findRealValue(p.value);
+				realNode && (p.value = realNode);
+			});
+		};
+	}
+});
+
+ast = generatorObj(ast);
+
 function findRealFunc(node) {
 	if (t.isFunctionExpression(node) && node.body.body.length == 1) {
 		let expr = node.body.body[0].argument.callee;
@@ -95,20 +111,6 @@ function findRealFunc(node) {
 		return node;
 	}
 }
-
-// 遍历所有对象 获取对象表达式
-traverse(ast, {
-	VariableDeclarator(path) {
-		if (t.isObjectExpression(path.node.init)) {
-			path.node.init.properties.map(function (p) {
-				let realNode = findRealValue(p.value);
-				realNode && (p.value = realNode);
-			});
-		};
-	}
-});
-
-ast = generatorObj(ast);
 
 traverse(ast, {
 	MemberExpression(path) {

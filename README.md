@@ -1,10 +1,14 @@
-# JS代码混淆与还原
+## JS代码混淆与还原
 
-| 操作     | 文件目录   |
-| -------- | ---------- |
-| 混淆     | obfuscated |
-| 还原     | disabuse   |
-| 还原例子 | example    |
+一个js代码混淆与还原的在线网站(主要针对obfuscator混淆还原)
 
-相关链接 [JS代码之还原 - 愧怍的小站 (kuizuo.cn)](https://kuizuo.cn/js/JS%E4%BB%A3%E7%A0%81%E4%B9%8B%E8%BF%98%E5%8E%9F/)
+## 在线体验
+
+[JS代码混淆与还原 (kuizuo.cn)](https://deobfuscator.kuizuo.cn/)
+
+## 说明
+
+关于js代码混淆与还原介绍： [JS代码之混淆](https://kuizuo.cn/js/JS代码之混淆)  [JS代码之还原](https://kuizuo.cn/js/JS代码之还原) 
+
+本网站采用vite + vue3 + element-plus所编写，利用Babel对js代码进行混淆与还原操作。
 

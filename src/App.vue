@@ -2,10 +2,13 @@
   <el-main>
     <Tabs />
   </el-main>
+  <github-corner url="https://github.com/kuizuo/js-de-obfuscator"></github-corner>
 </template>
 
 <script setup lang="ts">
 import Tabs from './components/Tabs.vue'
+import GithubCorner from './components/GithubCorner.vue'
+
 </script>
 
 <style>

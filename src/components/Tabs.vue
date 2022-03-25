@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <el-tabs type="border-card" v-model="activeName">
-      <el-tab-pane v-for="item in tabs" :key="item.name" :label="item.title" :name="item.name">
-        <keep-alive>
-          <component :is="componentMap[activeName]"></component>
-        </keep-alive>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+  <el-tabs type="border-card" v-model="activeName">
+    <el-tab-pane v-for="item in tabs" :key="item.name" :label="item.title" :name="item.name">
+      <keep-alive>
+        <component :is="componentMap[activeName]"></component>
+      </keep-alive>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 <script lang="ts" setup>
 import { computed, ref } from 'vue'

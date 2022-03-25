@@ -22,6 +22,7 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     Example: typeof import('./src/components/Example/index.vue')['default']
+    GithubCorner: typeof import('./src/components/GithubCorner.vue')['default']
     Help: typeof import('./src/components/Help.vue')['default']
     Obfuscator: typeof import('./src/components/Obfuscator.vue')['default']
     Tabs: typeof import('./src/components/Tabs.vue')['default']

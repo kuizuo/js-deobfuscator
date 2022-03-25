@@ -4,6 +4,7 @@ import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import generator from '@babel/generator'
 import CryptoJS from 'crypto-js'
+import { fa } from 'element-plus/lib/locale'
 
 function encrypt(word: string) {
   var src = CryptoJS.enc.Utf8.parse(word)
@@ -15,14 +16,7 @@ function decrypt(word: string) {
   return CryptoJS.enc.Utf8.stringify(src)
 }
 
-type Config = {
-  identifier: boolean
-  flowerCode: boolean
-  stringEncrypt: boolean
-  numericEncrypt: boolean
-  compact: boolean
-  removeComments: boolean
-}
+type Config = 'identifier' | 'flowerCode' | 'stringEncrypt' | 'numericEncrypt' | 'compact' | 'removeComments'
 
 export class AstEnc {
   jscode: string
@@ -32,10 +26,10 @@ export class AstEnc {
   bigArr: any[]
   shuffleNum: number
   identifierArr: string[]
-  config: Config
-  opts = {}
+  configList: Config[]
+
   constructor(setting) {
-    let { jscode, config } = setting
+    let { jscode, configList } = setting
     if (!jscode) throw new Error('请输入js代码')
     this.jscode = jscode
     this.ast = parser.parse(jscode)
@@ -45,20 +39,15 @@ export class AstEnc {
     this.encryptFunc = encrypt
     this.decryptFunc = decrypt
     this.identifierArr = setting.identifierArr
-    this.config = config
-
-    if (config) {
-      this.opts = {
-        minified: false,
-        jsescOption: { minimal: true },
-        compact: config.compact,
-        comments: !config.removeComments,
-      }
-    }
+    this.configList = configList
   }
 
   get code() {
-    let code = generator(this.ast, this.opts).code
+    let code = generator(this.ast, {
+      minified: false,
+      jsescOption: { minimal: true },
+      compact: true,
+    }).code
     return code
   }
 
@@ -67,25 +56,43 @@ export class AstEnc {
     this.changeClassPropertyAccess()
     this.changeBuiltinObjects()
 
+    let opts = {
+      minified: false,
+      jsescOption: { minimal: true },
+      compact: false,
+      comments: true,
+    }
+
     // this.stringToHex()
 
-    this.config.flowerCode && this.flowerCode()
+    for (const config of this.configList) {
+      let method = config.value
+      if (!method) continue
 
-    if (this.config.stringEncrypt) {
-      this.TemplateEncrypt()
-      this.stringEncrypt()
+      switch (method) {
+        case 'stringEncrypt':
+          this.templateEncrypt()
+          this.stringEncrypt()
+          if (this.bigArr.length > 0) {
+            this.arrayShuffle()
+            this.astConcatArrayUnshift()
+            this.unshiftArrayDeclaration()
+          }
+          break
 
-      if (this.bigArr.length > 0) {
-        this.arrayShuffle()
-        this.astConcatArrayUnshift()
-        this.unshiftArrayDeclaration()
+        case 'compact':
+          opts.compact = true
+          break
+        case 'removeComments':
+          opts.comments = false
+          break
+        default:
+          this[method]?.()
+          break
       }
     }
 
-    this.config.identifier && this.renameIdentifier()
-    this.config.numericEncrypt && this.numericEncrypt()
-
-    let code = this.code
+    let code = generator(this.ast, opts).code
     code = code.replace(/\\\\x/g, '\\x')
     return code
   }
@@ -182,7 +189,7 @@ export class AstEnc {
   /**
    * 模板字符串混淆
    */
-  TemplateEncrypt() {
+  templateEncrypt() {
     traverse(this.ast, {
       TemplateLiteral(path) {
         let { expressions, quasis } = path.node

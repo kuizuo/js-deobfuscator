@@ -1,7 +1,3 @@
-<template>
-  <div class="relative !h-full w-full overflow-hidden" ref="el"></div>
-</template>
-
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watchEffect, watch, unref, nextTick, PropType, computed, CSSProperties } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
@@ -17,7 +13,8 @@ import 'codemirror/theme/material.css'
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/mode/css/css'
 import 'codemirror/mode/htmlmixed/htmlmixed'
-import { Nullable } from 'element-plus/lib/utils/types'
+
+type Nullable<T> = null | T
 
 const props = defineProps({
   mode: {
@@ -99,6 +96,10 @@ onUnmounted(() => {
   editor = null
 })
 </script>
+
+<template>
+  <div class="relative !h-full w-full overflow-hidden" ref="el"></div>
+</template>
 
 <style lang="scss" scoped>
 .relative {

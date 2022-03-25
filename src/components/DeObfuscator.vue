@@ -1,71 +1,3 @@
-<template>
-  <el-row :gutter="5">
-    <el-col :md="12" :sm="24">
-      <el-tabs type="card" v-model="activeName" stretch style="min-height: 600px; height: 600px">
-        <el-tab-pane label="复制粘贴JavaScript代码" name="jscode">
-          <div :style="codeStyle">
-            <CodeEditor v-model:value="jscode" />
-          </div>
-          <el-space class="btn-group">
-            <el-button type="success" size="small" @click="handlClick">还原</el-button>
-            <el-button size="small" @click="clear">清空</el-button>
-          </el-space>
-        </el-tab-pane>
-        <!-- <el-tab-pane label="上传JavaScript文件" name="upload">上传JavaScript文件</el-tab-pane> -->
-        <el-tab-pane label="输出结果" name="result">
-          <div :style="codeStyle">
-            <CodeEditor v-model:value="result" readonly />
-          </div>
-          <el-space class="btn-group">
-            <el-button type="primary" size="small" @click="download">下载</el-button>
-            <el-button type="primary" size="small" @click="copy">复制</el-button>
-          </el-space>
-        </el-tab-pane>
-      </el-tabs>
-    </el-col>
-    <el-col :md="12" :sm="24">
-      <div>
-        <p style="text-align: center; font-size: 14px">混淆还原配置</p>
-        <div class="config">
-          <el-checkbox v-model="config.decFunctionString" label="解密函数还原" />
-          <el-checkbox v-model="config.removeDecFunction" label="移除解密函数语句" />
-          <el-checkbox v-model="config.stringflowerCode" label="字符串花指令" />
-          <el-checkbox v-model="config.funcFlowerCode" label="函数花指令" />
-          <el-checkbox v-model="config.switchFlat" label="switch流程平坦化" />
-          <el-checkbox v-model="config.transformBinary" label="二项式计算" />
-          <el-checkbox v-model="config.replaceLiteral" label="字面量引用替换" />
-          <el-checkbox v-model="config.transformBoolean" label="布尔值还原" />
-        </div>
-        <p style="text-align: center; font-size: 14px">生成代码后配置</p>
-        <div class="config">
-          <el-checkbox v-model="config.changeObjectAccessMode" label="改变对象属性访问方式" />
-          <el-checkbox v-model="config.removeUnusedValue" label="移除无用变量" />
-          <el-checkbox v-model="config.removeUnusedBlock" label="移除无用代码块" />
-          <el-checkbox v-model="config.compact" label="代码压缩" />
-          <el-checkbox v-model="config.renameIdentifier" label="标识符重命名" />
-          <el-checkbox v-model="config.addComments" label="添加注释" />
-        </div>
-        <div class="config">
-          <el-space>
-            解密函数调用次数
-            <el-input-number v-model="config.decFunctionCallCount" :min="20" :max="180" size="small"> </el-input-number>
-            <el-input v-model="config.keyWords" size="small" style="width: 100%">
-              <template #prepend>关键词</template>
-            </el-input>
-          </el-space>
-        </div>
-        <p style="text-align: center">配置说明</p>
-        <p style="text-align: center; font-size: 12px">了解混淆的不用说明都会懂，不了解混淆的说明了也不会懂</p>
-
-        <el-table :data="tableData" border style="width: 100%" size="small">
-          <el-table-column prop="label" label="配置" width="180" />
-          <el-table-column prop="content" label="说明" />
-        </el-table>
-      </div>
-    </el-col>
-  </el-row>
-</template>
-
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import { ref, unref } from 'vue'
@@ -240,6 +172,74 @@ const copy = () => {
   }
 }
 </script>
+
+<template>
+  <el-row :gutter="5">
+    <el-col :md="12" :sm="24">
+      <el-tabs type="card" v-model="activeName" stretch style="min-height: 600px; height: 600px">
+        <el-tab-pane label="复制粘贴JavaScript代码" name="jscode">
+          <div :style="codeStyle">
+            <CodeEditor v-model:value="jscode" />
+          </div>
+          <el-space class="btn-group">
+            <el-button type="success" size="small" @click="handlClick">还原</el-button>
+            <el-button size="small" @click="clear">清空</el-button>
+          </el-space>
+        </el-tab-pane>
+        <!-- <el-tab-pane label="上传JavaScript文件" name="upload">上传JavaScript文件</el-tab-pane> -->
+        <el-tab-pane label="输出结果" name="result">
+          <div :style="codeStyle">
+            <CodeEditor v-model:value="result" readonly />
+          </div>
+          <el-space class="btn-group">
+            <el-button type="primary" size="small" @click="download">下载</el-button>
+            <el-button type="primary" size="small" @click="copy">复制</el-button>
+          </el-space>
+        </el-tab-pane>
+      </el-tabs>
+    </el-col>
+    <el-col :md="12" :sm="24">
+      <div>
+        <p style="text-align: center; font-size: 14px">混淆还原配置</p>
+        <div class="config">
+          <el-checkbox v-model="config.decFunctionString" label="解密函数还原" />
+          <el-checkbox v-model="config.removeDecFunction" label="移除解密函数语句" />
+          <el-checkbox v-model="config.stringflowerCode" label="字符串花指令" />
+          <el-checkbox v-model="config.funcFlowerCode" label="函数花指令" />
+          <el-checkbox v-model="config.switchFlat" label="switch流程平坦化" />
+          <el-checkbox v-model="config.transformBinary" label="二项式计算" />
+          <el-checkbox v-model="config.replaceLiteral" label="字面量引用替换" />
+          <el-checkbox v-model="config.transformBoolean" label="布尔值还原" />
+        </div>
+        <p style="text-align: center; font-size: 14px">生成代码后配置</p>
+        <div class="config">
+          <el-checkbox v-model="config.changeObjectAccessMode" label="改变对象属性访问方式" />
+          <el-checkbox v-model="config.removeUnusedValue" label="移除无用变量" />
+          <el-checkbox v-model="config.removeUnusedBlock" label="移除无用代码块" />
+          <el-checkbox v-model="config.compact" label="代码压缩" />
+          <el-checkbox v-model="config.renameIdentifier" label="标识符重命名" />
+          <el-checkbox v-model="config.addComments" label="添加注释" />
+        </div>
+        <div class="config">
+          <el-space>
+            解密函数调用次数
+            <el-input-number v-model="config.decFunctionCallCount" :min="20" :max="180" size="small"> </el-input-number>
+            <el-input v-model="config.keyWords" size="small" style="width: 100%">
+              <template #prepend>关键词</template>
+            </el-input>
+          </el-space>
+        </div>
+        <p style="text-align: center">配置说明</p>
+        <p style="text-align: center; font-size: 12px">了解混淆的不用说明都会懂，不了解混淆的说明了也不会懂</p>
+
+        <el-table :data="tableData" border style="width: 100%" size="small">
+          <el-table-column prop="label" label="配置" width="180" />
+          <el-table-column prop="content" label="说明" />
+        </el-table>
+      </div>
+    </el-col>
+  </el-row>
+</template>
 
 <style scoped lang="scss">
 .btn-group {

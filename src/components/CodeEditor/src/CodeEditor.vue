@@ -1,8 +1,3 @@
-<template>
-  <div class="h-full">
-    <CodeMirrorEditor :value="getValue" @change="handleValueChange" :mode="mode" :readonly="readonly" />
-  </div>
-</template>
 <script lang="ts" setup>
 import { computed, PropType } from 'vue'
 import CodeMirrorEditor from './codemirror/CodeMirror.vue'
@@ -47,6 +42,12 @@ function handleValueChange(v: any) {
   emit('change', v)
 }
 </script>
+
+<template>
+  <div class="h-full">
+    <CodeMirrorEditor :value="getValue" @change="handleValueChange" :mode="mode" :readonly="readonly" />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .h-full {

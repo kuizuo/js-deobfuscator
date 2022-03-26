@@ -5,21 +5,6 @@ import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import CryptoJS from 'crypto-js'
 
-type Config = {
-  decFunctionString: boolean
-  removeDecFunction: boolean
-  stringflowerCode: boolean
-  funcFlowerCode: boolean
-  numericEncrypt: boolean
-  replaceLiteral: boolean
-  changeObjectAccessMode: boolean
-  transformBoolean: boolean
-  removeUnusedValue: boolean
-  removeUnusedBlock: boolean
-  compact: boolean
-  addComments: boolean
-}
-
 const Base64 = {
   encode: function (word: string) {
     var src = CryptoJS.enc.Utf8.parse(word)
@@ -48,10 +33,10 @@ function deepClone(source) {
 
 const global = window
 let totalObj = []
+
 export class AstDec {
-  config: Config
   constructor(setting) {
-    let { jscode, config } = setting
+    let { jscode, configList } = setting
     if (!jscode) throw new Error('请输入js代码')
     console.time('useTime')
     this.jscode = jscode
@@ -60,15 +45,13 @@ export class AstDec {
     this.isWriteFile = setting.isWriteFile ?? false
     this.decFunctionArr = []
     this.decFunctionIndex = 0
-    this.keyWords = config.keyWords?.split(',').map((k) => k.toLowerCase()) ?? ['debugger']
-    this.config = config
-    this.decFunctionCallCount = config.decFunctionCallCount
-    if (config) {
-      this.opts = {
-        minified: false,
-        jsescOption: { minimal: true },
-        compact: config.compact,
-      }
+    this.configList = configList
+
+    this.opts = {
+      minified: false,
+      jsescOption: { minimal: true },
+      compact: this.configList.some((c) => c.name === 'compact'),
+      comments: true, // 默认保留注释
     }
   }
 
@@ -79,42 +62,39 @@ export class AstDec {
 
   run() {
     this.variableDeclarationSplit()
-    if (this.config.decFunctionString) {
-      this.findDecFunction()
-      // 没找到解密函数就不进行解密操作
-      if (this.decFunctionIndex) {
-        this.doDecStringFuncFlower()
-        this.reParse()
-        this.decStringArr()
+    for (const config of this.configList) {
+      let method = config.value
+      if (!method) continue
+
+      let args = config.arguments // 传给指定函数的参数 可空
+
+      switch (method) {
+        case 'doDecStringFuncFlower':
+          // 没找到解密函数就不进行解密操作
+          if (this.decFunctionIndex) {
+            this.doDecStringFuncFlower()
+            this.reParse()
+            this.decStringArr()
+          }
+          this.changePropertyAccess()
+          break
+        case 'stringflowerCode':
+          this.saveAllObj()
+          this[method]?.()
+          break
+        case 'funcFlowerCode':
+          this.saveAllObj()
+          this[method]?.()
+          break
+        default:
+          if (args) {
+            this[method]?.(args)
+          } else {
+            this[method]?.()
+          }
+          break
       }
     }
-
-    this.changePropertyAccess()
-
-    this.saveAllObj()
-    this.config.stringflowerCode && this.stringflowerCode()
-    this.config.funcFlowerCode && this.funcFlowerCode()
-
-    this.saveAllObj()
-    this.config.stringflowerCode && this.stringflowerCode()
-    this.config.funcFlowerCode && this.funcFlowerCode()
-
-    this.reParse()
-    this.config.switchFlat && this.switchFlat()
-    this.config.transformBoolean && this.transformBoolean()
-
-    this.config.transformBinary && this.transformBinary()
-    this.config.replaceLiteral && this.replaceLiteral()
-    this.config.removeUnusedValue && this.removeUnusedValue()
-    this.config.removeUnusedBlock && this.removeUnusedBlock()
-    this.config.changeObjectAccessMode && this.changeObjectAccessMode()
-
-    this.hexUnicodeToString()
-    if (this.config.removeDecFunction) {
-      this.ast.program.body.splice(0, this.decFunctionIndex)
-    }
-    this.config.addComments && !this.config.compact && this.addComments(this.keyWords)
-    this.config.renameIdentifier && this.renameIdentifier()
 
     let code = this.code
     console.timeEnd('useTime')
@@ -163,10 +143,10 @@ export class AstDec {
   /**
    * 根据函数调用次数寻找到解密函数
    */
-  findDecFunction() {
+  findDecFunction(decFunctionCallCount) {
     let decFunctionArr = []
     let index = 0 // 定义解密函数所在语句下标
-    let decFunctionCallCount = this.decFunctionCallCount < 20 ? 20 : this.decFunctionCallCount
+    decFunctionCallCount = decFunctionCallCount < 20 ? 20 : decFunctionCallCount
 
     // 先遍历所有函数(作用域在Program)，并根据引用次数来判断是否为解密函数
     traverse(this.ast, {
@@ -911,7 +891,8 @@ export class AstDec {
   /**
    * 给关键代码 标识符 设置注释  TOLOOK
    */
-  addComments(keyWords) {
+  addComments(keyWordsStr) {
+    let keyWords = keyWordsStr?.split(',').map((k) => k.toLowerCase()) ?? ['debugger']
     traverse(this.ast, {
       DebuggerStatement(path) {
         path.addComment('leading', ' TOLOOK', true)
@@ -957,5 +938,9 @@ export class AstDec {
       },
     })
     this.ast = newAst
+  }
+
+  removeDecFunction() {
+    this.ast.program.body.splice(0, this.decFunctionIndex)
   }
 }

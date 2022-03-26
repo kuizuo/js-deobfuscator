@@ -1,5 +1,5 @@
 {
-  "name": "element-plus-vite-starter",
+  "name": "js-de-obfuscator",
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
@@ -14,16 +14,19 @@
     "buffer": "^6.0.3",
     "codemirror": "^5.65.1",
     "crypto-js": "^4.1.1",
-    "element-plus": "^1.2.0-beta.1",
+    "element-plus": "^2.1.4",
     "jsdom": "^19.0.0",
     "process": "^0.11.10",
+    "splitpanes": "^3.1.0",
     "stream": "^0.0.2",
-    "vue": "^3.2.20"
+    "vue": "^3.2.20",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.14.2",
     "@types/node": "^16.11.6",
+    "@types/splitpanes": "^2.2.1",
     "@vitejs/plugin-vue": "^1.9.4",
     "@vue/compiler-sfc": "^3.2.20",
     "sass": "^1.43.4",

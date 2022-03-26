@@ -8,7 +8,6 @@
 <script setup lang="ts">
 import Tabs from './components/Tabs.vue'
 import GithubCorner from './components/GithubCorner.vue'
-
 </script>
 
 <style>

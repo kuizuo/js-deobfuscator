@@ -40,14 +40,17 @@ export class AstEnc {
     this.decryptFunc = decrypt
     this.identifierArr = setting.identifierArr
     this.configList = configList
+
+    this.opts = {
+      minified: false,
+      jsescOption: { minimal: true },
+      compact: this.configList.some((c) => c.name === 'compact'),
+      comments: !this.configList.some((c) => c.name === 'removeComments'),
+    }
   }
 
   get code() {
-    let code = generator(this.ast, {
-      minified: false,
-      jsescOption: { minimal: true },
-      compact: true,
-    }).code
+    let code = generator(this.ast, this.opts).code
     return code
   }
 
@@ -55,13 +58,6 @@ export class AstEnc {
     this.changePropertyAccess()
     this.changeClassPropertyAccess()
     this.changeBuiltinObjects()
-
-    let opts = {
-      minified: false,
-      jsescOption: { minimal: true },
-      compact: false,
-      comments: true,
-    }
 
     // this.stringToHex()
 
@@ -79,20 +75,13 @@ export class AstEnc {
             this.unshiftArrayDeclaration()
           }
           break
-
-        case 'compact':
-          opts.compact = true
-          break
-        case 'removeComments':
-          opts.comments = false
-          break
         default:
           this[method]?.()
           break
       }
     }
 
-    let code = generator(this.ast, opts).code
+    let code = this.code
     code = code.replace(/\\\\x/g, '\\x')
     return code
   }

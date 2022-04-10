@@ -9,6 +9,3 @@
 ## 说明
 
 关于js代码混淆与还原介绍： [JS代码之混淆](https://kuizuo.cn/js/JS代码之混淆)  [JS代码之还原](https://kuizuo.cn/js/JS代码之还原) 
-
-本网站采用vite + vue3 + element-plus所编写，利用Babel对js代码进行混淆与还原操作。
-

@@ -1,10 +1,13 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import Vue from '@vitejs/plugin-vue'
 import inject from '@rollup/plugin-inject'
-
+import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Pages from 'vite-plugin-pages'
+import WindiCSS from 'vite-plugin-windicss'
+import PurgeIcons from 'vite-plugin-purge-icons'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,22 +23,25 @@ export default defineConfig({
       '/@/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "~/styles/element/index.scss" as *;`,
-      },
-    },
-  },
   plugins: [
-    vue(),
-    Components({
-      resolvers: [
-        ElementPlusResolver({
-          importStyle: 'sass',
-        }),
-      ],
+    Vue({
+      // reactivityTransform: true,
     }),
+    // https://github.com/hannoeru/vite-plugin-pages
+    Pages({
+      importMode: 'sync',
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+      dts: 'src/components.d.ts',
+    }),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+      imports: ['vue', 'vue/macros', 'vue-router', '@vueuse/core'],
+      dts: 'src/auto-import.d.ts',
+    }),
+    WindiCSS(),
+    PurgeIcons({}),
   ],
   build: {
     rollupOptions: {

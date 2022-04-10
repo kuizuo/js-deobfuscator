@@ -1,18 +1,22 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-// import "~/styles/element/index.scss";
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import routes from 'virtual:generated-pages'
+import App from './App.vue'
+import './index.css'
+import 'virtual:windi.css'
 
-// import ElementPlus from "element-plus";
-// import all element css, uncommented next line
-// import "element-plus/dist/index.css";
+import '~/styles/main.css'
+import '@purge-icons/generated'
+const app = createApp(App)
 
-// or use cdn, uncomment cdn link in `index.html`
-
-import "~/styles/index.scss";
-
-// If you want to use ElMessage, import it.
-import "element-plus/theme-chalk/src/message.scss"
-
-const app = createApp(App);
-// app.use(ElementPlus);
-app.mount("#app");
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+  scrollBehavior() {
+    // always scroll to top
+    // TODO: make this not required
+    return { top: 0 }
+  },
+})
+app.use(router)
+app.mount('#app')

@@ -1,18 +1,31 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watchEffect, watch, unref, nextTick, PropType, computed, CSSProperties } from 'vue'
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  watchEffect,
+  watch,
+  unref,
+  nextTick,
+  PropType,
+  computed,
+  CSSProperties,
+} from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { useWindowSizeFn } from '~/hooks/event/useWindowSizeFn'
 import CodeMirror from 'codemirror'
 import { MODE } from './../typing'
 // css
 import './codemirror.css'
-import 'codemirror/theme/idea.css'
+import 'codemirror/theme/juejin.css'
 import 'codemirror/theme/material-palenight.css'
 import 'codemirror/theme/material.css'
 // modes
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/mode/css/css'
 import 'codemirror/mode/htmlmixed/htmlmixed'
+
+import { isDark, toggleDark } from '~/hooks/web/useTheme'
 
 type Nullable<T> = null | T
 
@@ -48,13 +61,20 @@ watch(
   { flush: 'post' },
 )
 
+watch(
+  () => isDark.value,
+  async () => {
+    await nextTick()
+    setTheme(isDark.value)
+  },
+)
+
 watchEffect(() => {
   editor?.setOption('mode', props.mode)
 })
 
-// TODO: 换个皮肤功能
-function setTheme() {
-  // unref(editor)?.setOption('theme', appStore.getDarkMode === 'light' ? 'idea' : 'material-palenight')
+function setTheme(isDark: boolean) {
+  unref(editor)?.setOption('theme', isDark === true ? 'material-palenight' : 'juejin')
 }
 
 function refresh() {
@@ -74,7 +94,7 @@ async function init() {
     mode: props.mode,
     readOnly: props.readonly,
     tabSize: 2,
-    theme: 'material',
+    theme: isDark.value === true ? 'material-palenight' : 'juejin',
     lineWrapping: true,
     lineNumbers: true,
     ...addonOptions,
@@ -98,23 +118,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative !h-full w-full overflow-hidden" ref="el"></div>
+  <div class="relative !h-full w-full overflow-hidden border-4 rounded-md text-left text-sm" ref="el"></div>
 </template>
-
-<style lang="scss" scoped>
-.relative {
-  position: relative;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.\!h-full {
-  height: 100% !important;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-</style>

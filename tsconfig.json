@@ -9,6 +9,8 @@
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false, 
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "paths": {

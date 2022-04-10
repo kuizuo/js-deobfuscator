@@ -1,33 +1,12 @@
+<script setup lang="ts"></script>
+
 <template>
-  <el-main>
-    <Tabs />
-  </el-main>
-  <github-corner url="https://github.com/kuizuo/js-de-obfuscator"></github-corner>
+  <main h="full" font="sans" text="center gray-700 dark:gray-200" class="relative">
+    <TheNav />
+    <router-view v-slot="{ Component }">
+      <transition name="page-fade">
+        <component :is="Component" absolute left-0 right-0 top-25 />
+      </transition>
+    </router-view>
+  </main>
 </template>
-
-<script setup lang="ts">
-import Tabs from './components/Tabs.vue'
-import GithubCorner from './components/GithubCorner.vue'
-</script>
-
-<style>
-.el-main {
-  margin: 0 auto;
-  max-width: 1280px;
-}
-
-::-webkit-scrollbar {
-  width: 7px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: rgb(0 0 0 / 5%);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(144 147 153 / 30%);
-  border-radius: 2px;
-  box-shadow: inset 0 0 6px rgb(0 0 0 / 20%);
-}
-</style>

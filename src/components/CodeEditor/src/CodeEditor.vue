@@ -48,9 +48,3 @@ function handleValueChange(v: any) {
     <CodeMirrorEditor :value="getValue" @change="handleValueChange" :mode="mode" :readonly="readonly" />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.h-full {
-  height: 100%;
-}
-</style>

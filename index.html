@@ -3,25 +3,16 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JS代码混淆与还原</title>
-  <!-- element css cdn, if you use custom theme, remove it. -->
-  <!-- <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css"
-    /> -->
 </head>
 
 <body>
   <div id="app"></div>
   <script>window.global = window;</script>
   <script type="module">
-    // import process from "process";
-    // import { Buffer } from "buffer";
 
-    // window.Buffer = Buffer;
-    // window.process = process;
   </script>
   <script type="module" src="/src/main.ts"></script>
 </body>

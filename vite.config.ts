@@ -15,7 +15,7 @@ export default defineConfig({
     'process.env': {},
     'process.platform': null,
     'process.version': null,
-    // Buffer: ['buffer', 'Buffer'], // 编译需要将这行注释,才能编译通过
+    ...(process.env.NODE_ENV === 'production' ? null : { Buffer: ['buffer', 'Buffer'] }),
   },
   resolve: {
     alias: {

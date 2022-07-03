@@ -9,11 +9,7 @@ declare module 'vue' {
     CodeMirror: typeof import('./components/CodeEditor/src/codemirror/CodeMirror.vue')['default']
     Config: typeof import('./components/Config.vue')['default']
     DeObfuscator: typeof import('./components/DeObfuscator.vue')['default']
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Icon: typeof import('./components/Icon.vue')['default']
-    Obfuscator: typeof import('./components/Obfuscator.vue')['default']
     TheLogo: typeof import('./components/TheLogo.vue')['default']
     TheNav: typeof import('./components/TheNav.vue')['default']
   }

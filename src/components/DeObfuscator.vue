@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CodeEditor } from '~/components/CodeEditor'
-import { AstDec } from '~/utils/ast/dec'
+import { Deobfuscator } from '~/utils/ast/deobfuscator'
 import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard'
 import { downloadByData } from '/@/utils/file/download'
 import { IConfig } from '~/data/config'
@@ -23,13 +23,22 @@ async function deobfuscator() {
       if (!c.disable) return true
     })
 
-    let astDec = new AstDec({
-      jscode: jscode.value,
-      configList: _configList,
-    })
+    // TODO: 放到WebWorker中执行
+    const deob = new Deobfuscator(
+      jscode.value,
+      [],
+      {
+        minified: false,
+        jsescOption: { minimal: true },
+        compact: false,
+        comments: true,
+      },
+      false,
+    )
 
-    let code = await astDec.run()
+    deob.run()
 
+    const code = deob.getCode()
     result.value = code
 
     let end = Date.now()
@@ -66,7 +75,7 @@ function copy() {
         <h3 text="center lg" font="semibold">输入</h3>
         <CodeEditor v-model:value="jscode" />
         <div class="flex gap-4 justify-center">
-          <Button @click="deobfuscator(configList)">还原</Button>
+          <Button @click="deobfuscator()">还原</Button>
           <Button @click="clear">清空</Button>
         </div>
       </div>

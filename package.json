@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "cross-env NODE_ENV=production vite build",
     "serve": "vite preview"
   },
   "dependencies": {
@@ -11,14 +11,18 @@
     "@iconify/iconify": "^2.2.1",
     "@iconify/vue": "^3.2.1",
     "@rollup/plugin-inject": "^4.0.4",
+    "@types/babel__generator": "^7.6.4",
+    "@types/babel__traverse": "^7.17.1",
     "@types/codemirror": "^5.60.5",
     "@types/crypto-js": "^4.1.0",
     "@vueuse/core": "^8.2.5",
     "buffer": "^6.0.3",
     "codemirror": "^5.65.1",
+    "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
     "element-plus": "^2.1.8",
     "jsdom": "^19.0.0",
+    "lodash": "^4.17.21",
     "process": "^0.11.10",
     "splitpanes": "^3.1.0",
     "stream": "^0.0.2",
@@ -29,8 +33,6 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.1.26",
-    "@types/babel__generator": "^7.6.4",
-    "@types/babel__traverse": "^7.14.2",
     "@types/node": "^16.11.6",
     "@types/splitpanes": "^2.2.1",
     "@vitejs/plugin-vue": "^2.3.1",

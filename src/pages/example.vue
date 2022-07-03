@@ -10,6 +10,7 @@ onMounted(() => {
   jscode.value = obfuscatorCode
   result.value = deobfuscatorCode
 })
+
 </script>
 
 <template>

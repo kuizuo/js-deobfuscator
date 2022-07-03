@@ -3,20 +3,22 @@
     "baseUrl": ".",
     "target": "esnext",
     "useDefineForClassFields": true,
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false, 
+    "noImplicitAny": true,
+    "strictNullChecks": false,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "lib": ["esnext", "dom"],
+    "types": ["node"],
     "paths": {
       "~/*": ["src/*"],
       "/@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/utils/ast/dec.js", "src/utils/ast/dec.js"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "test/**/*.ts"]
 }

@@ -1,13 +1,10 @@
-node_modules
 .DS_Store
+.vite-ssg-dist
+.vite-ssg-temp
+*.local
 dist
 dist-ssr
-*.local
-
-# lock
-yarn.lock
-package-lock.json
-pnpm-lock.yaml
-
+node_modules
+.idea/
 *.log
 .vercel

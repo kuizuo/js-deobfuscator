@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "esnext",
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": ["esnext", "dom"],
     "useDefineForClassFields": true,
-    "module": "commonjs",
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
@@ -13,12 +14,12 @@
     "strictNullChecks": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["esnext", "dom"],
+    "forceConsistentCasingInFileNames": true,
     "types": ["node"],
     "paths": {
       "~/*": ["src/*"],
       "/@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "test/**/*.ts"]
+  "exclude": ["dist", "node_modules", "cypress"]
 }

@@ -60,6 +60,9 @@ export default defineConfig({
     Inspect(),
   ],
   build: {
+    rollupOptions: {
+      plugins: [inject({ Buffer: ['buffer', 'Buffer'] })],
+    },
     commonjsOptions: {
       transformMixedEsModules: true,
     },

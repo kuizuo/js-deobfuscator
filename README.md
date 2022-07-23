@@ -4,7 +4,7 @@
 
 ## 在线体验
 
-[JS代码混淆与还原 (kuizuo.cn)](https://deobfuscator.kuizuo.cn/)
+[JS代码混淆与还原](https://js-de-obfuscator.vercel.app/)
 
 ## 说明
 

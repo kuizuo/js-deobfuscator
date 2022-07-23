@@ -24,7 +24,6 @@ specifiers:
   lodash: ^4.17.21
   process: ^0.11.10
   sass: ^1.53.0
-  splitpanes: ^3.1.1
   stream: ^0.0.2
   typescript: ^4.7.4
   unplugin-auto-import: ^0.9.3
@@ -51,7 +50,6 @@ dependencies:
   jsdom: 19.0.0
   lodash: 4.17.21
   process: 0.11.10
-  splitpanes: 3.1.1
   stream: 0.0.2
   vue: 3.2.37
   vue-router: 4.1.2_vue@3.2.37
@@ -2225,10 +2223,6 @@ packages:
 
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
-
-  /splitpanes/3.1.1:
-    resolution: {integrity: sha512-VUkxDJfIGSvTM/fm/+OSrx8ha9URwE/9B8FPvfzoBuAxVELIHBWpsfnJXIXv77zVwuex//QQL4kTU9SDBPeHjA==}
-    dev: false
 
   /stream/0.0.2:
     resolution: {integrity: sha512-gCq3NDI2P35B2n6t76YJuOp7d6cN/C7Rt0577l91wllh0sY9ZBuw9KaSGqH/b0hzn3CWWJbpbW0W0WvQ1H/Q7g==}

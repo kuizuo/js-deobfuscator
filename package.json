@@ -13,7 +13,6 @@
     "codemirror": "^5.65.7",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
-    "element-plus": "^2.2.9",
     "jsdom": "^19.0.0",
     "lodash": "^4.17.21",
     "process": "^0.11.10",

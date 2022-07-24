@@ -4,6 +4,7 @@ import { Deobfuscator } from '~/utils/ast/deobfuscator'
 import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard'
 import { downloadByData } from '/@/utils/file/download'
 import { IConfig } from '~/data/config'
+import { Message } from './Message'
 
 const props = defineProps<{
   configList: IConfig[]
@@ -43,10 +44,10 @@ async function deobfuscator() {
 
     let end = Date.now()
 
-    ElMessage.success({ message: `还原完毕，用时${end - start}ms` })
+    Message({ message: `还原完毕，用时${end - start}ms`, type: 'success' })
   } catch (error) {
     console.error(error)
-    ElMessage.error({ message: (error as Error).message })
+    Message({ message: (error as Error).message, type: 'danger' })
   }
 }
 
@@ -63,7 +64,7 @@ function download() {
 function copy() {
   clipboardRef.value = result.value
   if (unref(copiedRef)) {
-    ElMessage.success('复制成功！')
+    Message({ message: '复制成功！', type: 'success' })
   }
 }
 </script>

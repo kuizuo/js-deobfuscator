@@ -10,6 +10,7 @@ declare module 'vue' {
     Config: typeof import('./components/Config.vue')['default']
     DeObfuscator: typeof import('./components/DeObfuscator.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
+    Message: typeof import('./components/Message/src/message.vue')['default']
     TheLogo: typeof import('./components/TheLogo.vue')['default']
     TheNav: typeof import('./components/TheNav.vue')['default']
   }

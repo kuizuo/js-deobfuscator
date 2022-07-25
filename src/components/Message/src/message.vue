@@ -14,7 +14,7 @@ const { id, message, type, duration, center, onClose, offset } = defineProps({
   id: { type: String, default: '' },
   message: { type: String, default: '' },
   type: { type: String as PropType<MessageType>, default: 'info' },
-  duration: { type: Number, default: 2000 },
+  duration: { type: Number, default: 3000 },
   center: { type: String, default: '' },
   onClose: { type: Function as PropType<() => void> },
   offset: { type: Number, default: 15 },
@@ -68,7 +68,7 @@ const styles = computed(() => ({
 .warning {
   background-color: #e6a23c;
 }
-.danger {
+.error {
   background-color: #f56c6c;
 }
 

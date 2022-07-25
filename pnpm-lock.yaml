@@ -10,6 +10,7 @@ specifiers:
   '@types/babel__traverse': ^7.17.1
   '@types/codemirror': ^5.60.5
   '@types/crypto-js': ^4.1.1
+  '@types/lodash': ^4.14.182
   '@types/node': ^16.11.45
   '@types/splitpanes': ^2.2.1
   '@vitejs/plugin-vue': ^2.3.3
@@ -61,6 +62,7 @@ devDependencies:
   '@types/babel__traverse': 7.17.1
   '@types/codemirror': 5.60.5
   '@types/crypto-js': 4.1.1
+  '@types/lodash': 4.14.182
   '@types/node': 16.11.45
   '@types/splitpanes': 2.2.1
   '@vitejs/plugin-vue': 2.3.3_vite@3.0.2+vue@3.2.37
@@ -471,6 +473,10 @@ packages:
 
   /@types/estree/1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
+    dev: true
+
+  /@types/lodash/4.14.182:
+    resolution: {integrity: sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==}
     dev: true
 
   /@types/ms/0.7.31:

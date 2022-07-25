@@ -91,7 +91,7 @@ export class Traverse_ob {
       console.log(`大数组名为: ${bigArrName} `)
       console.log(`解密函数为: ${decFuncList.join(',')}`)
       console.log(`解密函数代码为: ${decFuncCode}`)
-      global.eval(decFuncCode)
+      eval.call(null ,decFuncCode)
     } catch (e) {
       console.log(e)
     }
@@ -120,7 +120,7 @@ export class Traverse_ob {
               if (hasIdentifier) return
 
               let callCode = p.parentPath.toString()
-              let decStr = eval(callCode)
+              let decStr = eval.call(null ,callCode)
               console.log(callCode, decStr) // 输出解密函数的调用代码和解密后的字符串
               p.parentPath.replaceWith(t.stringLiteral(decStr))
             } catch (error: any) {

@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "module": "ESNext",
     "target": "ESNext",
-    "lib": ["esnext", "dom"],
+    "lib": ["esnext", "dom","WebWorker"],
     "useDefineForClassFields": true,
     "moduleResolution": "node",
     "strict": true,

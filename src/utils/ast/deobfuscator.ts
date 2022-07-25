@@ -38,7 +38,12 @@ export class Deobfuscator {
   public ast: ParseResult<t.File>
   public historys: History[]
 
-  constructor(public jscode: string, public configList: Config[], public outOptions: GeneratorOptions = defaultoutOptions, private isHistory: boolean = false) {
+  constructor(
+    public jscode: string,
+    public configList: Config[],
+    public outOptions: GeneratorOptions = defaultoutOptions,
+    private isHistory: boolean = false,
+  ) {
     if (!jscode) throw new Error('请输入js代码')
 
     console.time('useTime')
@@ -90,7 +95,7 @@ export class Deobfuscator {
     traverse(this.ast, visitorar.removeVariableDeclaration()) // 移除逗号赋值表达式
     traverse(this.ast, visitorar.removeSequenceExpression()) // 移除逗号表达式
     traverse(this.ast, visitorar.removeUnusedValue()) // 移除无用变量
-    
+
     // traverse(this.ast, visitorar.calcUnary()) // 计算一项式
     traverse(this.ast, visitorar.calcBinary()) // 计算二项式
     traverse(this.ast, visitorar.calcBoolean()) // 计算布尔值
@@ -107,3 +112,25 @@ export class Deobfuscator {
     // -------------------------------------------------
   }
 }
+
+self.addEventListener(
+  'message',
+  function ({ data }) {
+    if (data.code) {
+      try {
+        const deob = new Deobfuscator(data.code, [])
+        deob.run()
+        const code = deob.getCode()
+        console.timeEnd('useTime')
+        
+        self.postMessage({ code })
+      } catch (error: any) {
+        self.postMessage({
+          type: 'error',
+          message: error.message,
+        })
+      }
+    }
+  },
+  false,
+)

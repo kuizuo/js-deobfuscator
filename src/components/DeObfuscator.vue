@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CodeEditor } from '~/components/CodeEditor'
-import { Deobfuscator } from '~/utils/ast/deobfuscator'
+import DeobfuscatorWorker from '~/utils/ast/deobfuscator?worker'
 import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard'
 import { downloadByData } from '/@/utils/file/download'
 import { IConfig } from '~/data/config'
@@ -10,45 +10,38 @@ const props = defineProps<{
   configList: IConfig[]
 }>()
 
-const { configList } = toReactive(props)
 const { clipboardRef, copiedRef } = useCopyToClipboard()
 
 const jscode = ref('')
 const result = ref('')
 
-async function deobfuscator() {
-  try {
-    let start = Date.now()
+let start = 0
+let end = 0
+const worker = new DeobfuscatorWorker()
 
-    let _configList = toRaw(configList).filter((c) => {
-      if (!c.disable) return true
+worker.onmessage = ({ data }) => {
+  if (data.type === 'error') {
+    Message({
+      message: data.message,
+      type: 'error',
     })
-
-    // TODO: 放到WebWorker中执行
-    const deob = new Deobfuscator(
-      jscode.value,
-      [],
-      {
-        minified: false,
-        jsescOption: { minimal: true },
-        compact: false,
-        comments: true,
-      },
-      false,
-    )
-
-    deob.run()
-
-    const code = deob.getCode()
-    result.value = code
-
-    let end = Date.now()
-
-    Message({ message: `还原完毕，用时${end - start}ms`, type: 'success' })
-  } catch (error) {
-    console.error(error)
-    Message({ message: (error as Error).message, type: 'danger' })
+    return
   }
+
+  end = Date.now()
+  Message({ message: `还原完毕，用时${end - start}ms`, type: 'success' })
+  ;(start = 0), (end = 0)
+  result.value = data.code
+}
+
+async function run() {
+  if (!jscode.value) {
+    Message({ message: '请输入代码', type: 'error' })
+    return
+  }
+  start = Date.now()
+  Message({ message: '正在还原，请稍等', type: 'info' })
+  worker.postMessage({ code: jscode.value })
 }
 
 function clear() {
@@ -76,7 +69,7 @@ function copy() {
         <h3 text="center lg" font="semibold">输入</h3>
         <CodeEditor v-model:value="jscode" />
         <div class="flex gap-4 justify-center">
-          <Button @click="deobfuscator()">还原</Button>
+          <Button @click="run()">还原</Button>
           <Button @click="clear">清空</Button>
         </div>
       </div>

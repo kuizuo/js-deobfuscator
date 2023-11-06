@@ -4,123 +4,199 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@babel/core':
-    specifier: ^7.18.9
-    version: 7.18.9
-  '@vueuse/core':
-    specifier: ^8.9.4
-    version: 8.9.4(vue@3.2.37)
-  buffer:
-    specifier: ^6.0.3
-    version: 6.0.3
-  codemirror:
-    specifier: ^5.65.7
-    version: 5.65.7
-  cross-env:
-    specifier: ^7.0.3
-    version: 7.0.3
-  crypto-js:
-    specifier: ^4.1.1
-    version: 4.1.1
-  jsdom:
-    specifier: ^19.0.0
-    version: 19.0.0
-  lodash:
-    specifier: ^4.17.21
-    version: 4.17.21
-  process:
-    specifier: ^0.11.10
-    version: 0.11.10
-  stream:
-    specifier: ^0.0.2
-    version: 0.0.2
-  vue:
-    specifier: ^3.2.37
-    version: 3.2.37
-  vue-router:
-    specifier: ^4.1.2
-    version: 4.1.2(vue@3.2.37)
+importers:
 
-devDependencies:
-  '@iconify/iconify':
-    specifier: ^2.2.1
-    version: 2.2.1
-  '@iconify/json':
-    specifier: ^2.1.80
-    version: 2.1.80
-  '@iconify/vue':
-    specifier: ^3.2.1
-    version: 3.2.1(vue@3.2.37)
-  '@rollup/plugin-inject':
-    specifier: ^4.0.4
-    version: 4.0.4(rollup@2.77.0)
-  '@types/babel__generator':
-    specifier: ^7.6.4
-    version: 7.6.4
-  '@types/babel__traverse':
-    specifier: ^7.17.1
-    version: 7.17.1
-  '@types/codemirror':
-    specifier: ^5.60.5
-    version: 5.60.5
-  '@types/crypto-js':
-    specifier: ^4.1.1
-    version: 4.1.1
-  '@types/lodash':
-    specifier: ^4.14.182
-    version: 4.14.182
-  '@types/node':
-    specifier: ^16.11.45
-    version: 16.11.45
-  '@types/splitpanes':
-    specifier: ^2.2.1
-    version: 2.2.1
-  '@vitejs/plugin-vue':
-    specifier: ^2.3.3
-    version: 2.3.3(vite@2.9.14)(vue@3.2.37)
-  '@vue/compiler-sfc':
-    specifier: ^3.2.37
-    version: 3.2.37
-  prettier:
-    specifier: ^3.0.3
-    version: 3.0.3
-  sass:
-    specifier: ^1.53.0
-    version: 1.53.0
-  typescript:
-    specifier: ^4.7.4
-    version: 4.7.4
-  unplugin-auto-import:
-    specifier: ^0.9.3
-    version: 0.9.4(@vueuse/core@8.9.4)(rollup@2.77.0)(vite@2.9.14)
-  unplugin-vue-components:
-    specifier: ^0.17.21
-    version: 0.17.21(rollup@2.77.0)(vite@2.9.14)(vue@3.2.37)
-  vite:
-    specifier: ^2.9.0
-    version: 2.9.14(sass@1.53.0)
-  vite-plugin-inspect:
-    specifier: ^0.6.0
-    version: 0.6.0(vite@2.9.14)
-  vite-plugin-pages:
-    specifier: ^0.25.0
-    version: 0.25.0(@vue/compiler-sfc@3.2.37)(vite@2.9.14)
-  vite-plugin-purge-icons:
-    specifier: ^0.8.1
-    version: 0.8.1(vite@2.9.14)
-  vite-plugin-vue-layouts:
-    specifier: ^0.6.0
-    version: 0.6.0(vite@2.9.14)(vue-router@4.1.2)(vue@3.2.37)
-  vite-plugin-windicss:
-    specifier: ^1.8.7
-    version: 1.8.7(vite@2.9.14)
-  vitest:
-    specifier: ^0.18.0
-    version: 0.18.1(jsdom@19.0.0)(sass@1.53.0)
-  windicss:
-    specifier: ^3.5.6
-    version: 3.5.6
+  .:
+    dependencies:
+      '@babel/core':
+        specifier: ^7.18.9
+        version: 7.18.9
+      crypto-js:
+        specifier: ^4.1.1
+        version: 4.1.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@types/babel__generator':
+        specifier: ^7.6.4
+        version: 7.6.4
+      '@types/babel__traverse':
+        specifier: ^7.17.1
+        version: 7.17.1
+      '@types/codemirror':
+        specifier: ^5.60.5
+        version: 5.60.5
+      '@types/crypto-js':
+        specifier: ^4.1.1
+        version: 4.1.1
+      '@types/lodash':
+        specifier: ^4.14.182
+        version: 4.14.182
+      '@types/node':
+        specifier: ^16.11.45
+        version: 16.11.45
+      prettier:
+        specifier: ^3.0.3
+        version: 3.0.3
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  packages/utils:
+    dependencies:
+      '@babel/core':
+        specifier: ^7.18.9
+        version: 7.18.9
+      crypto-js:
+        specifier: ^4.1.1
+        version: 4.1.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@types/babel__generator':
+        specifier: ^7.6.4
+        version: 7.6.4
+      '@types/babel__traverse':
+        specifier: ^7.17.1
+        version: 7.17.1
+      '@types/crypto-js':
+        specifier: ^4.1.1
+        version: 4.1.1
+      '@types/lodash':
+        specifier: ^4.14.182
+        version: 4.14.182
+      '@types/node':
+        specifier: ^16.11.45
+        version: 16.11.45
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  play:
+    devDependencies:
+      '@deob/utils':
+        specifier: workspace:*
+        version: link:../packages/utils
+
+  website:
+    dependencies:
+      '@babel/core':
+        specifier: ^7.18.9
+        version: 7.18.9
+      '@vueuse/core':
+        specifier: ^8.9.4
+        version: 8.9.4(vue@3.2.37)
+      buffer:
+        specifier: ^6.0.3
+        version: 6.0.3
+      codemirror:
+        specifier: ^5.65.7
+        version: 5.65.7
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      crypto-js:
+        specifier: ^4.1.1
+        version: 4.1.1
+      jsdom:
+        specifier: ^19.0.0
+        version: 19.0.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      process:
+        specifier: ^0.11.10
+        version: 0.11.10
+      stream:
+        specifier: ^0.0.2
+        version: 0.0.2
+      vue:
+        specifier: ^3.2.37
+        version: 3.2.37
+      vue-router:
+        specifier: ^4.1.2
+        version: 4.1.2(vue@3.2.37)
+    devDependencies:
+      '@iconify/iconify':
+        specifier: ^2.2.1
+        version: 2.2.1
+      '@iconify/json':
+        specifier: ^2.1.80
+        version: 2.1.80
+      '@iconify/vue':
+        specifier: ^3.2.1
+        version: 3.2.1(vue@3.2.37)
+      '@rollup/plugin-inject':
+        specifier: ^4.0.4
+        version: 4.0.4(rollup@2.77.0)
+      '@types/babel__generator':
+        specifier: ^7.6.4
+        version: 7.6.4
+      '@types/babel__traverse':
+        specifier: ^7.17.1
+        version: 7.17.1
+      '@types/codemirror':
+        specifier: ^5.60.5
+        version: 5.60.5
+      '@types/crypto-js':
+        specifier: ^4.1.1
+        version: 4.1.1
+      '@types/lodash':
+        specifier: ^4.14.182
+        version: 4.14.182
+      '@types/node':
+        specifier: ^16.11.45
+        version: 16.11.45
+      '@types/splitpanes':
+        specifier: ^2.2.1
+        version: 2.2.1
+      '@vitejs/plugin-vue':
+        specifier: ^2.3.3
+        version: 2.3.3(vite@2.9.14)(vue@3.2.37)
+      '@vue/compiler-sfc':
+        specifier: ^3.2.37
+        version: 3.2.37
+      prettier:
+        specifier: ^3.0.3
+        version: 3.0.3
+      sass:
+        specifier: ^1.53.0
+        version: 1.53.0
+      typescript:
+        specifier: ^4.7.4
+        version: 4.7.4
+      unplugin-auto-import:
+        specifier: ^0.9.3
+        version: 0.9.4(@vueuse/core@8.9.4)(rollup@2.77.0)(vite@2.9.14)
+      unplugin-vue-components:
+        specifier: ^0.17.21
+        version: 0.17.21(rollup@2.77.0)(vite@2.9.14)(vue@3.2.37)
+      vite:
+        specifier: ^2.9.0
+        version: 2.9.14(sass@1.53.0)
+      vite-plugin-inspect:
+        specifier: ^0.6.0
+        version: 0.6.0(vite@2.9.14)
+      vite-plugin-pages:
+        specifier: ^0.25.0
+        version: 0.25.0(@vue/compiler-sfc@3.2.37)(vite@2.9.14)
+      vite-plugin-purge-icons:
+        specifier: ^0.8.1
+        version: 0.8.1(vite@2.9.14)
+      vite-plugin-vue-layouts:
+        specifier: ^0.6.0
+        version: 0.6.0(vite@2.9.14)(vue-router@4.1.2)(vue@3.2.37)
+      vite-plugin-windicss:
+        specifier: ^1.8.7
+        version: 1.8.7(vite@2.9.14)
+      vitest:
+        specifier: ^0.18.0
+        version: 0.18.1(jsdom@19.0.0)(sass@1.53.0)
+      windicss:
+        specifier: ^3.5.6
+        version: 3.5.6
 
 packages:
 
@@ -2132,6 +2208,7 @@ packages:
 
   /sourcemap-codec@1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    deprecated: Please use @jridgewell/sourcemap-codec instead
 
   /stream@0.0.2:
     resolution: {integrity: sha512-gCq3NDI2P35B2n6t76YJuOp7d6cN/C7Rt0577l91wllh0sY9ZBuw9KaSGqH/b0hzn3CWWJbpbW0W0WvQ1H/Q7g==}
@@ -2234,6 +2311,12 @@ packages:
   /typescript@4.7.4:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
+  /typescript@5.2.2:
+    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
+    engines: {node: '>=14.17'}
     hasBin: true
     dev: true
 
@@ -2503,34 +2586,6 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite@3.0.3(sass@1.53.0):
-    resolution: {integrity: sha512-sDIpIcl3mv1NUaSzZwiXGEy1ZoWwwC2vkxUHY6yiDacR6zf//ZFuBJrozO62gedpE43pmxnLATNR5IYUdAEkMQ==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      esbuild: 0.14.49
-      postcss: 8.4.14
-      resolve: 1.22.1
-      rollup: 2.77.0
-      sass: 1.53.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
   /vitest@0.18.1(jsdom@19.0.0)(sass@1.53.0):
     resolution: {integrity: sha512-4F/1K/Vn4AvJwe7i2YblR02PT5vMKcw9KN4unDq2KD0YcSxX0B/6D6Qu9PJaXwVuxXMFTQ5ovd4+CQaW3bwofA==}
     engines: {node: '>=v14.16.0'}
@@ -2562,13 +2617,12 @@ packages:
       local-pkg: 0.4.2
       tinypool: 0.2.4
       tinyspy: 1.0.0
-      vite: 3.0.3(sass@1.53.0)
+      vite: 2.9.14(sass@1.53.0)
     transitivePeerDependencies:
       - less
       - sass
       - stylus
       - supports-color
-      - terser
     dev: true
 
   /vue-demi@0.13.5(vue@3.2.37):
@@ -2611,6 +2665,7 @@ packages:
 
   /w3c-hr-time@1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}
+    deprecated: Use your platform's native performance.now() and performance.timeOrigin.
     dependencies:
       browser-process-hrtime: 1.0.0
 

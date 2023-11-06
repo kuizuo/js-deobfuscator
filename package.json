@@ -2,51 +2,29 @@
   "name": "js-de-obfuscator",
   "version": "0.1.0",
   "scripts": {
-    "dev": "vite",
-    "build": "cross-env NODE_ENV=production vite build",
-    "serve": "vite preview"
+    "website:dev": "pnpm run -C website dev",
+    "website:build": "pnpm run -C website build",
+    "website:serve": "pnpm run -C website serve"
   },
+  "workspaces":[
+    "website",
+    "play",
+    "packages/*"
+  ],
   "dependencies": {
     "@babel/core": "^7.18.9",
-    "@vueuse/core": "^8.9.4",
-    "buffer": "^6.0.3",
-    "codemirror": "^5.65.7",
-    "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
-    "jsdom": "^19.0.0",
-    "lodash": "^4.17.21",
-    "process": "^0.11.10",
-    "stream": "^0.0.2",
-    "vue": "^3.2.37",
-    "vue-router": "^4.1.2"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@iconify/iconify": "^2.2.1",
-    "@iconify/json": "^2.1.80",
-    "@iconify/vue": "^3.2.1",
-    "@rollup/plugin-inject": "^4.0.4",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.17.1",
     "@types/codemirror": "^5.60.5",
     "@types/crypto-js": "^4.1.1",
     "@types/lodash": "^4.14.182",
     "@types/node": "^16.11.45",
-    "@types/splitpanes": "^2.2.1",
-    "@vitejs/plugin-vue": "^2.3.3",
-    "@vue/compiler-sfc": "^3.2.37",
     "prettier": "^3.0.3",
-    "sass": "^1.53.0",
-    "typescript": "^4.7.4",
-    "unplugin-auto-import": "^0.9.3",
-    "unplugin-vue-components": "^0.17.21",
-    "vite": "^2.9.0",
-    "vite-plugin-inspect": "^0.6.0",
-    "vite-plugin-pages": "^0.25.0",
-    "vite-plugin-purge-icons": "^0.8.1",
-    "vite-plugin-vue-layouts": "^0.6.0",
-    "vite-plugin-windicss": "^1.8.7",
-    "vitest": "^0.18.0",
-    "windicss": "^3.5.6"
+    "typescript": "^5.2.2"
   },
   "license": "MIT"
 }

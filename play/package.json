@@ -1,0 +1,8 @@
+{
+  "name": "play",
+  "private": true,
+  "main": "index.js",
+  "devDependencies": {
+    "@deob/utils": "workspace:*"
+  }
+}

@@ -73,6 +73,9 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.18.0
+        version: 0.18.1(jsdom@19.0.0)(sass@1.53.0)
 
   play:
     devDependencies:

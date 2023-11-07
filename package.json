@@ -4,7 +4,8 @@
   "scripts": {
     "website:dev": "pnpm run -C website dev",
     "website:build": "pnpm run -C website build",
-    "website:serve": "pnpm run -C website serve"
+    "website:serve": "pnpm run -C website serve",
+    "test": "vitest"
   },
   "workspaces":[
     "website",

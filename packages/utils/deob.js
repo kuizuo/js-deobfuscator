@@ -15,7 +15,12 @@ class Deob {
 
     let { rawCode, encryptFunc } = setting
     this.rawCode = rawCode
-    this.opts = setting.opts || {}
+    this.opts = setting.opts || {
+      minified: false,
+      jsescOption: { minimal: false },
+      compact: false,
+      comments: true,
+    }
     this.dir = setting.dir ?? './'
     this.isWriteFile = setting.isWriteFile ?? false
     this.bigArr = []
@@ -200,6 +205,7 @@ class Deob {
 
   /**
      * @description 嵌套函数花指令替换
+     * @deprecated
      * @example	
      *  _0x4698 为解密函数
      *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
@@ -496,6 +502,8 @@ class Deob {
         }
       },
     })
+
+    this.reParse()
   }
 
   /**
@@ -814,45 +822,6 @@ class Deob {
           else if (path.node.argument.value === 1)
             path.replaceWith(t.booleanLiteral(false))
         } else {
-        }
-      },
-    })
-  }
-
-  /**
-   * @description 清理死代码
-   * @example if(false){
-   *  ...
-   * }
-   */
-  clearDeadCode() {
-    traverse(this.ast, {
-      IfStatement(path) {
-        function clear(path, toggle) {
-          if (toggle) {
-            if (t.isBlockStatement(path.node.consequent))
-              path.replaceWithMultiple(path.node.consequent.body)
-            else path.replaceWith(path.node.consequent)
-          } else {
-            if (path.node.alternate) {
-              if (t.isBlockStatement(path.node.alternate))
-                path.replaceWithMultiple(path.node.alternate.body)
-              else path.replaceWith(path.node.alternate)
-            } else {
-              path.remove()
-            }
-          }
-        }
-
-        if (t.isBinaryExpression(path.node.test)) {
-          const { left, right, operator } = path.node.test
-          if (t.isLiteral(left) && t.isLiteral(right)) {
-            const leftVal = JSON.stringify(left.value)
-            const rightVal = JSON.stringify(right.value)
-            clear(path, eval(leftVal + operator + rightVal))
-          }
-        } else if (t.isLiteral(path.node.test)) {
-          clear(path, eval(JSON.stringify(path.node.test.value)))
         }
       },
     })

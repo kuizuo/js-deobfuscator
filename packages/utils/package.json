@@ -1,18 +1,19 @@
 {
-    "name": "@deob/utils",
-    "private": true,
-    "main": "index.js",
-    "dependencies": {
-      "@babel/core": "^7.18.9",
-      "crypto-js": "^4.1.1",
-      "lodash": "^4.17.21"
-    },
-    "devDependencies": {
-      "@types/babel__generator": "^7.6.4",
-      "@types/babel__traverse": "^7.17.1",
-      "@types/crypto-js": "^4.1.1",
-      "@types/lodash": "^4.14.182",
-      "@types/node": "^16.11.45",
-      "typescript": "^5.2.2"
-    }
+  "name": "@deob/utils",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "@babel/core": "^7.18.9",
+    "crypto-js": "^4.1.1",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/babel__generator": "^7.6.4",
+    "@types/babel__traverse": "^7.17.1",
+    "@types/crypto-js": "^4.1.1",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^16.11.45",
+    "typescript": "^5.2.2",
+    "vitest": "^0.18.0"
   }
+}

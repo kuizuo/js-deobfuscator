@@ -23,7 +23,7 @@ pnpm i
 │   ├── code_1.js                 # 记录反混淆过程代码 1
 │   ├── code_2.js                 # 记录反混淆过程代码 2
 │   ├── pretty.js                 # 可选, 用作美化对比
-│   ├── result.js                 # 最终处理完成的结果
+│   ├── output.js                 # 最终处理完成的结果
 ```
 
 node index.js 即可反混淆代码

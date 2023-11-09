@@ -55,5 +55,5 @@ class MyDeOb extends Deob {}
   deob.addComments()
 
   let code = deob.getCode()
-  fs.writeFile(__dirname + '/result.js', code)
+  fs.writeFile(__dirname + '/output.js', code)
 })()

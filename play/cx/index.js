@@ -12,8 +12,7 @@ class MyDeOb extends Deob {
     encoding: 'utf-8',
   })
 
-  let deob = new MyDeOb({
-    rawCode: rawCode,
+  let deob = new MyDeOb(rawCode, {
     dir: __dirname,
     isWriteFile: true,
   })

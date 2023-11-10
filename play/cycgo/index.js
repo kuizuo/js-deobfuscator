@@ -10,8 +10,7 @@ class MyDeOb extends Deob {}
     encoding: 'utf-8',
   })
 
-  let deob = new MyDeOb({
-    rawCode: rawCode,
+  let deob = new MyDeOb(rawCode, {
     dir: __dirname,
     isWriteFile: true,
     opts: {
@@ -26,7 +25,7 @@ class MyDeOb extends Deob {}
 
   deob.findDecryptFnByCallCount(1000, true)
   // // deob.designDecryptFn('_0x3628')
-  
+
   await deob.record(fileName, 1)
 
   // deob.saveAllObject()

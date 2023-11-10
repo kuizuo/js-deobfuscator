@@ -9,20 +9,35 @@ const { deepClone } = require('lodash')
 let objectVariables = []
 
 class Deob {
-  constructor(setting) {
-    if (!setting.rawCode) throw new Error('请载入js代码')
+  /**
+   *
+   * @constructor
+   * @param {string} rawCode - 原始代码
+   * @param {object} [options] -  选项
+   * @param {string} [options.dir='./'] - 输出目录
+   * @param {boolean} [options.isWriteFile=false] 
+   * @param {object} [options.opts] - 是否写入文件
+   * @throws {Error} 请载入js代码
+   */
+  constructor(rawCode, options = {}) {
+    if (!rawCode) throw new Error('请载入js代码')
     console.time('useTime')
 
-    let { rawCode } = setting
+    /**
+     * The raw JavaScript code.
+     * @type {string}
+     */
     this.rawCode = rawCode
-    this.opts = setting.opts || {
+
+    this.opts = options.opts || {
       minified: false,
       jsescOption: { minimal: true },
       compact: false,
       comments: true,
     }
-    this.dir = setting.dir ?? './'
-    this.isWriteFile = setting.isWriteFile ?? false
+
+    this.dir = options.dir ?? './'
+    this.isWriteFile = options.isWriteFile ?? false
 
     this.ast = parser.parse(rawCode, { sourceType: 'script' })
   }
@@ -81,20 +96,20 @@ class Deob {
    * 分离多个 var 赋值
    * @example var a = 1, b = 2;  ---> var a = 1; var b = 2;
    */
-  splitMultipleDeclarations(){
+  splitMultipleDeclarations() {
     traverse(this.ast, {
       VariableDeclaration(path) {
-        const declarations = path.node.declarations;
-  
+        const declarations = path.node.declarations
+
         if (declarations.length > 1) {
-          const newDeclarations = declarations.map(declaration => {
-            return t.variableDeclaration(path.node.kind, [declaration]);
-          });
-  
-          path.replaceWithMultiple(newDeclarations);
+          const newDeclarations = declarations.map((declaration) => {
+            return t.variableDeclaration(path.node.kind, [declaration])
+          })
+
+          path.replaceWithMultiple(newDeclarations)
         }
       },
-    });
+    })
     this.reParse()
   }
 

@@ -5,7 +5,7 @@ describe('deob', async () => {
   it('splitMultipleDeclarations', () => {
     const rawCode = `var a = 1, b = 2;`
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.splitMultipleDeclarations()
     const code = deob.getCode()
@@ -20,7 +20,7 @@ var b = 2;`.trim())
           console.log("\x6b\x75\x69\x7a\x75\x6f")
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.deleteExtra()
     const code = deob.getCode()
@@ -37,7 +37,7 @@ var b = 2;`.trim())
         }
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.removeUnusedBlock()
     const code = deob.getCode()
@@ -50,7 +50,7 @@ var b = 2;`.trim())
       let a = 1;
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.removeUnusedVariables()
     const code = deob.getCode()
@@ -64,7 +64,7 @@ var b = 2;`.trim())
     let b = ![] ; 
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.calcBoolean()
     const code = deob.getCode()
@@ -83,7 +83,7 @@ let b = false;
     let b = "debu" + "gger" 
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.calcBinary()
     const code = deob.getCode()
@@ -102,7 +102,7 @@ let b = "debugger";
     console.log(a)
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.constantReplace()
     const code = deob.getCode()
@@ -143,7 +143,7 @@ let b = "debugger";
     }
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.switchFlat()
     const code = deob.getCode()
@@ -174,7 +174,7 @@ function a() {
     })("bugger")("de");
     `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.selfCallFnReplace()
     const code = deob.getCode()
@@ -201,7 +201,7 @@ _0x52627b["SDgrw"](_0x4547db)
 _0x52627b["GOEUR"](a, b)
 `
 
-    let deob = new Deob({ rawCode: rawCode })
+    let deob = new Deob(rawCode)
 
     deob.saveAllObject()
     deob.objectMemberReplace()

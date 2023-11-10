@@ -13,21 +13,18 @@ class Deob {
     if (!setting.rawCode) throw new Error('请载入js代码')
     console.time('useTime')
 
-    let { rawCode, encryptFunc } = setting
+    let { rawCode } = setting
     this.rawCode = rawCode
     this.opts = setting.opts || {
       minified: false,
-      jsescOption: { minimal: false },
+      jsescOption: { minimal: true },
       compact: false,
       comments: true,
     }
     this.dir = setting.dir ?? './'
     this.isWriteFile = setting.isWriteFile ?? false
-    this.bigArr = []
-    this.encryptFunc = encryptFunc
-    this.decryptFnList = []
 
-    this.ast = parser.parse(rawCode)
+    this.ast = parser.parse(rawCode, { sourceType: 'script' })
   }
 
   get code() {
@@ -47,7 +44,7 @@ class Deob {
   reParse() {
     let jscode = generator(this.ast, this.opts).code
 
-    this.ast = parser.parse(jscode)
+    this.ast = parser.parse(jscode, { sourceType: 'script' })
   }
 
   /**
@@ -55,10 +52,13 @@ class Deob {
    * @param {String} fileName
    * @param {Number} i
    */
-  record(fileName, i) {
+  async record(fileName, i) {
     if (this.isWriteFile) {
       try {
-        fs.writeFile(path.join(this.dir, `${fileName}_${i}.js`), this.code)
+        await fs.writeFile(
+          path.join(this.dir, `${fileName}_${i}.js`),
+          this.code,
+        )
         console.log(`${fileName}_${i}.js 写入成功`)
       } catch (error) {}
     }
@@ -67,14 +67,35 @@ class Deob {
   /**
    * @description 输出成好看形式 用于对比
    */
-  prettierCode() {
+  async prettierCode() {
     let newCode = generator(this.ast, {
       minified: false,
       jsescOption: { minimal: true },
       compact: false,
       comments: true,
     }).code
-    fs.writeFile(path.join(this.dir, 'pretty.js'), newCode)
+    await fs.writeFile(path.join(this.dir, 'pretty.js'), newCode)
+  }
+
+  /**
+   * 分离多个 var 赋值
+   * @example var a = 1, b = 2;  ---> var a = 1; var b = 2;
+   */
+  splitMultipleDeclarations(){
+    traverse(this.ast, {
+      VariableDeclaration(path) {
+        const declarations = path.node.declarations;
+  
+        if (declarations.length > 1) {
+          const newDeclarations = declarations.map(declaration => {
+            return t.variableDeclaration(path.node.kind, [declaration]);
+          });
+  
+          path.replaceWithMultiple(newDeclarations);
+        }
+      },
+    });
+    this.reParse()
   }
 
   /**
@@ -125,6 +146,7 @@ class Deob {
 
               // 执行 _0x4698(_0x13ee81, _0x3dfa50) 代码, 并替换原始位置
               const callCode = p.parentPath.toString()
+
               const decStr = eval(callCode)
               console.log(callCode, decStr)
 
@@ -139,12 +161,16 @@ class Deob {
     }
 
     traverse(ast, visitor_decString)
+
+    this.reParse() // 切记一定要在替换后执行, 因为替换后此时 ast 并未更新, 就可能会导致后续处理都使用原先的 ast
   }
 
   /**
    * @description 根据函数调用次数寻找到解密函数 并执行解密操作
+   * @param {*} count 解密函数调用次数
+   * @param {*} isRemove 是否移除解密函数(后续用不到)
    */
-  findDecryptFnByCallCount(count = 50) {
+  findDecryptFnByCallCount(count = 100, isRemove = false) {
     let decryptFnList = []
     let index = 0 // 定义解密函数所在语句下标
 
@@ -192,16 +218,90 @@ class Deob {
       },
     })
 
-    let newAst = parser.parse('')
+    let descryptAst = parser.parse('')
     // 插入解密函数前的几条语句
-    newAst.program.body = this.ast.program.body.slice(0, index)
+    descryptAst.program.body = this.ast.program.body.slice(0, index)
     // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
-    let decryptFnCode = generator(newAst, { compact: true }).code
+    let decryptFnCode = generator(descryptAst, { compact: true }).code
 
     this.decryptReplace(this.ast, decryptFnCode, decryptFnList)
 
-    this.decryptFnList = decryptFnList
+    if (isRemove) {
+      this.ast.program.body = this.ast.program.body.slice(index)
+    }
   }
+
+  /**
+   * @description 指明解密函数,会将解密函数以上的代码注入执行
+   * @param {string[]} decryptFnList 多个解密函数名
+   * @param {*} isRemove 是否移除解密函数(后续用不到)
+   */
+  designDecryptFn(decryptFnList, isRemove = false) {
+    if (!Array.isArray(decryptFnList)) {
+      decryptFnList = [decryptFnList]
+    }
+
+    let index = 0 // 定义解密函数所在语句下标
+
+    traverse(this.ast, {
+      Program(p) {
+        p.traverse({
+          'FunctionDeclaration|VariableDeclarator'(path) {
+            if (
+              !(
+                t.isFunctionDeclaration(path.node) ||
+                t.isFunctionExpression(path.node.init)
+              )
+            ) {
+              return
+            }
+
+            let name = path.node.id.name
+
+            if (!decryptFnList.includes(name)) {
+              return
+            }
+
+            // 根据最后一个解密函数来定义解密函数所在语句下标
+            let binding = p.scope.getBinding(name)
+            if (!binding) return
+
+            let parent = binding.path.find(
+              (p) => p.isFunctionDeclaration() || p.isVariableDeclaration(),
+            )
+            if (!parent) return
+            let body = p.scope.block.body
+            for (let i = 0; i < body.length; i++) {
+              const node = body[i]
+              if (node.start == parent.node.start) {
+                index = i + 1
+              }
+            }
+            // 遍历完当前节点,就不再往子节点遍历
+            path.skip()
+          },
+        })
+      },
+    })
+
+    let descryptAst = parser.parse('')
+    descryptAst.program.body = this.ast.program.body.slice(0, index)
+    // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
+    let decryptFnCode = generator(descryptAst, { compact: true }).code
+
+    this.decryptReplace(this.ast, decryptFnCode, decryptFnList)
+
+    if (isRemove) {
+      this.ast.program.body = this.ast.program.body.slice(index)
+    }
+
+    this.reParse() // 切记一定要在替换后执行, 因为替换后此时 ast 并未更新, 就可能会导致后续处理都使用原先的 ast
+  }
+
+  /**
+   * @description 输入解密函数代码
+   */
+  InjectDecryptFnCode(decryptFnCode) {}
 
   /**
      * @description 嵌套函数花指令替换
@@ -375,6 +475,10 @@ class Deob {
     // 先执行 _0x52627b["QqaUY"] ---> "attribute"
     traverse(this.ast, {
       MemberExpression(path) {
+        // // 父级表达式不能是赋值语句
+        let asignment = path.parentPath
+        if (!asignment || asignment?.type === 'AssignmentExpression') return
+
         if (
           path.node.object.type === 'Identifier' &&
           (path.node.property.type === 'StringLiteral' ||
@@ -398,9 +502,17 @@ class Deob {
                 keyName === propertyName &&
                 t.isLiteral(prop.value)
               ) {
-                console.log(objectName, propertyName)
+                // 还需要判断 objectName[propertyName] 是否被修改过
+                let binding = path.scope.getBinding(objectName)
+                if (
+                  binding &&
+                  binding.constant &&
+                  binding.constantViolations.length == 0
+                ) {
+                  console.log(objectName, propertyName)
 
-                path.replaceWith(prop.value)
+                  path.replaceWith(prop.value)
+                }
               }
             }
           }
@@ -884,16 +996,7 @@ class Deob {
   deleteExtra() {
     traverse(this.ast, {
       StringLiteral(path) {
-        // unicode 编码
-        if (path.node.extra?.raw?.match(/\\u[0-9a-fA-F]{4}/)) {
-          path.replaceWithSourceString(`"${path.node.value}"`)
-          path.skip()
-          return
-        }
-
-        if (path.node.extra?.raw) {
-          path.replaceWith(t.StringLiteral(path.node.value))
-        }
+        delete path.node.extra
       },
       NumericLiteral(path) {
         delete path.node.extra
@@ -905,8 +1008,11 @@ class Deob {
    * @description 给关键函数、标识符 设置注释
    * @example // TOLOOK
    */
-  addComments(keyWords = [], label = ' TOLOOK') {
-    keyWords = keyWords.map((k) => k.toLowerCase())
+  addComments(keywords = [], label = ' TOLOOK') {
+    const defaultKeywords = ['debugger']
+    keywords = [
+      ...new Set([...keywords.map((k) => k.toLowerCase()), ...defaultKeywords]),
+    ]
 
     traverse(this.ast, {
       DebuggerStatement(path) {
@@ -935,7 +1041,7 @@ class Deob {
         path.addComment('leading', label, true)
       },
       StringLiteral(path) {
-        if (keyWords.includes(path.node.value.toLowerCase())) {
+        if (keywords.includes(path.node.value.toLowerCase())) {
           const statementPath = path.findParent((p) => p.isStatement())
           if (statementPath) statementPath.addComment('leading', label, true)
           else path.addComment('leading', label, true)
@@ -943,7 +1049,7 @@ class Deob {
       },
       Identifier(path) {
         const name = path.node.name
-        if (keyWords.includes(name.toLowerCase())) {
+        if (keywords.includes(name.toLowerCase())) {
           const statementPath = path.findParent((p) => p.isStatement())
           if (statementPath) statementPath.addComment('leading', label, true)
           else path.addComment('leading', label, true)

@@ -1,7 +1,9 @@
 const { Deob } = require('@deob/utils')
 const fs = require('fs/promises')
 
-class MyDeOb extends Deob {}
+class MyDeOb extends Deob {
+  // 编写自定义 traverse
+}
 
 ;(async function () {
   const fileName = 'code'
@@ -18,7 +20,8 @@ class MyDeOb extends Deob {}
 
   await deob.prettierCode()
 
-  deob.findDecryptFnByCallCount(1000)
+  deob.findDecryptFnByCallCount(100, true)
+
   await deob.record(fileName, 1)
 
   deob.saveAllObject()

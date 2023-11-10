@@ -18,6 +18,8 @@ class MyDeOb extends Deob {}
 
   await deob.prettierCode()
 
+  deob.splitMultipleDeclarations()
+
   deob.findDecryptFnByCallCount(1000)
   await deob.record(fileName, 1)
 

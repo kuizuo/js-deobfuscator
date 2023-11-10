@@ -10,7 +10,7 @@ class MyDeOb extends Deob {}
     encoding: 'utf-8',
   })
 
-  let deob = new MyDeOb({
+  let deob = new Deob({
     rawCode: rawCode,
     dir: __dirname,
     isWriteFile: true,
@@ -18,7 +18,8 @@ class MyDeOb extends Deob {}
 
   await deob.prettierCode()
 
-  deob.findDecryptFnByCallCount(1000)
+  deob.findDecryptFnByCallCount(100, true)
+
   await deob.record(fileName, 1)
 
   deob.saveAllObject()

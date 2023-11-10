@@ -14,17 +14,24 @@ class MyDeOb extends Deob {}
     rawCode: rawCode,
     dir: __dirname,
     isWriteFile: true,
+    opts: {
+      minified: false,
+      jsescOption: { minimal: true },
+      compact: false,
+      comments: true,
+    },
   })
 
   await deob.prettierCode()
 
-  deob.findDecryptFnByCallCount(1000)
+  deob.findDecryptFnByCallCount(1000, true)
+  // // deob.designDecryptFn('_0x3628')
+  
   await deob.record(fileName, 1)
 
-  deob.saveAllObject()
-  deob.objectMemberReplace()
-  deob.reParse()
-  await deob.record(fileName, 2)
+  // deob.saveAllObject()
+  // deob.objectMemberReplace()
+  // await deob.record(fileName, 2)
 
   deob.switchFlat()
   deob.switchFlat()

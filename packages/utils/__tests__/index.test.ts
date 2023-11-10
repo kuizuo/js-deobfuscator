@@ -2,6 +2,19 @@ import { Deob } from '../index'
 import { describe, expect, it } from 'vitest'
 
 describe('deob', async () => {
+  it('splitMultipleDeclarations', () => {
+    const rawCode = `var a = 1, b = 2;`
+
+    let deob = new Deob({ rawCode: rawCode })
+
+    deob.splitMultipleDeclarations()
+    const code = deob.getCode()
+
+    expect(code).toBe(`
+var a = 1;
+var b = 2;`.trim())
+  })
+
   it('deleteExtra', () => {
     const rawCode = `
           console.log("\x6b\x75\x69\x7a\x75\x6f")
@@ -148,7 +161,8 @@ function a() {
 
   _0x4b70fb["charset"] = "utf-8";
   return _0x4b70fb;
-}`.trim())
+}`.trim(),
+    )
   })
 
   it('selfCallFnReplace', () => {
@@ -165,9 +179,10 @@ function a() {
     deob.selfCallFnReplace()
     const code = deob.getCode()
 
-    expect(code).toBe(`Function("Function(arguments[0]+" + "bugger" + ")()")("de");`)
+    expect(code).toBe(
+      `Function("Function(arguments[0]+" + "bugger" + ")()")("de");`,
+    )
   })
-
 
   it('objectMemberReplace', () => {
     const rawCode = `
@@ -193,11 +208,13 @@ _0x52627b["GOEUR"](a, b)
     deob.removeUnusedVariables()
     const code = deob.getCode()
 
-    expect(code).toBe(`
+    expect(code).toBe(
+      `
 "attribute";
 
 _0x4547db();
 
-a + b;`.trim())
+a + b;`.trim(),
+    )
   })
 })

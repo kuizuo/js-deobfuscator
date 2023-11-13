@@ -15,6 +15,28 @@ var a = 1;
 var b = 2;`.trim())
   })
 
+  it('transformForLoop', () => {
+    const rawCode = `for (a = 1, w = "2|1|2|3"["split"]("|"), void 0;;) {
+      var a;
+      var w;
+      break;
+    }`
+
+    let deob = new Deob(rawCode)
+
+    deob.transformForLoop()
+    const code = deob.getCode()
+
+    expect(code).toBe(`
+
+var a = 1;
+var w = "2|1|2|3"["split"]("|");
+
+for (;;) {
+  break;
+}`.trim())
+  })
+
   it('deleteExtra', () => {
     const rawCode = `
           console.log("\x6b\x75\x69\x7a\x75\x6f")

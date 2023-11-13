@@ -15,7 +15,7 @@ class Deob {
    * @param {string} rawCode - 原始代码
    * @param {object} [options] -  选项
    * @param {string} [options.dir='./'] - 输出目录
-   * @param {boolean} [options.isWriteFile=false] 
+   * @param {boolean} [options.isWriteFile=false]
    * @param {object} [options.opts] - 是否写入文件
    * @throws {Error} 请载入js代码
    */
@@ -182,8 +182,8 @@ class Deob {
 
   /**
    * @description 根据函数调用次数寻找到解密函数 并执行解密操作
-   * @param {*} count 解密函数调用次数
-   * @param {*} isRemove 是否移除解密函数(后续用不到)
+   * @param {number} count 解密函数调用次数
+   * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
    */
   findDecryptFnByCallCount(count = 100, isRemove = false) {
     let decryptFnList = []
@@ -244,6 +244,8 @@ class Deob {
     if (isRemove) {
       this.ast.program.body = this.ast.program.body.slice(index)
     }
+    
+    this.reParse()
   }
 
   /**
@@ -321,13 +323,13 @@ class Deob {
   /**
      * @description 嵌套函数花指令替换
      * @deprecated
-     * @example	
+     * @example
      *  _0x4698 为解密函数
      *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
             return _0x4698(_0x13ee81 - -674, _0x3dfa50);
-        }; 
-        ⬇️ 
-        _0x49afe4(-57, 1080, 828, 1138, 469) ---> _0x4698(_0x13ee81 - -674, _0x3dfa50) 
+        };
+        ⬇️
+        _0x49afe4(-57, 1080, 828, 1138, 469) ---> _0x4698(_0x13ee81 - -674, _0x3dfa50)
         _0x4698('469' - -674, '828') ---> 调用解密函数得到原字符串
      */
   nestedFnReplace() {
@@ -418,7 +420,7 @@ class Deob {
                   /* 重命名后此时内嵌函数将会变成
                                       _0x49afe4 = function ('-57', '1080', '828', '1138', '469') {
                                         return _0x4698('469' - -674, '828');
-                                      }' 
+                                      }'
                                     但形参不能为字面量,所以就需要转化成原先的参数
                                     */
                   callFuncVarPath.node.init = orgcallFuncInit
@@ -487,6 +489,9 @@ class Deob {
    * _0x52627b["GOEUR"](a, b) ---> a + b
    */
   objectMemberReplace() {
+    // 记录被替换的对象, 如何对象没被修改过则删除
+    const replaceObjects = new Set()
+
     // 先执行 _0x52627b["QqaUY"] ---> "attribute"
     traverse(this.ast, {
       MemberExpression(path) {
@@ -522,9 +527,11 @@ class Deob {
                 if (
                   binding &&
                   binding.constant &&
-                  binding.constantViolations.length == 0
+                  binding.constantViolations.length === 0
                 ) {
                   console.log(objectName, propertyName)
+
+                  replaceObjects.add(objectName)
 
                   path.replaceWith(prop.value)
                 }
@@ -534,6 +541,8 @@ class Deob {
         }
       },
     })
+
+    this.reParse()
 
     // 在执行
     // _0x52627b["GOEUR"](a, b) ---> a + b
@@ -576,6 +585,7 @@ class Deob {
                 // 返回参数
                 let returnArgument = firstStatement.argument
 
+                let isReplace = false
                 if (t.isBinaryExpression(returnArgument)) {
                   // _0x5a2810 + _0x2b32f4
                   let binaryExpression = t.binaryExpression(
@@ -584,6 +594,7 @@ class Deob {
                     argumentList[1],
                   )
                   path.replaceWith(binaryExpression)
+                  isReplace = true
                 } else if (t.isLogicalExpression(returnArgument)) {
                   // _0x5a2810 || _0x2b32f4
                   let logicalExpression = t.logicalExpression(
@@ -592,6 +603,7 @@ class Deob {
                     argumentList[1],
                   )
                   path.replaceWith(logicalExpression)
+                  isReplace = true
                 } else if (t.isUnaryExpression(returnArgument)) {
                   // !_0x5a2810
                   let unaryExpression = t.unaryExpression(
@@ -599,6 +611,7 @@ class Deob {
                     argumentList[0],
                   )
                   path.replaceWith(unaryExpression)
+                  isReplace = true
                 } else if (t.isCallExpression(returnArgument)) {
                   // function (_0x1d0a4d, _0x1df411) {
                   //   return _0x1d0a4d();
@@ -622,6 +635,11 @@ class Deob {
                     argumentList,
                   )
                   path.replaceWith(callExpression)
+                  isReplace = true
+                }
+
+                if (isReplace) {
+                  replaceObjects.add(objectName)
                 }
               }
             }
@@ -631,19 +649,23 @@ class Deob {
     })
 
     this.reParse()
+
+    // 删除无用变量名已替换过的对象变量
+    console.log(`已被替换的对象列表: ${[...replaceObjects]}`)
+    this.removeUnusedVariables([...replaceObjects])
   }
 
   /**
-     * @description 自调用函数执行并替换
-     * @example 
-     * ;(function (_0x4f0d08) {
-         return function (_0x4f0d08) {
-           return Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
-         }(_0x4f0d08);
-       })("bugger")("de");
-       🔽
-       Function("Function(arguments[0]+\"" + "bugger" + "\")()")("de")
-     */
+   * @description 自调用函数执行并替换
+   * @example
+   * ;(function (_0x4f0d08) {
+       return function (_0x4f0d08) {
+         return Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
+       }(_0x4f0d08);
+     })("bugger")("de");
+     🔽
+     Function("Function(arguments[0]+\"" + "bugger" + "\")()")("de")
+   */
   selfCallFnReplace() {
     traverse(this.ast, {
       CallExpression(path) {
@@ -703,8 +725,68 @@ class Deob {
   }
 
   /**
-     * @description switch 混淆扁平化 
-     * @example 
+   * @description 将 for 初始化赋值前置
+   * @example 
+     for (a = 1, w = "2|1|2|3"["split"]("|"), void 0;;) {
+       var a;
+       var w;
+       break;
+     }
+     🔽
+     var a = 1;
+     var w = "2|1|2|3"["split"]("|")
+     for (void 0;;) {
+        break;
+     }
+   */
+  transformForLoop() {
+    traverse(this.ast, {
+      ForStatement(path) {
+        if (path.node.init && path.node.init.type === 'SequenceExpression') {
+          const expressions = path.node.init.expressions
+
+          const toRemoveVariableDeclarators = []
+          const declarations = []
+          expressions.forEach((expression, index) => {
+            if (expression.type === 'AssignmentExpression') {
+              toRemoveVariableDeclarators.push(expression.left.name)
+
+              if (expression.left.type === 'Identifier') {
+                declarations.push(
+                  t.variableDeclaration('var', [
+                    t.variableDeclarator(
+                      t.identifier(expression.left.name),
+                      expression.right,
+                    ),
+                  ]),
+                )
+              }
+            }
+          })
+
+          expressions.length = 0
+
+          path.traverse({
+            VariableDeclarator(p) {
+              const name = p.node.id?.name
+              if (toRemoveVariableDeclarators.includes(name)) {
+                p.remove()
+              }
+            },
+          })
+
+          let statement = path.getStatementParent()
+
+          path.insertBefore(declarations)
+        }
+      },
+    })
+    this.reParse()
+  }
+
+  /**
+     * @description switch 混淆扁平化
+     * @example
      * function a() {
          var _0x263cfa = "1|3|2|0"["split"]("|"),
            _0x105b9b = 0;
@@ -733,7 +815,7 @@ class Deob {
      
            break;
          }
-       } 
+       }
        ⬇️
        function a(){
           if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
@@ -745,6 +827,8 @@ class Deob {
        }
      */
   switchFlat() {
+    this.transformForLoop()
+
     traverse(this.ast, {
       SwitchStatement(path) {
         // 判断父节点是否为循环节点
@@ -764,9 +848,12 @@ class Deob {
         // 从整个函数的 BlockStatement 中遍历寻找 "1|3|2|0"["split"]
         fnBlockStatementPath.traverse({
           MemberExpression(path) {
+            const propertyName =
+              path.node.property.value || path.node.property.name
             if (
-              t.isStringLiteral(path.node.property) &&
-              path.node.property.value === 'split'
+              (t.isStringLiteral(path.node.property) ||
+                t.isIdentifier(path.node.property)) &&
+              propertyName === 'split'
             ) {
               if (t.isStringLiteral(path.node.object)) {
                 // path.node.object.value 为 "1|3|2|0"
@@ -799,6 +886,28 @@ class Deob {
         // 将整个 while 循环体都移除
         path.parentPath.parentPath.remove()
         path.skip()
+      },
+    })
+
+    this.reParse()
+  }
+
+  /**
+   * @description 还原逗号表达式
+   */
+  restoreSequence() {
+    traverse(this.ast, {
+      SequenceExpression(path) {
+        exit: (path) => {
+          let exporessions = path.node.expressions
+          let finalExpression = exporessions[exporessions.length - 1]
+          let statement = path.getStatementParent()
+
+          this.expression.map((e) => {
+            statemente.insertBefore(t.ExpressionStatement(e))
+          })
+          path.replaceInline(finalExpression)
+        }
       },
     })
   }
@@ -893,6 +1002,7 @@ class Deob {
         }
       },
     })
+    this.reParse()
   }
 
   /**
@@ -957,7 +1067,7 @@ class Deob {
   /**
    * @description	清理无用变量与函数
    */
-  removeUnusedVariables() {
+  removeUnusedVariables(variableNames) {
     traverse(this.ast, {
       VariableDeclarator(path) {
         const { id, init } = path.node
@@ -967,23 +1077,44 @@ class Deob {
             t.isObjectExpression(init) ||
             t.isFunctionExpression(init)
           )
-        )
+        ) {
           return
+        }
 
-        const binding = path.scope.getBinding(id.name)
+        const name = id.name
+
+        // 如果指定变量名的话
+        if (variableNames) {
+          if (!variableNames.includes(name)) {
+            path.skip()
+            return
+          }
+        }
+
+        const binding = path.scope.getBinding(name)
         if (!binding || binding.constantViolations.length > 0) return
 
-        if (binding.referencePaths.length > 0) return
+        if (binding.referencePaths.length >= 0) return
         path.remove()
       },
       FunctionDeclaration(path) {
-        const binding = path.scope.getBinding(path.node.id.name)
+        const name = path.node.id.name
+
+        // 如果指定变量名的话
+        if (variableNames) {
+          path.skip()
+          return
+        }
+
+        const binding = path.scope.getBinding(name)
         if (!binding || binding.constantViolations.length > 0) return
 
-        if (binding.referencePaths.length > 0) return
+        if (binding.referencePaths.length >= 0) return
         path.remove()
       },
     })
+
+    this.reParse()
   }
 
   /**

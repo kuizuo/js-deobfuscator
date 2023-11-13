@@ -19,18 +19,21 @@ class MyDeOb extends Deob {}
 
   deob.splitMultipleDeclarations()
 
-  deob.findDecryptFnByCallCount(1000)
+  deob.findDecryptFnByCallCount(1000, true)
   await deob.record(fileName, 1)
 
   deob.saveAllObject()
   deob.objectMemberReplace()
-  deob.reParse()
   await deob.record(fileName, 2)
 
   deob.switchFlat()
   deob.switchFlat()
-  deob.reParse()
   await deob.record(fileName, 3)
+
+  // 平坦化之后可在执行一次
+  deob.saveAllObject()
+  deob.objectMemberReplace()
+  await deob.record(fileName, '3_3')
 
   // 最后通用处理
   deob.calcBinary()
@@ -39,15 +42,15 @@ class MyDeOb extends Deob {}
   deob.reParse()
   await deob.record(fileName, 4)
 
-  deob.removeUnusedBlock()
-  deob.removeUnusedVariables()
-  deob.selfCallFnReplace()
+  // deob.removeUnusedBlock()
+  // // deob.removeUnusedVariables()
+  // // deob.selfCallFnReplace()
 
-  // 优化
-  // deob.changeObjectAccessMode()
-  deob.deleteExtra()
-  deob.addComments()
+  // // 优化
+  // // deob.changeObjectAccessMode()
+  // deob.deleteExtra()
+  // deob.addComments()
 
   let code = deob.getCode()
-  fs.writeFile(__dirname + '/output.js', code)
+  await fs.writeFile(__dirname + '/output.js', code)
 })()

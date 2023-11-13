@@ -28,11 +28,10 @@ var b = 2;`.trim())
     const code = deob.getCode()
 
     expect(code).toBe(`
-
 var a = 1;
 var w = "2|1|2|3"["split"]("|");
 
-for (;;) {
+for (void 0;;) {
   break;
 }`.trim())
   })
@@ -74,7 +73,7 @@ for (;;) {
 
     let deob = new Deob(rawCode)
 
-    deob.removeUnusedVariables()
+    deob.removeUnusedVariables(null, false)
     const code = deob.getCode()
 
     expect(code).toBe('')
@@ -227,7 +226,7 @@ _0x52627b["GOEUR"](a, b)
 
     deob.saveAllObject()
     deob.objectMemberReplace()
-    deob.removeUnusedVariables()
+    deob.removeUnusedVariables(null, false)
     const code = deob.getCode()
 
     expect(code).toBe(

@@ -59,7 +59,16 @@ class Deob {
   reParse() {
     let jscode = generator(this.ast, this.opts).code
 
-    this.ast = parser.parse(jscode, { sourceType: 'script' })
+    try {
+      this.ast = parser.parse(jscode, { sourceType: 'script' })
+    } catch (error) {
+      console.log('代码替换有误,导致解析失败!', error)
+      if (this.isWriteFile) {
+        console.log('正在写入错误文件...')
+        fs.writeFile(this.dir, 'reParse_error.js', jscode).then()
+      }
+      throw new Error(error)
+    }
   }
 
   /**
@@ -661,8 +670,8 @@ class Deob {
     this.reParse()
 
     // 删除无用变量名已替换过的对象变量
-    console.log(`已被替换的对象列表: ${[...replaceObjects]}`)
-    this.removeUnusedVariables([...replaceObjects])
+    // console.log(`已被替换的对象列表: ${[...replaceObjects]}`)
+    // this.removeUnusedVariables([...replaceObjects])
   }
 
   /**
@@ -774,13 +783,25 @@ class Deob {
             }
           })
 
-          expressions.length = 0
+          path.node.init.expressions = path.node.init.expressions.filter(
+            (e) => {
+              if (e.type === 'AssignmentExpression') {
+                return !toRemoveVariableDeclarators.includes(e.left.name)
+              } else {
+                return true
+              }
+            },
+          )
 
+          // 必须要删除 后续的 var 会影响判断
           path.traverse({
             VariableDeclarator(p) {
               const name = p.node.id?.name
-              if (toRemoveVariableDeclarators.includes(name)) {
-                p.remove()
+              if (p.node.init === null) {
+                if (toRemoveVariableDeclarators.includes(name)) {
+                  console.log(generator(p.node).code)
+                  p.remove()
+                }
               }
             },
           })
@@ -874,7 +895,15 @@ class Deob {
                 const VariableDeclarator = path.findParent((p) =>
                   p.isVariableDeclarator(),
                 )
-                if (VariableDeclarator) VariableDeclarator.remove()
+                if (VariableDeclarator) {
+                  console.log(
+                    `switch 平坦化: ${shufferString} ; 删除代码 ${
+                      generator(VariableDeclarator.node).code
+                    }`,
+                  )
+
+                  VariableDeclarator.remove()
+                }
 
                 path.stop()
               }
@@ -884,8 +913,6 @@ class Deob {
 
         if (shufferArr.length === 0) return
 
-        console.log(`switch 平坦化: ${shufferString}`)
-
         const myArr = path.node.cases
           .filter((p) => p.test?.type === 'StringLiteral')
           .map((p) => p.consequent[0])
@@ -894,7 +921,12 @@ class Deob {
         fnBlockStatementPath.node.body.push(...sequences)
 
         // 将整个 while 循环体都移除
-        path.parentPath.parentPath.remove()
+        if (
+          path.parentPath.parentPath.type === 'WhileStatement' ||
+          path.parentPath.parentPath.type === 'ForStatement'
+        ) {
+          path.parentPath.parentPath.remove()
+        }
         path.skip()
       },
     })
@@ -1077,7 +1109,7 @@ class Deob {
   /**
    * @description	清理无用变量与函数
    */
-  removeUnusedVariables(variableNames) {
+  removeUnusedVariables(variableNames = null, excludeProgram = true) {
     traverse(this.ast, {
       'VariableDeclarator|FunctionDeclaration'(path) {
         const { id, init } = path.node
@@ -1105,12 +1137,11 @@ class Deob {
         if (!binding || binding.constantViolations.length > 0) return
 
         // 排除 Program 下的变量
-        if(binding.scope?.block?.type === 'Program'){
-          path.skip()
-          return 
+        if (excludeProgram && binding.scope?.block?.type === 'Program') {
+          return
         }
 
-        if (binding.referencePaths.length >= 0) return
+        if (binding.referencePaths.length > 0) return
         path.remove()
       },
     })

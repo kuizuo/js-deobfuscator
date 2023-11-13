@@ -23,7 +23,7 @@ class MyDeOb extends Deob {}
   await deob.record(fileName, 1)
 
   // 根据情况可 在执行平坦化
-  for (let i = 0; i <  4; i++) {
+  for (let i = 0; i <= 3; i++) {
     deob.saveAllObject()
     deob.objectMemberReplace()
     deob.switchFlat()
@@ -33,14 +33,14 @@ class MyDeOb extends Deob {}
 
   // 最后通用处理
   deob.calcBinary()
-  deob.calcBoolean()
-  deob.reParse()
-  await deob.record(fileName, 4)
-  
+  deob.calcBoolean()  
   deob.replaceConstant()
+  deob.reParse()
+
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
   // deob.selfCallFnReplace()
+  await deob.record(fileName, 4)
 
   // 优化
   // deob.changeObjectAccessMode()

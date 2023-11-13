@@ -4,7 +4,7 @@ const t = require('@babel/types')
 const generator = require('@babel/generator').default
 const fs = require('node:fs/promises')
 const path = require('node:path')
-const { deepClone } = require('lodash')
+const { deepClone, bind } = require('lodash')
 
 let objectVariables = []
 
@@ -244,7 +244,7 @@ class Deob {
     if (isRemove) {
       this.ast.program.body = this.ast.program.body.slice(index)
     }
-    
+
     this.reParse()
   }
 
@@ -459,9 +459,9 @@ class Deob {
         path.node.declarations.forEach((declaration) => {
           if (declaration.id.type === 'Identifier') {
             const variableName = declaration.id.name
-
+            const start = declaration.start
             if (declaration.init?.type === 'ObjectExpression') {
-              objectVariables[variableName] = declaration.init
+              objectVariables[`${start}_${variableName}`] = declaration.init
             }
           }
         })
@@ -506,12 +506,18 @@ class Deob {
         ) {
           const objectName = path.node.object.name
 
+          // 找到 objectName 的定义位置
+          const binding = path.scope.getBinding(objectName)
+          if (!binding) return
+
+          const start = binding.identifier.start
+
           //    xxx            obj['xxx']                  obj.xxx
           const propertyName =
             path.node.property.value || path.node.property.name
 
-          if (objectVariables[objectName]) {
-            const objectInit = objectVariables[objectName]
+          if (objectVariables[`${start}_${objectName}`]) {
+            const objectInit = objectVariables[`${start}_${objectName}`]
 
             const properties = objectInit.properties
             for (const prop of properties) {
@@ -542,8 +548,6 @@ class Deob {
       },
     })
 
-    this.reParse()
-
     // 在执行
     // _0x52627b["GOEUR"](a, b) ---> a + b
     // _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
@@ -557,8 +561,14 @@ class Deob {
           const propertyName =
             path.node.callee.property.value || path.node.callee.property.name
 
-          if (objectVariables[objectName]) {
-            const objectInit = objectVariables[objectName]
+          // 找到 objectName 的定义位置
+          const binding = path.scope.getBinding(objectName)
+          if (!binding) return
+
+          const start = binding.identifier.start
+
+          if (objectVariables[`${start}_${objectName}`]) {
+            const objectInit = objectVariables[`${start}_${objectName}`]
 
             const properties = objectInit.properties
 
@@ -974,7 +984,7 @@ class Deob {
   /**
    * @description 将字符串和数值 **常量** 直接替换对应的变量引用地方
    */
-  constantReplace() {
+  replaceConstant() {
     traverse(this.ast, {
       'AssignmentExpression|VariableDeclarator'(path) {
         let name, initValue
@@ -1069,7 +1079,7 @@ class Deob {
    */
   removeUnusedVariables(variableNames) {
     traverse(this.ast, {
-      VariableDeclarator(path) {
+      'VariableDeclarator|FunctionDeclaration'(path) {
         const { id, init } = path.node
         if (
           !(
@@ -1094,20 +1104,11 @@ class Deob {
         const binding = path.scope.getBinding(name)
         if (!binding || binding.constantViolations.length > 0) return
 
-        if (binding.referencePaths.length >= 0) return
-        path.remove()
-      },
-      FunctionDeclaration(path) {
-        const name = path.node.id.name
-
-        // 如果指定变量名的话
-        if (variableNames) {
+        // 排除 Program 下的变量
+        if(binding.scope?.block?.type === 'Program'){
           path.skip()
-          return
+          return 
         }
-
-        const binding = path.scope.getBinding(name)
-        if (!binding || binding.constantViolations.length > 0) return
 
         if (binding.referencePaths.length >= 0) return
         path.remove()

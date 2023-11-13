@@ -22,34 +22,30 @@ class MyDeOb extends Deob {}
   deob.findDecryptFnByCallCount(1000, true)
   await deob.record(fileName, 1)
 
-  deob.saveAllObject()
-  deob.objectMemberReplace()
-  await deob.record(fileName, 2)
-
-  deob.switchFlat()
-  deob.switchFlat()
+  // 根据情况可 在执行平坦化
+  for (let i = 0; i <  4; i++) {
+    deob.saveAllObject()
+    deob.objectMemberReplace()
+    deob.switchFlat()
+    console.log(`执行第${i + 1}遍 平坦化完成`)
+  }
   await deob.record(fileName, 3)
-
-  // 平坦化之后可在执行一次
-  deob.saveAllObject()
-  deob.objectMemberReplace()
-  await deob.record(fileName, '3_3')
 
   // 最后通用处理
   deob.calcBinary()
   deob.calcBoolean()
-  deob.constantReplace()
   deob.reParse()
   await deob.record(fileName, 4)
+  
+  deob.replaceConstant()
+  deob.removeUnusedBlock()
+  deob.removeUnusedVariables()
+  // deob.selfCallFnReplace()
 
-  // deob.removeUnusedBlock()
-  // // deob.removeUnusedVariables()
-  // // deob.selfCallFnReplace()
-
-  // // 优化
-  // // deob.changeObjectAccessMode()
-  // deob.deleteExtra()
-  // deob.addComments()
+  // 优化
+  // deob.changeObjectAccessMode()
+  deob.deleteExtra()
+  deob.addComments()
 
   let code = deob.getCode()
   await fs.writeFile(__dirname + '/output.js', code)

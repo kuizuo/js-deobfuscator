@@ -34,7 +34,7 @@ class MyDeOb extends Deob {}
   // 最后通用处理
   deob.calcBinary()
   deob.calcBoolean()
-  deob.constantReplace()
+  deob.replaceConstant()
   deob.reParse()
   await deob.record(fileName, 4)
 

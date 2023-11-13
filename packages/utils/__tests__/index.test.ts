@@ -118,7 +118,7 @@ let b = "debugger";
     )
   })
 
-  it('constantReplace', () => {
+  it('replaceConstant', () => {
     const rawCode = `
     let a = "debugger";
     console.log(a)
@@ -126,7 +126,7 @@ let b = "debugger";
 
     let deob = new Deob(rawCode)
 
-    deob.constantReplace()
+    deob.replaceConstant()
     const code = deob.getCode()
 
     expect(code).toBe(`console.log("debugger");`)

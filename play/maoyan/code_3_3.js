@@ -1193,7 +1193,7 @@ var rohr = function () {
         var n = w["shift"]();
 
         if (n) {
-          if (r["uXUJx"](typeof n, r["UKfdY"])) throw new TypeError(r["iksgN"](n, r.qDbwG));
+          if (typeof n !== "object") throw new TypeError(n + "must be non-object");
 
           for (var c in n) e = n, a = c, Object["prototype"].hasOwnProperty["call"](e, a) && (x[c] = n[c]);
         }
@@ -1201,7 +1201,7 @@ var rohr = function () {
 
       return x;
     }, e["shrinkBuf"] = function (x, e) {
-      return r["OkXtI"](x["length"], e) ? x : x["subarray"] ? x.subarray(0, e) : (x["length"] = e, x);
+      return x["length"] === e ? x : x["subarray"] ? x.subarray(0, e) : (x["length"] = e, x);
     };
     var w = {
       arraySet: function (x, e, a, w, n) {
@@ -1436,89 +1436,27 @@ var rohr = function () {
         return x < e;
       }
     };
-    var n = w.kTHzN["split"]("|");
     var c = 0;
-
-    for (;;) {
-      switch (n[c++]) {
-        case "0":
-          var r;
-          continue;
-
-        case "1":
-          var t;
-          continue;
-
-        case "2":
-          var o;
-          continue;
-
-        case "3":
-          var _ = 0;
-          continue;
-
-        case "4":
-          if (w["wnspV"](x["last_lit"], 0)) do {
-            if (s = w.jpBEt(x["pending_buf"][w.rIOYM(x.d_buf, 2 * _)] << 8, x["pending_buf"][w.rIOYM(x["d_buf"], w.zDiGe(_, 2)) + 1]), t = x["pending_buf"][x["l_buf"] + _], _++, 0 === s) X(x, t, e);else {
-              var i = w["QKsyk"]["split"]("|");
-              var O = 0;
-
-              for (;;) {
-                switch (i[O++]) {
-                  case "0":
-                    w["gWrIj"](X, x, w["rIOYM"](o + u, 1), e);
-                    continue;
-
-                  case "1":
-                    w["fuSLD"](r, 0) && (t -= l[o], w.gWrIj(B, x, t, r));
-                    continue;
-
-                  case "2":
-                    s--;
-                    continue;
-
-                  case "3":
-                    w["fuSLD"](r, 0) && (s -= U[o], w.zcUfC(B, x, s, r));
-                    continue;
-
-                  case "4":
-                    r = p[o];
-                    continue;
-
-                  case "5":
-                    r = q[o];
-                    continue;
-
-                  case "6":
-                    o = Q[t];
-                    continue;
-
-                  case "7":
-                    o = w["OMlmU"](P, s);
-                    continue;
-
-                  case "8":
-                    w["zcUfC"](X, x, o, a);
-                    continue;
-                }
-
-                break;
-              }
-            }
-          } while (w.yNQnp(_, x["last_lit"]));
-          continue;
-
-        case "5":
-          var s;
-          continue;
-
-        case "6":
-          X(x, C, e);
-          continue;
+    var s;
+    var t;
+    var _ = 0;
+    var o;
+    var r;
+    if (x["last_lit"] !== 0) do {
+      if (s = x["pending_buf"][x.d_buf + 2 * _] << 8 | x["pending_buf"][x["d_buf"] + _ * 2 + 1], t = x["pending_buf"][x["l_buf"] + _], _++, 0 === s) X(x, t, e);else {
+        var O = 0;
+        o = Q[t];
+        X(x, o + u + 1, e);
+        r = q[o];
+        r !== 0 && (t -= l[o], B(x, t, r));
+        s--;
+        o = P(s);
+        X(x, o, a);
+        r = p[o];
+        r !== 0 && (s -= U[o], B(x, s, r));
       }
-
-      break;
-    }
+    } while (_ < x["last_lit"]);
+    X(x, C, e);
   }
 
   function N(x, e) {
@@ -1582,21 +1520,21 @@ var rohr = function () {
     x["heap_len"] = 0;
     x["heap_max"] = v;
 
-    for (r = 0; r < s; r++) 0 !== c[a["hbaVW"](r, 2)] ? (x["heap"][++x["heap_len"]] = o = r, x.depth[r] = 0) : c[a["gfunN"](2 * r, 1)] = 0;
+    for (r = 0; r < s; r++) 0 !== c[r * 2] ? (x["heap"][++x["heap_len"]] = o = r, x.depth[r] = 0) : c[2 * r + 1] = 0;
 
-    for (; a["KzsTG"](x["heap_len"], 2);) _ = x["heap"][++x.heap_len] = a.KzsTG(o, 2) ? ++o : 0, c[a["dlSAK"](_, 2)] = 1, x["depth"][_] = 0, x["opt_len"]--, O && (x.static_len -= i[a["WylEJ"](2 * _, 1)]);
+    for (; x["heap_len"] < 2;) _ = x["heap"][++x.heap_len] = o < 2 ? ++o : 0, c[_ * 2] = 1, x["depth"][_] = 0, x["opt_len"]--, O && (x.static_len -= i[2 * _ + 1]);
 
     e.max_code = o;
 
-    for (r = a["pbnwk"](x["heap_len"], 1); a["yrYdn"](r, 1); r--) a["vnJQx"](z, x, c, r);
+    for (r = x["heap_len"] >> 1; r <= 1; r--) z(x, c, r);
 
     _ = s;
 
-    for (; r = x["heap"][1], x["heap"][1] = x["heap"][x["heap_len"]--], a["TjBgb"](z, x, c, 1), t = x["heap"][1], x["heap"][--x["heap_max"]] = r, x["heap"][--x["heap_max"]] = t, c[a["ECfTo"](_, 2)] = a["WylEJ"](c[a.ECfTo(r, 2)], c[2 * t]), x["depth"][_] = (a["zmMGR"](x["depth"][r], x["depth"][t]) ? x.depth[r] : x["depth"][t]) + 1, c[a["OWSIz"](2 * r, 1)] = c[a.ECfTo(t, 2) + 1] = _, x.heap[1] = _++, a["YnLxs"](z, x, c, 1), a["xgTBc"](x["heap_len"], 2););
+    for (; r = x["heap"][1], x["heap"][1] = x["heap"][x["heap_len"]--], z(x, c, 1), t = x["heap"][1], x["heap"][--x["heap_max"]] = r, x["heap"][--x["heap_max"]] = t, c[_ * 2] = c[r * 2] + c[2 * t], x["depth"][_] = (x["depth"][r] <= x["depth"][t] ? x.depth[r] : x["depth"][t]) + 1, c[2 * r + 1] = c[t * 2 + 1] = _, x.heap[1] = _++, z(x, c, 1), x["heap_len"] <= 2;);
 
     x.heap[--x["heap_max"]] = x["heap"][1];
-    a.PgLzD(L, x, e);
-    a["vnJQx"](W, c, o, x["bl_count"]);
+    L(x, e);
+    W(c, o, x["bl_count"]);
   }
 
   function Z(x, e, a) {
@@ -1677,39 +1615,17 @@ var rohr = function () {
         return x !== e;
       }
     };
-    var a = e["AVlKL"].split("|");
     var w = 0;
+    var c = 4093624447;
+    var n;
 
-    for (;;) {
-      switch (a[w++]) {
-        case "0":
-          return r;
+    for (n = 0; n <= 31; n++, c >>>= 1) if (c & 1 && x["dyn_ltree"][2 * n] !== 0) return r;
 
-        case "1":
-          if (e.VAodF(x.dyn_ltree[18], 0) || e.poZkU(x.dyn_ltree[e.QPNpJ(10, 2)], 0) || e["MRFat"](x["dyn_ltree"][e["iUbqu"](13, 2)], 0)) return t;
-          continue;
+    if (x.dyn_ltree[18] !== 0 || x.dyn_ltree[10 * 2] !== 0 || x["dyn_ltree"][13 * 2] !== 0) return t;
 
-        case "2":
-          var n;
-          continue;
+    for (n = 32; n < u; n++) if (x["dyn_ltree"][n * 2] !== 0) return t;
 
-        case "3":
-          for (n = 32; e["kdDpx"](n, u); n++) if (e.yIpYH(x["dyn_ltree"][e["iUbqu"](n, 2)], 0)) return t;
-
-          continue;
-
-        case "4":
-          var c = 4093624447;
-          continue;
-
-        case "5":
-          for (n = 0; n <= 31; n++, c >>>= 1) if (e.ZubNk(c, 1) && e.hlKxr(x["dyn_ltree"][2 * n], 0)) return r;
-
-          continue;
-      }
-
-      break;
-    }
+    return r;
   }
 
   a(U);
@@ -1816,37 +1732,13 @@ var rohr = function () {
           return x >>> e;
         }
       };
-      var n = w["XQpqs"].split("|");
       var c = 0;
-
-      for (;;) {
-        switch (n[c++]) {
-          case "0":
-            x.pending_buf[w["kRnBU"](w.kRnBU(x["d_buf"], 2 * x["last_lit"]), 1)] = w["gXlaM"](e, 255);
-            continue;
-
-          case "1":
-            0 === e ? x["dyn_ltree"][w["iSzif"](a, 2)]++ : (x.matches++, e--, x["dyn_ltree"][w["iSzif"](w["kRnBU"](w.kRnBU(Q[a], u), 1), 2)]++, x["dyn_dtree"][w.QheYF(w["mcNoU"](P, e), 2)]++);
-            continue;
-
-          case "2":
-            return w["aCjwo"](x["last_lit"], w["tAKAs"](x["lit_bufsize"], 1));
-
-          case "3":
-            x["last_lit"]++;
-            continue;
-
-          case "4":
-            x["pending_buf"][w["kRnBU"](x.d_buf, w.kKPAo(x["last_lit"], 2))] = 255 & w["IleGY"](e, 8);
-            continue;
-
-          case "5":
-            x["pending_buf"][x.l_buf + x.last_lit] = 255 & a;
-            continue;
-        }
-
-        break;
-      }
+      x["pending_buf"][x.d_buf + x["last_lit"] * 2] = 255 & e >>> 8;
+      x.pending_buf[x["d_buf"] + 2 * x["last_lit"] + 1] = e & 255;
+      x["pending_buf"][x.l_buf + x.last_lit] = 255 & a;
+      x["last_lit"]++;
+      0 === e ? x["dyn_ltree"][a * 2]++ : (x.matches++, e--, x["dyn_ltree"][(Q[a] + u + 1) * 2]++, x["dyn_dtree"][P(e) * 2]++);
+      return x["last_lit"] === x["lit_bufsize"] - 1;
     },
     _tr_align: function (x) {
       B(x, 2, 3), X(x, C, h), R(x);
@@ -1978,49 +1870,16 @@ var rohr = function () {
         return e < x;
       }
     };
-    var c = n.iiinv["split"]("|");
     var r = 0;
-
-    for (;;) {
-      switch (c[r++]) {
-        case "0":
-          if (n["czbBo"](t, 0)) return 0;
-          continue;
-
-        case "1":
-          M["arraySet"](e, x["input"], x.next_in, t, a);
-          continue;
-
-        case "2":
-          x.total_in += t;
-          continue;
-
-        case "3":
-          x["avail_in"] -= t;
-          continue;
-
-        case "4":
-          var t = x["avail_in"];
-          continue;
-
-        case "5":
-          return t;
-
-        case "6":
-          x.next_in += t;
-          continue;
-
-        case "7":
-          n["czbBo"](x["state"].wrap, 1) ? x.adler = n["SKsrn"](cx, x.adler, e, t, a) : n["czbBo"](x.state["wrap"], 2) && (x["adler"] = ox(x["adler"], e, t, a));
-          continue;
-
-        case "8":
-          n.ZEaHh(t, w) && (t = w);
-          continue;
-      }
-
-      break;
-    }
+    var t = x["avail_in"];
+    t < w && (t = w);
+    if (t === 0) return 0;
+    x["avail_in"] -= t;
+    M["arraySet"](e, x["input"], x.next_in, t, a);
+    x["state"].wrap === 1 ? x.adler = cx(x.adler, e, t, a) : x.state["wrap"] === 2 && (x["adler"] = ox(x["adler"], e, t, a));
+    x.next_in += t;
+    x.total_in += t;
+    return t;
   }
 
   function Rx(x, e) {
@@ -2165,8 +2024,8 @@ var rohr = function () {
       }
     };
     var w = 0;
-    x["window_size"] = e["qShmx"](2, x["w_size"]);
-    e["XNgYG"](Ax, x["head"]);
+    x["window_size"] = 2 * x["w_size"];
+    Ax(x["head"]);
     x["max_lazy_match"] = tx[x["level"]]["max_lazy"];
     x["good_match"] = tx[x["level"]]["good_length"];
     x.nice_match = tx[x["level"]]["nice_length"];
@@ -2175,7 +2034,7 @@ var rohr = function () {
     x.block_start = 0;
     x["lookahead"] = 0;
     x["insert"] = 0;
-    x["match_length"] = x["prev_length"] = e["uIWQq"](gx, 1);
+    x["match_length"] = x["prev_length"] = gx - 1;
     x.match_available = 0;
     x["ins_h"] = 0;
   }
@@ -2197,65 +2056,20 @@ var rohr = function () {
         return x < e;
       }
     };
-    var a = e["dvlUh"]["split"]("|");
     var w = 0;
-
-    for (;;) {
-      switch (a[w++]) {
-        case "0":
-          x["total_in"] = x["total_out"] = 0;
-          continue;
-
-        case "1":
-          x["adler"] = e["JFEir"](n["wrap"], 2) ? 0 : 1;
-          continue;
-
-        case "2":
-          if (!x || !x.state) return e.oyJxn(Ux, x, ux);
-          continue;
-
-        case "3":
-          return sx;
-
-        case "4":
-          n = x["state"];
-          continue;
-
-        case "5":
-          n["status"] = n.wrap ? kx : Qx;
-          continue;
-
-        case "6":
-          n["last_flush"] = ix;
-          continue;
-
-        case "7":
-          n["pending_out"] = 0;
-          continue;
-
-        case "8":
-          var n;
-          continue;
-
-        case "9":
-          e["UOYvM"](n["wrap"], 0) && (n["wrap"] = -n["wrap"]);
-          continue;
-
-        case "10":
-          nx["_tr_init"](n);
-          continue;
-
-        case "11":
-          x["data_type"] = fx;
-          continue;
-
-        case "12":
-          n["pending"] = 0;
-          continue;
-      }
-
-      break;
-    }
+    var n;
+    if (!x || !x.state) return Ux(x, ux);
+    x["total_in"] = x["total_out"] = 0;
+    x["data_type"] = fx;
+    n = x["state"];
+    n["pending"] = 0;
+    n["pending_out"] = 0;
+    n["wrap"] < 0 && (n["wrap"] = -n["wrap"]);
+    n["status"] = n.wrap ? kx : Qx;
+    x["adler"] = n["wrap"] === 2 ? 0 : 1;
+    n["last_flush"] = ix;
+    nx["_tr_init"](n);
+    return sx;
   }
 
   function Jx(x) {
@@ -2468,63 +2282,41 @@ var rohr = function () {
           return x(e, a, w, n);
         }
       };
-      var w = a["bEdYt"]["split"]("|");
+      var w = "10|18|23|11|28|32|19|13|33|3|0|5|25|24|2|20|30|29|12|14|8|27|4|17|16|26|31|7|22|21|9|6|1|15"["split"]("|");
       var n = 0;
-      if (a["icZUr"](i, 2) || a["icZUr"](i, 1) && s["status"] !== kx || s["lookahead"]) return ux;
+      if (i === 2 || i === 1 && s["status"] !== kx || s["lookahead"]) return ux;
 
       if (_ >= s["w_size"]) {
-        var c = a["gPsyw"].split("|");
         var r = 0;
-
-        for (;;) {
-          switch (c[r++]) {
-            case "0":
-              M.arraySet(O, e, a["bDHhf"](_, s["w_size"]), s["w_size"], 0);
-              continue;
-
-            case "1":
-              e = O;
-              continue;
-
-            case "2":
-              _ = s["w_size"];
-              continue;
-
-            case "3":
-              a.oDEHr(i, 0) && (a.kHXmS(Ax, s["head"]), s["strstart"] = 0, s["block_start"] = 0, s.insert = 0);
-              continue;
-
-            case "4":
-              O = new M["Buf8"](s["w_size"]);
-              continue;
-          }
-
-          break;
-        }
+        i === 0 && (Ax(s["head"]), s["strstart"] = 0, s["block_start"] = 0, s.insert = 0);
+        O = new M["Buf8"](s["w_size"]);
+        M.arraySet(O, e, _ - s["w_size"], s["w_size"], 0);
+        e = O;
+        _ = s["w_size"];
       }
 
       i = s["wrap"];
 
-      for (; a.TwmoA(s["lookahead"], gx);) {
+      for (; s["lookahead"] <= gx;) {
         var o = 0;
 
         for (;;) {
           switch (t[o++]) {
             case "0":
-              for (; s["ins_h"] = a["nRYkx"](a["AFrrQ"](s["ins_h"], s["hash_shift"]) ^ s["window"][a.bDHhf(C + gx, 1)], s["hash_mask"]), s["prev"][a.Ajmgc(C, s["w_mask"])] = s["head"][s["ins_h"]], s["head"][s["ins_h"]] = C, C++, --D;);
+              for (; s["ins_h"] = (s["ins_h"] << s["hash_shift"] ^ s["window"][C + gx - 1]) & s["hash_mask"], s["prev"][C & s["w_mask"]] = s["head"][s["ins_h"]], s["head"][s["ins_h"]] = C, C++, --D;);
 
               continue;
 
             case "1":
-              s["lookahead"] = a.bDHhf(gx, 1);
+              s["lookahead"] = gx - 1;
               continue;
 
             case "2":
-              D = a.bDHhf(s["lookahead"], a["JTymo"](gx, 1));
+              D = s["lookahead"] - (gx - 1);
               continue;
 
             case "3":
-              a["kHXmS"](Lx, s);
+              Lx(s);
               continue;
 
             case "4":
@@ -2670,41 +2462,16 @@ var rohr = function () {
           return x | e;
         }
       };
-      var a = e["qVwsT"]["split"]("|");
       var w = 0;
+      var n;
 
-      for (;;) {
-        switch (a[w++]) {
-          case "0":
-            var n;
-            var c;
-            var r;
-            var t;
-            var o;
-            var _ = x["length"];
-            var i = 0;
-            continue;
+      for (t = 0; t < _; t++) c = x["charCodeAt"](t), (c & 64512) === 55296 && t + 1 < _ && (r = x.charCodeAt(t + 1), (r & 64512) === 56320 && (c = 65536 + (c - 55296 << 10) + (r - 56320), t++)), i += c < 128 ? 1 : c < 2048 ? 2 : c < 65536 ? 3 : 4;
 
-          case "1":
-            n = new M["Buf8"](i);
-            continue;
+      n = new M["Buf8"](i);
 
-          case "2":
-            return n;
+      for (t = o = 0; o < i; t++) c = x["charCodeAt"](t), (c & 64512) === 55296 && t + 1 < _ && (r = x["charCodeAt"](t + 1), 56320 === (r & 64512) && (c = 65536 + (c - 55296 << 10) + (r - 56320), t++)), c < 128 ? n[o++] = c : c < 2048 ? (n[o++] = 192 | c >>> 6, n[o++] = 128 | c & 63) : c < 65536 ? (n[o++] = 224 | c >>> 12, n[o++] = 128 | 63 & c >>> 6, n[o++] = 128 | c & 63) : (n[o++] = 240 | c >>> 18, n[o++] = 128 | c >>> 12 & 63, n[o++] = 128 | c >>> 6 & 63, n[o++] = 128 | 63 & c);
 
-          case "3":
-            for (t = 0; e["TjaZS"](t, _); t++) c = x["charCodeAt"](t), e["BEQxL"](e["zmUem"](c, 64512), 55296) && e["KEDhn"](e.GnoCz(t, 1), _) && (r = x.charCodeAt(t + 1), e["BEQxL"](e.zmUem(r, 64512), 56320) && (c = e["GnoCz"](65536 + e.qKbop(e.RYgjY(c, 55296), 10), r - 56320), t++)), i += e["BMYvb"](c, 128) ? 1 : e["BMYvb"](c, 2048) ? 2 : c < 65536 ? 3 : 4;
-
-            continue;
-
-          case "4":
-            for (t = o = 0; o < i; t++) c = x["charCodeAt"](t), e["LyAsf"](e["wRqoE"](c, 64512), 55296) && e["BMYvb"](e.GnoCz(t, 1), _) && (r = x["charCodeAt"](e["wbQpi"](t, 1)), 56320 === e["Aongi"](r, 64512) && (c = e["wbQpi"](e["cwrNc"](65536, e["RYgjY"](c, 55296) << 10), e["JfLBN"](r, 56320)), t++)), e["fgsoM"](c, 128) ? n[o++] = c : e["pYVzx"](c, 2048) ? (n[o++] = e["gYtsr"](192, c >>> 6), n[o++] = e["hhRhL"](128, e["nbBzQ"](c, 63))) : c < 65536 ? (n[o++] = e["piRRx"](224, e["ELnPI"](c, 12)), n[o++] = e["VDVdr"](128, 63 & e.ELnPI(c, 6)), n[o++] = e["zBldD"](128, e["hWqpG"](c, 63))) : (n[o++] = e.zBldD(240, e["Ntahl"](c, 18)), n[o++] = 128 | e["hWqpG"](c >>> 12, 63), n[o++] = e["vSTWs"](128, e["nCxOq"](c >>> 6, 63)), n[o++] = e["gIbaM"](128, 63 & c));
-
-            continue;
-        }
-
-        break;
-      }
+      return n;
     },
     buf2binstring: function (x) {
       return ae(x, x.length);
@@ -2746,46 +2513,17 @@ var rohr = function () {
           return e < x;
         }
       };
-      var w = a["GaHkX"]["split"]("|");
       var n = 0;
+      var c;
+      e = e || x["length"];
+      e < x["length"] && (e = x["length"]);
+      c = e - 1;
 
-      for (;;) {
-        switch (w[n++]) {
-          case "0":
-            for (; 0 <= c && a["BNimS"](192 & x[c], 128);) c--;
+      for (; 0 <= c && (192 & x[c]) === 128;) c--;
 
-            continue;
-
-          case "1":
-            if (c < 0) return e;
-            continue;
-
-          case "2":
-            e = e || x["length"];
-            continue;
-
-          case "3":
-            if (a.BNimS(c, 0)) return e;
-            continue;
-
-          case "4":
-            c = e - 1;
-            continue;
-
-          case "5":
-            a["Dpmsg"](e, x["length"]) && (e = x["length"]);
-            continue;
-
-          case "6":
-            var c;
-            continue;
-
-          case "7":
-            return a["Dpmsg"](c + xe[x[c]], e) ? c : e;
-        }
-
-        break;
-      }
+      if (c < 0) return e;
+      if (c === 0) return e;
+      return c + xe[x[c]] < e ? c : e;
     }
   };
 
@@ -2839,107 +2577,36 @@ var rohr = function () {
         return x !== e;
       }
     };
-    var a = e["rLnLq"]["split"]("|");
     var w = 0;
+    if (!(this instanceof ie)) return new ie(x);
+    this["options"] = M["assign"]({
+      level: te,
+      method: _e,
+      chunkSize: 16384,
+      windowBits: 15,
+      memLevel: 8,
+      strategy: oe,
+      to: ""
+    }, x || {});
+    var o = this["options"];
+    o["raw"] && o["windowBits"] < 0 ? o["windowBits"] = -o["windowBits"] : o["gzip"] && o["windowBits"] < 0 && o["windowBits"] < 16 && (o["windowBits"] += 16);
+    this.err = 0;
+    this["msg"] = "";
+    this.ended = !1;
+    this["chunks"] = [];
+    this.strm = new ne();
+    this["strm"]["avail_out"] = 0;
+    var n = Zx["deflateInit2"](this["strm"], o.level, o["method"], o["windowBits"], o["memLevel"], o.strategy);
+    if (n !== re) throw new Error(_x[n]);
+    o["header"] && Zx["deflateSetHeader"](this["strm"], o["header"]);
 
-    for (;;) {
-      switch (a[w++]) {
-        case "0":
-          o["header"] && Zx["deflateSetHeader"](this["strm"], o["header"]);
-          continue;
-
-        case "1":
-          this["chunks"] = [];
-          continue;
-
-        case "2":
-          this["options"] = M["assign"]({
-            level: te,
-            method: _e,
-            chunkSize: 16384,
-            windowBits: 15,
-            memLevel: 8,
-            strategy: oe,
-            to: ""
-          }, e["onMez"](x, {}));
-          continue;
-
-        case "3":
-          o["raw"] && e["SUTKU"](o["windowBits"], 0) ? o["windowBits"] = -o["windowBits"] : o["gzip"] && e["STbPP"](o["windowBits"], 0) && e["fgKkV"](o["windowBits"], 16) && (o["windowBits"] += 16);
-          continue;
-
-        case "4":
-          var n = Zx["deflateInit2"](this["strm"], o.level, o["method"], o["windowBits"], o["memLevel"], o.strategy);
-          continue;
-
-        case "5":
-          if (!e["cofBw"](this, ie)) return new ie(x);
-          continue;
-
-        case "6":
-          if (o["dictionary"]) {
-            var c = e["UcjYl"]["split"]("|");
-            var r = 0;
-
-            for (;;) {
-              switch (c[r++]) {
-                case "0":
-                  var t;
-                  continue;
-
-                case "1":
-                  if (n !== re) throw new Error(_x[n]);
-                  continue;
-
-                case "2":
-                  t = typeof o.dictionary === e.aVGTl ? we.string2buf(o["dictionary"]) : e["Hpnwa"](ce.call(o["dictionary"]), e.zqLoo) ? new Uint8Array(o["dictionary"]) : o.dictionary;
-                  continue;
-
-                case "3":
-                  n = Zx["deflateSetDictionary"](this["strm"], t);
-                  continue;
-
-                case "4":
-                  this["_dict_set"] = !0;
-                  continue;
-              }
-
-              break;
-            }
-          }
-
-          continue;
-
-        case "7":
-          var o = this["options"];
-          continue;
-
-        case "8":
-          this.ended = !1;
-          continue;
-
-        case "9":
-          this["msg"] = "";
-          continue;
-
-        case "10":
-          this.err = 0;
-          continue;
-
-        case "11":
-          if (e["FiuzP"](n, re)) throw new Error(_x[n]);
-          continue;
-
-        case "12":
-          this.strm = new ne();
-          continue;
-
-        case "13":
-          this["strm"]["avail_out"] = 0;
-          continue;
-      }
-
-      break;
+    if (o["dictionary"]) {
+      var r = 0;
+      var t;
+      t = typeof o.dictionary === "string" ? we.string2buf(o["dictionary"]) : ce.call(o["dictionary"]) === "[object ArrayBuffer]" ? new Uint8Array(o["dictionary"]) : o.dictionary;
+      n = Zx["deflateSetDictionary"](this["strm"], t);
+      if (n !== re) throw new Error(_x[n]);
+      this["_dict_set"] = !0;
     }
   }
 
@@ -2967,66 +2634,24 @@ var rohr = function () {
         return x !== e;
       }
     };
-    var w = a["myjFy"].split("|");
     var n = 0;
+    var r = this["strm"];
+    var c = this["options"]["chunkSize"];
+    var t;
+    if (this["ended"]) return !1;
+    o = e === ~~e ? e : !0 === e ? 4 : 0;
+    typeof x === "string" ? r["input"] = we["string2buf"](x) : ce["call"](x) === "[object ArrayBuffer]" ? r["input"] = new Uint8Array(x) : r["input"] = x;
+    r["next_in"] = 0;
+    r["avail_in"] = r["input"].length;
 
-    for (;;) {
-      switch (w[n++]) {
-        case "0":
-          a.MpYra(typeof x, a["mYTMT"]) ? r["input"] = we["string2buf"](x) : a["MpYra"](ce["call"](x), a.vSHKx) ? r["input"] = new Uint8Array(x) : r["input"] = x;
-          continue;
+    do {
+      if (0 === r.avail_out && (r["output"] = new M["Buf8"](c), r["next_out"] = 0, r.avail_out = c), 1 !== (t = Zx["deflate"](r, o)) && t !== re) return this["onEnd"](t), !(this["ended"] = !0);
+      (r["avail_out"] === 0 || 0 === r["avail_in"] && (o === 4 || o === 2)) && (this.options.to === "string" ? this["onData"](M["shrinkBuf"](r.output, r["next_out"])()) : this["onData"](M["shrinkBuf"](r["output"], r["next_out"])));
+    } while ((r["avail_in"] < 0 || r["avail_out"] === 0) && t !== 1);
 
-        case "1":
-          r["avail_in"] = r["input"].length;
-          continue;
-
-        case "2":
-          return !0;
-
-        case "3":
-          var c = this["options"]["chunkSize"];
-          continue;
-
-        case "4":
-          if (a["MpYra"](o, 4)) return t = Zx.deflateEnd(this.strm), this.onEnd(t), this["ended"] = !0, t === re;
-          continue;
-
-        case "5":
-          o = a["MpYra"](e, ~~e) ? e : !0 === e ? 4 : 0;
-          continue;
-
-        case "6":
-          do {
-            if (0 === r.avail_out && (r["output"] = new M["Buf8"](c), r["next_out"] = 0, r.avail_out = c), 1 !== (t = Zx["deflate"](r, o)) && a["nbRpo"](t, re)) return this["onEnd"](t), !(this["ended"] = !0);
-            (a["LDqNk"](r["avail_out"], 0) || 0 === r["avail_in"] && (a["zFqHJ"](o, 4) || a["zFqHJ"](o, 2))) && (this.options.to === a["mYTMT"] ? this["onData"](M["shrinkBuf"](r.output, r["next_out"])()) : this["onData"](M["shrinkBuf"](r["output"], r["next_out"])));
-          } while ((a["Theho"](r["avail_in"], 0) || a.zFqHJ(r["avail_out"], 0)) && a["zOlMe"](t, 1));
-
-          continue;
-
-        case "7":
-          var r = this["strm"];
-          continue;
-
-        case "8":
-          if (this["ended"]) return !1;
-          continue;
-
-        case "9":
-          r["next_in"] = 0;
-          continue;
-
-        case "10":
-          if (a["zFqHJ"](o, 2)) return this.onEnd(re), !(r.avail_out = 0);
-          continue;
-
-        case "11":
-          var t;
-          var o;
-          continue;
-      }
-
-      break;
-    }
+    if (o === 4) return t = Zx.deflateEnd(this.strm), this.onEnd(t), this["ended"] = !0, t === re;
+    if (o === 2) return this.onEnd(re), !(r.avail_out = 0);
+    return !0;
   }, ie.prototype["onData"] = function (x) {
     this.chunks["push"](x);
   }, ie["prototype"].onEnd = function (x) {
@@ -3132,70 +2757,29 @@ var rohr = function () {
       },
       fJyDV: "string"
     };
-    var c = n["Tmoke"].split("|");
     var r = 0;
+    e = e || "&";
+    a = a || "=";
+    var t = {};
+    if (typeof x !== "string" || 0 === x["length"]) return t;
+    var _ = /\+/g;
+    x = x["split"](e);
+    var K = 1e3;
+    w && typeof w["maxKeys"] === "number" && (K = w.maxKeys);
+    var o = x.length;
+    K < 0 && K < o && (o = K);
 
-    for (;;) {
-      switch (c[r++]) {
-        case "0":
-          a = n.kdmss(a, "=");
-          continue;
-
-        case "1":
-          e = e || "&";
-          continue;
-
-        case "2":
-          w && n["QoHSP"](typeof w["maxKeys"], "number") && (K = w.maxKeys);
-          continue;
-
-        case "3":
-          var t = {};
-          continue;
-
-        case "4":
-          var o = x.length;
-          continue;
-
-        case "5":
-          x = x["split"](e);
-          continue;
-
-        case "6":
-          n.MCtoA(K, 0) && K < o && (o = K);
-          continue;
-
-        case "7":
-          return t;
-
-        case "8":
-          var _ = /\+/g;
-          continue;
-
-        case "9":
-          for (var i = 0; n["QkLGb"](i, o); ++i) {
-            var O;
-            var s;
-            var u;
-            var C;
-            var D = x[i]["replace"](_, "%20");
-            var f = D.indexOf(a);
-            n["LJKoP"](f, 0) ? (O = D["substr"](0, f), s = D["substr"](f + 1)) : (O = D, s = ""), u = n["qHpgu"](decodeURIComponent, O), C = n["kCxiz"](decodeURIComponent, s), n["CVHFU"](se, t, u) ? n["kCxiz"](ue, t[u]) ? t[u]["push"](C) : t[u] = [t[u], C] : t[u] = C;
-          }
-
-          continue;
-
-        case "10":
-          if (n["qzXLR"](typeof x, n["fJyDV"]) || 0 === x["length"]) return t;
-          continue;
-
-        case "11":
-          var K = 1e3;
-          continue;
-      }
-
-      break;
+    for (var i = 0; i < o; ++i) {
+      var O;
+      var s;
+      var u;
+      var C;
+      var D = x[i]["replace"](_, "%20");
+      var f = D.indexOf(a);
+      f <= 0 ? (O = D["substr"](0, f), s = D["substr"](f + 1)) : (O = D, s = ""), u = decodeURIComponent(O), C = decodeURIComponent(s), se(t, u) ? ue(t[u]) ? t[u]["push"](C) : t[u] = [t[u], C] : t[u] = C;
     }
+
+    return t;
   }
 
   var Me = {
@@ -3347,18 +2931,18 @@ var rohr = function () {
       var x;
       var e;
       var a = {};
-      a.f = (e = window, "__webdriver_script_fn" in e), a.v = r["Cpayx"](le, document), a.p = (x = document, "$cdc_asdjflasutopfhvcZLmcfl_" in x || "$chrome_asyncScriptInfo" in x), a.h = r["LoFTK"](Te, window), a.l = r["mJxLt"](je, document), a.S = r["CRuVQ"](me, document);
+      a.f = (e = window, "__webdriver_script_fn" in e), a.v = le(document), a.p = (x = document, "$cdc_asdjflasutopfhvcZLmcfl_" in x || "$chrome_asyncScriptInfo" in x), a.h = Te(window), a.l = je(document), a.S = me(document);
       var w = ve["ownKeys"](a);
       var n = 0;
 
-      for (; r.tBcYP(n, w["length"]); n++) {
-        if (r["wHAjU"](a[w[n]], !0)) {
-          clearInterval(o), r["CRuVQ"](c, r["faqcJ"] + w[n]);
+      for (; n < w["length"]; n++) {
+        if (a[w[n]] === !0) {
+          clearInterval(o), c("lwc" + w[n]);
           break;
         }
       }
 
-      r["fjFjJ"](++t, 60) && r["CRuVQ"](clearInterval, o);
+      ++t < 60 && clearInterval(o);
     }, 500);
   }
 
@@ -3489,65 +3073,27 @@ var rohr = function () {
         return e < x;
       }
     };
-    var a = e["rvWEh"].split("|");
     var w = 0;
+    var c = x !== null && typeof x === "object";
+    var r = Le["call"](x) === "[object Function]";
+    var s = Ve(x);
+    var i = c && Le["call"](x) === "[object String]";
+    var t = [];
+    if (!c && !r && !s) throw new TypeError("Object.keys called on a non-object");
+    var n = Se && r;
+    if (i && 0 < x["length"] && !Re["call"](x, 0)) for (var O = 0; O < x["length"]; ++O) t["push"](String(O));
+    if (s && x["length"] < 0) for (var u = 0; u < x.length; ++u) t["push"](String(u));else for (var C in x) n && C === "prototype" || !Re["call"](x, C) || t["push"](String(C));
 
-    for (;;) {
-      switch (a[w++]) {
-        case "0":
-          var n = e["HxuAe"](Se, r);
-          continue;
+    if (ye) {
+      var o = Ze(x);
+      var _ = 0;
 
-        case "1":
-          var c = e.ulXzF(x, null) && e["svPdK"](typeof x, e.bKMjd);
-          continue;
-
-        case "2":
-          var r = e["svPdK"](Le["call"](x), "[object Function]");
-          continue;
-
-        case "3":
-          var t = [];
-          continue;
-
-        case "4":
-          if (ye) {
-            var o = Ze(x);
-            var _ = 0;
-
-            for (; e["nizgv"](_, Ye["length"]); ++_) {
-              o && e.svPdK(Ye[_], e.QaBWS) || !Re.call(x, Ye[_]) || t["push"](Ye[_]);
-            }
-          }
-
-          continue;
-
-        case "5":
-          return t;
-
-        case "6":
-          var i = c && e.svPdK(Le["call"](x), e["wYbGk"]);
-          continue;
-
-        case "7":
-          if (i && 0 < x["length"] && !Re["call"](x, 0)) for (var O = 0; e["nizgv"](O, x["length"]); ++O) t["push"](String(O));
-          continue;
-
-        case "8":
-          if (e["HxuAe"](!c, !r) && !s) throw new TypeError(e["eMlUO"]);
-          continue;
-
-        case "9":
-          var s = e.BujSU(Ve, x);
-          continue;
-
-        case "10":
-          if (s && e.pZUwh(x["length"], 0)) for (var u = 0; e["nizgv"](u, x.length); ++u) t["push"](e["BujSU"](String, u));else for (var C in x) n && C === "prototype" || !Re["call"](x, C) || t["push"](e["BujSU"](String, C));
-          continue;
+      for (; _ < Ye["length"]; ++_) {
+        o && Ye[_] === "constructor" || !Re.call(x, Ye[_]) || t["push"](Ye[_]);
       }
-
-      break;
     }
+
+    return t;
   };
 
   Ge.shim = function () {
@@ -3710,7 +3256,7 @@ var rohr = function () {
         xsWoZ: "Function.prototype.bind - what is trying to be bound is not callable"
       };
       var w = 0;
-      if (e["KDGyo"](typeof this, e.EBosf)) throw new TypeError(e["xsWoZ"]);
+      if (typeof this !== "function") throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
       var n = Array["prototype"]["slice"]["call"](arguments, 1);
       var r = this;
 
@@ -3809,48 +3355,19 @@ var rohr = function () {
         MXdAt: "TitansX",
         UBhNQ: "iPhone"
       };
-      var e = x["JHGDT"]["split"]("|");
       var a = 0;
+      var c = window["navigator"]["userAgent"]["indexOf"]("iPhone");
+      var n = window["navigator"]["userAgent"].indexOf("TitansX");
+      if (c < 0 || n < 0) return "";
+      var r = document["createElement"]("canvas");
+      var w = null;
 
-      for (;;) {
-        switch (e[a++]) {
-          case "0":
-            if (x["EVosB"](c, 0) || x["YjHSu"](n, 0)) return "";
-            continue;
+      try {
+        w = r["getContext"]("webgl") || r.getContext("experimental-webgl");
+      } catch (x) {}
 
-          case "1":
-            return w;
-
-          case "2":
-            w || (w = null);
-            continue;
-
-          case "3":
-            var w = null;
-            continue;
-
-          case "4":
-            try {
-              w = r["getContext"]("webgl") || r.getContext(x.tUmlc);
-            } catch (x) {}
-
-            continue;
-
-          case "5":
-            var n = window["navigator"]["userAgent"].indexOf(x["MXdAt"]);
-            continue;
-
-          case "6":
-            var c = window["navigator"]["userAgent"]["indexOf"](x.UBhNQ);
-            continue;
-
-          case "7":
-            var r = document["createElement"]("canvas");
-            continue;
-        }
-
-        break;
-      }
+      w || (w = null);
+      return w;
     };
 
     var w = function () {
@@ -4256,283 +3773,122 @@ var rohr = function () {
         cMTdz: "Wingdings",
         PkvNE: "Wingdings 2"
       };
-      var x = a["AdBZN"]["split"]("|");
       var e = 0;
-
-      for (;;) {
-        switch (x[e++]) {
-          case "0":
-            var w = 0;
-            var n = O["length"];
-
-            for (; a["grlsF"](w, n); w++) {
-              h[O[w]] = s[w]["offsetWidth"], r[O[w]] = s[w].offsetHeight;
-            }
-
-            continue;
-
-          case "1":
-            var c = document["createElement"](a["ceqKu"]);
-            continue;
-
-          case "2":
-            return v["join"](",");
-
-          case "3":
-            var r = {};
-            continue;
-
-          case "4":
-            var t = 0;
-            var o = g["length"];
-
-            for (; a["grlsF"](t, o); t++) {
-              a["ADOfn"](b, C[g[t]]) && v["push"](g[t]);
-            }
-
-            continue;
-
-          case "5":
-            var _ = [a["gPHVL"], a["dVOZA"], "ADOBE CASLON PRO", a.nvJKJ, a["sHBKp"], a.OrKlw, a.OJmwl, a["zwbUE"], a.DyVbr, a["kkpxS"], a["ZhoEd"], a.ZIMDV, a["oJXll"], a.pTHHv, a.YZfqW, a.LmsiJ, "AngsanaUPC", "Antique Olive", "Aparajita", "Apple Chancery", a["qijwC"], a["OJcfw"], a["eVJdm"], a["qfboG"], a["ZyfSU"], a["gfSwf"], a["mgxuD"], a["oAuxk"], "AvantGarde Md BT", a["KCjDG"], a["bwvcZ"], a["NzDKo"], "Bangla Sangam MN", "Bank Gothic", a["iLkGj"], a["BBHQU"], a["vIJqs"], a["sVjcB"], a["uPJjn"], a["zRoZw"], a["zHvbx"], "Bazooka", a["ugDqr"], a["kSLEN"], a["mCKTi"], a["xAybk"], a["ZpEIH"], a["qHkjA"], a["GKyfG"], "BernhardMod BT", a["HtxkQ"], a["kKkrV"], a["memty"], a["UqnPI"], "Bodoni 72", a["jTHDz"], a.sJGPZ, a.hesgC, a.sVlIa, a["fomdq"], "Bodoni MT Poster Compressed", a.AiDEV, a["YOxeB"], a["jaMxJ"], a.YpbOI, a.uqxQd, a["LKZar"], a.eMjqf, a["tauTR"], a.BizhK, "Brush Script MT", a["igfvD"], a["DBbYN"], a["LDkPd"], a["yaLTf"], a["Akgws"], a.JlMuT, a["PmfaE"], a.wwkQw, a["LLwSY"], a["cDNBL"], a.Wcygm, a["RUnXV"], "Chalkduster", a["QFxAc"], a["PnzKE"], a["bQwPA"], a.tXabg, a["TodpD"], "Chiller", a["bFWSi"], a["xCTKp"], a.Stogw, a["gsdaj"], a.jNbEL, a["xzgWt"], a["VsKxV"], "Copperplate", a["wvoEQ"], a["MEWnN"], "Copperplate Gothic Light", "CopperplGoth Bd BT", a["uUbKB"], a["CwSuZ"], a["wWCRL"], "Cornerstone", a["ZAkLe"], "Cuckoo", a["FYZOr"], a["hFQNH"], a["cJfmE"], a["DQJdS"], a["yDUlP"], "DELICIOUS", a["dplSH"], a["BMiyI"], a["YjgeB"], a["FLkSW"], a["wNONV"], a["OShen"], a["Wtgtg"], "DotumChe", "Ebrima", a["cTBNl"], a.GIsKZ, a["SYTEw"], a["oMeVD"], "EngraversGothic BT", a.TRIvh, a["hVfIF"], a["WFEAn"], "Eras Medium ITC", a["oyDVC"], a.jkNeB, "Euphemia UCAS", a["wEOqu"], a["foZIi"], a["wUnYG"], "Felix Titling", a["NQxXd"], a["QILJZ"], a["jOPKI"], a["ZcRYu"], a.TRKiW, "Fransiscan", a["WavDZ"], a["ITSzb"], a.bVaJl, "French Script MT", "FrnkGothITC Bk BT", a["sGcmp"], a.oDDjn, a["HtEBx"], a["hLxbF"], a["lTjhl"], a.vBqlF, "Futura ZBlk BT", "FuturaBlack BT", a["jRfcI"], "Galliard BT", "Gautami", a.AOOla, a["AuLkT"], a["ShaoG"], a.pbLKl, a["xzJnA"], a["Plmyo"], a["CpBCj"], a.cmOyZ, "Gill Sans MT", a["UpxCy"], a.CUQxj, a.nIZqf, a["OiRcX"], a["CNmLB"], a.ycoaQ, a["CUFSA"], a.UmauY, a["uZtOR"], "Goudy Stout", a["AvSaL"], "GoudyOLSt BT", a["eCIKl"], a["iZPZZ"], a.RWzTc, a["zpUYr"], a["gduTC"], a["kdmLM"], a["gOCSh"], a["cFwKw"], a["uUlWf"], "Heather", a.Ltuak, a["ggIId"], "HELV", a["inyRU"], a["Tpuez"], a["wCIFw"], a["FBwBC"], a.TMJfL, a["dpjlq"], a["loDIg"], a["oEKjf"], a["pvMFt"], a.gKfsC, "Incised901 BT", a["nhYbr"], a["iJkdO"], a["FhXZO"], a["rcaqW"], a["RDmoT"], a["XsOmC"], a["nXvGA"], a["bIhVh"], a["wJIXC"], a["jASco"], a["EIlSF"], a["vUMTr"], a["TPzkE"], a["sZvjo"], a["lbzen"], "Kailasa", a["CPkUa"], a["qRlpi"], a["GEHuW"], a["JWXel"], a["VGnsY"], a["omVXQ"], "Khmer UI", a["AijdZ"], a["XySFH"], "Korinna BT", "Kristen ITC", "Krungthep", a["AhHPW"], "Lao UI", "Latha", a["YBPqd"], a["ILVHx"], a["RszFB"], "LilyUPC", a["Sovcs"], a["rOkmp"], a["wQqsi"], a.FIjjs, a["QyurA"], a["WGUtX"], "Malayalam Sangam MN", a.EYAHe, a["uxCYg"], a["AuRCk"], a["EVdxq"], "Marker Felt", "Market", a["vGVqs"], a["hUKwz"], a["mbZTg"], a["tNgKW"], "Meiryo UI", "Microsoft Himalaya", "Microsoft JhengHei", a["FdWRc"], "Microsoft PhagsPa", a["yJIpy"], a["poAFZ"], a["cWWcp"], a["dIiMG"], a["VvPzq"], a["IvaIy"], a["pwWbF"], a["tHXUw"], a["HOHup"], a["ECuxq"], a["FOOVv"], a["gNzEH"], a.UtJpQ, a.rLoSs, a.QEKzQ, a["QwYPX"], a["ujDSJ"], a["OkGAE"], a["iIqeY"], a.XwyFw, "MS LineDraw", "MS Mincho", a["gnQdA"], "MS Reference Specialty", a["UEAOP"], "MT Extra", a["gvubc"], "MV Boli", a["lJHue"], "Narkisim", a.aDRBq, a.mKkjQ, a.QjNxe, a["tylTD"], a.KpKWS, "Niagara Solid", "Noteworthy", a.hxNlD, a["rriAi"], a.PMMNS, a["igMCD"], "Old English Text MT", a["qUxGc"], a["DfQPA"], "OPTIMA", a["yRfzv"], a.wKaNZ, a.OJuUJ, a["rTcMG"], a["MdlqC"], "Parchment", a["wLMzI"], "Pegasus", "Perpetua", a["wFTxa"], "PetitaBold", a.EEbzY, a["oofor"], a.YdeXk, a["NweKU"], a["LJNSU"], a.Lvsju, "Poster", a["CskWV"], a["EPUmi"], a["dZWvu"], a["ndTiY"], a["PKGbw"], a["ThEgL"], "Rage Italic", a["cIhJI"], a["FpxFW"], "Rockwell", "Rockwell Condensed", a.WzLsc, "Rod", "Roman", a["dBZlD"], a["bxwHj"], a["aOBYc"], a["XdcDf"], "Script", a["AvEGt"], "SCRIPTINA", a["jLVaG"], a["pxADk"], a["kZCvv"], a.veOyB, a["xlOII"], a["BMkCY"], a["eImje"], a["QNdbi"], a["GjYUQ"], a["KHCZz"], a["EFhQi"], a["eihDH"], "Simplified Arabic Fixed", a.NvpzS, a["LNfdW"], a["gAgpP"], "Sketch Rockwell", "Skia", a.YcYrL, a["OMefG"], a["zQlgb"], a["VhMDM"], a["quQiJ"], a.SdUJb, "Steamer", a["GDMLW"], a.zDXws, a["WyazV"], a["kDvzg"], a["ONTdw"], a["RueEg"], a["wFPfa"], "Synchro LET", a.duZRx, a.hwhdi, a["hCZHs"], a["wgAwx"], "Telugu Sangam MN", a.kJvrd, a["eryYD"], a["WZwgG"], a["ygTFE"], a.eHzTV, "TRAJAN PRO", a.LwONK, a["iLnJE"], a["VSiZp"], a["DNnJV"], a["nbTxs"], a.WbakO, a["iGpfD"], a["CNUTo"], a["DGXou"], a.YfPXf, a.dhkPt, a["uJvhu"], a.TLIar, a["BQtxh"], a["dckZd"], a["NcXlU"], "VisualUI", a.AZTAU, "Vladimir Script", a["amdjB"], "Westminster", a["IUTVb"], a.LJxMX, a["gJVra"], a["aCygk"], a["uYbMO"], "Zapfino", a["DvBwe"], a["FyFcs"], "ZWAdobeF"];
-            continue;
-
-          case "6":
-            var i = function () {
-              var x = [];
-              var e = 0;
-              var a = O["length"];
-
-              for (; e < a; e++) {
-                var w = q();
-                w["style"].fontFamily = O[e], c.appendChild(w), x["push"](w);
-              }
-
-              return x;
-            };
-
-            continue;
-
-          case "7":
-            f["removeChild"](c);
-            continue;
-
-          case "8":
-            var O = [a.HwunM, a.zBHyp, a["HhAli"]];
-            continue;
-
-          case "9":
-            var s = a["AuhSh"](i);
-            continue;
-
-          case "10":
-            var u = a["DLeoH"];
-            continue;
-
-          case "11":
-            g = g["concat"](_);
-            continue;
-
-          case "12":
-            var C = D();
-            continue;
-
-          case "13":
-            var D = function () {
-              var x = {};
-              var e = 0;
-              var a = g["length"];
-
-              for (; e < a; e++) {
-                var w = [];
-                var n = 0;
-                var c = O["length"];
-
-                for (; n < c; n++) {
-                  var r = d(g[e], O[n]);
-                  M["appendChild"](r), w.push(r);
-                }
-
-                x[g[e]] = w;
-              }
-
-              return x;
-            };
-
-            continue;
-
-          case "14":
-            g = g["filter"](function (x, e) {
-              return g["indexOf"](x) === e;
-            });
-            continue;
-
-          case "15":
-            var f = document["getElementsByTagName"](a["jjVFH"])[0];
-            continue;
-
-          case "16":
-            var K = {
-              ogpey: function (x) {
-                return x();
-              },
-              kXugG: function (x, e) {
-                return x + e;
-              },
-              WpJUD: function (x, e) {
-                return a["RzhHB"](x, e);
-              }
-            };
-            continue;
-
-          case "17":
-            f["appendChild"](c);
-            continue;
-
-          case "18":
-            var b = function (x) {
-              var e = !1;
-              var a = 0;
-
-              for (; a < O["length"]; a++) {
-                if (e = x[a]["offsetWidth"] !== h[O[a]] || x[a]["offsetHeight"] !== r[O[a]]) return e;
-              }
-
-              return e;
-            };
-
-            continue;
-
-          case "19":
-            var M = document["createElement"](a["ceqKu"]);
-            continue;
-
-          case "20":
-            var v = [];
-            continue;
-
-          case "21":
-            f["appendChild"](M);
-            continue;
-
-          case "22":
-            f["removeChild"](M);
-            continue;
-
-          case "23":
-            var d = function (x, e) {
-              return a["style"].fontFamily = K["WpJUD"]("'", x) + "'," + e, a;
-            };
-
-            continue;
-
-          case "24":
-            var q = function () {
-              var x = {
-                iwZPQ: "11|3|12|0|7|5|16|14|17|4|13|6|1|8|15|10|9|2",
-                OsxXj: "absolute",
-                IAudc: "none",
-                wzQvk: "normal",
-                rwAkd: "left",
-                WTByM: "auto"
-              };
-              var e = "11|3|12|0|7|5|16|14|17|4|13|6|1|8|15|10|9|2"["split"]("|");
-              var a = 0;
-
-              for (;;) {
-                switch (e[a++]) {
-                  case "0":
-                    w["style"]["fontSize"] = u;
-                    continue;
-
-                  case "1":
-                    w["style"]["textShadow"] = "none";
-                    continue;
-
-                  case "2":
-                    return w;
-
-                  case "3":
-                    w.style["position"] = x["OsxXj"];
-                    continue;
-
-                  case "4":
-                    w["style"]["textTransform"] = x["IAudc"];
-                    continue;
-
-                  case "5":
-                    w.style["fontWeight"] = x["wzQvk"];
-                    continue;
-
-                  case "6":
-                    w.style["textDecoration"] = x["IAudc"];
-                    continue;
-
-                  case "7":
-                    w["style"]["fontStyle"] = x["wzQvk"];
-                    continue;
-
-                  case "8":
-                    w.style.whiteSpace = x["wzQvk"];
-                    continue;
-
-                  case "9":
-                    w["innerHTML"] = p;
-                    continue;
-
-                  case "10":
-                    w.style["wordSpacing"] = "normal";
-                    continue;
-
-                  case "11":
-                    var w = document.createElement("span");
-                    continue;
-
-                  case "12":
-                    w["style"]["left"] = "-9999px";
-                    continue;
-
-                  case "13":
-                    w["style"]["textAlign"] = x["rwAkd"];
-                    continue;
-
-                  case "14":
-                    w["style"]["lineBreak"] = x["WTByM"];
-                    continue;
-
-                  case "15":
-                    w["style"]["wordBreak"] = x["wzQvk"];
-                    continue;
-
-                  case "16":
-                    w.style["letterSpacing"] = "normal";
-                    continue;
-
-                  case "17":
-                    w.style["lineHeight"] = x["wzQvk"];
-                    continue;
-                }
-
-                break;
-              }
-            };
-
-            continue;
-
-          case "25":
-            var p = "yodaaaaaaa";
-            continue;
-
-          case "26":
-            var g = ["Andale Mono", a["rBUBh"], a["fihPE"], "Arial Hebrew", a["yAYIj"], a["Ckvyl"], a["IazDc"], a["HULAv"], a["wmbSA"], "Book Antiqua", a["FTFOH"], a["tvrtY"], "Cambria", a.Wvydr, a["RbvJl"], a["SwWgG"], a["BfXHM"], a["zSAae"], a["cyuZY"], a["WRiGA"], a.CBguE, a["xaLaQ"], "Geneva", a.DnWZY, a["UfVid"], "Helvetica Neue", "Impact", "Lucida Bright", a["kBKgR"], a["KqfTM"], a.maMXW, a["EbPXh"], a["pIFqF"], a.PLntg, "Lucida Sans Typewriter", a.EEezZ, a["nzFgK"], a["HofkT"], a["OEftB"], a["BwfSd"], "MS Outlook", a["OZBDS"], a["dfAvT"], "MS Sans Serif", a["caiXI"], "MYRIAD", a["JQhoQ"], a.kKCtt, "Palatino Linotype", a["HdWiw"], a["jbKTl"], a["WCWLP"], a["ROxUt"], a["krdbt"], a["goSOI"], a["CAhqA"], a["vUFoC"], a.yAiQm, a.MBZOc, "Trebuchet MS", a["qwMFZ"], a["cMTdz"], a["PkvNE"], "Wingdings 3"];
-            continue;
-
-          case "27":
-            var h = {};
-            continue;
+      var K = {
+        ogpey: function (x) {
+          return x();
+        },
+        kXugG: function (x, e) {
+          return x + e;
+        },
+        WpJUD: function (x, e) {
+          return x + e;
+        }
+      };
+      var O = ["monospace", "sans-serif", "serif"];
+      var g = ["Andale Mono", "Arial", "Arial Black", "Arial Hebrew", "Arial MT", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Bitstream Vera Sans Mono", "Book Antiqua", "Bookman Old Style", "Calibri", "Cambria", "Cambria Math", "Century", "Century Gothic", "Century Schoolbook", "Comic Sans", "Comic Sans MS", "Consolas", "Courier", "Courier New", "Geneva", "Georgia", "Helvetica", "Helvetica Neue", "Impact", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "LUCIDA GRANDE", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Microsoft Sans Serif", "Monaco", "Monotype Corsiva", "MS Gothic", "MS Outlook", "MS PGothic", "MS Reference Sans Serif", "MS Sans Serif", "MS Serif", "MYRIAD", "MYRIAD PRO", "Palatino", "Palatino Linotype", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Symbol", "Tahoma", "Times", "Times New Roman", "Times New Roman PS", "Trebuchet MS", "Verdana", "Wingdings", "Wingdings 2", "Wingdings 3"];
+      var _ = ["Abadi MT Condensed Light", "Academy Engraved LET", "ADOBE CASLON PRO", "Adobe Garamond", "ADOBE GARAMOND PRO", "Agency FB", "Aharoni", "Albertus Extra Bold", "Albertus Medium", "Algerian", "Amazone BT", "American Typewriter", "American Typewriter Condensed", "AmerType Md BT", "Andalus", "Angsana New", "AngsanaUPC", "Antique Olive", "Aparajita", "Apple Chancery", "Apple Color Emoji", "Apple SD Gothic Neo", "Arabic Typesetting", "ARCHER", "ARNO PRO", "Arrus BT", "Aurora Cn BT", "AvantGarde Bk BT", "AvantGarde Md BT", "AVENIR", "Ayuthaya", "Bandy", "Bangla Sangam MN", "Bank Gothic", "BankGothic Md BT", "Baskerville", "Baskerville Old Face", "Batang", "BatangChe", "Bauer Bodoni", "Bauhaus 93", "Bazooka", "Bell MT", "Bembo", "Benguiat Bk BT", "Berlin Sans FB", "Berlin Sans FB Demi", "Bernard MT Condensed", "BernhardFashion BT", "BernhardMod BT", "Big Caslon", "BinnerD", "Blackadder ITC", "BlairMdITC TT", "Bodoni 72", "Bodoni 72 Oldstyle", "Bodoni 72 Smallcaps", "Bodoni MT", "Bodoni MT Black", "Bodoni MT Condensed", "Bodoni MT Poster Compressed", "Bookshelf Symbol 7", "Boulder", "Bradley Hand", "Bradley Hand ITC", "Bremen Bd BT", "Britannic Bold", "Broadway", "Browallia New", "BrowalliaUPC", "Brush Script MT", "Californian FB", "Calisto MT", "Calligrapher", "Candara", "CaslonOpnface BT", "Castellar", "Centaur", "Cezanne", "CG Omega", "CG Times", "Chalkboard", "Chalkboard SE", "Chalkduster", "Charlesworth", "Charter Bd BT", "Charter BT", "Chaucer", "ChelthmITC Bk BT", "Chiller", "Clarendon", "Clarendon Condensed", "CloisterBlack BT", "Cochin", "Colonna MT", "Constantia", "Cooper Black", "Copperplate", "Copperplate Gothic", "Copperplate Gothic Bold", "Copperplate Gothic Light", "CopperplGoth Bd BT", "Corbel", "Cordia New", "CordiaUPC", "Cornerstone", "Coronet", "Cuckoo", "Curlz MT", "DaunPenh", "Dauphin", "David", "DB LCD Temp", "DELICIOUS", "Denmark", "DFKai-SB", "Didot", "DilleniaUPC", "DIN", "DokChampa", "Dotum", "DotumChe", "Ebrima", "Edwardian Script ITC", "Elephant", "English 111 Vivace BT", "Engravers MT", "EngraversGothic BT", "Eras Bold ITC", "Eras Demi ITC", "Eras Light ITC", "Eras Medium ITC", "EucrosiaUPC", "Euphemia", "Euphemia UCAS", "EUROSTILE", "Exotc350 Bd BT", "FangSong", "Felix Titling", "Fixedsys", "FONTIN", "Footlight MT Light", "Forte", "FrankRuehl", "Fransiscan", "Freefrm721 Blk BT", "FreesiaUPC", "Freestyle Script", "French Script MT", "FrnkGothITC Bk BT", "Fruitger", "FRUTIGER", "Futura", "Futura Bk BT", "Futura Lt BT", "Futura Md BT", "Futura ZBlk BT", "FuturaBlack BT", "Gabriola", "Galliard BT", "Gautami", "Geeza Pro", "Geometr231 BT", "Geometr231 Hv BT", "Geometr231 Lt BT", "GeoSlab 703 Lt BT", "GeoSlab 703 XBd BT", "Gigi", "Gill Sans", "Gill Sans MT", "Gill Sans MT Condensed", "Gill Sans MT Ext Condensed Bold", "Gill Sans Ultra Bold", "Gill Sans Ultra Bold Condensed", "Gisha", "Gloucester MT Extra Condensed", "GOTHAM", "GOTHAM BOLD", "Goudy Old Style", "Goudy Stout", "GoudyHandtooled BT", "GoudyOLSt BT", "Gujarati Sangam MN", "Gulim", "GulimChe", "Gungsuh", "GungsuhChe", "Gurmukhi MN", "Haettenschweiler", "Harlow Solid Italic", "Harrington", "Heather", "Heiti SC", "Heiti TC", "HELV", "Herald", "High Tower Text", "Hiragino Kaku Gothic ProN", "Hiragino Mincho ProN", "Hoefler Text", "Humanst 521 Cn BT", "Humanst521 BT", "Humanst521 Lt BT", "Imprint MT Shadow", "Incised901 Bd BT", "Incised901 BT", "Incised901 Lt BT", "INCONSOLATA", "Informal Roman", "Informal011 BT", "INTERSTATE", "IrisUPC", "Iskoola Pota", "JasmineUPC", "Jazz LET", "Jenson", "Jester", "Jokerman", "Juice ITC", "Kabel Bk BT", "Kabel Ult BT", "Kailasa", "KaiTi", "Kalinga", "Kannada Sangam MN", "Kartika", "Kaufmann Bd BT", "Kaufmann BT", "Khmer UI", "KodchiangUPC", "Kokila", "Korinna BT", "Kristen ITC", "Krungthep", "Kunstler Script", "Lao UI", "Latha", "Leelawadee", "Letter Gothic", "Levenim MT", "LilyUPC", "Lithograph", "Lithograph Light", "Long Island", "Lydian BT", "Magneto", "Maiandra GD", "Malayalam Sangam MN", "Malgun Gothic", "Mangal", "Marigold", "Marion", "Marker Felt", "Market", "Marlett", "Matisse ITC", "Matura MT Script Capitals", "Meiryo", "Meiryo UI", "Microsoft Himalaya", "Microsoft JhengHei", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Uighur", "Microsoft YaHei", "Microsoft Yi Baiti", "MingLiU", "MingLiU_HKSCS", "MingLiU_HKSCS-ExtB", "MingLiU-ExtB", "Minion", "Minion Pro", "Miriam", "Miriam Fixed", "Mistral", "Modern", "Modern No. 20", "Mona Lisa Solid ITC TT", "Mongolian Baiti", "MONO", "MoolBoran", "Mrs Eaves", "MS LineDraw", "MS Mincho", "MS PMincho", "MS Reference Specialty", "MS UI Gothic", "MT Extra", "MUSEO", "MV Boli", "Nadeem", "Narkisim", "NEVIS", "News Gothic", "News GothicMT", "NewsGoth BT", "Niagara Engraved", "Niagara Solid", "Noteworthy", "NSimSun", "Nyala", "OCR A Extended", "Old Century", "Old English Text MT", "Onyx", "Onyx BT", "OPTIMA", "Oriya Sangam MN", "OSAKA", "OzHandicraft BT", "Palace Script MT", "Papyrus", "Parchment", "Party LET", "Pegasus", "Perpetua", "Perpetua Titling MT", "PetitaBold", "Pickwick", "Plantagenet Cherokee", "Playbill", "PMingLiU", "PMingLiU-ExtB", "Poor Richard", "Poster", "PosterBodoni BT", "PRINCETOWN LET", "Pristina", "PTBarnum BT", "Pythagoras", "Raavi", "Rage Italic", "Ravie", "Ribbon131 Bd BT", "Rockwell", "Rockwell Condensed", "Rockwell Extra Bold", "Rod", "Roman", "Sakkal Majalla", "Santa Fe LET", "Savoye LET", "Sceptre", "Script", "Script MT Bold", "SCRIPTINA", "Serifa", "Serifa BT", "Serifa Th BT", "ShelleyVolante BT", "Sherwood", "Shonar Bangla", "Showcard Gothic", "Shruti", "Signboard", "SILKSCREEN", "SimHei", "Simplified Arabic", "Simplified Arabic Fixed", "SimSun", "SimSun-ExtB", "Sinhala Sangam MN", "Sketch Rockwell", "Skia", "Small Fonts", "Snap ITC", "Snell Roundhand", "Socket", "Souvenir Lt BT", "Staccato222 BT", "Steamer", "Stencil", "Storybook", "Styllo", "Subway", "Swis721 BlkEx BT", "Swiss911 XCm BT", "Sylfaen", "Synchro LET", "System", "Tamil Sangam MN", "Technical", "Teletype", "Telugu Sangam MN", "Tempus Sans ITC", "Terminal", "Thonburi", "Traditional Arabic", "Trajan", "TRAJAN PRO", "Tristan", "Tubular", "Tunga", "Tw Cen MT", "Tw Cen MT Condensed", "Tw Cen MT Condensed Extra Bold", "TypoUpright BT", "Unicorn", "Univers", "Univers CE 55 Medium", "Univers Condensed", "Utsaah", "Vagabond", "Vani", "Vijaya", "Viner Hand ITC", "VisualUI", "Vivaldi", "Vladimir Script", "Vrinda", "Westminster", "WHITNEY", "Wide Latin", "ZapfEllipt BT", "ZapfHumnst BT", "ZapfHumnst Dm BT", "Zapfino", "Zurich BlkEx BT", "Zurich Ex BT", "ZWAdobeF"];
+      g = g["concat"](_);
+      g = g["filter"](function (x, e) {
+        return g["indexOf"](x) === e;
+      });
+      var p = "yodaaaaaaa";
+      var u = "72px";
+      var f = document["getElementsByTagName"]("body")[0];
+      var c = document["createElement"]("div");
+      var M = document["createElement"]("div");
+      var h = {};
+      var r = {};
+
+      var q = function () {
+        var x = {
+          iwZPQ: "11|3|12|0|7|5|16|14|17|4|13|6|1|8|15|10|9|2",
+          OsxXj: "absolute",
+          IAudc: "none",
+          wzQvk: "normal",
+          rwAkd: "left",
+          WTByM: "auto"
+        };
+        var a = 0;
+        var w = document.createElement("span");
+        w.style["position"] = x["OsxXj"];
+        w["style"]["left"] = "-9999px";
+        w["style"]["fontSize"] = u;
+        w["style"]["fontStyle"] = x["wzQvk"];
+        w.style["fontWeight"] = x["wzQvk"];
+        w.style["letterSpacing"] = "normal";
+        w["style"]["lineBreak"] = x["WTByM"];
+        w.style["lineHeight"] = x["wzQvk"];
+        w["style"]["textTransform"] = x["IAudc"];
+        w["style"]["textAlign"] = x["rwAkd"];
+        w.style["textDecoration"] = x["IAudc"];
+        w["style"]["textShadow"] = "none";
+        w.style.whiteSpace = x["wzQvk"];
+        w["style"]["wordBreak"] = x["wzQvk"];
+        w.style["wordSpacing"] = "normal";
+        w["innerHTML"] = p;
+        return w;
+      };
+
+      var d = function (x, e) {
+        return a["style"].fontFamily = "'" + x + "'," + e, a;
+      };
+
+      var i = function () {
+        var x = [];
+        var e = 0;
+        var a = O["length"];
+
+        for (; e < a; e++) {
+          var w = q();
+          w["style"].fontFamily = O[e], c.appendChild(w), x["push"](w);
         }
 
-        break;
-      }
+        return x;
+      };
+
+      var D = function () {
+        var x = {};
+        var e = 0;
+        var a = g["length"];
+
+        for (; e < a; e++) {
+          var w = [];
+          var n = 0;
+          var c = O["length"];
+
+          for (; n < c; n++) {
+            var r = d(g[e], O[n]);
+            M["appendChild"](r), w.push(r);
+          }
+
+          x[g[e]] = w;
+        }
+
+        return x;
+      };
+
+      var b = function (x) {
+        var e = !1;
+        var a = 0;
+
+        for (; a < O["length"]; a++) {
+          if (e = x[a]["offsetWidth"] !== h[O[a]] || x[a]["offsetHeight"] !== r[O[a]]) return e;
+        }
+
+        return e;
+      };
+
+      var s = i();
+      f["appendChild"](c);
+      var w = 0;
+      var C = D();
+      f["appendChild"](M);
+      var v = [];
+      var t = 0;
+      f["removeChild"](M);
+      f["removeChild"](c);
+      return v["join"](",");
     };
 
     var C = {
@@ -4685,20 +4041,20 @@ var rohr = function () {
             return e < x;
           }
         };
-        var a = e["FHaiZ"]["split"]("|");
+        var a = "2|4|5|7|0|3|6|1"["split"]("|");
         var w = 0;
         var t = new Date()["getTime"]() - C.ts;
-        e["thanL"](this.mT["length"], 60) && (this.mT = this.mT.slice(0, 60));
+        this.mT["length"] < 60 && (this.mT = this.mT.slice(0, 60));
         var r;
         var o;
 
-        if (e["tucuq"](x["pageX"], null) && e.nKUZM(x["clientX"], null)) {
+        if (x["pageX"] == null && x["clientX"] !== null) {
           var c = 0;
 
           for (;;) {
             switch (n[c++]) {
               case "0":
-                x["pageY"] = e.Fnaok(x["clientY"], o && o["scrollTop"] || _ && _["scrollTop"] || 0) - (o && o["clientTop"] || _ && _.clientTop || 0);
+                x["pageY"] = x["clientY"] + (o && o["scrollTop"] || _ && _["scrollTop"] || 0) - (o && o["clientTop"] || _ && _.clientTop || 0);
                 continue;
 
               case "1":
@@ -4714,7 +4070,7 @@ var rohr = function () {
                 continue;
 
               case "4":
-                x["pageX"] = e["XEPxt"](e["Sylso"](x.clientX, o && o["scrollLeft"] || _ && _["scrollLeft"] || 0), o && o["clientLeft"] || _ && _.clientLeft || 0);
+                x["pageX"] = x.clientX + (o && o["scrollLeft"] || _ && _["scrollLeft"] || 0) - (o && o["clientLeft"] || _ && _.clientLeft || 0);
                 continue;
             }
 
@@ -4739,14 +4095,14 @@ var rohr = function () {
         var w = 0;
         x = x || window["event"];
         var r = x["target"] || x["srcElement"];
-        var c = e.kMleN(typeof x.which, e["kOlep"]) ? x["which"] : x["keyCode"];
+        var c = typeof x.which === "number" ? x["which"] : x["keyCode"];
 
         if (c) {
-          var n = e.SDsPU(new Date().getTime(), C.ts);
+          var n = new Date().getTime() - C.ts;
           this.kT.unshift([String["fromCharCode"](c), r["nodeName"], n]["join"](","));
         }
 
-        e["lDAJb"](this.kT["length"], 30) && (this.kT = this.kT["slice"](0, 30));
+        this.kT["length"] < 30 && (this.kT = this.kT["slice"](0, 30));
       }["bind"](this);
 
       var a = function (x) {
@@ -4771,12 +4127,12 @@ var rohr = function () {
             return x - e;
           }
         };
-        var a = e.ReBqb["split"]("|");
+        var a = "2|0|4|3|1"["split"]("|");
         var w = 0;
-        e.LipbL(this.tT["length"], 60) && (this.tT = this.tT["slice"](0, 60));
+        this.tT["length"] < 60 && (this.tT = this.tT["slice"](0, 60));
         var r;
 
-        if (e["OCKyA"](x["touches"][0]["clientX"], null)) {
+        if (x["touches"][0]["clientX"] !== null) {
           var c = 0;
 
           for (;;) {
@@ -4794,11 +4150,11 @@ var rohr = function () {
                 continue;
 
               case "3":
-                i = e["lbCtO"](e["AquJd"](x["touches"][0].clientY, t && t["scrollTop"] || o && o["scrollTop"] || 0), t && t.clientTop || o && o["clientTop"] || 0);
+                i = x["touches"][0].clientY + (t && t["scrollTop"] || o && o["scrollTop"] || 0) - (t && t.clientTop || o && o["clientTop"] || 0);
                 continue;
 
               case "4":
-                _ = e["sTNaN"](x["touches"][0]["clientX"] + (t && t.scrollLeft || o && o.scrollLeft || 0), t && t["clientLeft"] || o && o["clientLeft"] || 0);
+                _ = x["touches"][0]["clientX"] + (t && t.scrollLeft || o && o.scrollLeft || 0) - (t && t["clientLeft"] || o && o["clientLeft"] || 0);
                 continue;
             }
 
@@ -4806,7 +4162,7 @@ var rohr = function () {
           }
         }
 
-        var O = e["LRSGU"](new Date().getTime(), C.ts);
+        var O = new Date().getTime() - C.ts;
         this.tT["unshift"]([_, i, x["touches"]["length"], O]["join"](","));
       }.bind(this);
 
@@ -4817,34 +4173,12 @@ var rohr = function () {
             return e < x;
           }
         };
-        var a = e["IdajH"].split("|");
         var w = 0;
-
-        for (;;) {
-          switch (a[w++]) {
-            case "0":
-              var n = new Date()["getTime"]() - C.ts;
-              continue;
-
-            case "1":
-              this.aT["unshift"]([x["clientX"], x["clientY"], c["nodeName"], n]["join"](","));
-              continue;
-
-            case "2":
-              e["WfyMB"](this.aT["length"], 30) && (this.aT = this.aT.slice(0, 30));
-              continue;
-
-            case "3":
-              x = x || window["event"];
-              continue;
-
-            case "4":
-              var c = x["target"] || x.srcElement;
-              continue;
-          }
-
-          break;
-        }
+        x = x || window["event"];
+        var c = x["target"] || x.srcElement;
+        var n = new Date()["getTime"]() - C.ts;
+        this.aT["unshift"]([x["clientX"], x["clientY"], c["nodeName"], n]["join"](","));
+        this.aT["length"] < 30 && (this.aT = this.aT.slice(0, 30));
       }.bind(this);
 
       function n(x, e, a, w) {
@@ -4852,7 +4186,7 @@ var rohr = function () {
       }
 
       n("mousemove", document, x, !0), n("keydown", document, e, !0), n("click", document, w, !0), "ontouchmove" in document && n("touchmove", document, a, !0), C.aM["length"] === 0 && Be["listenWebdriver"](function (x) {
-        x && s.kJkoP(x["length"], 0) && (C.aM = x);
+        x && x["length"] < 0 && (C.aM = x);
       });
 
       var c = function (x) {
@@ -4877,7 +4211,7 @@ var rohr = function () {
       var r = function (x) {
         var e = (x = x || window["event"])["target"] || x["srcElement"];
 
-        if (e["nodeName"] && e["nodeName"] === "INPUT" && s["iwkpf"](this["inputs"]["length"], 0)) {
+        if (e["nodeName"] && e["nodeName"] === "INPUT" && this["inputs"]["length"] < 0) {
           var a = this["inputs"][0];
 
           if (a) {
@@ -4929,21 +4263,21 @@ var rohr = function () {
         if (e["nodeName"] && e.nodeName === "BUTTON") {
           var w = 0;
           var i = e.name || e.id;
-          i || (i = e.id = "rohr_" + parseInt(s["GCRKO"](Math.random(), 1e6)));
+          i || (i = e.id = "rohr_" + parseInt(Math.random() * 1e6));
           var n = this["buttons"]["length"];
 
-          for (var c = 0; c < n; c++) s["hmOTI"](i, this.buttons[c]["buttonName"]) && (this["buttons"]["splice"](c, 1), c = 0, n -= 1);
+          for (var c = 0; c < n; c++) i === this.buttons[c]["buttonName"] && (this["buttons"]["splice"](c, 1), c = 0, n -= 1);
 
-          var t = s.xazXJ(u, x);
+          var t = u(x);
           var O = e["clientWidth"];
           var r = e["clientHeight"];
           var o = x.offsetX / O * 1e3;
 
-          var _ = s["QXmUW"](r, x.offsetY) / r * 1e3;
+          var _ = (r - x.offsetY) / r * 1e3;
 
           this["buttons"].unshift({
             buttonName: i,
-            touchPoint: s["PnwJc"]("{", t.x) + "," + t.y + "}",
+            touchPoint: "{" + t.x + "," + t.y + "}",
             touchPosition: "{" + Math["floor"](o) / 10 + "," + Math["floor"](_) / 10 + "}",
             touchTimeStamp: new Date()["getTime"]()
           });
@@ -4966,33 +4300,12 @@ var rohr = function () {
         },
         jYpEn: "object"
       };
-      var a = "3|2|1|4|0"["split"]("|");
       var w = 0;
-
-      for (;;) {
-        switch (a[w++]) {
-          case "0":
-            return c(C);
-
-          case "1":
-            C.sign = r(n);
-            continue;
-
-          case "2":
-            typeof x === "string" ? n = Me.parse(x["split"]("?")[1]) : typeof x === "object" && (n = x);
-            continue;
-
-          case "3":
-            var n = {};
-            continue;
-
-          case "4":
-            C["cts"] = new Date().getTime();
-            continue;
-        }
-
-        break;
-      }
+      var n = {};
+      typeof x === "string" ? n = Me.parse(x["split"]("?")[1]) : typeof x === "object" && (n = x);
+      C.sign = r(n);
+      C["cts"] = new Date().getTime();
+      return c(C);
     }, C["filter"] = function (x) {
       var e = "";
       return x && (e = c(x + "")), e;

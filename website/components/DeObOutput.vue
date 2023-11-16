@@ -74,7 +74,7 @@ function stringifyError(error: unknown) {
       </div>
     </div>
     <div flex="~ 1" min-h-0 min-w-0>
-      <div w-12 b-r-4 b-zinc50>
+      <div w-12 b-r-4 b-zinc50 dark:b-zinc800>
         <div flex="~ col justify-center items-center" h-screen>
           <button title="Deobfuscator" @click="run">
             <div i-ri:arrow-right-line></div>

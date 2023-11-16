@@ -1,11 +1,16 @@
-const { Deob } = require('@deob/utils')
-const fs = require('fs/promises')
+import { Deob } from '@deob/utils';
+import fs from 'node:fs/promises';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class MyDeOb extends Deob {
   // 编写自定义 traverse
 }
 
-;(async function () {
+; (async function () {
   const fileName = 'code'
 
   let rawCode = await fs.readFile(__dirname + `/${fileName}.js`, {

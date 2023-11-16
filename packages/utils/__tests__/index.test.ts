@@ -1,4 +1,4 @@
-import { Deob } from '../index'
+import { Deob } from '../main'
 import { describe, expect, it } from 'vitest'
 
 describe('deob', async () => {

@@ -1,9 +1,14 @@
-const { Deob } = require('@deob/utils')
-const fs = require('fs/promises')
+import { Deob } from '@deob/utils';
+import fs from 'node:fs/promises';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-class MyDeOb extends Deob {}
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-;(async function () {
+class MyDeOb extends Deob { }
+
+; (async function () {
   const fileName = 'code'
 
   let rawCode = await fs.readFile(__dirname + `/${fileName}.js`, {
@@ -33,7 +38,7 @@ class MyDeOb extends Deob {}
 
   // 最后通用处理
   deob.calcBinary()
-  deob.calcBoolean()  
+  deob.calcBoolean()
   deob.replaceConstant()
   deob.reParse()
 

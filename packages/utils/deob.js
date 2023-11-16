@@ -1,10 +1,13 @@
-const parser = require('@babel/parser')
-const traverse = require('@babel/traverse').default
-const t = require('@babel/types')
-const generator = require('@babel/generator').default
-const fs = require('node:fs/promises')
-const path = require('node:path')
-const { deepClone, bind } = require('lodash')
+import * as parser from '@babel/parser';
+import traverse1 from '@babel/traverse';
+import generator1 from '@babel/generator';
+import * as t from '@babel/types';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+import _ from 'lodash';
+
+const generator = generator1?.default || generator1;
+const traverse = traverse1?.default || traverse1;
 
 let objectVariables = []
 
@@ -84,7 +87,7 @@ class Deob {
           this.code,
         )
         console.log(`${fileName}_${i}.js 写入成功`)
-      } catch (error) {}
+      } catch (error) { }
     }
   }
 
@@ -327,7 +330,7 @@ class Deob {
   /**
    * @description 输入解密函数代码
    */
-  InjectDecryptFnCode(decryptFnCode) {}
+  InjectDecryptFnCode(decryptFnCode) { }
 
   /**
      * @description 嵌套函数花指令替换
@@ -372,7 +375,7 @@ class Deob {
               )
 
               let callFuncName = callFuncVarPath.node.id.name
-              let orgcallFuncInit = deepClone(callFuncVarPath.node.init) // 用于后续重命名还原原始函数
+              let orgcallFuncInit = cloneDeep(callFuncVarPath.node.init) // 用于后续重命名还原原始函数
 
               // 获取嵌套函数的binding 在根据嵌套函数的作用域referencePaths 遍历调用嵌套函数的地方
               let binding_callFunc = p_dec.scope.getBinding(callFuncName)
@@ -380,9 +383,9 @@ class Deob {
                 binding_callFunc.referencePaths.map((p_call) => {
                   // 获取实参
                   let argumentList = p_call.parentPath.node.arguments
-                  let orgArgumentList = deepClone(argumentList)
+                  let orgArgumentList = cloneDeep(argumentList)
                   let params = callFuncVarPath.node.init.params
-                  let orgParams = deepClone(params)
+                  let orgParams = cloneDeep(params)
                   // 实参中如果有变量则直接跳出不替换
                   let hasIdentifier = orgArgumentList.some((a) =>
                     t.isIdentifier(a),
@@ -897,8 +900,7 @@ class Deob {
                 )
                 if (VariableDeclarator) {
                   console.log(
-                    `switch 平坦化: ${shufferString} ; 删除代码 ${
-                      generator(VariableDeclarator.node).code
+                    `switch 平坦化: ${shufferString} ; 删除代码 ${generator(VariableDeclarator.node).code
                     }`,
                   )
 
@@ -967,7 +969,7 @@ class Deob {
           node.expression.arguments == undefined ||
           node.expression.callee.params == undefined ||
           node.expression.arguments.length >
-            node.expression.callee.params.length
+          node.expression.callee.params.length
         )
           return
 
@@ -1260,4 +1262,6 @@ class Deob {
   }
 }
 
-module.exports = { Deob }
+export {
+  Deob
+}

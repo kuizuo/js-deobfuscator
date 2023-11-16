@@ -2,6 +2,7 @@
   "name": "play",
   "private": true,
   "main": "index.js",
+  "type": "module",
   "devDependencies": {
     "@deob/utils": "workspace:*"
   }

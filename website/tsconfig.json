@@ -1,26 +1,4 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "module": "ESNext",
-    "target": "ESNext",
-    "lib": ["esnext", "dom", "WebWorker"],
-    "useDefineForClassFields": true,
-    "moduleResolution": "node",
-    "strict": true,
-    "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
-    "types": ["node"],
-    "paths": {
-      "~/*": ["website/src/*"],
-      "/@/*": ["website/src/*"]
-    }
-  },
-  "exclude": ["dist", "node_modules", "cypress"]
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }

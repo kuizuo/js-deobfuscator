@@ -9,6 +9,11 @@ import _ from 'lodash';
 const generator = generator1?.default || generator1;
 const traverse = traverse1?.default || traverse1;
 
+if (typeof window !== 'undefined') {
+  global = window
+}
+
+
 let objectVariables = []
 
 class Deob {

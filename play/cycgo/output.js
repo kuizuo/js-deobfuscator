@@ -253,6 +253,24 @@ function i_wbiGr() {
   i_ZECha = performance["now"]();
 }
 
+function i_aNfwe() {
+  20 == ++i_XNCsc && (i_aKwxi = 3500);
+
+  var _0x150fd6 = performance["now"]();
+
+  if (3600000 < _0x150fd6 - i_ShbNs && 1 == i_iDpHde && 1 == i_xjHeZi && i_erwJl(), i_ZECha < _0x150fd6 - i_aKwxi) {
+    var _0x26169b = new XMLHttpRequest();
+
+    _0x26169b["open"]("POST", "/notgood", false), _0x26169b["setRequestHeader"]("Content-Type", "application/x-www-form-urlencoded"), _0x26169b["onreadystatechange"] = function () {};
+
+    var _0x2be831 = "ng=fuck me&where=110 calling " + gid + "time." + (_0x150fd6 - i_ZECha);
+
+    _0x26169b["send"](_0x2be831), i_DYNBTe["terminate"](), location = "about:blank";
+  }
+
+  i_ZECha = _0x150fd6;
+}
+
 function i_erwJl() {
   i_iZhRvt("超过一小时占用房间不玩，已自动踢出房间"), i_sCrNao["close"](), i_ShbNs = 99999999;
 }
@@ -284,7 +302,12 @@ function i_mYznp(_0x3a5479, _0x3a9c5c) {
     }
 
     for (var _0x46a501 in i_rzpKf[_0x3a5479] = this["value"], _0x3a9c5c[this["value"]]["data"]) {
-      for (_0x5d1d5d = _0x3a9c5c[this["value"]]["data"][_0x46a501], _0x175c69 = _0x3a9c5c[this["value"]]["ID"], _0x50e65d = _0x5d1d5d, _0x2b5caa = 0; _0x2b5caa < _0x50e65d["size"]; _0x2b5caa++) i_iXBb_[_0x2b5caa] = parseInt(_0x50e65d["value"]["substr"](2 * _0x2b5caa, 2), 16);
+      var _0x5d1d5d = _0x3a9c5c[this["value"]]["data"][_0x46a501];
+      var _0x175c69 = _0x3a9c5c[this["value"]]["ID"];
+      var _0x50e65d = _0x5d1d5d;
+      var _0x2b5caa = 0;
+
+      for (; _0x2b5caa < _0x50e65d["size"]; _0x2b5caa++) i_iXBb_[_0x2b5caa] = parseInt(_0x50e65d["value"]["substr"](2 * _0x2b5caa, 2), 16);
 
       i_aZwsau({
         type: "setcheat",
@@ -436,6 +459,10 @@ function i_DAFET() {
 
 function i_RchPx() {
   i_AfXQO();
+}
+
+function i_QasFM(_0xbdc2b4, _0x24d405) {
+  i_sxfci_("votetext")["innerText"] = _0xbdc2b4, i_sxfci_("popwin_vote")["style"]["display"] = "block";
 }
 
 function i_BMWYP() {
@@ -605,9 +632,46 @@ var i_WEwySe = 0,
     i_Rwcaqe = false,
     i_kJQyVe = new Int32Array(128);
 
+function i_XNMcYe(_0x27eeea) {
+  "sgqbws_xs" == _0x27eeea["id"] && (i_TxyTOe = _0x27eeea["checked"]), "sgqbws_xst" == _0x27eeea["id"] && (i_stXiNe = _0x27eeea["checked"]), "sgqbws_ms" == _0x27eeea["id"] && (i_ctdwXe = _0x27eeea["checked"]), "sgqbws_sh" == _0x27eeea["id"] && (i_KbnfRe = _0x27eeea["checked"]), "sgqbws_time" == _0x27eeea["id"] && (i_fEyRze = _0x27eeea["checked"]), "sgqbws_yx" == _0x27eeea["id"] && (i_DJxhIe = _0x27eeea["checked"]), "sgqbws_rankwj" == _0x27eeea["id"] && i_Kbzklo == i_emcHro && _0x27eeea["checked"] && (cyc_queryID("sgqbws_rankwj")["disabled"] = (0 == i_iDpHde ? (i_kJQyVe[0] = 180, i_DYNBTe["postMessage"](i_kJQyVe["buffer"])) : (i_hnXPpo("message", "【随机武将开启】"), i_kJQyVe[0] = i_EHEBeo + 180, i_sCrNao["send"](i_kJQyVe)), true)), "sgqbws_rankBwj" == _0x27eeea["id"] && i_Kbzklo == i_emcHro && _0x27eeea["checked"] && (cyc_queryID("sgqbws_rankBwj")["disabled"] = (0 == i_iDpHde ? (i_kJQyVe[3] = 180, i_DYNBTe["postMessage"](i_kJQyVe["buffer"])) : (i_hnXPpo("message", "【随机B面武将开启】"), i_kJQyVe[3] = i_EHEBeo + 180, i_sCrNao["send"](i_kJQyVe)), true)), "sgqbws_study" == _0x27eeea["id"] && i_Kbzklo == i_emcHro && _0x27eeea["checked"] && (cyc_queryID("sgqbws_study")["disabled"] = (1 == i_iDpHde ? (i_hnXPpo("message", "【练习模式开启】"), i_kJQyVe[1] = i_EHEBeo + 180, i_sCrNao["send"](i_kJQyVe)) : (i_kJQyVe[1] = 180, i_DYNBTe["postMessage"](i_kJQyVe["buffer"])), true)), "sgqbws_dead" == _0x27eeea["id"] && i_Kbzklo == i_emcHro && _0x27eeea["checked"] && (cyc_queryID("sgqbws_dead")["disabled"] = (1 == i_iDpHde ? (i_hnXPpo("message", "【敌人不动开启】"), i_kJQyVe[2] = i_EHEBeo + 180, i_sCrNao["send"](i_kJQyVe)) : (i_kJQyVe[2] = 180, i_DYNBTe["postMessage"](i_kJQyVe["buffer"])), true)), "sgqxzq_rankwj" == _0x27eeea["id"] && i_Kbzklo == i_emcHro && _0x27eeea["checked"] && (cyc_queryID("sgqxzq_rankwj")["disabled"] = (0 == i_iDpHde ? (i_kJQyVe[0] = 180, i_DYNBTe["postMessage"](i_kJQyVe["buffer"])) : (i_hnXPpo("message", "【随机武将开启】"), i_kJQyVe[0] = i_EHEBeo + 180, i_sCrNao["send"](i_kJQyVe)), true)), "sgqbqx_xs" == _0x27eeea["id"] && (i_YrMEUe = _0x27eeea["checked"]), "sgqbqx_xst" == _0x27eeea["id"] && (i_wemjDe = _0x27eeea["checked"]), "sgqbqx_sh" == _0x27eeea["id"] && (i_MkXN$e = _0x27eeea["checked"]), "sgqbqx_yx" == _0x27eeea["id"] && (i_SGZcBe = _0x27eeea["checked"]), "sgqbpl_xs" == _0x27eeea["id"] && (i_QcpMGe = _0x27eeea["checked"]), "sgqbpl_xst" == _0x27eeea["id"] && (i_rRKjFe = _0x27eeea["checked"]), "sgqbpl_sh" == _0x27eeea["id"] && (i_yhsMLe = _0x27eeea["checked"]), "sgqbpl_yx" == _0x27eeea["id"] && (i_Rwcaqe = _0x27eeea["checked"]);
+}
+
+var i_BzsmHe = false,
+    i_ymWyWe = false;
+
 function i_XdWFJe() {}
 
 function i_SxTmQe() {}
+
+function i_RPkWZe(_0xbc1560) {
+  if (!(_0xbc1560["length"] <= 0)) {
+    i_sxfci_("nogamehelp")["style"]["display"] = "none";
+
+    var _0x5bea39 = i_sxfci_("gamehelp_setlist");
+
+    for (var _0x6852e in _0xbc1560) {
+      var _0x9eb6fd = _0xbc1560[_0x6852e];
+
+      switch (_0x9eb6fd["type"]) {
+        case "checkbox":
+          var _0x5a9d15 = document["createElement"]("div"),
+              _0x55ea37 = "<div class=\"onegamehelpset\">\n                <span class='onegamehelpsetName'>{{name}}</span>\n                <input type=\"checkbox\" id=\"{{id}}\" class=\"key\" checked>\n                <label for=\"{{id}}\" class=\"key-bg\">\n                    <span class=\"circle\"></span>\n                    <span class=\"on\">开</span>\n                    <span class=\"off\">关</span>\n                </label>\n                </div>"["replace"]("{{name}}", _0x9eb6fd["name"])["replace"]("{{id}}", _0x9eb6fd["id"])["replace"]("{{id}}", _0x9eb6fd["id"]);
+
+          _0x9eb6fd["value"] || (_0x55ea37 = _0x55ea37["replace"]("checked", "")), _0x5a9d15["innerHTML"] = _0x55ea37, _0x5bea39["appendChild"](_0x5a9d15), function () {
+            var _0x389ccc = _0x6852e;
+            i_tXrZr_(_0x9eb6fd["id"], "change", function (_0x544fd5) {
+              _0xbc1560[_0x389ccc]["value"] = this["checked"];
+            });
+          }();
+          break;
+
+        case "checkfunc":
+          _0x5a9d15 = document["createElement"]("div"), _0x55ea37 = "<div class=\"onegamehelpset\">\n                <span class='onegamehelpsetName'>{{name}}</span>\n                <input type=\"checkbox\" id=\"{{id}}\" class=\"key\" checked>\n                <label for=\"{{id}}\" class=\"key-bg\">\n                    <span class=\"circle\"></span>\n                    <span class=\"on\">开</span>\n                    <span class=\"off\">关</span>\n                </label>\n                </div>"["replace"]("{{name}}", _0x9eb6fd["name"])["replace"]("{{id}}", _0x9eb6fd["id"])["replace"]("{{id}}", _0x9eb6fd["id"]);
+          _0x9eb6fd["value"] || (_0x55ea37 = _0x55ea37["replace"]("checked", "")), _0x5a9d15["innerHTML"] = _0x55ea37, _0x5bea39["appendChild"](_0x5a9d15), i_tXrZr_(_0x9eb6fd["id"], "change", _0xbc1560[_0x6852e]["h"]);
+      }
+    }
+  }
+}
 
 function i_sEwEen(_0x23b50d) {
   if (i_iDQBme) {
@@ -620,6 +684,10 @@ function i_sEwEen(_0x23b50d) {
 
     _0x19f1a1["addColorStop"](0, "#fff"), _0x19f1a1["addColorStop"](0.5, "#aaa"), _0x19f1a1["addColorStop"](1, "#888"), i_aPKPKe["fillStyle"] = _0x19f1a1, i_aPKPKe["fillText"](_0x23b50d, i_twDsCe["width"] / 2 - 50, i_twDsCe["height"] / 2, 300), i_aPKPKe["font"] = _0x5dcc4d;
   }
+}
+
+function i_ntwTnn() {
+  i_aPKPKe["clearRect"](0, 0, 2 * i_twDsCe["width"], i_twDsCe["height"]);
 }
 
 var i_XSeBtn = new Array();
@@ -652,6 +720,66 @@ var i_tdceon = {
     type: "checkbox"
   }
 };
+
+function i_zWYrcn(_0x5868c5) {
+  i_aPKPKe["strokeStyle"] = "#111", i_aPKPKe["shadowColor"] = "#202020", i_aPKPKe["shadowOffsetX"] = 1, i_aPKPKe["shadowOffsetY"] = 1, i_aPKPKe["shadowBlur"] = 2;
+
+  for (var _0x5b522b = 0; _0x5b522b < 8; _0x5b522b++) {
+    var _0x4f46e0 = 2 * _0x5868c5[49 + _0x5b522b],
+        _0x1ec832 = 2 * _0x5868c5[65 + _0x5b522b] + 2 * _0x5868c5[81 + _0x5b522b] - 148,
+        _0x34a73a = _0x5868c5[99 + _0x5b522b];
+
+    if (0 != _0x34a73a && i_tdceon["P"]["value"]) {
+      var _0x3dbf04 = _0x1ec832 + 30 + Math["floor"](_0x34a73a / 4);
+
+      _0x1ec832 < 20 && (_0x3dbf04 = 30 + Math["floor"](_0x34a73a / 4));
+      var _0x5bc370 = {
+        x: _0x4f46e0 + Math["floor"](60 * Math["random"]()) - 30,
+        y: _0x3dbf04,
+        S: 100 * _0x34a73a,
+        K: 15,
+        O: 12,
+        R: Math["floor"](_0x34a73a / 40) + 2
+      };
+      i_XSeBtn["push"](_0x5bc370);
+    }
+  }
+
+  if (i_MChKiu % 2 != 0) {
+    if (i_aPKPKe["clearRect"](0, 0, i_twDsCe["width"], i_twDsCe["width"]), i_aPKPKe["fillStyle"] = "#eee", i_tdceon["k"]["value"]) {
+      var _0x520cfb = 0;
+
+      for (_0x5b522b = 0; _0x5b522b < 8; _0x5b522b++) if (0 != _0x5868c5[17 + _0x5b522b]) {
+        _0x4f46e0 = 2 * _0x5868c5[49 + _0x5b522b], _0x1ec832 = 2 * _0x5868c5[65 + _0x5b522b] + 2 * _0x5868c5[81 + _0x5b522b] - 148;
+        i_aPKPKe["fillStyle"] = "#eee", i_aPKPKe["strokeStyle"] = "#111";
+        var _0x2ca803 = "";
+        i_tdceon["M"]["value"] && (_0x2ca803 = _0x5b522b + 1 + ". "), i_tdceon["T"]["value"] && (i_aPKPKe["strokeText"](_0x2ca803 + "HP:" + 100 * _0x5868c5[17 + _0x5b522b], _0x4f46e0 + 1 - 10, _0x1ec832 + 1, 100), i_aPKPKe["fillText"](_0x2ca803 + "HP:" + 100 * _0x5868c5[17 + _0x5b522b], _0x4f46e0 - 10, _0x1ec832, 100)), i_aPKPKe["strokeStyle"] = "#fff", i_aPKPKe["lineWidth"] = 1, i_aPKPKe["beginPath"](), i_aPKPKe["rect"](_0x4f46e0 - 16, _0x1ec832 - 20, 60, 2), i_aPKPKe["closePath"](), i_aPKPKe["stroke"]();
+
+        var _0x59286c = _0x5868c5[17 + _0x5b522b] / _0x5868c5[33 + _0x5b522b] * 60;
+
+        i_aPKPKe["fillStyle"] = 40 < _0x59286c ? "#50ff60" : 20 < _0x59286c ? "#f06f00" : "#cf0000", i_aPKPKe["fillRect"](_0x4f46e0 - 16, _0x1ec832 - 20, _0x59286c, 2), _0x520cfb++;
+      }
+
+      0 < _0x5868c5[0] ? i_aPKPKe["fillStyle"] = "#f0fff0" : i_aPKPKe["fillStyle"] = "#909090", i_aPKPKe["strokeStyle"] = "#111", i_aPKPKe["strokeText"]("剩余敌人" + _0x520cfb, 2 * i_kRDkS_ - 90 + 1, 2 * i_kPQcC_ - 35 + 1, 100), i_aPKPKe["fillText"]("剩余敌人" + _0x520cfb, 2 * i_kRDkS_ - 90, 2 * i_kPQcC_ - 35, 100);
+    }
+
+    if (i_tdceon["P"]["value"]) {
+      var _0x413538,
+          _0x4c7bc1 = i_aPKPKe["font"];
+
+      for (_0x413538 in i_aPKPKe["shadowColor"] = "#fffc00", i_aPKPKe["shadowBlur"] = 5, i_aPKPKe["lineWidth"] = 2, i_XSeBtn) if (i_XSeBtn[_0x413538]["K"]--, i_XSeBtn[_0x413538]["y"] -= 2, 5 < i_XSeBtn[_0x413538]["K"] && (i_XSeBtn[_0x413538]["O"] += i_XSeBtn[_0x413538]["R"]), 0 < i_XSeBtn[_0x413538]["K"]) {
+        i_aPKPKe["font"] = "900 " + i_XSeBtn[_0x413538]["O"] + "px Microsoft YaHei";
+
+        var _0x23f9e2 = i_aPKPKe["createLinearGradient"](i_XSeBtn[_0x413538]["x"], i_XSeBtn[_0x413538]["y"] - i_XSeBtn[_0x413538]["O"] + 5, i_XSeBtn[_0x413538]["x"], i_XSeBtn[_0x413538]["y"] - 5);
+
+        _0x23f9e2["addColorStop"](0, "#5be8a0"), _0x23f9e2["addColorStop"](1, "#ff0050"), i_aPKPKe["fillStyle"] = _0x23f9e2, i_aPKPKe["fillText"](i_XSeBtn[_0x413538]["S"], i_XSeBtn[_0x413538]["x"], i_XSeBtn[_0x413538]["y"], 300), i_aPKPKe["strokeText"](i_XSeBtn[_0x413538]["S"], i_XSeBtn[_0x413538]["x"], i_XSeBtn[_0x413538]["y"], 300);
+      } else i_XSeBtn["shift"]();
+
+      i_aPKPKe["font"] = _0x4c7bc1;
+    }
+  }
+}
+
 var i_mQEfsn = {
   k: {
     name: "显血条",
@@ -690,6 +818,66 @@ var i_mQEfsn = {
     }
   }
 };
+
+function i_SShjrn(_0x495baf) {
+  i_aPKPKe["strokeStyle"] = "#111", i_aPKPKe["shadowColor"] = "#202020", i_aPKPKe["shadowOffsetX"] = 1, i_aPKPKe["shadowOffsetY"] = 1, i_aPKPKe["shadowBlur"] = 2;
+
+  for (var _0x57776e = 0; _0x57776e < 8; _0x57776e++) {
+    var _0x353a8e = 2 * _0x495baf[49 + _0x57776e],
+        _0x466601 = 2 * _0x495baf[65 + _0x57776e] + 2 * _0x495baf[81 + _0x57776e] - 148,
+        _0x1be253 = _0x495baf[99 + _0x57776e];
+
+    if (0 != _0x1be253 && i_mQEfsn["P"]["value"]) {
+      var _0x20fb70 = _0x466601 + 30 + Math["floor"](_0x1be253 / 4);
+
+      _0x466601 < 20 && (_0x20fb70 = 30 + Math["floor"](_0x1be253 / 4));
+      var _0x36bd40 = {
+        x: _0x353a8e + Math["floor"](60 * Math["random"]()) - 30,
+        y: _0x20fb70,
+        S: 100 * _0x1be253,
+        K: 15,
+        O: 12,
+        R: Math["floor"](_0x1be253 / 40) + 2
+      };
+      i_XSeBtn["push"](_0x36bd40);
+    }
+  }
+
+  if (i_MChKiu % 2 != 0) {
+    if (i_aPKPKe["clearRect"](0, 0, i_twDsCe["width"], i_twDsCe["width"]), i_aPKPKe["fillStyle"] = "#eee", i_mQEfsn["k"]["value"]) {
+      var _0x276b33 = 0;
+
+      for (_0x57776e = 0; _0x57776e < 8; _0x57776e++) if (0 != _0x495baf[17 + _0x57776e]) {
+        _0x353a8e = 2 * _0x495baf[49 + _0x57776e], _0x466601 = 2 * _0x495baf[65 + _0x57776e] + 2 * _0x495baf[81 + _0x57776e] - 148;
+        i_aPKPKe["fillStyle"] = "#eee", i_aPKPKe["strokeStyle"] = "#111";
+        var _0x40d694 = "";
+        i_mQEfsn["M"]["value"] && (_0x40d694 = _0x57776e + 1 + ". "), i_mQEfsn["T"]["value"] && (i_aPKPKe["strokeText"](_0x40d694 + "HP:" + 100 * _0x495baf[17 + _0x57776e], _0x353a8e + 1 - 10, _0x466601 + 1, 100), i_aPKPKe["fillText"](_0x40d694 + "HP:" + 100 * _0x495baf[17 + _0x57776e], _0x353a8e - 10, _0x466601, 100)), i_aPKPKe["strokeStyle"] = "#fff", i_aPKPKe["lineWidth"] = 1, i_aPKPKe["beginPath"](), i_aPKPKe["rect"](_0x353a8e - 16, _0x466601 - 20, 60, 2), i_aPKPKe["closePath"](), i_aPKPKe["stroke"]();
+
+        var _0x26b1cd = _0x495baf[17 + _0x57776e] / _0x495baf[33 + _0x57776e] * 60;
+
+        i_aPKPKe["fillStyle"] = 40 < _0x26b1cd ? "#50ff60" : 20 < _0x26b1cd ? "#f06f00" : "#cf0000", i_aPKPKe["fillRect"](_0x353a8e - 16, _0x466601 - 20, _0x26b1cd, 2), _0x276b33++;
+      }
+
+      0 < _0x495baf[0] ? i_aPKPKe["fillStyle"] = "#f0fff0" : i_aPKPKe["fillStyle"] = "#909090", i_aPKPKe["strokeStyle"] = "#111", i_aPKPKe["strokeText"]("剩余敌人" + _0x276b33, 2 * i_kRDkS_ - 90 + 1, 2 * i_kPQcC_ - 35 + 1, 100), i_aPKPKe["fillText"]("剩余敌人" + _0x276b33, 2 * i_kRDkS_ - 90, 2 * i_kPQcC_ - 35, 100);
+    }
+
+    if (i_mQEfsn["P"]["value"]) {
+      var _0xf32f47,
+          _0x30f771 = i_aPKPKe["font"];
+
+      for (_0xf32f47 in i_aPKPKe["shadowColor"] = "#fffc00", i_aPKPKe["shadowBlur"] = 5, i_aPKPKe["lineWidth"] = 2, i_XSeBtn) if (i_XSeBtn[_0xf32f47]["K"]--, i_XSeBtn[_0xf32f47]["y"] -= 2, 5 < i_XSeBtn[_0xf32f47]["K"] && (i_XSeBtn[_0xf32f47]["O"] += i_XSeBtn[_0xf32f47]["R"]), 0 < i_XSeBtn[_0xf32f47]["K"]) {
+        i_aPKPKe["font"] = "900 " + i_XSeBtn[_0xf32f47]["O"] + "px Microsoft YaHei";
+
+        var _0x5ed5d6 = i_aPKPKe["createLinearGradient"](i_XSeBtn[_0xf32f47]["x"], i_XSeBtn[_0xf32f47]["y"] - i_XSeBtn[_0xf32f47]["O"] + 5, i_XSeBtn[_0xf32f47]["x"], i_XSeBtn[_0xf32f47]["y"] - 5);
+
+        _0x5ed5d6["addColorStop"](0, "#5be8a0"), _0x5ed5d6["addColorStop"](1, "#ff0050"), i_aPKPKe["fillStyle"] = _0x5ed5d6, i_aPKPKe["fillText"](i_XSeBtn[_0xf32f47]["S"], i_XSeBtn[_0xf32f47]["x"], i_XSeBtn[_0xf32f47]["y"], 300), i_aPKPKe["strokeText"](i_XSeBtn[_0xf32f47]["S"], i_XSeBtn[_0xf32f47]["x"], i_XSeBtn[_0xf32f47]["y"], 300);
+      } else i_XSeBtn["shift"]();
+
+      i_aPKPKe["font"] = _0x30f771;
+    }
+  }
+}
+
 var i_EBCZln = {
   k: {
     name: "显血条",
@@ -777,6 +965,120 @@ var i_EBCZln = {
   }
 };
 
+function i_dkWyun(_0x26f273) {
+  for (var _0x35a0af = 0; _0x35a0af < _0x26f273[0]; _0x35a0af++) {
+    var _0x472aed = 2 * _0x26f273[49 + _0x35a0af],
+        _0x25b52e = 2 * _0x26f273[65 + _0x35a0af] + 2 * _0x26f273[81 + _0x35a0af] - 148,
+        _0x50a47a = _0x26f273[99 + _0x35a0af];
+
+    if (0 != _0x50a47a && i_EBCZln["P"]["value"]) {
+      var _0xe6120 = _0x25b52e + 30 + Math["floor"](_0x50a47a / 4);
+
+      _0x25b52e < 20 && (_0xe6120 = 30 + Math["floor"](_0x50a47a / 4));
+      var _0x32a1d0 = {
+        x: _0x472aed + Math["floor"](60 * Math["random"]()) - 30,
+        y: _0xe6120,
+        S: 100 * _0x50a47a,
+        K: 15,
+        O: 12,
+        R: Math["floor"](_0x50a47a / 40) + 2
+      };
+      i_XSeBtn["push"](_0x32a1d0);
+    }
+  }
+
+  if (i_MChKiu % 2 != 0) {
+    if (i_aPKPKe["clearRect"](0, 0, i_twDsCe["width"], i_twDsCe["width"]), i_EBCZln["U"]["value"]) {
+      var _0x4948c1 = _0x26f273[98],
+          _0x43ef8f = Math["floor"](16.66666 * _0x4948c1 / 1000),
+          _0x29b34f = Math["floor"](_0x43ef8f / 60);
+
+      _0x43ef8f %= 60;
+
+      var _0x388d7f = Math["floor"](16.66666 * _0x4948c1 % 1000 / 10);
+
+      i_aPKPKe["fillStyle"] = "#30ff30", i_aPKPKe["strokeStyle"] = "#111", i_aPKPKe["shadowColor"] = "#202020", i_aPKPKe["shadowOffsetX"] = 1, i_aPKPKe["shadowOffsetY"] = 1, i_aPKPKe["shadowBlur"] = 2, i_aPKPKe["strokeText"](" " + _0x29b34f + "分" + _0x43ef8f + "." + _0x388d7f + "秒", 2 * i_kRDkS_ - 80 + 1, 2 * i_kPQcC_ - 4 + 1, 100), i_aPKPKe["fillText"](" " + _0x29b34f + "分" + _0x43ef8f + "." + _0x388d7f + "秒", 2 * i_kRDkS_ - 80, 2 * i_kPQcC_ - 4, 100);
+    }
+
+    if (i_aPKPKe["fillStyle"] = "#eee", i_EBCZln["N"]["value"]) {
+      var _0x468ae8 = "";
+
+      switch (8 & _0x26f273[97] && (_0x468ae8 = "上"), 4 & _0x26f273[97] && (_0x468ae8 += "下"), 1 & _0x26f273[97] && (_0x468ae8 += "A"), 2 & _0x26f273[97] && (_0x468ae8 += "B"), 16 & _0x26f273[97] && (_0x468ae8 += "C"), "" == _0x468ae8 && (_0x468ae8 = "无"), _0x26f273[115]) {
+        case 1:
+          _0x468ae8 += "【简单】";
+          break;
+
+        case 2:
+          _0x468ae8 += "【极难】";
+          break;
+
+        case 3:
+          _0x468ae8 += "【达人】";
+          break;
+
+        case 4:
+          _0x468ae8 += "【专家】";
+          break;
+
+        case 5:
+          _0x468ae8 += "【大师】";
+          break;
+
+        case 6:
+          _0x468ae8 += "【宗师】";
+          break;
+
+        case 7:
+          _0x468ae8 += "【天王】";
+          break;
+
+        case 8:
+          _0x468ae8 += "【至尊】";
+          break;
+
+        case 9:
+          _0x468ae8 += "【传说】";
+          break;
+
+        default:
+          _0x468ae8 += "[未知难度]";
+      }
+
+      i_aPKPKe["strokeText"]("模式:" + _0x468ae8, 2 * i_kRDkS_ - 120 + 1, 2 * i_kPQcC_ - 50 + 1, 120), i_aPKPKe["fillText"]("模式:" + _0x468ae8, 2 * i_kRDkS_ - 120, 2 * i_kPQcC_ - 50, 120);
+    }
+
+    if (i_EBCZln["k"]["value"]) {
+      var _0x2fc528 = 0;
+
+      for (_0x35a0af = 0; _0x35a0af < _0x26f273[0]; _0x35a0af++) if (0 != _0x26f273[17 + _0x35a0af]) {
+        _0x472aed = 2 * _0x26f273[49 + _0x35a0af], _0x25b52e = 2 * _0x26f273[65 + _0x35a0af] + 2 * _0x26f273[81 + _0x35a0af] - 148;
+        i_aPKPKe["fillStyle"] = "#eee", i_aPKPKe["strokeStyle"] = "#111";
+        var _0x529df8 = "";
+        i_EBCZln["M"]["value"] && (_0x529df8 = _0x35a0af + 1 + ". "), i_EBCZln["T"] && (i_aPKPKe["strokeText"](_0x529df8 + "HP:" + 100 * _0x26f273[17 + _0x35a0af], _0x472aed + 1 - 10, _0x25b52e + 1, 100), i_aPKPKe["fillText"](_0x529df8 + "HP:" + 100 * _0x26f273[17 + _0x35a0af], _0x472aed - 10, _0x25b52e, 100)), i_aPKPKe["strokeStyle"] = "#fff", i_aPKPKe["lineWidth"] = 1, i_aPKPKe["beginPath"](), i_aPKPKe["rect"](_0x472aed - 16, _0x25b52e - 20, 60, 2), i_aPKPKe["closePath"](), i_aPKPKe["stroke"]();
+
+        var _0x24d52b = _0x26f273[17 + _0x35a0af] / _0x26f273[33 + _0x35a0af] * 60;
+
+        i_aPKPKe["fillStyle"] = 40 < _0x24d52b ? "#50ff60" : 20 < _0x24d52b ? "#f06f00" : "#cf0000", i_aPKPKe["fillRect"](_0x472aed - 16, _0x25b52e - 20, _0x24d52b, 2), _0x2fc528++;
+      }
+
+      if (0 < _0x26f273[0] ? i_aPKPKe["fillStyle"] = "#f0fff0" : i_aPKPKe["fillStyle"] = "#909090", i_aPKPKe["strokeStyle"] = "#111", i_aPKPKe["strokeText"]("剩余敌人" + _0x2fc528, 2 * i_kRDkS_ - 90 + 1, 2 * i_kPQcC_ - 35 + 1, 100), i_aPKPKe["fillText"]("剩余敌人" + _0x2fc528, 2 * i_kRDkS_ - 90, 2 * i_kPQcC_ - 35, 100), i_EBCZln["P"]["value"]) {
+        var _0x51cb03,
+            _0x39f0aa = i_aPKPKe["font"];
+
+        for (_0x51cb03 in i_aPKPKe["shadowColor"] = "#fffc00", i_aPKPKe["shadowBlur"] = 5, i_aPKPKe["lineWidth"] = 2, i_XSeBtn) if (i_XSeBtn[_0x51cb03]["K"]--, i_XSeBtn[_0x51cb03]["y"] -= 2, 5 < i_XSeBtn[_0x51cb03]["K"] && (i_XSeBtn[_0x51cb03]["O"] += i_XSeBtn[_0x51cb03]["R"]), 0 < i_XSeBtn[_0x51cb03]["K"]) {
+          i_aPKPKe["font"] = "900 " + i_XSeBtn[_0x51cb03]["O"] + "px Microsoft YaHei";
+
+          var _0x38dd3f = i_aPKPKe["createLinearGradient"](i_XSeBtn[_0x51cb03]["x"], i_XSeBtn[_0x51cb03]["y"] - i_XSeBtn[_0x51cb03]["O"] + 5, i_XSeBtn[_0x51cb03]["x"], i_XSeBtn[_0x51cb03]["y"] - 5);
+
+          _0x38dd3f["addColorStop"](0, "#5be8a0"), _0x38dd3f["addColorStop"](1, "#ff0050"), i_aPKPKe["fillStyle"] = _0x38dd3f, i_aPKPKe["fillText"](i_XSeBtn[_0x51cb03]["S"], i_XSeBtn[_0x51cb03]["x"], i_XSeBtn[_0x51cb03]["y"], 300), i_aPKPKe["strokeText"](i_XSeBtn[_0x51cb03]["S"], i_XSeBtn[_0x51cb03]["x"], i_XSeBtn[_0x51cb03]["y"], 300);
+        } else i_XSeBtn["shift"]();
+
+        i_aPKPKe["font"] = _0x39f0aa;
+      }
+    }
+  }
+}
+
 function i_MNhEfn() {}
 
 var i_ZkGQ_n = false;
@@ -826,6 +1128,10 @@ function i_mPGKyn(_0x1b417d) {
     var _0x1f07e5 = i_WmyDOu["GPSetx"][i_Brhwo_(_0x1b417d)];
     _0x1b417d["value"] = _0x1f07e5;
   }
+}
+
+function i_JKSNwn(_0x12f0d5) {
+  i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["A"] && (document["getElementById"]("X" + _0x12f0d5 + "A")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["B"] && (document["getElementById"]("X" + _0x12f0d5 + "B")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["C"] && (document["getElementById"]("X" + _0x12f0d5 + "C")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["L"] && (document["getElementById"]("X" + _0x12f0d5 + "D")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["E"] && (document["getElementById"]("X" + _0x12f0d5 + "E")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["q"] && (document["getElementById"]("X" + _0x12f0d5 + "F")["checked"] = true);
 }
 
 function i_Bckxkn() {
@@ -972,7 +1278,38 @@ function i_iNXiKn() {
   });
 }
 
+function i_mKJEOn() {
+  i_tMMkpa(), i_yQQtma();
+}
+
 var i_QnKMXn = null;
+
+function i_ijxeRn() {
+  i_ZKQCf_("AutoData", "focus", function (_0x153d8b) {
+    i_QnKMXn = this, i_jzyY__("AutoData", "autokeyselect"), this["classList"]["add"]("autokeyselect");
+  }), document["getElementsByName"]("drawbtn")["forEach"](function (_0x375819) {
+    _0x375819["parentElement"]["addEventListener"]("click", function (_0x480c78) {
+      if (null != i_QnKMXn) {
+        var _0x49384a = this["firstElementChild"];
+
+        switch (i_Brhwo_(_0x49384a)) {
+          case "清":
+            i_QnKMXn["value"] = "";
+            break;
+
+          case "删":
+            break;
+
+          case "等":
+          default:
+            i_QnKMXn["value"] += i_Brhwo_(_0x49384a);
+        }
+
+        i_QnKMXn["focus"](), i_QnKMXn["setSelectionRange"](i_QnKMXn["value"]["length"], i_QnKMXn["value"]["length"]), i_HtHnda("g" + i_QnKMXn["id"], i_QnKMXn["value"]), i_yQQtma();
+      } else i_iZhRvt("请先选择要设置的技能");
+    });
+  });
+}
 
 function i_SxJbzn() {
   i_tXrZr_("revall", "change", function () {
@@ -984,6 +1321,10 @@ function i_SxJbzn() {
 
 function i_iTBeIn() {
   i_sxfci_("SP_A")["checked"] = i_WmyDOu["gASuper"], i_sxfci_("SP_B")["checked"] = i_WmyDOu["gBSuper"], i_sxfci_("SP_C")["checked"] = i_WmyDOu["gCSuper"], i_sxfci_("SP_D")["checked"] = i_WmyDOu["gDSuper"], i_sxfci_("SP_E")["checked"] = i_WmyDOu["gESuper"], i_sxfci_("SP_F")["checked"] = i_WmyDOu["gFSuper"], i_sxfci_("AutoSpeedText")["innerText"] = i_WmyDOu["gSuperSpeed"], i_sxfci_("AutoSpeed")["value"] = i_WmyDOu["gSuperSpeed"];
+}
+
+function i_bNCXNn() {
+  i_sxfci_("keybd_fillkey")["checked"] = i_WmyDOu["gDisHoldLR"];
 }
 
 function i_AeGJUn() {
@@ -1013,6 +1354,10 @@ function i_AeGJUn() {
         i_WmyDOu["gFSuper"] = this["checked"];
     }
   }), i_KiSwBn();
+}
+
+function i_DByKDn() {
+  i_sxfci_("GesSpeedText")["innerText"] = i_WmyDOu["gGesSpeed"];
 }
 
 function i_BCXi$n() {
@@ -1184,6 +1529,10 @@ function i_iJHfft(_0x10f50b) {
   setTimeout(function () {
     _0x46b133["style"]["top"] = "-200px";
   }, 100);
+}
+
+function i_HsQF_t(_0x285f60) {
+  _0x285f60["scrollTop"] + _0x285f60["clientHeight"] + 150 > _0x285f60["scrollHeight"] && _0x285f60["scrollTo"](0, _0x285f60["scrollHeight"]);
 }
 
 function i_iZhRvt(_0x5d1d88) {
@@ -1971,6 +2320,20 @@ function i_yQQtma() {
   }
 }
 
+function i_JHFkga() {
+  if (0 < i_wpdPfa["length"]) {
+    var _0x2dbcfe = i_wpdPfa["shift"]();
+
+    return 1 == i_iYai_a && (_0x2dbcfe & 64 ? (_0x2dbcfe &= ~64, _0x2dbcfe |= 128) : _0x2dbcfe & 128 && (_0x2dbcfe &= ~128, _0x2dbcfe |= 64)), _0x2dbcfe;
+  }
+
+  return null;
+}
+
+function i_pAJwha(_0x19d8bc) {
+  i_wpdPfa["push"](0), 0 == _0x19d8bc ? i_wpdPfa = i_wpdPfa["concat"](i_HaCAva["Ie"]) : 1 == _0x19d8bc ? i_wpdPfa = i_wpdPfa["concat"](i_HaCAva["Ne"]) : 2 == _0x19d8bc ? i_wpdPfa = i_wpdPfa["concat"](i_HaCAva["Ue"]) : 3 == _0x19d8bc && (i_wpdPfa = i_wpdPfa["concat"](i_HaCAva["De"])), i_wpdPfa["push"](0);
+}
+
 var i_MQwnba = navigator["userAgent"],
     i_GHKWya = {
   $e: 0,
@@ -2043,6 +2406,18 @@ var i_MQwnba = navigator["userAgent"],
     i_yjKJDa = -1,
     i_FAcs$a = -1,
     i_cdHwBa = 0,
+    i_XGpsGa = false,
+    i_NjznFa = false,
+    i_kxmzLa = false,
+    i_Hzkdqa = false,
+    i_DhizVa = false,
+    i_WBwdja = false,
+    i_hEZSYa = false,
+    i_mHHaHa = false,
+    i_TJprWa = false,
+    i_JzAAJa = false,
+    i_bDYGQa = false,
+    i_GRxtZa = false,
     i_HjtSei = -1,
     i_Mssmni = null,
     i_DFBCti = 0,
@@ -2263,6 +2638,14 @@ var i_FsSwvi = false,
   buttons: []
 };
 
+function i_dcwFpi(_0x508491) {
+  var _0x95a21e = navigator["getGamepads"]()[i_HjtSei];
+
+  for (var _0x2a58e4 in _0x95a21e["buttons"]) i_pSGadi["buttons"][_0x2a58e4] = _0x95a21e["buttons"][_0x2a58e4]["pressed"];
+
+  i_pSGadi["axes"] = _0x95a21e["axes"], bindNow = _0x508491, 1 < bindNow["innerText"]["indexOf"]("(") ? bindNow["innerText"] = bindNow["innerText"]["substr"](0, 2) + "(?)" : bindNow["innerText"] = bindNow["innerText"]["substr"](0, 1) + "(?)", i_FsSwvi = true;
+}
+
 function i_GiDGmi(_0x3810fe) {
   var _0x324823 = _0x3810fe;
 
@@ -2284,6 +2667,20 @@ function i_ZyAphi() {
     var _0x525468 = i_WmyDOu["GPSetx"][_0x269bda["firstChild"]["value"]];
     _0x525468 = "(" + _0x525468 + ")", 0 < _0x269bda["firstChild"]["innerText"]["indexOf"]("(") && (_0x269bda["firstChild"]["innerText"] = _0x269bda["firstChild"]["innerText"]["substr"](0, _0x269bda["firstChild"]["innerText"]["indexOf"]("("))), 1 < _0x269bda["firstChild"]["innerText"]["length"] ? _0x269bda["firstChild"]["innerText"] = _0x269bda["firstChild"]["innerText"]["substr"](0, 2) + _0x525468 : _0x269bda["firstChild"]["innerText"] = _0x269bda["firstChild"]["innerText"]["substr"](0, 1) + _0x525468;
   });
+}
+
+function i_nDJmbi() {
+  if (i_ZSfTwa && i_FsSwvi) {
+    for (var _0x592d54 = navigator["getGamepads"]()[0], _0x1432c1 = 0; _0x1432c1 < _0x592d54["buttons"]["length"]; _0x1432c1++) if (_0x592d54["buttons"][_0x1432c1]["pressed"] && 0 == i_pSGadi["buttons"][_0x1432c1]) {
+      i_GiDGmi(_0x1432c1);
+      break;
+    }
+
+    for (_0x1432c1 = 0; _0x1432c1 < _0x592d54["axes"]["length"]; _0x1432c1++) if (0.5 < Math["abs"](_0x592d54["axes"][_0x1432c1]) && _0x592d54["axes"][_0x1432c1] != i_pSGadi["axes"][_0x1432c1]) {
+      i_JMnbgi(_0x1432c1);
+      break;
+    }
+  }
 }
 
 function i_Hbmkyi() {
@@ -2579,6 +2976,7 @@ function i_sCnmko() {
 }
 
 var i_brpHxo = new Uint32Array(1),
+    i_RBpcMo = null,
     i_jEbQPo = 0,
     i_SRzbEo = 0,
     i_JmBpAo = 0,
@@ -2797,6 +3195,10 @@ function i_WSaRoc() {
 
 function i_sfNrcc() {
   i_GCDjnc(), i_YaPptc(), i_nApzac(), i_CMfwic(), i_WSaRoc();
+}
+
+function i_tTcysc() {
+  i_Qyfwws["clearRect"](i_cffPrs["A"]["X"], i_cffPrs["A"]["Y"], i_ChZTqo["width"], i_ChZTqo["height"]), i_Qyfwws["clearRect"](i_cffPrs["B"]["X"], i_cffPrs["B"]["Y"], i_jWfRVo["width"], i_jWfRVo["height"]), i_Qyfwws["clearRect"](i_cffPrs["AA"]["X"], i_cffPrs["AA"]["Y"], i_iwDejo["width"], i_iwDejo["height"]), i_Qyfwws["clearRect"](i_cffPrs["BB"]["X"], i_cffPrs["BB"]["Y"], i_cKFiYo["width"], i_cKFiYo["height"]), i_Qyfwws["clearRect"](i_cffPrs["AB"]["X"], i_cffPrs["AB"]["Y"], i_CwRAHo["width"], i_CwRAHo["height"]);
 }
 
 function i_ksaPrc() {
@@ -3101,6 +3503,10 @@ function i_YkxRQc() {
   i_KpDwJc(), i_rhZKWc();
 }
 
+function i_PPBfZc() {
+  i_Qyfwws["clearRect"](i_cffPrs["Select"]["X"], i_cffPrs["Select"]["Y"], i_Kyjiqc["width"], i_Kyjiqc["height"]), i_Qyfwws["clearRect"](i_cffPrs["Start"]["X"], i_cffPrs["Start"]["Y"], i_hnswjc["width"], i_hnswjc["height"]);
+}
+
 function i_PbXses() {
   i_EmRets(), i_ftnNas();
 }
@@ -3189,6 +3595,8 @@ function i_kCpK_s() {
     i_cffPrs["Pad"]["X"] = 42, i_cffPrs["Pad"]["Y"] = _0x20d2c1 - 180, i_cffPrs["Select"]["Y"] = _0x20d2c1 - 80, i_cffPrs["Select"]["X"] = _0xafef66 / 2 - 60, i_cffPrs["Start"]["Y"] = _0x20d2c1 - 80, i_cffPrs["Start"]["X"] = _0xafef66 / 2 + 10, i_cffPrs["B"]["X"] = _0xafef66 - 190, i_cffPrs["B"]["Y"] = _0x20d2c1 - 88, i_cffPrs["A"]["X"] = _0xafef66 - 100, i_cffPrs["A"]["Y"] = _0x20d2c1 - 92, i_cffPrs["BB"]["X"] = _0xafef66 - 175, i_cffPrs["BB"]["Y"] = _0x20d2c1 - 165, i_cffPrs["AA"]["X"] = _0xafef66 - 95, i_cffPrs["AA"]["Y"] = _0x20d2c1 - 170, i_cffPrs["AB"]["X"] = _0xafef66 - 95, i_cffPrs["AB"]["Y"] = _0x20d2c1 - 230;
   } else i_sFmzCs();
 }
+
+function i_HMEnvs() {}
 
 function i_PYfcds() {
   i_sJjkcs = true, i_YWSWls = i_cffPrs["Pad"], i_sFmzCs();
@@ -3492,6 +3900,10 @@ function i_nFFBer(_0x45f6c3) {
   }
 }
 
+function i_Qrtrnr() {
+  0 < i_HDQdvr["indexOf"]("请出房间") ? i_sxfci_("popwin_kicktips")["style"]["display"] = "block" : i_wewzwr("联机已掉线，本场已变为单机模式，请重新连接");
+}
+
 function i_rpEWtr(_0x353f0f) {
   var _0x598e13 = i_sxfci_("suspendTxt"),
       _0x3aa4f3 = i_sxfci_("suspendIcon");
@@ -3676,6 +4088,10 @@ function i_YjDQCr() {
 
 function i_AJbmKr() {
   i_sxfci_("p1nick")["innerText"] = i_DdTaQf["NickName"], i_sxfci_("p1img")["src"] = i_DdTaQf["HeadImg"], i_sxfci_("Bp1nick")["innerText"] = i_DdTaQf["NickName"], i_sxfci_("Bp1img")["src"] = i_DdTaQf["HeadImg"];
+}
+
+function i_wfTQOr() {
+  i_sxfci_("btn_tolook")["style"]["display"] = "none";
 }
 
 function i_EibxXr() {
@@ -3865,6 +4281,14 @@ function i_XENaLr() {
 
 function i_NcxYqr() {
   1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), null == i_cQmQBt["d1i"] && (i_cQmQBt["d1i"] = "/" + "fc" + "/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), null == i_cQmQBt["d2i"] && (i_cQmQBt["d2i"] = "/" + "fc" + "/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), null == i_cQmQBt["d3i"] && (i_cQmQBt["d3i"] = "/" + "fc" + "/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), null == i_cQmQBt["d4i"] && (i_cQmQBt["d4i"] = "/" + "fc" + "/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/" + "fc" + "/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/" + "fc" + "/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/" + "fc" + "/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/" + "fc" + "/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
+}
+
+function i_PNGrVr() {
+  var _0x3da4b2 = new XMLHttpRequest();
+
+  _0x3da4b2["open"]("POST", "/" + "fc" + "/svupdate?game=" + gid, true), _0x3da4b2["setRequestHeader"]("Content-type", "application/json"), _0x3da4b2["onreadystatechange"] = function () {
+    _0x3da4b2["readyState"] == XMLHttpRequest["DONE"] && _0x3da4b2["status"];
+  }, _0x3da4b2["send"](JSON["stringify"](i_kJKK$t)), i_NcxYqr();
 }
 
 function i_etMQjr() {
@@ -4079,7 +4503,24 @@ function i_mBphdl(_0x45c0a5) {
   }
 }
 
+function i_jYGKpl(_0x914f68) {
+  if (i_njFT_l) {
+    var _0x1b5e7e = 16.666666666666668 * (i_sQwkfl = _0x914f68) / 1000;
+
+    i_dPmwul < i_sQwkfl + 60 && i_EtKHbl && i_iZhRvt("录像回放结束"), cyc_queryID("ctlRepRan")["value"] = Math["floor"](i_sQwkfl / i_dPmwul * i_dPmwul), cyc_queryID("ctlRepVal")["innerText"] = "0" + Math["floor"](_0x1b5e7e / 3600) + ":" + Math["floor"](_0x1b5e7e / 60) % 60 + ":" + Math["floor"](_0x1b5e7e % 60);
+  }
+}
+
+function i_TEpTml() {
+  i_njFT_l = true;
+}
+
 var i_jejYK = -1000000;
+
+function i_wSYXgl() {
+  1 == i_iDpHde ? i_Kbzklo == i_emcHro ? performance["now"]() < 60000 ? i_iZhRvt("录像长度小于一分钟，不允许保存") : performance["now"]() - i_jejYK < 60000 ? i_iZhRvt("一分钟内只允许保存一次") : (i_jejYK = performance["now"](), i_hnXPpo("savereplay", "")) : i_iZhRvt("目前只允许房主保存房间录像") : i_iZhRvt("只有联机模式才允许保存录像");
+}
+
 var i_fJyphl = null,
     i_EtKHbl = false;
 
@@ -4093,12 +4534,43 @@ function i_Newnwl(_0x1fc90f, _0x24d09e) {
   SendBigCommand(i_cZwcUl["gn"], _0x1fc90f, _0x24d09e);
 }
 
+function i_SWyJkl(_0x3f97f2) {
+  SendBigCommand(i_cZwcUl["hn"], _0x3f97f2, 0);
+}
+
 function i_heWQTl(_0x1b34f3) {
   i_EtKHbl && SendBigCommand(i_cZwcUl["bn"], _0x1b34f3);
 }
 
+function i_nZDNxl() {
+  i_EtKHbl = true, gid = parseInt(i_nbDGge) + 1000000, i_njFT_l = true, $["get"]("/replay/info?rid=" + i_nbDGge, function (_0x543e25) {
+    i_iZhRvt("正在观看 " + (i_fJyphl = _0x543e25)["ReplayName"]), i_mBphdl(_0x543e25["ReplayLen"]);
+  }), i_iDQBme && i_icQdyl();
+}
+
 function i_YijrMl() {
   gid = i_fJyphl["GameID"], i_Newnwl(i_fJyphl["ReplayLen"], i_fJyphl["GameID"]);
+}
+
+function i_FHkTPl(_0x136705) {}
+
+function i_HBySEl() {
+  cyc_queryID("linkmsg")["addEventListener"]("click", function (_0x12b993) {
+    var _0x59a8a6 = _0x12b993["target"];
+
+    if (1 < _0x59a8a6["className"]["indexOf"]("banicon")) {
+      var _0x34271f = _0x59a8a6["nextSibling"]["innerText"]["substr"](0, _0x59a8a6["nextSibling"]["innerText"]["indexOf"](": ")),
+          _0x4602a8 = _0x59a8a6["parentElement"]["innerText"]["substr"](_0x59a8a6["parentElement"]["innerText"]["indexOf"](": ") + 2);
+
+      _0x4602a8 = _0x4602a8["substr"](0, _0x4602a8["length"] - 1), $["post"]("/sayban", {
+        who: _0x34271f,
+        where: "jjin_" + gid + "_" + i_ZmCwpe,
+        say: _0x4602a8 + ""
+      }, function (_0x4b9db9) {
+        "ok" == _0x4b9db9["status"] ? i_hnXPpo("message", _0x34271f + " 被玩家 " + (i_emcHro + 1) + " 在本房间禁言一小时") : i_iZhRvt("禁言失败");
+      });
+    }
+  });
 }
 
 var i_iZEzAl = {
@@ -4218,6 +4690,10 @@ function i_KKCaXl(_0x184d40) {
   }
 }
 
+function i_iWZGIl(_0x2f9322, _0x38a678) {
+  i_DQjNRf["push"](_0x2f9322), null != i_MjAfV && (i_MjAfV[3] = i_DQjNRf["length"]);
+}
+
 function i_hDFGNl(_0x132ddb) {
   if (4 != _0x132ddb["data"]["byteLength"]) {
     if (24 != _0x132ddb["data"]["byteLength"]) {
@@ -4325,6 +4801,10 @@ function i_xCyTvu() {
   0 != i_WmyDOu["gSkipFrame"] && i_yDbf_u < 3 && (i_iDQBme || (i_yDbf_u++, i_zXJHnu(i_cZwcUl["In"], i_yDbf_u, 0)));
 }
 
+function i_ARBMdu() {
+  i_zXJHnu(i_cZwcUl["In"], 1, 0);
+}
+
 function i_XFSipu(_0x598291) {
   i_HSeGX_ = 2 * (9 - _0x598291), i_zXJHnu(i_cZwcUl["$n"], i_HSeGX_, 0);
 }
@@ -4356,8 +4836,20 @@ function i_piEjku(_0x465242) {
   setTimeout(i_piEjku, 2000, _0x465242) : i_zXJHnu(i_cZwcUl["Rn"], _0x465242, 0);
 }
 
+function i_ndBeTu(_0xcd7d68) {
+  i_zXJHnu(i_cZwcUl["Bn"], _0xcd7d68, 0);
+}
+
+function i_Pxzfxu(_0xd9a80f) {
+  i_zXJHnu(i_cZwcUl["Fn"], 255 & _0xd9a80f, _0xd9a80f / 256);
+}
+
 function i_ZQAWMu(_0x3d240b) {
   i_zXJHnu(i_cZwcUl["Ln"], _0x3d240b, 0);
+}
+
+function i_jnKJPu() {
+  i_zXJHnu(i_cZwcUl["Vn"], 0, 0);
 }
 
 function i_ktCsEu(_0x183a97) {
@@ -4792,9 +5284,11 @@ var i_CEeRff = false,
   sampleRate: 48000
 }),
     i_xZXYOf = [],
+    i_tNmsXf = null,
     i_DQjNRf = [],
     i_ttskzf = [],
     i_daHxIf = null,
+    i_rDftNf = null,
     i_iWFTUf = 0,
     i_pTEbDf = 0,
     i_RSxB$f = 0,
@@ -4982,6 +5476,10 @@ function i_wccDd_() {
   return _0x2c0ad9["width"] = 200, _0x2c0ad9["height"] = 150, _0x2c0ad9["getContext"]("2d")["drawImage"](_0x49dec4, 0, 0, 200, 150), _0x2c0ad9["toDataURL"]("image/png");
 }
 
+function i_zMkcp_() {
+  tempSrc = GetGameImg(), $("#downurl")["attr"]("href", tempSrc), $("#shareimg")["attr"]("src", tempSrc);
+}
+
 function i_PZAFm_(_0x2e0e83) {
   for (var _0x5d8ac4 = _0x2e0e83["split"](","), _0x29f1b0 = _0x5d8ac4[0]["match"](/:(.*?);/)[1], _0x339b56 = atob(_0x5d8ac4[1]), _0x43dde9 = _0x339b56["length"], _0x23bab6 = new Uint8Array(_0x43dde9); _0x43dde9--;) _0x23bab6[_0x43dde9] = _0x339b56["charCodeAt"](_0x43dde9);
 
@@ -5012,6 +5510,15 @@ function i_rBKib_(_0x53fddd, _0x51963) {
   });
 }
 
+function i_QSwGy_() {
+  cyc_queryID("pushbtn")["disabled"] = true, $["get"]("/helper/pushwx?type=jj&id=" + gid, function (_0x591eb9) {
+    cyc_queryID("pushbtn")["innerHTML"] = "√请在手机微信查看", cyc_queryID("pushbtn")["style"]["backgroundColor"] = "#3fdd2e61", // TOLOOK
+    setTimeout(function () {
+      cyc_queryID("pushbtn")["style"]["display"] = "none";
+    }, 5000);
+  });
+}
+
 var i_thkew_ = null,
     i_zMDwk_ = null;
 
@@ -5032,6 +5539,7 @@ var i_YBrGP_ = null,
     i_dHGrA_ = "",
     i_kRDkS_ = 0,
     i_kPQcC_ = 0,
+    i_zcjCK_ = null,
     i_yhDYO_ = 4,
     i_HSeGX_ = 20,
     i_JryzR_ = null,
@@ -5141,6 +5649,59 @@ var i_cNjsB_ = 739,
 
 function i_WYEaF_(_0x314152, _0x1fce64, _0xf609fe) {
   return _0x314152["split"](_0x1fce64)["join"](_0xf609fe);
+}
+
+function i_fJnBL_(_0x47bd72) {
+  var _0x53b3e2 = "|}?{:><_)(*&!@#$%^~"["length"],
+      _0x35cfcd = "|}?{:><_)(*&!@#$%^~"["charAt"](i_rGEfG_ / 2312 % _0x53b3e2),
+      _0x50a2f3 = "1346580azhUObsoIETRcfyy23f923f3n2"["charAt"](i_rGEfG_ / 2312 % _0x53b3e2),
+      _0x173acf = "|}?{:><_)(*&!@#$%^~"["charAt"](i_rGEfG_ / 14251 % _0x53b3e2),
+      _0x203026 = "1346580azhUObsoIETRcfyy23f923f3n2"["charAt"](i_rGEfG_ / 14251 % _0x53b3e2),
+      _0x311fe9 = "|}?{:><_)(*&!@#$%^~"["charAt"](i_rGEfG_ / 685342 % _0x53b3e2),
+      _0x3cfbae = "1346580azhUObsoIETRcfyy23f923f3n2"["charAt"](i_rGEfG_ / 685342 % _0x53b3e2),
+      _0x5cb2d9 = "|}?{:><_)(*&!@#$%^~"["charAt"](i_rGEfG_ / 124 % _0x53b3e2),
+      _0x2eb5f4 = "1346580azhUObsoIETRcfyy23f923f3n2"["charAt"](i_rGEfG_ / 124 % _0x53b3e2);
+
+  return _0x47bd72 = i_WYEaF_(_0x47bd72 = i_WYEaF_(_0x47bd72 = i_WYEaF_(_0x47bd72 = i_WYEaF_(_0x47bd72, _0x35cfcd, _0x50a2f3), _0x173acf, _0x203026), _0x311fe9, _0x3cfbae), _0x5cb2d9, _0x2eb5f4), window["atob"](_0x47bd72);
+}
+
+function i_QMCCq_(_0x5c76d9) {
+  if (4 != _0x5c76d9["data"]["byteLength"]) {
+    if (24 != _0x5c76d9["data"]["byteLength"]) if (1 == i_iDpHde && _0x5c76d9["data"]["byteLength"] < 2048) i_KatGXo(_0x5c76d9["data"]);else {
+      if (++i_MChKiu % i_WmyDOu["gGesSpeed"] == 0) {
+        var _0x432453 = GetAutoPlay();
+
+        null != _0x432453 && SendKey(i_GHKWya["$e"], _0x432453);
+      }
+
+      if (i_MChKiu < 5000 && (1 == i_MChKiu && i_ZSfTwa && i_cxmKmu(), i_MChKiu % 59 == 0 && 1 == i_WmyDOu["gSkipFrame"])) {
+        var _0x2d8676 = performance["now"]();
+
+        150 < i_MChKiu && 0 != i_CCRpou && (1200 <= _0x2d8676 - i_CCRpou && 0 < i_hipxcu ? i_xCyTvu() : 1 == i_iDpHde && 1560 <= _0x2d8676 - i_CCRpou && i_xCyTvu()), i_CCRpou = _0x2d8676;
+      }
+
+      if (i_PAkc_f) {
+        var _0x34047d = false,
+            _0x4dd94c = new Int16Array(_0x5c76d9["data"], 0, 2048);
+
+        0 < i_KzHiyf && 0 == i_bjXRwf && (i_iDPymf["set"](i_mSNPbf), i_asXxpf["set"](i_nZPkhf), i_bjXRwf = i_KzHiyf, i_KzHiyf = 0);
+
+        for (var _0x55af9f = 0; _0x55af9f < i_cNjsB_; _0x55af9f++) if (i_SEwKkf <= i_bjXRwf) {
+          if (i_SEwKkf / 2 <= i_KzHiyf && 1 != i_iDpHde && 0 == _0x34047d && (SendCommand(i_cZwcUl["Nn"], 0, 0), _0x34047d = true), i_SEwKkf <= i_KzHiyf) break;
+          i_mSNPbf[i_KzHiyf] = _0x4dd94c[2 * _0x55af9f] / 32768, i_nZPkhf[i_KzHiyf] = _0x4dd94c[2 * _0x55af9f + 1] / 32768, i_KzHiyf++;
+        } else i_iDPymf[i_bjXRwf] = _0x4dd94c[2 * _0x55af9f] / 32768, i_asXxpf[i_bjXRwf] = _0x4dd94c[2 * _0x55af9f + 1] / 32768, i_bjXRwf++;
+      }
+
+      if (4096 < _0x5c76d9["data"]["byteLength"]) {
+        var _0x1812a9 = new Uint16Array(_0x5c76d9["data"], 4096);
+
+        i_YBrGP_["texSubImage2D"](i_YBrGP_["TEXTURE_2D"], 0, 0, 0, i_thkew_["width"], i_thkew_["height"], i_YBrGP_["RGBA"], i_YBrGP_["UNSIGNED_SHORT_5_5_5_1"], _0x1812a9), i_YBrGP_["drawArrays"](i_YBrGP_["TRIANGLES"], 0, 6);
+      }
+
+      i_ZSfTwa && // TOLOOK
+      setTimeout(i_TBswui, 5);
+    }
+  } else ProcessRecvCommand(_0x5c76d9["data"]);
 }
 
 function i_pKdHV_(_0x388713, _0x454ca1) {

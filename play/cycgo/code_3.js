@@ -367,7 +367,12 @@ function i_mYznp(_0x3a5479, _0x3a9c5c) {
     }
 
     for (var _0x46a501 in i_rzpKf[_0x3a5479] = this["value"], _0x3a9c5c[this["value"]]["data"]) {
-      for (_0x5d1d5d = _0x3a9c5c[this["value"]]["data"][_0x46a501], _0x175c69 = _0x3a9c5c[this["value"]]["ID"], _0x50e65d = _0x5d1d5d, _0x2b5caa = 0x0; _0x2b5caa < _0x50e65d["size"]; _0x2b5caa++) i_iXBb_[_0x2b5caa] = parseInt(_0x50e65d["value"]["substr"](0x2 * _0x2b5caa, 0x2), 0x10);
+      var _0x5d1d5d = _0x3a9c5c[this["value"]]["data"][_0x46a501];
+      var _0x175c69 = _0x3a9c5c[this["value"]]["ID"];
+      var _0x50e65d = _0x5d1d5d;
+      var _0x2b5caa = 0x0;
+
+      for (; _0x2b5caa < _0x50e65d["size"]; _0x2b5caa++) i_iXBb_[_0x2b5caa] = parseInt(_0x50e65d["value"]["substr"](0x2 * _0x2b5caa, 0x2), 0x10);
 
       i_aZwsau({
         type: "setcheat",
@@ -1588,7 +1593,12 @@ function i_YQtSGn() {
         }
 
         for (var _0x284bc5 in i_rzpKf[i_scDZc] = this["value"], i_Qkwrs[this["value"]]["data"]) {
-          for (_0x26ce22 = i_Qkwrs[this["value"]]["data"][_0x284bc5], _0x1b2c0d = i_Qkwrs[this["value"]]["ID"], _0x1c6976 = _0x26ce22, _0x506cbf = 0x0; _0x506cbf < _0x1c6976["size"]; _0x506cbf++) i_iXBb_[_0x506cbf] = parseInt(_0x1c6976["value"]["substr"](0x2 * _0x506cbf, 0x2), 0x10);
+          var _0x26ce22 = i_Qkwrs[this["value"]]["data"][_0x284bc5];
+          var _0x1b2c0d = i_Qkwrs[this["value"]]["ID"];
+          var _0x1c6976 = _0x26ce22;
+          var _0x506cbf = 0x0;
+
+          for (; _0x506cbf < _0x1c6976["size"]; _0x506cbf++) i_iXBb_[_0x506cbf] = parseInt(_0x1c6976["value"]["substr"](0x2 * _0x506cbf, 0x2), 0x10);
 
           i_aZwsau({
             type: "setcheat",

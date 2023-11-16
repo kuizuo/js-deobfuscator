@@ -1,0 +1,42 @@
+html,
+body,
+#__nuxt {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+html.dark {
+  color-scheme: dark;
+  background-color: var(--c-bg-base);
+}
+
+.splitpanes__splitter {
+  width: 0.25rem;
+  --at-apply: bg-zinc50 dark-bg-zinc800;
+}
+
+.splitpanes__splitter:before {
+  left: -0.125rem;
+  right: -0.125rem;
+  height: 100%;
+}
+
+/* Color Mode transition */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2147483646;
+}
+.dark::view-transition-old(root) {
+  z-index: 2147483646;
+}
+.dark::view-transition-new(root) {
+  z-index: 1;
+}

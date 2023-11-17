@@ -1,21 +1,21 @@
-import { Deob } from '@deob/utils';
-import fs from 'node:fs/promises';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs/promises'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { Deob } from '@deob/utils'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 class MyDeOb extends Deob { }
 
 ; (async function () {
   const fileName = 'code'
 
-  let rawCode = await fs.readFile(__dirname + `/${fileName}.js`, {
+  const rawCode = await fs.readFile(`${__dirname}/${fileName}.js`, {
     encoding: 'utf-8',
   })
 
-  let deob = new MyDeOb(rawCode, {
+  const deob = new MyDeOb(rawCode, {
     dir: __dirname,
     isWriteFile: true,
   })
@@ -48,6 +48,6 @@ class MyDeOb extends Deob { }
   // deob.deleteExtra()
   // deob.addComments()
 
-  let code = deob.getCode()
-  await fs.writeFile(__dirname + '/output.js', code)
+  const code = deob.getCode()
+  await fs.writeFile(`${__dirname}/output.js`, code)
 })()

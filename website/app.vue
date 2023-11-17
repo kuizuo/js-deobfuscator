@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Pane, Splitpanes } from 'splitpanes'
 import { code } from '#imports'
-
 import 'splitpanes/dist/splitpanes.css'
 
 const paneSize = ref(50)

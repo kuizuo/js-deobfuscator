@@ -9,6 +9,8 @@
     "website:generate": "pnpm run -C website generate",
     "website:serve": "pnpm run -C website serve",
     "lint": "eslint './{packages,website,scripts,meta}/**/*.{js,ts,tsx,vue,md,json}'",
+    "lint:fix": "nr lint --fix",
+    "release": "bumpp -r",
     "test": "vitest"
   },
   "workspaces": [
@@ -21,6 +23,7 @@
     "bumpp": "^9.2.0",
     "eslint": "^8.53.0",
     "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.18.0"
   }
 }

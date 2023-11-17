@@ -54,9 +54,6 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
-      vitest:
-        specifier: ^0.18.0
-        version: 0.18.1
 
   play:
     devDependencies:

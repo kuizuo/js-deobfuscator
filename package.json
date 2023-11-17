@@ -1,11 +1,14 @@
 {
   "name": "js-de-obfuscator",
+  "type": "module",
   "version": "0.1.0",
+  "license": "MIT",
   "scripts": {
     "website:dev": "pnpm run -C website dev",
     "website:build": "pnpm run -C website build",
     "website:generate": "pnpm run -C website generate",
     "website:serve": "pnpm run -C website serve",
+    "lint": "eslint './{packages,website,scripts,meta}/**/*.{js,ts,tsx,vue,md,json}'",
     "test": "vitest"
   },
   "workspaces": [
@@ -13,14 +16,11 @@
     "play",
     "packages/*"
   ],
-  "dependencies": {
-    "@babel/core": "^7.18.9",
-    "crypto-js": "^4.1.1",
-    "lodash": "^4.17.21"
-  },
   "devDependencies": {
+    "@antfu/eslint-config": "^1.1.2",
+    "bumpp": "^9.2.0",
+    "eslint": "^8.53.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
-  },
-  "license": "MIT"
+  }
 }

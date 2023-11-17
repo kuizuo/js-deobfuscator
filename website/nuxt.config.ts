@@ -1,6 +1,5 @@
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@unocss/nuxt', '@vueuse/nuxt', 'nuxt-monaco-editor'],
@@ -49,10 +48,9 @@ export default defineNuxtConfig({
   },
   hooks: {
     'build:manifest': (manifest) => {
-      for (const key of Object.keys(manifest)) {
+      for (const key of Object.keys(manifest))
         manifest[key].dynamicImports = []
-      }
     },
   },
-  devtools: { enabled: true }
+  devtools: { enabled: true },
 })

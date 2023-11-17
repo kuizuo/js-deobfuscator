@@ -1,13 +1,24 @@
 {
   "name": "website",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "typecheck": "nuxi typecheck",
+    "release": "bumpp && tsx scripts/release.ts",
     "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@deob/utils": "workspace:^",
+    "fflate": "^0.8.1",
+    "json-to-ast": "^2.1.0",
+    "json5": "^2.2.3",
+    "memfs": "^4.6.0",
+    "monaco-editor": "^0.44.0",
+    "splitpanes": "^3.1.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^1.1.2",
@@ -25,14 +36,5 @@
     "vite-plugin-node-polyfills": "^0.16.0",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
-  },
-  "dependencies": {
-    "@deob/utils": "workspace:^",
-    "fflate": "^0.8.1",
-    "json-to-ast": "^2.1.0",
-    "json5": "^2.2.3",
-    "memfs": "^4.6.0",
-    "monaco-editor": "^0.44.0",
-    "splitpanes": "^3.1.5"
   }
 }

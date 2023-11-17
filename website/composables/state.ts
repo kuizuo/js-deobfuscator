@@ -1,4 +1,5 @@
 import json5 from 'json5'
+
 const PREFIX = 'js-deobfuscator:'
 
 export const loading = ref<'load' | 'parse' | false>(false)
@@ -10,7 +11,7 @@ export const rawOptions = ref('')
 export const hideEmptyKeys = useLocalStorage(`${PREFIX}hide-empty-keys`, true)
 export const hideLocationData = useLocalStorage(
   `${PREFIX}hide-location-data`,
-  true
+  true,
 )
 export const hideKeys = useLocalStorage<string[]>(`${PREFIX}hide-keys`, [])
 export const autoFocus = useLocalStorage<boolean>(`${PREFIX}auto-focus`, true)
@@ -18,12 +19,13 @@ export const autoFocus = useLocalStorage<boolean>(`${PREFIX}auto-focus`, true)
 export const options = computed(() => {
   try {
     return currentParser.value.options.defaultValueType === 'javascript'
-      ? // TODO: use a better way to eval
-      new Function(rawOptions.value)()
+      // eslint-disable-next-line no-new-func
+      ? new Function(rawOptions.value)()
       : json5.parse(rawOptions.value)
-  } catch {
+  }
+  catch {
     console.error(
-      `Failed to parse options: ${JSON.stringify(rawOptions.value, null, 2)}`
+      `Failed to parse options: ${JSON.stringify(rawOptions.value, null, 2)}`,
     )
   }
 })
@@ -45,13 +47,13 @@ watch([code, rawOptions], () => {
   location.value.hash = utoa(serialized)
 })
 
-
 export const parserContextMap: Record<string, unknown> = shallowReactive(
-  Object.create(null)
+  Object.create(null),
 )
 async function initParser() {
   const { id, init } = currentParser.value
-  if (parserContextMap[id]) return parserContextMap[id]
+  if (parserContextMap[id])
+    return parserContextMap[id]
   return (parserContextMap[id] = await init?.())
 }
 
@@ -67,16 +69,17 @@ watch(
       ast.value = await currentParser.value.parse.call(
         await ctx,
         code.value,
-        options.value
+        options.value,
       )
       error.value = null
-      // eslint-disable-next-line unicorn/catch-error-name
-    } catch (err) {
+    }
+    catch (err) {
       error.value = err
       console.error(err)
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   },
-  { immediate: true }
+  { immediate: true },
 )

@@ -1,11 +1,11 @@
-import { Deob } from '../main'
 import { describe, expect, it } from 'vitest'
+import { Deob } from '../main'
 
 describe('deob', async () => {
   it('splitMultipleDeclarations', () => {
     const rawCode = `var a = 1, b = 2;`
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.splitMultipleDeclarations()
     const code = deob.getCode()
@@ -22,7 +22,7 @@ var b = 2;`.trim())
       break;
     }`
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.transformForLoop()
     const code = deob.getCode()
@@ -38,10 +38,10 @@ for (void 0;;) {
 
   it('deleteExtra', () => {
     const rawCode = `
-          console.log("\x6b\x75\x69\x7a\x75\x6f")
+          console.log("\x6B\x75\x69\x7A\x75\x6F")
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.deleteExtra()
     const code = deob.getCode()
@@ -58,7 +58,7 @@ for (void 0;;) {
         }
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.removeUnusedBlock()
     const code = deob.getCode()
@@ -71,7 +71,7 @@ for (void 0;;) {
       let a = 1;
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.removeUnusedVariables(null, false)
     const code = deob.getCode()
@@ -85,7 +85,7 @@ for (void 0;;) {
     let b = ![] ; 
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.calcBoolean()
     const code = deob.getCode()
@@ -104,7 +104,7 @@ let b = false;
     let b = "debu" + "gger" 
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.calcBinary()
     const code = deob.getCode()
@@ -123,7 +123,7 @@ let b = "debugger";
     console.log(a)
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.replaceConstant()
     const code = deob.getCode()
@@ -164,7 +164,7 @@ let b = "debugger";
     }
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.switchFlat()
     const code = deob.getCode()
@@ -195,7 +195,7 @@ function a() {
     })("bugger")("de");
     `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.selfCallFnReplace()
     const code = deob.getCode()
@@ -222,7 +222,7 @@ _0x52627b["SDgrw"](_0x4547db)
 _0x52627b["GOEUR"](a, b)
 `
 
-    let deob = new Deob(rawCode)
+    const deob = new Deob(rawCode)
 
     deob.saveAllObject()
     deob.objectMemberReplace()

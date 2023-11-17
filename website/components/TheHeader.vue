@@ -4,8 +4,10 @@
   <div flex="~ wrap" items-center justify-between p2>
     <div flex="~ gap4">
       <div flex="~ gap1" items-center>
-        <div i-vscode-icons:file-type-js-official w-10 h-10></div>
-        <h1 text-sm font-semibold font-mono>JS <br />Deobfuscator</h1>
+        <div i-vscode-icons:file-type-js-official w-10 h-10 />
+        <h1 text-sm font-semibold font-mono>
+          JS <br>Deobfuscator
+        </h1>
       </div>
     </div>
 

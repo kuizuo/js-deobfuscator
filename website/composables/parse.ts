@@ -30,8 +30,6 @@ export interface LanguageOption {
   parsers: Parser<any, any>[]
 }
 
-export const currentParser = computed(() => javascript.parsers[0])
-
 export const parserVersion = ref('')
 
 const astLocationFields = {
@@ -54,14 +52,17 @@ const astLocationFields = {
 
 export function getAstLocation(
   preset: keyof typeof astLocationFields,
-  node: JsonNode
+  node: JsonNode,
 ) {
-  if (node.type !== 'Object') return
-  if (!getJsonValue(node, astLocationFields[preset].type)) return
+  if (node.type !== 'Object')
+    return
+  if (!getJsonValue(node, astLocationFields[preset].type))
+    return
 
   const start = getJsonValue(node, astLocationFields[preset].start)
   const end = getJsonValue(node, astLocationFields[preset].end)
-  if (typeof start !== 'number' || typeof end !== 'number') return
+  if (typeof start !== 'number' || typeof end !== 'number')
+    return
 
   return { start, end }
 }
@@ -79,12 +80,13 @@ const babel: Parser<typeof Babel, Babel.ParserOptions> = {
       plugins: [],
     },
   },
+  // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
   init: () => import('https://cdn.jsdelivr.net/npm/@babel/parser/+esm'),
   version: () =>
     fetch('https://cdn.jsdelivr.net/npm/@babel/parser/package.json')
-      .then((r) => r.json())
-      .then((raw) => `@babel/parser@${raw.version}`),
+      .then(r => r.json())
+      .then(raw => `@babel/parser@${raw.version}`),
   parse(code, options) {
     return this.parse(code, { ...options })
   },
@@ -97,3 +99,4 @@ export const javascript: LanguageOption = {
   icon: 'i-vscode-icons:file-type-js-official',
   parsers: [babel],
 }
+export const currentParser = computed(() => javascript.parsers[0])

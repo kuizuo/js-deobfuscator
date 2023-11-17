@@ -1,9 +1,9 @@
 {
   "name": "@deob/utils",
+  "type": "module",
   "private": true,
   "main": "main.js",
   "module": "main.js",
-  "type": "module",
   "files": [
     "dist"
   ],

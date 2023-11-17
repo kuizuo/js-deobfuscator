@@ -1,10 +1,10 @@
 export const isDark = useDark()
 
-const isAppearanceTransition =
-  typeof document !== 'undefined' &&
+const isAppearanceTransition
+  = typeof document !== 'undefined'
   // @ts-expect-error: Transition API
-  document.startViewTransition &&
-  !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  && document.startViewTransition
+  && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**
  * Credit to [@hooray](https://github.com/hooray)
@@ -20,7 +20,7 @@ export function toggleDark(event?: MouseEvent) {
   const y = event.clientY
   const endRadius = Math.hypot(
     Math.max(x, innerWidth - x),
-    Math.max(y, innerHeight - y)
+    Math.max(y, innerHeight - y),
   )
   // @ts-expect-error: Transition API
   const transition = document.startViewTransition(async () => {
@@ -43,7 +43,7 @@ export function toggleDark(event?: MouseEvent) {
         pseudoElement: isDark.value
           ? '::view-transition-old(root)'
           : '::view-transition-new(root)',
-      }
+      },
     )
   })
 }

@@ -1,18 +1,16 @@
-import * as parser from '@babel/parser';
-import traverse1 from '@babel/traverse';
-import generator1 from '@babel/generator';
-import * as t from '@babel/types';
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
-import _ from 'lodash';
+import { promises as fs } from 'node:fs'
+import path from 'node:path'
+import * as parser from '@babel/parser'
+import traverse1 from '@babel/traverse'
+import generator1 from '@babel/generator'
+import * as t from '@babel/types'
 
-const generator = generator1?.default || generator1;
-const traverse = traverse1?.default || traverse1;
+const generator = generator1?.default || generator1
+const traverse = traverse1?.default || traverse1
 
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined')
+  // eslint-disable-next-line no-global-assign
   global = window
-}
-
 
 let objectVariables = []
 
@@ -22,13 +20,14 @@ class Deob {
    * @constructor
    * @param {string} rawCode - 原始代码
    * @param {object} [options] -  选项
-   * @param {string} [options.dir='./'] - 输出目录
-   * @param {boolean} [options.isWriteFile=false]
+   * @param {string} [options.dir] - 输出目录
+   * @param {boolean} [options.isWriteFile]
    * @param {object} [options.opts] - 是否写入文件
    * @throws {Error} 请载入js代码
    */
   constructor(rawCode, options = {}) {
-    if (!rawCode) throw new Error('请载入js代码')
+    if (!rawCode)
+      throw new Error('请载入js代码')
     console.time('useTime')
 
     /**
@@ -51,12 +50,12 @@ class Deob {
   }
 
   get code() {
-    let code = generator(this.ast, this.opts).code
+    const code = generator(this.ast, this.opts).code
     return code
   }
 
   getCode(opts) {
-    let code = generator(this.ast, opts || this.opts).code
+    const code = generator(this.ast, opts || this.opts).code
     console.timeEnd('useTime')
     return code
   }
@@ -65,11 +64,12 @@ class Deob {
    * @description 再次解析重新生成新的ast
    */
   reParse() {
-    let jscode = generator(this.ast, this.opts).code
+    const jscode = generator(this.ast, this.opts).code
 
     try {
       this.ast = parser.parse(jscode, { sourceType: 'script' })
-    } catch (error) {
+    }
+    catch (error) {
       console.log('代码替换有误,导致解析失败!', error)
       if (this.isWriteFile) {
         console.log('正在写入错误文件...')
@@ -81,8 +81,8 @@ class Deob {
 
   /**
    * @description 记录解析后生成的代码 方便调试查看
-   * @param {String} fileName
-   * @param {Number} i
+   * @param {string} fileName
+   * @param {number} i
    */
   async record(fileName, i) {
     if (this.isWriteFile) {
@@ -92,7 +92,8 @@ class Deob {
           this.code,
         )
         console.log(`${fileName}_${i}.js 写入成功`)
-      } catch (error) { }
+      }
+      catch (error) { }
     }
   }
 
@@ -100,7 +101,7 @@ class Deob {
    * @description 输出成好看形式 用于对比
    */
   async prettierCode() {
-    let newCode = generator(this.ast, {
+    const newCode = generator(this.ast, {
       minified: false,
       jsescOption: { minimal: true },
       compact: false,
@@ -145,9 +146,11 @@ class Deob {
       console.log(`大数组名为: ${arrayName} `)
       console.log(`解密函数为: ${decryptFnList.join(',')}`)
       console.log(`解密函数代码为: ${decryptFnCode}`)
+      // eslint-disable-next-line no-eval
       const result = global.eval(decryptFnCode)
       console.log('解密函数执行结果:', result)
-    } catch (e) {
+    }
+    catch (e) {
       throw new Error('解密函数无法 eval 运行')
     }
 
@@ -157,33 +160,38 @@ class Deob {
      */
     const visitor_decString = {
       // 解密函数可能是 var _0x3e22 = function(){ } 或 function _0x3e22(){}
-      'VariableDeclarator|FunctionDeclaration'(path) {
+      'VariableDeclarator|FunctionDeclaration': function (path) {
         if (decryptFnList.includes(path.node.id.name)) {
           // 有可能存在多个解密函数，所以需要多次遍历
-          const decryptFn = decryptFnList.find((f) => f === path.node.id.name)
-          if (!decryptFn) return
+          const decryptFn = decryptFnList.find(f => f === path.node.id.name)
+          if (!decryptFn)
+            return
 
           const binding = path.scope.getBinding(decryptFn)
 
           // 通过作用域来定位
           binding?.referencePaths.forEach((p) => {
-            if (!p.parentPath.isCallExpression()) return
+            if (!p.parentPath.isCallExpression())
+              return
 
             try {
               // 如果调用解密函数中有变量参数则不替换
-              const hasIdentifier = p.parentPath.node.arguments.some((a) =>
+              const hasIdentifier = p.parentPath.node.arguments.some(a =>
                 t.isIdentifier(a),
               )
-              if (hasIdentifier) return
+              if (hasIdentifier)
+                return
 
               // 执行 _0x4698(_0x13ee81, _0x3dfa50) 代码, 并替换原始位置
               const callCode = p.parentPath.toString()
 
+              // eslint-disable-next-line no-eval
               const decStr = eval(callCode)
               console.log(callCode, decStr)
 
               p.parentPath.replaceWith(t.stringLiteral(decStr))
-            } catch (error) {
+            }
+            catch (error) {
               // 解密失败 则添加注释 失败原因可能是该函数未调用
               p.addComment('leading', `解密失败${error.message}`, true)
             }
@@ -203,44 +211,45 @@ class Deob {
    * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
    */
   findDecryptFnByCallCount(count = 100, isRemove = false) {
-    let decryptFnList = []
+    const decryptFnList = []
     let index = 0 // 定义解密函数所在语句下标
 
     // 先遍历所有函数(作用域在Program)，并根据引用次数来判断是否为解密函数
     traverse(this.ast, {
       Program(p) {
         p.traverse({
-          'FunctionDeclaration|VariableDeclarator'(path) {
+          'FunctionDeclaration|VariableDeclarator': function (path) {
             if (
               !(
-                t.isFunctionDeclaration(path.node) ||
-                t.isFunctionExpression(path.node.init)
+                t.isFunctionDeclaration(path.node)
+                || t.isFunctionExpression(path.node.init)
               )
-            ) {
+            )
               return
-            }
 
-            let name = path.node.id.name
-            let binding = path.scope.getBinding(name)
-            if (!binding) return
+            const name = path.node.id.name
+            const binding = path.scope.getBinding(name)
+            if (!binding)
+              return
 
             if (binding.referencePaths.length > count) {
               decryptFnList.push(name)
 
               // 根据最后一个解密函数来定义解密函数所在语句下标
-              let binding = p.scope.getBinding(name)
-              if (!binding) return
+              const binding = p.scope.getBinding(name)
+              if (!binding)
+                return
 
-              let parent = binding.path.find(
-                (p) => p.isFunctionDeclaration() || p.isVariableDeclaration(),
+              const parent = binding.path.find(
+                p => p.isFunctionDeclaration() || p.isVariableDeclaration(),
               )
-              if (!parent) return
-              let body = p.scope.block.body
+              if (!parent)
+                return
+              const body = p.scope.block.body
               for (let i = 0; i < body.length; i++) {
                 const node = body[i]
-                if (node.start == parent.node.start) {
+                if (node.start === parent.node.start)
                   index = i + 1
-                }
               }
               // 遍历完当前节点,就不再往子节点遍历
               path.skip()
@@ -250,17 +259,16 @@ class Deob {
       },
     })
 
-    let descryptAst = parser.parse('')
+    const descryptAst = parser.parse('')
     // 插入解密函数前的几条语句
     descryptAst.program.body = this.ast.program.body.slice(0, index)
     // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
-    let decryptFnCode = generator(descryptAst, { compact: true }).code
+    const decryptFnCode = generator(descryptAst, { compact: true }).code
 
     this.decryptReplace(this.ast, decryptFnCode, decryptFnList)
 
-    if (isRemove) {
+    if (isRemove)
       this.ast.program.body = this.ast.program.body.slice(index)
-    }
 
     this.reParse()
   }
@@ -271,45 +279,43 @@ class Deob {
    * @param {*} isRemove 是否移除解密函数(后续用不到)
    */
   designDecryptFn(decryptFnList, isRemove = false) {
-    if (!Array.isArray(decryptFnList)) {
+    if (!Array.isArray(decryptFnList))
       decryptFnList = [decryptFnList]
-    }
 
     let index = 0 // 定义解密函数所在语句下标
 
     traverse(this.ast, {
       Program(p) {
         p.traverse({
-          'FunctionDeclaration|VariableDeclarator'(path) {
+          'FunctionDeclaration|VariableDeclarator': function (path) {
             if (
               !(
-                t.isFunctionDeclaration(path.node) ||
-                t.isFunctionExpression(path.node.init)
+                t.isFunctionDeclaration(path.node)
+                || t.isFunctionExpression(path.node.init)
               )
-            ) {
+            )
               return
-            }
 
-            let name = path.node.id.name
+            const name = path.node.id.name
 
-            if (!decryptFnList.includes(name)) {
+            if (!decryptFnList.includes(name))
               return
-            }
 
             // 根据最后一个解密函数来定义解密函数所在语句下标
-            let binding = p.scope.getBinding(name)
-            if (!binding) return
+            const binding = p.scope.getBinding(name)
+            if (!binding)
+              return
 
-            let parent = binding.path.find(
-              (p) => p.isFunctionDeclaration() || p.isVariableDeclaration(),
+            const parent = binding.path.find(
+              p => p.isFunctionDeclaration() || p.isVariableDeclaration(),
             )
-            if (!parent) return
-            let body = p.scope.block.body
+            if (!parent)
+              return
+            const body = p.scope.block.body
             for (let i = 0; i < body.length; i++) {
               const node = body[i]
-              if (node.start == parent.node.start) {
+              if (node.start === parent.node.start)
                 index = i + 1
-              }
             }
             // 遍历完当前节点,就不再往子节点遍历
             path.skip()
@@ -318,16 +324,15 @@ class Deob {
       },
     })
 
-    let descryptAst = parser.parse('')
+    const descryptAst = parser.parse('')
     descryptAst.program.body = this.ast.program.body.slice(0, index)
     // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
-    let decryptFnCode = generator(descryptAst, { compact: true }).code
+    const decryptFnCode = generator(descryptAst, { compact: true }).code
 
     this.decryptReplace(this.ast, decryptFnCode, decryptFnList)
 
-    if (isRemove) {
+    if (isRemove)
       this.ast.program.body = this.ast.program.body.slice(index)
-    }
 
     this.reParse() // 切记一定要在替换后执行, 因为替换后此时 ast 并未更新, 就可能会导致后续处理都使用原先的 ast
   }
@@ -338,34 +343,35 @@ class Deob {
   InjectDecryptFnCode(decryptFnCode) { }
 
   /**
-     * @description 嵌套函数花指令替换
-     * @deprecated
-     * @example
-     *  _0x4698 为解密函数
-     *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
+   * @description 嵌套函数花指令替换
+   * @deprecated
+   * @example
+   *  _0x4698 为解密函数
+   *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
             return _0x4698(_0x13ee81 - -674, _0x3dfa50);
         };
         ⬇️
         _0x49afe4(-57, 1080, 828, 1138, 469) ---> _0x4698(_0x13ee81 - -674, _0x3dfa50)
         _0x4698('469' - -674, '828') ---> 调用解密函数得到原字符串
-     */
+   */
   nestedFnReplace() {
-    let decryptFnList = this.decryptFnList
-    if (decryptFnList.length === 0) return
+    const decryptFnList = this.decryptFnList
+    if (decryptFnList.length === 0)
+      return
 
     traverse(this.ast, {
       VariableDeclarator(path) {
         if (decryptFnList.includes(path.node.id.name)) {
-          let decryptFuncName = decryptFnList.find(
-            (f) => f === path.node.id.name,
+          const decryptFuncName = decryptFnList.find(
+            f => f === path.node.id.name,
           )
-          let binding_decFunc = path.scope.getBinding(decryptFuncName)
-          binding_decFunc &&
-            binding_decFunc.referencePaths.map((p_dec) => {
+          const binding_decFunc = path.scope.getBinding(decryptFuncName)
+          binding_decFunc
+            && binding_decFunc.referencePaths.forEach((p_dec) => {
               if (
                 !(
-                  p_dec.parentPath.isCallExpression() &&
-                  p_dec.parentPath.node.arguments.length === 2
+                  p_dec.parentPath.isCallExpression()
+                  && p_dec.parentPath.node.arguments.length === 2
                 )
               )
                 return
@@ -374,40 +380,43 @@ class Deob {
               //    return _0x4698(_0x41dc9e - -0x2d1, _0x422ba8);
               // };
               // 不是return语句,则判断不是解密函数花指令
-              if (!p_dec.parentPath.parentPath.isReturnStatement()) return
-              let callFuncVarPath = p_dec.findParent(
-                (p) => p.node.type === 'VariableDeclarator',
+              if (!p_dec.parentPath.parentPath.isReturnStatement())
+                return
+              const callFuncVarPath = p_dec.findParent(
+                p => p.node.type === 'VariableDeclarator',
               )
 
-              let callFuncName = callFuncVarPath.node.id.name
-              let orgcallFuncInit = cloneDeep(callFuncVarPath.node.init) // 用于后续重命名还原原始函数
+              const callFuncName = callFuncVarPath.node.id.name
+              const orgcallFuncInit = cloneDeep(callFuncVarPath.node.init) // 用于后续重命名还原原始函数
 
               // 获取嵌套函数的binding 在根据嵌套函数的作用域referencePaths 遍历调用嵌套函数的地方
-              let binding_callFunc = p_dec.scope.getBinding(callFuncName)
-              binding_callFunc &&
-                binding_callFunc.referencePaths.map((p_call) => {
+              const binding_callFunc = p_dec.scope.getBinding(callFuncName)
+              binding_callFunc
+                && binding_callFunc.referencePaths.forEach((p_call) => {
                   // 获取实参
-                  let argumentList = p_call.parentPath.node.arguments
-                  let orgArgumentList = cloneDeep(argumentList)
-                  let params = callFuncVarPath.node.init.params
-                  let orgParams = cloneDeep(params)
+                  const argumentList = p_call.parentPath.node.arguments
+                  const orgArgumentList = cloneDeep(argumentList)
+                  const params = callFuncVarPath.node.init.params
+                  const orgParams = cloneDeep(params)
                   // 实参中如果有变量则直接跳出不替换
-                  let hasIdentifier = orgArgumentList.some((a) =>
+                  const hasIdentifier = orgArgumentList.some(a =>
                     t.isIdentifier(a),
                   )
-                  if (hasIdentifier) return
+                  if (hasIdentifier)
+                    return
 
-                  let nameMap = {}
+                  const nameMap = {}
                   // 实参有可能小于形参 所以遍历实参
                   for (let i = 0; i < orgArgumentList.length; i++) {
-                    let paramName = orgParams[i].name
+                    const paramName = orgParams[i].name
                     let argumentName
 
                     if (orgArgumentList[i].type === 'UnaryExpression') {
-                      argumentName =
-                        orgArgumentList[i].operator +
-                        orgArgumentList[i].argument.value
-                    } else {
+                      argumentName
+                        = orgArgumentList[i].operator
+                        + orgArgumentList[i].argument.value
+                    }
+                    else {
                       argumentName = orgArgumentList[i].value
                     }
                     argumentName = `'${argumentName}'`
@@ -424,13 +433,13 @@ class Deob {
                   // }
 
                   // 将形参都转为实参后 然后生成对应解密后的代码 直接替换原本调用嵌套函数的地方 后面解密函数要处理
-                  let code = p_dec.parentPath.toString()
+                  const code = p_dec.parentPath.toString()
                   p_call.parentPath.replaceWithSourceString(code)
 
                   // 然后重命名回来
-                  Object.entries(nameMap).map((o) => {
-                    let paramName = o[0]
-                    let argumentName = o[1]
+                  Object.entries(nameMap).forEach((o) => {
+                    const paramName = o[0]
+                    const argumentName = o[1]
                     p_dec.parentPath.scope.rename(argumentName, paramName)
                   })
 
@@ -477,9 +486,8 @@ class Deob {
           if (declaration.id.type === 'Identifier') {
             const variableName = declaration.id.name
             const start = declaration.start
-            if (declaration.init?.type === 'ObjectExpression') {
+            if (declaration.init?.type === 'ObjectExpression')
               objectVariables[`${start}_${variableName}`] = declaration.init
-            }
           }
         })
       },
@@ -513,25 +521,27 @@ class Deob {
     traverse(this.ast, {
       MemberExpression(path) {
         // // 父级表达式不能是赋值语句
-        let asignment = path.parentPath
-        if (!asignment || asignment?.type === 'AssignmentExpression') return
+        const asignment = path.parentPath
+        if (!asignment || asignment?.type === 'AssignmentExpression')
+          return
 
         if (
-          path.node.object.type === 'Identifier' &&
-          (path.node.property.type === 'StringLiteral' ||
-            path.node.property.type === 'Identifier')
+          path.node.object.type === 'Identifier'
+          && (path.node.property.type === 'StringLiteral'
+            || path.node.property.type === 'Identifier')
         ) {
           const objectName = path.node.object.name
 
           // 找到 objectName 的定义位置
           const binding = path.scope.getBinding(objectName)
-          if (!binding) return
+          if (!binding)
+            return
 
           const start = binding.identifier.start
 
           //    xxx            obj['xxx']                  obj.xxx
-          const propertyName =
-            path.node.property.value || path.node.property.name
+          const propertyName
+            = path.node.property.value || path.node.property.name
 
           if (objectVariables[`${start}_${objectName}`]) {
             const objectInit = objectVariables[`${start}_${objectName}`]
@@ -540,17 +550,17 @@ class Deob {
             for (const prop of properties) {
               const keyName = prop.key.value || prop.key.name
               if (
-                (prop.key.type === 'StringLiteral' ||
-                  prop.key.type === 'Identifier') &&
-                keyName === propertyName &&
-                t.isLiteral(prop.value)
+                (prop.key.type === 'StringLiteral'
+                  || prop.key.type === 'Identifier')
+                && keyName === propertyName
+                && t.isLiteral(prop.value)
               ) {
                 // 还需要判断 objectName[propertyName] 是否被修改过
-                let binding = path.scope.getBinding(objectName)
+                const binding = path.scope.getBinding(objectName)
                 if (
-                  binding &&
-                  binding.constant &&
-                  binding.constantViolations.length === 0
+                  binding
+                  && binding.constant
+                  && binding.constantViolations.length === 0
                 ) {
                   console.log(objectName, propertyName)
 
@@ -571,16 +581,17 @@ class Deob {
     traverse(this.ast, {
       CallExpression(path) {
         if (
-          path.node.callee.type === 'MemberExpression' &&
-          path.node.callee.object.type === 'Identifier'
+          path.node.callee.type === 'MemberExpression'
+          && path.node.callee.object.type === 'Identifier'
         ) {
           const objectName = path.node.callee.object.name
-          const propertyName =
-            path.node.callee.property.value || path.node.callee.property.name
+          const propertyName
+            = path.node.callee.property.value || path.node.callee.property.name
 
           // 找到 objectName 的定义位置
           const binding = path.scope.getBinding(objectName)
-          if (!binding) return
+          if (!binding)
+            return
 
           const start = binding.identifier.start
 
@@ -595,69 +606,74 @@ class Deob {
             for (const prop of properties) {
               const keyName = prop.key.value || prop.key.name
               if (
-                (prop.key.type === 'StringLiteral' ||
-                  prop.key.type === 'Identifier') &&
-                prop.value.type === 'FunctionExpression' &&
-                keyName === propertyName
+                (prop.key.type === 'StringLiteral'
+                  || prop.key.type === 'Identifier')
+                && prop.value.type === 'FunctionExpression'
+                && keyName === propertyName
               ) {
                 // 拿到定义函数
-                let orgFn = prop.value
+                const orgFn = prop.value
 
                 // 在原代码中，函数体就一行 return 语句，取出其中的 argument 属性与调用节点替换
                 const firstStatement = orgFn.body.body?.[0]
-                if (!(firstStatement?.type === 'ReturnStatement')) return
+                if (!(firstStatement?.type === 'ReturnStatement'))
+                  return
 
                 console.log(objectName, propertyName)
 
                 // 返回参数
-                let returnArgument = firstStatement.argument
+                const returnArgument = firstStatement.argument
 
                 let isReplace = false
                 if (t.isBinaryExpression(returnArgument)) {
                   // _0x5a2810 + _0x2b32f4
-                  let binaryExpression = t.binaryExpression(
+                  const binaryExpression = t.binaryExpression(
                     returnArgument.operator,
                     argumentList[0],
                     argumentList[1],
                   )
                   path.replaceWith(binaryExpression)
                   isReplace = true
-                } else if (t.isLogicalExpression(returnArgument)) {
+                }
+                else if (t.isLogicalExpression(returnArgument)) {
                   // _0x5a2810 || _0x2b32f4
-                  let logicalExpression = t.logicalExpression(
+                  const logicalExpression = t.logicalExpression(
                     returnArgument.operator,
                     argumentList[0],
                     argumentList[1],
                   )
                   path.replaceWith(logicalExpression)
                   isReplace = true
-                } else if (t.isUnaryExpression(returnArgument)) {
+                }
+                else if (t.isUnaryExpression(returnArgument)) {
                   // !_0x5a2810
-                  let unaryExpression = t.unaryExpression(
+                  const unaryExpression = t.unaryExpression(
                     returnArgument.operator,
                     argumentList[0],
                   )
                   path.replaceWith(unaryExpression)
                   isReplace = true
-                } else if (t.isCallExpression(returnArgument)) {
+                }
+                else if (t.isCallExpression(returnArgument)) {
                   // function (_0x1d0a4d, _0x1df411) {
                   //   return _0x1d0a4d();
                   // }
 
                   // 取出是哪个参数作为函数名来调用 因为可能会传递多个参数，取其中一个或几个
                   // 确保调用函数名必须是标识符才替换
-                  if (returnArgument.callee.type !== 'Identifier') return
+                  if (returnArgument.callee.type !== 'Identifier')
+                    return
 
-                  let callFnName = returnArgument.callee.name // 形参的函数名
+                  const callFnName = returnArgument.callee.name // 形参的函数名
 
                   // 找到从传递的多个参数中 定位索引
-                  let callIndex = orgFn.params.findIndex(
-                    (a) => a.name === callFnName,
+                  const callIndex = orgFn.params.findIndex(
+                    a => a.name === callFnName,
                   )
 
                   // 再从实际参数(实参)中找到真正函数名
-                  let realFnName = argumentList.splice(callIndex, 1)[0]
-                  let callExpression = t.callExpression(
+                  const realFnName = argumentList.splice(callIndex, 1)[0]
+                  const callExpression = t.callExpression(
                     realFnName,
                     argumentList,
                   )
@@ -665,9 +681,8 @@ class Deob {
                   isReplace = true
                 }
 
-                if (isReplace) {
+                if (isReplace)
                   replaceObjects.add(objectName)
-                }
               }
             }
           }
@@ -699,7 +714,8 @@ class Deob {
         if (t.isFunctionExpression(path.node.callee)) {
           // 找到 return 语句
           const firstStatement = path.node.callee.body.body?.[0]
-          if (!(firstStatement?.type === 'ReturnStatement')) return
+          if (!(firstStatement?.type === 'ReturnStatement'))
+            return
 
           // ['bugger']
           const outerArguments = path.node.arguments
@@ -721,28 +737,27 @@ class Deob {
               .traverse({
                 Identifier(p) {
                   if (
-                    p.parentKey !== 'params' &&
-                    p.node.name === argument.name
-                  ) {
+                    p.parentKey !== 'params'
+                    && p.node.name === argument.name
+                  )
                     p.replaceWith(outerArguments[index])
-                  }
                 },
               })
           })
 
           if (
-            t.isCallExpression(innerFunction) &&
-            innerFunction.arguments.length === 1
+            t.isCallExpression(innerFunction)
+            && innerFunction.arguments.length === 1
           ) {
             const firstStatement = innerFunction.callee.body?.body?.[0]
-            if (!(firstStatement?.type === 'ReturnStatement')) return
+            if (!(firstStatement?.type === 'ReturnStatement'))
+              return
 
             // Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
             const finalExpression = firstStatement.argument
 
-            if (finalExpression.type === 'CallExpression') {
+            if (finalExpression.type === 'CallExpression')
               path.replaceWith(finalExpression)
-            }
 
             path.skip()
           }
@@ -753,7 +768,7 @@ class Deob {
 
   /**
    * @description 将 for 初始化赋值前置
-   * @example 
+   * @example
      for (a = 1, w = "2|1|2|3"["split"]("|"), void 0;;) {
        var a;
        var w;
@@ -793,11 +808,10 @@ class Deob {
 
           path.node.init.expressions = path.node.init.expressions.filter(
             (e) => {
-              if (e.type === 'AssignmentExpression') {
+              if (e.type === 'AssignmentExpression')
                 return !toRemoveVariableDeclarators.includes(e.left.name)
-              } else {
+              else
                 return true
-              }
             },
           )
 
@@ -814,7 +828,7 @@ class Deob {
             },
           })
 
-          let statement = path.getStatementParent()
+          const statement = path.getStatementParent()
 
           path.insertBefore(declarations)
         }
@@ -824,34 +838,34 @@ class Deob {
   }
 
   /**
-     * @description switch 混淆扁平化
-     * @example
-     * function a() {
+   * @description switch 混淆扁平化
+   * @example
+   * function a() {
          var _0x263cfa = "1|3|2|0"["split"]("|"),
            _0x105b9b = 0;
-     
+
          while (true) {
            switch (_0x263cfa[_0x105b9b++]) {
              case "0":
                return _0x4b70fb;
-     
+
              case "1":
                if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
                  return;
                }
-     
+
                continue;
-     
+
              case "2":
                _0x4b70fb["charset"] = "utf-8";
                continue;
-     
+
              case "3":
                var _0x4b70fb = document["createElement"](_0x3d66ff);
-     
+
                continue;
            }
-     
+
            break;
          }
        }
@@ -864,20 +878,21 @@ class Deob {
           _0x4b70fb["charset"] = "utf-8";
           return _0x4b70fb;
        }
-     */
+   */
   switchFlat() {
     this.transformForLoop()
 
     traverse(this.ast, {
       SwitchStatement(path) {
         // 判断父节点是否为循环节点
-        let forOrWhileStatementPath = path.findParent(
-          (p) => p.isForStatement() || p.isWhileStatement(),
+        const forOrWhileStatementPath = path.findParent(
+          p => p.isForStatement() || p.isWhileStatement(),
         )
-        if (!forOrWhileStatementPath) return
+        if (!forOrWhileStatementPath)
+          return
 
         // 拿到函数的块语句
-        let fnBlockStatementPath = forOrWhileStatementPath.findParent((p) =>
+        const fnBlockStatementPath = forOrWhileStatementPath.findParent(p =>
           p.isBlockStatement(),
         )
 
@@ -887,12 +902,12 @@ class Deob {
         // 从整个函数的 BlockStatement 中遍历寻找 "1|3|2|0"["split"]
         fnBlockStatementPath.traverse({
           MemberExpression(path) {
-            const propertyName =
-              path.node.property.value || path.node.property.name
+            const propertyName
+              = path.node.property.value || path.node.property.name
             if (
-              (t.isStringLiteral(path.node.property) ||
-                t.isIdentifier(path.node.property)) &&
-              propertyName === 'split'
+              (t.isStringLiteral(path.node.property)
+                || t.isIdentifier(path.node.property))
+              && propertyName === 'split'
             ) {
               if (t.isStringLiteral(path.node.object)) {
                 // path.node.object.value 为 "1|3|2|0"
@@ -900,7 +915,7 @@ class Deob {
                 shufferArr = shufferString.split('|')
 
                 // 顺带移除 var _0x263cfa = "1|3|2|0"["split"]("|"),
-                const VariableDeclarator = path.findParent((p) =>
+                const VariableDeclarator = path.findParent(p =>
                   p.isVariableDeclarator(),
                 )
                 if (VariableDeclarator) {
@@ -918,22 +933,23 @@ class Deob {
           },
         })
 
-        if (shufferArr.length === 0) return
+        if (shufferArr.length === 0)
+          return
 
         const myArr = path.node.cases
-          .filter((p) => p.test?.type === 'StringLiteral')
-          .map((p) => p.consequent[0])
+          .filter(p => p.test?.type === 'StringLiteral')
+          .map(p => p.consequent[0])
 
-        const sequences = shufferArr.map((v) => myArr[v])
+        const sequences = shufferArr.map(v => myArr[v])
         fnBlockStatementPath.node.body.push(...sequences)
 
         // 将整个 while 循环体都移除
         if (
-          path.parentPath.parentPath.type === 'WhileStatement' ||
-          path.parentPath.parentPath.type === 'ForStatement'
-        ) {
+          path.parentPath.parentPath.type === 'WhileStatement'
+          || path.parentPath.parentPath.type === 'ForStatement'
+        )
           path.parentPath.parentPath.remove()
-        }
+
         path.skip()
       },
     })
@@ -946,17 +962,17 @@ class Deob {
    */
   restoreSequence() {
     traverse(this.ast, {
-      SequenceExpression(path) {
-        exit: (path) => {
-          let exporessions = path.node.expressions
-          let finalExpression = exporessions[exporessions.length - 1]
-          let statement = path.getStatementParent()
+      SequenceExpression: {
+        exit(path) {
+          const exporessions = path.node.expressions
+          const finalExpression = exporessions[exporessions.length - 1]
+          const statement = path.getStatementParent()
 
-          this.expression.map((e) => {
+          this.expression.forEach((e) => {
             statemente.insertBefore(t.ExpressionStatement(e))
           })
           path.replaceInline(finalExpression)
-        }
+        },
       },
     })
   }
@@ -968,29 +984,30 @@ class Deob {
   convParam() {
     traverse(this.ast, {
       ExpressionStatement(path) {
-        var node = path.node
-        if (!t.isCallExpression(node.expression)) return
+        const node = path.node
+        if (!t.isCallExpression(node.expression))
+          return
         if (
-          node.expression.arguments == undefined ||
-          node.expression.callee.params == undefined ||
-          node.expression.arguments.length >
-          node.expression.callee.params.length
+          !node.expression.arguments
+          || !node.expression.callee.params
+          || node.expression.arguments.length
+          > node.expression.callee.params.length
         )
           return
 
         // 获取形参和实参
-        var argumentList = node.expression.arguments
-        var paramList = node.expression.callee.params
+        const argumentList = node.expression.arguments
+        const paramList = node.expression.callee.params
         // 实参可能会比形参少，所以我们对实参进行遍历， 查看当前作用域内是否有该实参的引用
-        for (var i = 0; i < argumentList.length; i++) {
-          var argumentName = argumentList[i].name
-          var paramName = paramList[i].name
+        for (let i = 0; i < argumentList.length; i++) {
+          const argumentName = argumentList[i].name
+          const paramName = paramList[i].name
           path.traverse({
             MemberExpression(_path) {
-              var _node = _path.node
+              const _node = _path.node
               if (
-                !t.isIdentifier(_node.object) ||
-                _node.object.name !== paramName
+                !t.isIdentifier(_node.object)
+                || _node.object.name !== paramName
               )
                 return
               // 有对实参的引用则 将形参的名字改为实参的名字
@@ -1012,7 +1029,7 @@ class Deob {
     traverse(this.ast, {
       MemberExpression(path) {
         if (t.isStringLiteral(path.node.property)) {
-          let name = path.node.property.value
+          const name = path.node.property.value
           path.node.property = t.identifier(name)
           path.node.computed = false
         }
@@ -1025,27 +1042,28 @@ class Deob {
    */
   replaceConstant() {
     traverse(this.ast, {
-      'AssignmentExpression|VariableDeclarator'(path) {
+      'AssignmentExpression|VariableDeclarator': function (path) {
         let name, initValue
         if (path.isAssignmentExpression()) {
           name = path.node.left.name
           initValue = path.node.right
-        } else {
+        }
+        else {
           name = path.node.id.name
           initValue = path.node.init
         }
 
         if (t.isStringLiteral(initValue) || t.isNumericLiteral(initValue)) {
-          let binding = path.scope.getBinding(name)
+          const binding = path.scope.getBinding(name)
 
           if (
-            binding &&
-            binding.constant &&
-            binding.constantViolations.length == 0
+            binding
+            && binding.constant
+            && binding.constantViolations.length === 0
           ) {
-            for (let i = 0; i < binding.referencePaths.length; i++) {
+            for (let i = 0; i < binding.referencePaths.length; i++)
               binding.referencePaths[i].replaceWith(initValue)
-            }
+
             path.remove()
           }
         }
@@ -1065,8 +1083,9 @@ class Deob {
     traverse(this.ast, {
       BinaryExpression(path) {
         const { left, right } = path.node
-        const hasIdentifier = [left, right].some((a) => t.isIdentifier(a))
-        if (hasIdentifier) return
+        const hasIdentifier = [left, right].some(a => t.isIdentifier(a))
+        if (hasIdentifier)
+          return
         if (t.isLiteral(left) && t.isLiteral(right)) {
           const { confident, value } = path.evaluate()
           confident && path.replaceWith(t.valueToNode(value))
@@ -1084,51 +1103,52 @@ class Deob {
   calcBoolean() {
     traverse(this.ast, {
       UnaryExpression(path) {
-        if (path.node.operator !== '!') return // 避免判断成 void
+        if (path.node.operator !== '!')
+          return // 避免判断成 void
 
         // 判断第二个符号是不是!
         if (t.isUnaryExpression(path.node.argument)) {
           if (t.isArrayExpression(path.node.argument.argument)) {
             // !![]
-            if (path.node.argument.argument.elements.length == 0) {
+            if (path.node.argument.argument.elements.length === 0) {
               path.replaceWith(t.booleanLiteral(true))
               path.skip()
             }
           }
-        } else if (t.isArrayExpression(path.node.argument)) {
+        }
+        else if (t.isArrayExpression(path.node.argument)) {
           // ![]
-          if (path.node.argument.elements.length == 0) {
+          if (path.node.argument.elements.length === 0) {
             path.replaceWith(t.booleanLiteral(false))
             path.skip()
           }
-        } else if (t.isNumericLiteral(path.node.argument)) {
+        }
+        else if (t.isNumericLiteral(path.node.argument)) {
           // !0 or !1
           if (path.node.argument.value === 0)
             path.replaceWith(t.booleanLiteral(true))
           else if (path.node.argument.value === 1)
             path.replaceWith(t.booleanLiteral(false))
-        } else {
         }
       },
     })
   }
 
   /**
-   * @description	清理无用变量与函数
+   * @description 清理无用变量与函数
    */
   removeUnusedVariables(variableNames = null, excludeProgram = true) {
     traverse(this.ast, {
-      'VariableDeclarator|FunctionDeclaration'(path) {
+      'VariableDeclarator|FunctionDeclaration': function (path) {
         const { id, init } = path.node
         if (
           !(
-            t.isLiteral(init) ||
-            t.isObjectExpression(init) ||
-            t.isFunctionExpression(init)
+            t.isLiteral(init)
+            || t.isObjectExpression(init)
+            || t.isFunctionExpression(init)
           )
-        ) {
+        )
           return
-        }
 
         const name = id.name
 
@@ -1141,14 +1161,15 @@ class Deob {
         }
 
         const binding = path.scope.getBinding(name)
-        if (!binding || binding.constantViolations.length > 0) return
+        if (!binding || binding.constantViolations.length > 0)
+          return
 
         // 排除 Program 下的变量
-        if (excludeProgram && binding.scope?.block?.type === 'Program') {
+        if (excludeProgram && binding.scope?.block?.type === 'Program')
           return
-        }
 
-        if (binding.referencePaths.length > 0) return
+        if (binding.referencePaths.length > 0)
+          return
         path.remove()
       },
     })
@@ -1164,11 +1185,10 @@ class Deob {
     traverse(this.ast, {
       IfStatement(path) {
         if (t.isBooleanLiteral(path.node.test)) {
-          if (path.node.test.value) {
+          if (path.node.test.value)
             path.replaceInline(path.node.consequent.body)
-          } else {
+          else
             path.replaceInline(path.node.alternate.body)
-          }
         }
       },
     })
@@ -1196,16 +1216,17 @@ class Deob {
   addComments(keywords = [], label = ' TOLOOK') {
     const defaultKeywords = ['debugger']
     keywords = [
-      ...new Set([...keywords.map((k) => k.toLowerCase()), ...defaultKeywords]),
+      ...new Set([...keywords.map(k => k.toLowerCase()), ...defaultKeywords]),
     ]
 
     traverse(this.ast, {
       DebuggerStatement(path) {
         // 如果已注释,则跳过
         const hasComment = path.node.leadingComments?.find(
-          (c) => (c.value = label),
+          c => (c.value = label),
         )
-        if (hasComment) return
+        if (hasComment)
+          return
 
         path.addComment('leading', label, true)
       },
@@ -1227,16 +1248,18 @@ class Deob {
       },
       StringLiteral(path) {
         if (keywords.includes(path.node.value.toLowerCase())) {
-          const statementPath = path.findParent((p) => p.isStatement())
-          if (statementPath) statementPath.addComment('leading', label, true)
+          const statementPath = path.findParent(p => p.isStatement())
+          if (statementPath)
+            statementPath.addComment('leading', label, true)
           else path.addComment('leading', label, true)
         }
       },
       Identifier(path) {
         const name = path.node.name
         if (keywords.includes(name.toLowerCase())) {
-          const statementPath = path.findParent((p) => p.isStatement())
-          if (statementPath) statementPath.addComment('leading', label, true)
+          const statementPath = path.findParent(p => p.isStatement())
+          if (statementPath)
+            statementPath.addComment('leading', label, true)
           else path.addComment('leading', label, true)
         }
       },
@@ -1249,10 +1272,10 @@ class Deob {
    * @deprecated
    */
   renameIdentifier() {
-    let code = this.code
-    let newAst = parser.parse(code)
+    const code = this.code
+    const newAst = parser.parse(code)
     traverse(newAst, {
-      'Program|FunctionExpression|FunctionDeclaration'(path) {
+      'Program|FunctionExpression|FunctionDeclaration': function (path) {
         path.traverse({
           Identifier(p) {
             path.scope.rename(
@@ -1268,5 +1291,5 @@ class Deob {
 }
 
 export {
-  Deob
+  Deob,
 }

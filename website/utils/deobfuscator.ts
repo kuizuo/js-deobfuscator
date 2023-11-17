@@ -2,17 +2,15 @@ import { Deob } from '@deob/utils'
 
 self.addEventListener(
   'message',
-  function ({ data }) {
-    const { code, options } = data
+  ({ data }) => {
+    const { code, _options } = data
 
-    if (!code) {
+    if (!code)
       return
-    }
 
-    let deob = new Deob(code)
+    const deob = new Deob(code)
 
     deob.findDecryptFnByCallCount(800, true)
-
 
     // deob.saveAllObject()
     // deob.objectMemberReplace()
@@ -31,15 +29,13 @@ self.addEventListener(
     deob.removeUnusedVariables()
     deob.selfCallFnReplace()
 
-
     deob.deleteExtra()
     deob.addComments()
 
-    let output = deob.getCode()
+    const output = deob.getCode()
 
     // TODO: parse time;
     self.postMessage({ code: output })
   },
   false,
 )
-

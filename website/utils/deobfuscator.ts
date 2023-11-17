@@ -10,15 +10,13 @@ self.addEventListener(
 
     const deob = new Deob(code)
 
-    deob.findDecryptFnByCallCount(800, true)
+    deob.findDecryptFnByCallCount(200, true)
 
-    // deob.saveAllObject()
-    // deob.objectMemberReplace()
-    // await deob.record(fileName, 2)
+    deob.saveAllObject()
+    deob.objectMemberReplace()
 
     deob.switchFlat()
     deob.switchFlat()
-    deob.reParse()
 
     // 最后通用处理
     deob.calcBinary()
@@ -29,6 +27,8 @@ self.addEventListener(
     deob.removeUnusedVariables()
     deob.selfCallFnReplace()
 
+    // 优化
+    // deob.changeObjectAccessMode()
     deob.deleteExtra()
     deob.addComments()
 

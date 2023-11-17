@@ -34,19 +34,19 @@ class MyDeOb extends Deob { }
   await deob.record(fileName, 3)
 
   // 最后通用处理
-  // deob.calcBinary()
-  // deob.calcBoolean()
-  // deob.replaceConstant()
-  // await deob.record(fileName, 4)
+  deob.calcBinary()
+  deob.calcBoolean()
+  deob.replaceConstant()
+  await deob.record(fileName, 4)
 
-  // deob.removeUnusedBlock()
-  // deob.removeUnusedVariables()
-  // deob.selfCallFnReplace()
+  deob.removeUnusedBlock()
+  deob.removeUnusedVariables()
+  deob.selfCallFnReplace()
 
-  // // 优化
-  // // deob.changeObjectAccessMode()
-  // deob.deleteExtra()
-  // deob.addComments()
+  // 优化
+  // deob.changeObjectAccessMode()
+  deob.deleteExtra()
+  deob.addComments()
 
   const code = deob.getCode()
   await fs.writeFile(`${__dirname}/output.js`, code)

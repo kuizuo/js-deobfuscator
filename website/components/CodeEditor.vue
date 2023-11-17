@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
-import { MonacoEditor } from '#build/components'
+
+// eslint-disable-next-line ts/consistent-type-imports
+import type { MonacoEditor } from '#build/components'
 
 const code = defineModel<string>()
 const container = shallowRef<InstanceType<typeof MonacoEditor>>()

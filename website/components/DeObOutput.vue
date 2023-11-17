@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { loading } from '#imports'
-import { MonacoEditor } from '#build/components'
+
+// eslint-disable-next-line ts/consistent-type-imports
+import type { MonacoEditor } from '#build/components'
 
 import DeobfuscatorWorker from '~/utils/deobfuscator.ts?worker'
 

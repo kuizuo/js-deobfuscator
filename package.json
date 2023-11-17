@@ -1,7 +1,7 @@
 {
   "name": "js-de-obfuscator",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "scripts": {
     "website:dev": "pnpm run -C website dev",

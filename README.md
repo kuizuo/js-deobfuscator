@@ -4,7 +4,7 @@
 
 ## 使用
 
-### 本地测试
+### 本地
 
 安装
 
@@ -26,15 +26,19 @@ pnpm i
 │   ├── output.js                 # 最终处理完成的结果
 ```
 
+> 切记不要更改 code.js、pretty.js、output.js 文件名, 否则会触发 eslint 格式化。
+
 node index.js 即可反混淆代码
 
-### 网页测试
+### 网页
 
-TODO
+[js-de-obfuscator.vercel.app](https://js-de-obfuscator.vercel.app/) 或 [js-de-obfuscator.kuizuo.cn](https://js-de-obfuscator.kuizuo.cn/) 在线体验
+
+![image-20231117225958048](https://img.kuizuo.cn/202311172300568.png)
 
 
-## 说明
+## 致谢
 
-关于js代码混淆与还原介绍可看我曾经写过的两篇 blog：
-[JS代码之混淆](https://kuizuo.cn/blog/js-code-obfuscator) 
-[JS代码之还原](https://kuizuo.cn/blog/js-code-deobfuscator) 
+- [反爬虫 AST 原理与还原混淆实战](https://book.douban.com/subject/35575838/)
+- [sxzz/ast-explorer](https://github.com/sxzz/ast-explorer)
+

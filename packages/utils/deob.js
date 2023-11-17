@@ -3,6 +3,7 @@ import path from 'node:path'
 import * as parser from '@babel/parser'
 import traverse1 from '@babel/traverse'
 import generator1 from '@babel/generator'
+import { codeFrameColumns } from '@babel/code-frame'
 import * as t from '@babel/types'
 
 const generator = generator1?.default || generator1
@@ -12,9 +13,25 @@ if (typeof window !== 'undefined')
   // eslint-disable-next-line no-global-assign
   global = window
 
-let objectVariables = []
+const objectVariables = []
 
-class Deob {
+function handleError(error, rawCode) {
+  if (error instanceof SyntaxError) {
+    const codeFrame = codeFrameColumns(rawCode, {
+      start: {
+        line: error.loc.line,
+        column: error.loc.column + 1,
+      },
+    }, {
+      highlightCode: true,
+      message: error.message,
+    })
+
+    console.error(codeFrame)
+  }
+}
+
+export class Deob {
   /**
    *
    * @constructor
@@ -46,7 +63,16 @@ class Deob {
     this.dir = options.dir ?? './'
     this.isWriteFile = options.isWriteFile ?? false
 
-    this.ast = parser.parse(rawCode, { sourceType: 'script' })
+    try {
+      this.ast = parser.parse(rawCode, { sourceType: 'script' })
+    }
+    catch (error) {
+      console.error('代码初始化解析有误!')
+
+      handleError(error, rawCode)
+
+      throw new Error(error)
+    }
   }
 
   get code() {
@@ -70,11 +96,9 @@ class Deob {
       this.ast = parser.parse(jscode, { sourceType: 'script' })
     }
     catch (error) {
-      console.log('代码替换有误,导致解析失败!', error)
-      if (this.isWriteFile) {
-        console.log('正在写入错误文件...')
-        fs.writeFile(this.dir, 'reParse_error.js', jscode).then()
-      }
+      console.error('代码替换有误,导致解析失败!')
+      handleError(error, jscode)
+
       throw new Error(error)
     }
   }
@@ -1288,8 +1312,4 @@ class Deob {
     })
     this.ast = newAst
   }
-}
-
-export {
-  Deob,
 }

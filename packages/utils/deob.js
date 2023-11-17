@@ -13,7 +13,10 @@ if (typeof window !== 'undefined')
   // eslint-disable-next-line no-global-assign
   global = window
 
-const objectVariables = []
+const globalState = {
+  objectVariables: [],
+  decryptFnList: [],
+}
 
 function handleError(error, rawCode) {
   if (error instanceof SyntaxError) {
@@ -159,7 +162,7 @@ export class Deob {
    * @description 执行解密替换
    * @example _0x4698(_0x13ee81, _0x3dfa50) ---> 原始字符串
    */
-  decryptReplace(ast, decryptFnCode, decryptFnList, arrayName = '') {
+  decryptReplace(ast, decryptFnCode) {
     if (!decryptFnCode) {
       console.log('无解密函数,已跳过')
       return
@@ -167,8 +170,7 @@ export class Deob {
 
     // 执行解密函数的代码，这样就可以在 nodejs 中运行解密函数来还原数据
     try {
-      console.log(`大数组名为: ${arrayName} `)
-      console.log(`解密函数为: ${decryptFnList.join(',')}`)
+      console.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
       console.log(`解密函数代码为: ${decryptFnCode}`)
       // eslint-disable-next-line no-eval
       const result = global.eval(decryptFnCode)
@@ -185,9 +187,9 @@ export class Deob {
     const visitor_decString = {
       // 解密函数可能是 var _0x3e22 = function(){ } 或 function _0x3e22(){}
       'VariableDeclarator|FunctionDeclaration': function (path) {
-        if (decryptFnList.includes(path.node.id.name)) {
+        if (globalState.decryptFnList.includes(path.node.id.name)) {
           // 有可能存在多个解密函数，所以需要多次遍历
-          const decryptFn = decryptFnList.find(f => f === path.node.id.name)
+          const decryptFn = globalState.decryptFnList.find(f => f === path.node.id.name)
           if (!decryptFn)
             return
 
@@ -218,6 +220,8 @@ export class Deob {
             catch (error) {
               // 解密失败 则添加注释 失败原因可能是该函数未调用
               p.addComment('leading', `解密失败${error.message}`, true)
+
+              // TODO: 添加个选项,用于解密失败后是否停止解密
             }
           })
         }
@@ -235,7 +239,6 @@ export class Deob {
    * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
    */
   findDecryptFnByCallCount(count = 100, isRemove = false) {
-    const decryptFnList = []
     let index = 0 // 定义解密函数所在语句下标
 
     // 先遍历所有函数(作用域在Program)，并根据引用次数来判断是否为解密函数
@@ -257,7 +260,7 @@ export class Deob {
               return
 
             if (binding.referencePaths.length > count) {
-              decryptFnList.push(name)
+              globalState.decryptFnList.push(name)
 
               // 根据最后一个解密函数来定义解密函数所在语句下标
               const binding = p.scope.getBinding(name)
@@ -289,7 +292,7 @@ export class Deob {
     // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
     const decryptFnCode = generator(descryptAst, { compact: true }).code
 
-    this.decryptReplace(this.ast, decryptFnCode, decryptFnList)
+    this.decryptReplace(this.ast, decryptFnCode)
 
     if (isRemove)
       this.ast.program.body = this.ast.program.body.slice(index)
@@ -304,7 +307,7 @@ export class Deob {
    */
   designDecryptFn(decryptFnList, isRemove = false) {
     if (!Array.isArray(decryptFnList))
-      decryptFnList = [decryptFnList]
+      globalState.decryptFnList = [decryptFnList]
 
     let index = 0 // 定义解密函数所在语句下标
 
@@ -322,7 +325,7 @@ export class Deob {
 
             const name = path.node.id.name
 
-            if (!decryptFnList.includes(name))
+            if (!globalState.decryptFnList.includes(name))
               return
 
             // 根据最后一个解密函数来定义解密函数所在语句下标
@@ -353,7 +356,7 @@ export class Deob {
     // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
     const decryptFnCode = generator(descryptAst, { compact: true }).code
 
-    this.decryptReplace(this.ast, decryptFnCode, decryptFnList)
+    this.decryptReplace(this.ast, decryptFnCode)
 
     if (isRemove)
       this.ast.program.body = this.ast.program.body.slice(index)
@@ -363,6 +366,7 @@ export class Deob {
 
   /**
    * @description 输入解密函数代码
+   * TODO:
    */
   InjectDecryptFnCode(decryptFnCode) { }
 
@@ -379,14 +383,13 @@ export class Deob {
         _0x4698('469' - -674, '828') ---> 调用解密函数得到原字符串
    */
   nestedFnReplace() {
-    const decryptFnList = this.decryptFnList
-    if (decryptFnList.length === 0)
+    if (globalState.decryptFnList.length === 0)
       return
 
     traverse(this.ast, {
       VariableDeclarator(path) {
-        if (decryptFnList.includes(path.node.id.name)) {
-          const decryptFuncName = decryptFnList.find(
+        if (globalState.decryptFnList.includes(path.node.id.name)) {
+          const decryptFuncName = globalState.decryptFnList.find(
             f => f === path.node.id.name,
           )
           const binding_decFunc = path.scope.getBinding(decryptFuncName)
@@ -503,20 +506,21 @@ export class Deob {
    *  }
    */
   saveAllObject() {
-    objectVariables = []
+    globalState.objectVariables = []
     traverse(this.ast, {
-      VariableDeclaration(path) {
-        path.node.declarations.forEach((declaration) => {
-          if (declaration.id.type === 'Identifier') {
-            const variableName = declaration.id.name
-            const start = declaration.start
-            if (declaration.init?.type === 'ObjectExpression')
-              objectVariables[`${start}_${variableName}`] = declaration.init
-          }
-        })
+      VariableDeclaration: {
+        exit(path, state) {
+          path.node.declarations.forEach((declaration) => {
+            if (declaration.id.type === 'Identifier') {
+              const variableName = declaration.id.name
+              const start = declaration.start
+              if (declaration.init?.type === 'ObjectExpression')
+                globalState.objectVariables[`${start}_${variableName}`] = declaration.init
+            }
+          })
+        },
       },
     })
-
     console.log(`已保存所有对象`)
   }
 
@@ -567,8 +571,8 @@ export class Deob {
           const propertyName
             = path.node.property.value || path.node.property.name
 
-          if (objectVariables[`${start}_${objectName}`]) {
-            const objectInit = objectVariables[`${start}_${objectName}`]
+          if (globalState.objectVariables[`${start}_${objectName}`]) {
+            const objectInit = globalState.objectVariables[`${start}_${objectName}`]
 
             const properties = objectInit.properties
             for (const prop of properties) {
@@ -619,8 +623,8 @@ export class Deob {
 
           const start = binding.identifier.start
 
-          if (objectVariables[`${start}_${objectName}`]) {
-            const objectInit = objectVariables[`${start}_${objectName}`]
+          if (globalState.objectVariables[`${start}_${objectName}`]) {
+            const objectInit = globalState.objectVariables[`${start}_${objectName}`]
 
             const properties = objectInit.properties
 
@@ -867,29 +871,29 @@ export class Deob {
    * function a() {
          var _0x263cfa = "1|3|2|0"["split"]("|"),
            _0x105b9b = 0;
-
+   
          while (true) {
            switch (_0x263cfa[_0x105b9b++]) {
              case "0":
                return _0x4b70fb;
-
+   
              case "1":
                if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
                  return;
                }
-
+   
                continue;
-
+   
              case "2":
                _0x4b70fb["charset"] = "utf-8";
                continue;
-
+   
              case "3":
                var _0x4b70fb = document["createElement"](_0x3d66ff);
-
+   
                continue;
            }
-
+   
            break;
          }
        }

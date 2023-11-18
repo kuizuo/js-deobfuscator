@@ -79,29 +79,13 @@ for (void 0;;) {
     expect(code).toBe('')
   })
 
-  it('calcBoolean', () => {
-    const rawCode = `
-    let a = !![];
-    let b = ![] ; 
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.calcBoolean()
-    const code = deob.getCode()
-
-    expect(code).toBe(
-      `
-let a = true;
-let b = false;
-    `.trim(),
-    )
-  })
-
   it('calcBinary', () => {
     const rawCode = `
     let a = 1 + 2;
     let b = "debu" + "gger" 
+
+    let c = !![];
+    let d = ![] ; 
     `
 
     const deob = new Deob(rawCode)
@@ -113,6 +97,9 @@ let b = false;
       `
 let a = 3;
 let b = "debugger";
+
+let c = true;
+let d = false;
     `.trim(),
     )
   })

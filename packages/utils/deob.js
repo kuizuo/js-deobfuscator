@@ -871,29 +871,29 @@ export class Deob {
    * function a() {
          var _0x263cfa = "1|3|2|0"["split"]("|"),
            _0x105b9b = 0;
-   
+
          while (true) {
            switch (_0x263cfa[_0x105b9b++]) {
              case "0":
                return _0x4b70fb;
-   
+
              case "1":
                if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
                  return;
                }
-   
+
                continue;
-   
+
              case "2":
                _0x4b70fb["charset"] = "utf-8";
                continue;
-   
+
              case "3":
                var _0x4b70fb = document["createElement"](_0x3d66ff);
-   
+
                continue;
            }
-   
+
            break;
          }
        }
@@ -1101,7 +1101,7 @@ export class Deob {
   }
 
   /**
-   * @description 计算二项式字面量
+   * @description 计算二项式字面量 计算布尔值
    * @example
    * 1 + 2   "debu" + "gger"
    * ⬇️
@@ -1120,16 +1120,6 @@ export class Deob {
           path.skip()
         }
       },
-    })
-  }
-
-  /**
-   * @description 计算布尔值
-   * @example
-   * !![] ---> true    ![] ---> false
-   */
-  calcBoolean() {
-    traverse(this.ast, {
       UnaryExpression(path) {
         if (path.node.operator !== '!')
           return // 避免判断成 void
@@ -1241,7 +1231,7 @@ export class Deob {
    * @description 给关键函数、标识符 设置注释
    * @example // TOLOOK
    */
-  addComments(keywords = [], label = ' TOLOOK') {
+  markComment(keywords = [], label = ' TOLOOK') {
     const defaultKeywords = ['debugger']
     keywords = [
       ...new Set([...keywords.map(k => k.toLowerCase()), ...defaultKeywords]),

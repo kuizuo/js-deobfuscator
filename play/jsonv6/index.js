@@ -35,7 +35,6 @@ class MyDeOb extends Deob { }
 
   // 最后通用处理
   deob.calcBinary()
-  deob.calcBoolean()
   deob.replaceConstant()
   await deob.record(fileName, 4)
 
@@ -46,7 +45,7 @@ class MyDeOb extends Deob { }
   // 优化
   // deob.changeObjectAccessMode()
   deob.deleteExtra()
-  deob.addComments()
+  deob.markComment()
 
   const code = deob.getCode()
   await fs.writeFile(`${__dirname}/output.js`, code)

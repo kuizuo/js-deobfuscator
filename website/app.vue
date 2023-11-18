@@ -12,7 +12,7 @@ const paneSize = ref(50)
     <div min-h-0 flex="~ gap3 1">
       <Splitpanes class="h-full">
         <Pane :size="paneSize" min-size="30">
-          <CodeEditor v-model="code" />
+          <SourceCodeEditor v-model="code" />
         </Pane>
         <Pane :size="100 - paneSize" min-size="20">
           <OutputViewer />

@@ -141,8 +141,8 @@ function stringifyError(error: unknown) {
 </script>
 
 <template>
-  <div flex="~ col gap-2 1" min-w-0 h-full>
-    <div flex="~ gap-3 wrap" items-center mx-2>
+  <div flex="~ col 1" min-w-0 h-full>
+    <div flex="~ gap-3 wrap" items-center p-0.5 mx-2>
       <label><input v-model="autoFocus" type="checkbox"> Auto focus</label>
       <label>
         <input v-model="hideEmptyKeys" type="checkbox"> Hide empty keys

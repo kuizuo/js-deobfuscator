@@ -2,35 +2,43 @@ import { Deob } from '@deob/utils'
 
 self.addEventListener(
   'message',
-  ({ data }) => {
-    const { code, _options } = data
+  ({ data }: { data: { code: string; options: Options } }) => {
+    const { code, options } = data
 
-    if (!code)
+    if (!code || !options)
       return
 
     const deob = new Deob(code)
 
-    deob.findDecryptFnByCallCount(200, true)
+    if (options.isDecryptFnEnabled)
+      deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
 
-    deob.saveAllObject()
-    deob.objectMemberReplace()
-
-    deob.switchFlat()
-    deob.switchFlat()
+    for (let i = 0; i <= options.execCount; i++) {
+      deob.saveAllObject()
+      deob.objectMemberReplace()
+      deob.switchFlat()
+      console.log(`执行第${i + 1}遍 完成`)
+    }
 
     // 最后通用处理
-    deob.calcBinary()
-    deob.calcBoolean()
-    deob.replaceConstant()
+    if (options.isCalcBinaryEnable)
+      deob.calcBinary()
 
-    deob.removeUnusedBlock()
-    deob.removeUnusedVariables()
+    if (options.isReplaceConstantEnable)
+      deob.replaceConstant()
+
+    if (options.isRemoveUnusedBlock)
+      deob.removeUnusedBlock()
+    if (options.isRemoveUnusedVariables)
+      deob.removeUnusedVariables()
+
     deob.selfCallFnReplace()
 
-    // 优化
-    // deob.changeObjectAccessMode()
-    deob.deleteExtra()
-    deob.addComments()
+    if (options.deleteExtraEnable)
+      deob.deleteExtra()
+
+    if (options.isMarkEnable)
+      deob.markComment(options.keywords)
 
     const output = deob.getCode()
 

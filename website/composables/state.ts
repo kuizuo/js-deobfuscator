@@ -37,6 +37,9 @@ export interface Options {
   isMarkEnable: boolean
   /** 关键标识符 */
   keywords: string[]
+
+  /** 是否日志输出(会影响还原效率) */
+  isLog: boolean
 }
 
 const defaultOptions: Options = {
@@ -55,6 +58,8 @@ const defaultOptions: Options = {
   deleteExtraEnable: true,
   isMarkEnable: true,
   keywords: ['debugger'],
+
+  isLog: true,
 }
 
 export const options = ref<Options>(defaultOptions)

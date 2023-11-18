@@ -14,7 +14,7 @@ if (typeof window !== 'undefined')
   global = window
 
 const globalState = {
-  objectVariables: [],
+  objectVariables: {},
   decryptFnList: [],
 }
 
@@ -43,11 +43,14 @@ export class Deob {
    * @param {string} [options.dir] - 输出目录
    * @param {boolean} [options.isWriteFile]
    * @param {object} [options.opts] - 是否写入文件
+   * @param {boolean} [options.isLog] - 是否输出日志
    * @throws {Error} 请载入js代码
    */
   constructor(rawCode, options = {}) {
     if (!rawCode)
       throw new Error('请载入js代码')
+    console.clear()
+    console.log('start deob')
     console.time('useTime')
 
     /**
@@ -65,6 +68,7 @@ export class Deob {
 
     this.dir = options.dir ?? './'
     this.isWriteFile = options.isWriteFile ?? false
+    this.isLog = options.isLog ?? true
 
     try {
       this.ast = parser.parse(rawCode, { sourceType: 'script' })
@@ -76,6 +80,10 @@ export class Deob {
 
       throw new Error(error)
     }
+  }
+
+  log(...args) {
+    this.isLog && console.log(...args)
   }
 
   get code() {
@@ -164,27 +172,28 @@ export class Deob {
    */
   decryptReplace(ast, decryptFnCode) {
     if (!decryptFnCode) {
-      console.log('无解密函数,已跳过')
+      this.log('无解密函数,已跳过')
       return
     }
 
     // 执行解密函数的代码，这样就可以在 nodejs 中运行解密函数来还原数据
     try {
-      console.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
-      console.log(`解密函数代码为: ${decryptFnCode}`)
+      this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
+      // this.log(`解密函数代码为: ${decryptFnCode}`)
       // eslint-disable-next-line no-eval
       const result = global.eval(decryptFnCode)
-      console.log('解密函数执行结果:', result)
+      this.log('解密函数执行结果:', result)
     }
     catch (e) {
+      this.log(`解密函数代码为: ${decryptFnCode}`)
       throw new Error('解密函数无法 eval 运行')
     }
 
+    const map = new Map()
     /**
      * 执行数组乱序与解密函数代码并将混淆字符串数值还原
-     *
      */
-    const visitor_decString = {
+    traverse(ast, {
       // 解密函数可能是 var _0x3e22 = function(){ } 或 function _0x3e22(){}
       'VariableDeclarator|FunctionDeclaration': function (path) {
         if (globalState.decryptFnList.includes(path.node.id.name)) {
@@ -213,7 +222,7 @@ export class Deob {
 
               // eslint-disable-next-line no-eval
               const decStr = eval(callCode)
-              console.log(callCode, decStr)
+              map.set(callCode, decStr)
 
               p.parentPath.replaceWith(t.stringLiteral(decStr))
             }
@@ -226,9 +235,9 @@ export class Deob {
           })
         }
       },
-    }
+    })
 
-    traverse(ast, visitor_decString)
+    this.log('解密结果:', map)
 
     this.reParse() // 切记一定要在替换后执行, 因为替换后此时 ast 并未更新, 就可能会导致后续处理都使用原先的 ast
   }
@@ -506,7 +515,7 @@ export class Deob {
    *  }
    */
   saveAllObject() {
-    globalState.objectVariables = []
+    globalState.objectVariables = {}
     traverse(this.ast, {
       VariableDeclaration: {
         exit(path, state) {
@@ -521,7 +530,7 @@ export class Deob {
         },
       },
     })
-    console.log(`已保存所有对象`)
+    this.log(`已保存所有对象: `, Object.entries(globalState.objectVariables).map(([key, value]) => ({ key, value: generator(value).code })))
   }
 
   /**
@@ -543,7 +552,8 @@ export class Deob {
    */
   objectMemberReplace() {
     // 记录被替换的对象, 如何对象没被修改过则删除
-    const replaceObjects = new Set()
+    const set = new Set()
+    const map = new Map()
 
     // 先执行 _0x52627b["QqaUY"] ---> "attribute"
     traverse(this.ast, {
@@ -590,9 +600,8 @@ export class Deob {
                   && binding.constant
                   && binding.constantViolations.length === 0
                 ) {
-                  console.log(objectName, propertyName)
-
-                  replaceObjects.add(objectName)
+                  map.set(`${objectName}.${propertyName}`, generator(prop.value).code)
+                  set.add(objectName)
 
                   path.replaceWith(prop.value)
                 }
@@ -647,7 +656,7 @@ export class Deob {
                 if (!(firstStatement?.type === 'ReturnStatement'))
                   return
 
-                console.log(objectName, propertyName)
+                map.set(`${objectName}.${propertyName}`, generator(orgFn).code)
 
                 // 返回参数
                 const returnArgument = firstStatement.argument
@@ -710,7 +719,7 @@ export class Deob {
                 }
 
                 if (isReplace)
-                  replaceObjects.add(objectName)
+                  set.add(objectName)
               }
             }
           }
@@ -720,9 +729,10 @@ export class Deob {
 
     this.reParse()
 
+    this.log(`已被替换对象: `, map)
     // 删除无用变量名已替换过的对象变量
-    // console.log(`已被替换的对象列表: ${[...replaceObjects]}`)
-    // this.removeUnusedVariables([...replaceObjects])
+    // this.log(`已被替换的对象列表:`, set)
+    // this.removeUnusedVariables([...set])
   }
 
   /**
@@ -848,10 +858,8 @@ export class Deob {
             VariableDeclarator(p) {
               const name = p.node.id?.name
               if (p.node.init === null) {
-                if (toRemoveVariableDeclarators.includes(name)) {
-                  console.log(generator(p.node).code)
+                if (toRemoveVariableDeclarators.includes(name))
                   p.remove()
-                }
               }
             },
           })
@@ -924,7 +932,6 @@ export class Deob {
           p.isBlockStatement(),
         )
 
-        let shufferString = ''
         let shufferArr = []
 
         // 从整个函数的 BlockStatement 中遍历寻找 "1|3|2|0"["split"]
@@ -939,21 +946,15 @@ export class Deob {
             ) {
               if (t.isStringLiteral(path.node.object)) {
                 // path.node.object.value 为 "1|3|2|0"
-                shufferString = path.node.object.value
+                const shufferString = path.node.object.value
                 shufferArr = shufferString.split('|')
 
                 // 顺带移除 var _0x263cfa = "1|3|2|0"["split"]("|"),
                 const VariableDeclarator = path.findParent(p =>
                   p.isVariableDeclarator(),
                 )
-                if (VariableDeclarator) {
-                  console.log(
-                    `switch 平坦化: ${shufferString} ; 删除代码 ${generator(VariableDeclarator.node).code
-                    }`,
-                  )
-
+                if (VariableDeclarator)
                   VariableDeclarator.remove()
-                }
 
                 path.stop()
               }

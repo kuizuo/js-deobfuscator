@@ -17,7 +17,6 @@ self.addEventListener(
       deob.saveAllObject()
       deob.objectMemberReplace()
       deob.switchFlat()
-      console.log(`执行第${i + 1}遍 完成`)
     }
 
     // 最后通用处理

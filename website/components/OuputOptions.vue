@@ -102,6 +102,12 @@ watchEffect(() => {
               type="input"
             >
           </label>
+
+          <label class="inline-flex items-center gap-2">
+            <span class="flex-1">是否输出到控制台</span>
+            <input v-model="options.isLog" type="checkbox">
+
+          </label>
         </div>
       </div>
 

@@ -83,9 +83,8 @@ for (void 0;;) {
     const rawCode = `
     let a = 1 + 2;
     let b = "debu" + "gger" 
-
     let c = !![];
-    let d = ![] ; 
+    let d = ![]; 
     `
 
     const deob = new Deob(rawCode)
@@ -97,10 +96,8 @@ for (void 0;;) {
       `
 let a = 3;
 let b = "debugger";
-
 let c = true;
-let d = false;
-    `.trim(),
+let d = false;`.trim(),
     )
   })
 

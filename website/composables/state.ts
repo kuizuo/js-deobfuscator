@@ -1,5 +1,3 @@
-import json5 from 'json5'
-
 const PREFIX = 'js-deobfuscator:'
 
 export const loading = ref<'load' | 'parse' | false>(false)

@@ -4,6 +4,7 @@ export const loading = ref<'load' | 'parse' | false>(false)
 export const code = ref('')
 export const ast = shallowRef<unknown>({})
 export const error = shallowRef<unknown>()
+export const parseTime = ref(0)
 
 export interface Options {
   /** 解密函数调用次数 */
@@ -60,9 +61,7 @@ const defaultOptions: Options = {
   isMinifiedEnable: false,
 }
 
-export const options = ref<Options>(defaultOptions)
-
-export const parseTime = ref(0)
+export const options = useLocalStorage<Options>(`${PREFIX}options`, defaultOptions)
 
 export const hideEmptyKeys = useLocalStorage(`${PREFIX}hide-empty-keys`, true)
 export const hideLocationData = useLocalStorage(

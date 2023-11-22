@@ -184,7 +184,7 @@ export class Deob {
     }
     catch (e) {
       this.log(`解密函数代码为: ${decryptFnCode}`)
-      throw new Error('解密函数无法 eval 运行')
+      throw new Error('解密函数无法 eval 运行, 请在控制台中查看解密函数是否定位正确')
     }
 
     const map = new Map()
@@ -761,9 +761,11 @@ export class Deob {
 
           // [_0x4f0d08]
           const innerArguments = innerFunction.arguments
+          if (!innerArguments)
+            return
 
           // 还需要根据传递的参数 将 _0x4f0d08 改成 bugger
-          innerArguments.forEach((argument, index) => {
+          innerArguments?.forEach((argument, index) => {
             path
               .get('callee')
               .get('body')
@@ -877,29 +879,29 @@ export class Deob {
    * function a() {
          var _0x263cfa = "1|3|2|0"["split"]("|"),
            _0x105b9b = 0;
-
+   
          while (true) {
            switch (_0x263cfa[_0x105b9b++]) {
              case "0":
                return _0x4b70fb;
-
+   
              case "1":
                if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
                  return;
                }
-
+   
                continue;
-
+   
              case "2":
                _0x4b70fb["charset"] = "utf-8";
                continue;
-
+   
              case "3":
                var _0x4b70fb = document["createElement"](_0x3d66ff);
-
+   
                continue;
            }
-
+   
            break;
          }
        }

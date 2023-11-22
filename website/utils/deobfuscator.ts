@@ -18,6 +18,8 @@ self.addEventListener(
       },
     })
 
+    deob.splitMultipleDeclarations()
+
     if (options.isDecryptFnEnabled)
       deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
 

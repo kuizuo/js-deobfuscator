@@ -11,7 +11,7 @@ const worker = new DeobfuscatorWorker()
 
 const output = ref('')
 
-const { text, copy, copied } = useClipboard({ source: output })
+const { copy, copied } = useClipboard({ source: output })
 
 worker.onmessage = ({ data }) => {
   loading.value = false
@@ -27,19 +27,17 @@ worker.onerror = (event) => {
 
 async function run() {
   if (!code.value) {
-    // Message({ message: '请输入代码', type: 'error' })
+    error.value = '请输入代码'
     return
   }
 
   loading.value = 'parse'
 
-  console.log('options', options.value)
   worker.postMessage({ code: code.value, options: json5.parse(JSON.stringify(options.value)) })
 }
 
 const container = shallowRef<InstanceType<typeof MonacoEditor>>()
 const monaco = useMonaco()!
-const IS_SAFARI = /Apple Computer/.test(globalThis.navigator?.vendor)
 
 function download() {
   if (output.value) {
@@ -48,29 +46,13 @@ function download() {
       downloadByData(output.value, 'output.js')
   }
 }
-
-function stringifyError(error: unknown) {
-  if (error instanceof Error) {
-    if (IS_SAFARI) {
-      return `${error}\n${error.stack
-        ?.split('\n')
-        .map((line) => {
-          const [fn, file] = line.split('@', 2)
-          return `${' '.repeat(4)}at ${fn} (${file})`
-        })
-        .join('\n')}`
-    }
-    return error.stack
-  }
-  return String(error)
-}
 </script>
 
 <template>
-  <div flex="~ col 1" min-w-0 h-full>
-    <div flex="~ gap-3 wrap items-center" py-0.5 mx-2>
-      <button flex="~" title="Deobfuscator" @click="run">
-        <div i-ri:arrow-right-double-line h-6 w-6 />
+  <div flex="~ col 1" min-w-0 h-full group>
+    <div flex="~ gap-3 wrap items-center" py-0.5 mx-1>
+      <button flex title="Deobfuscator" @click="run">
+        <div i-ri:arrow-right-line h-6 w-6 />
       </button>
       <div flex="~ gap-2 1" justify-end>
         <button title="copy" @click="copy()">
@@ -87,7 +69,7 @@ function stringifyError(error: unknown) {
         Parsing...
       </div>
       <div v-else-if="error" overflow-scroll w-full text-red>
-        <pre v-text="stringifyError(error)" />
+        <pre v-text="String(error)" />
       </div>
       <MonacoEditor
         v-show="!loading && !error"

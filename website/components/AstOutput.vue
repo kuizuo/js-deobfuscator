@@ -8,7 +8,6 @@ import type { MonacoEditor } from '#build/components'
 
 const container = shallowRef<InstanceType<typeof MonacoEditor>>()
 const monaco = useMonaco()!
-const IS_SAFARI = /Apple Computer/.test(globalThis.navigator?.vendor)
 
 const serialized = computed(() => {
   try {
@@ -122,22 +121,6 @@ watch(highlightRange, () => highlight(), {
   immediate: true,
   flush: 'post',
 })
-
-function stringifyError(error: unknown) {
-  if (error instanceof Error) {
-    if (IS_SAFARI) {
-      return `${error}\n${error.stack
-        ?.split('\n')
-        .map((line) => {
-          const [fn, file] = line.split('@', 2)
-          return `${' '.repeat(4)}at ${fn} (${file})`
-        })
-        .join('\n')}`
-    }
-    return error.stack
-  }
-  return String(error)
-}
 </script>
 
 <template>
@@ -159,7 +142,7 @@ function stringifyError(error: unknown) {
         Parsing...
       </div>
       <div v-else-if="error" overflow-scroll text-red>
-        <pre v-text="stringifyError(error)" />
+        <pre v-text="String(error)" />
       </div>
       <MonacoEditor
         v-show="!loading && !error"

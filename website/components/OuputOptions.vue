@@ -9,8 +9,8 @@ function openDialog() {
 }
 
 function handleDialogClick(evt: MouseEvent) {
-  // if (evt.target === evt.currentTarget)
-  //   dialog.value?.close()
+  if (evt.target === evt.currentTarget)
+    dialog.value?.close()
 }
 
 const keywordsValue = ref(JSON.stringify(options.value.keywords))

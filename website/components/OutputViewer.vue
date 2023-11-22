@@ -28,7 +28,9 @@ const parseTime = ref(0)
       </button>
       <!-- <span class="flex-1 text-right mr-2">{{ parseTime }} ms</span> -->
     </div>
-    <component :is="tabs[currentTab]" />
+    <keep-alive>
+      <component :is="tabs[currentTab]" />
+    </keep-alive>
   </div>
 </template>
 

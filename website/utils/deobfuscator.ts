@@ -23,7 +23,7 @@ self.addEventListener(
     if (options.isDecryptFnEnabled)
       deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
 
-    for (let i = 0; i <= options.execCount; i++) {
+    for (let i = 1; i <= options.execCount; i++) {
       deob.saveAllObject()
       deob.objectMemberReplace()
       deob.switchFlat()

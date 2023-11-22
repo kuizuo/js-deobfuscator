@@ -13,7 +13,7 @@ if (typeof window !== 'undefined')
   // eslint-disable-next-line no-global-assign
   global = window
 
-const globalState = {
+let globalState = {
   objectVariables: {},
   decryptFnList: [],
 }
@@ -68,6 +68,12 @@ export class Deob {
     this.dir = options.dir ?? './'
     this.isWriteFile = options.isWriteFile ?? false
     this.isLog = options.isLog ?? true
+    this.throwWithEval = options.throwWithEval ?? false
+
+    globalState = {
+      objectVariables: {},
+      decryptFnList: [],
+    }
 
     try {
       this.ast = parser.parse(rawCode, { sourceType: 'script' })
@@ -226,9 +232,11 @@ export class Deob {
             }
             catch (error) {
               // 解密失败 则添加注释 失败原因可能是该函数未调用
-              p.addComment('leading', `解密失败${error.message}`, true)
+              p.addComment('leading', `解密失败 ${error.message}`, true)
 
-              // TODO: 添加个选项,用于解密失败后是否停止解密
+              // 解密失败后是否停止解密
+              if (this.throwWithEval)
+                throw new Error(`解密失败 ${error.message}`)
             }
           })
         }
@@ -879,29 +887,29 @@ export class Deob {
    * function a() {
          var _0x263cfa = "1|3|2|0"["split"]("|"),
            _0x105b9b = 0;
-   
+
          while (true) {
            switch (_0x263cfa[_0x105b9b++]) {
              case "0":
                return _0x4b70fb;
-   
+
              case "1":
                if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
                  return;
                }
-   
+
                continue;
-   
+
              case "2":
                _0x4b70fb["charset"] = "utf-8";
                continue;
-   
+
              case "3":
                var _0x4b70fb = document["createElement"](_0x3d66ff);
-   
+
                continue;
            }
-   
+
            break;
          }
        }

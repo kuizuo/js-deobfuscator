@@ -8,6 +8,7 @@ self.addEventListener(
     if (!code || !options)
       return
 
+    const start = performance.now()
     const deob = new Deob(code)
 
     if (options.isDecryptFnEnabled)
@@ -41,8 +42,8 @@ self.addEventListener(
 
     const output = deob.getCode()
 
-    // TODO: parse time;
-    self.postMessage({ code: output })
+    const end = performance.now()
+    self.postMessage({ code: output, parseTime: (end - start).toFixed(0) })
   },
   false,
 )

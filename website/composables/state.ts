@@ -62,6 +62,8 @@ const defaultOptions: Options = {
 
 export const options = ref<Options>(defaultOptions)
 
+export const parseTime = ref(0)
+
 export const hideEmptyKeys = useLocalStorage(`${PREFIX}hide-empty-keys`, true)
 export const hideLocationData = useLocalStorage(
   `${PREFIX}hide-location-data`,

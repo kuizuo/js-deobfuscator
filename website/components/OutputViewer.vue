@@ -8,9 +8,6 @@ const tabs = {
   deob: DeObOutput,
   ast: AstOutput,
 }
-
-// TODO: add parseTime
-const parseTime = ref(0)
 </script>
 
 <template>
@@ -26,7 +23,7 @@ const parseTime = ref(0)
       >
         {{ tab }}
       </button>
-      <!-- <span class="flex-1 text-right mr-2">{{ parseTime }} ms</span> -->
+      <span v-if="parseTime" class="flex-1 text-right mr-2">{{ parseTime }} ms</span>
     </div>
     <keep-alive>
       <component :is="tabs[currentTab]" />

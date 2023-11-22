@@ -51,7 +51,6 @@ export class Deob {
       throw new Error('请载入js代码')
     console.clear()
     console.log('start deob')
-    console.time('useTime')
 
     /**
      * The raw JavaScript code.
@@ -93,7 +92,6 @@ export class Deob {
 
   getCode(opts) {
     const code = generator(this.ast, opts || this.opts).code
-    console.timeEnd('useTime')
     return code
   }
 

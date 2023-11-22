@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import json5 from 'json5'
-import { code, error, loading, options } from '#imports'
+import { code, error, loading, options, parseTime } from '#imports'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { MonacoEditor } from '#build/components'
@@ -17,6 +17,7 @@ worker.onmessage = ({ data }) => {
   loading.value = false
 
   output.value = data.code
+  parseTime.value = data.parseTime
 }
 
 worker.onerror = (event) => {
@@ -50,9 +51,9 @@ function download() {
 
 <template>
   <div flex="~ col 1" min-w-0 h-full group>
-    <div flex="~ gap-3 wrap items-center" py-0.5 mx-1>
+    <div flex="~ gap-3 wrap items-center" pt-1 mx-1>
       <button flex title="Deobfuscator" @click="run">
-        <div i-ri:arrow-right-line h-6 w-6 />
+        <div i-ri:movie-line h-6 w-6 />
       </button>
       <div flex="~ gap-2 1" justify-end>
         <button title="copy" @click="copy()">

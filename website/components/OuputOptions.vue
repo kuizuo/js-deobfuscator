@@ -29,7 +29,7 @@ watchEffect(() => {
 <template>
   <div flex items-center justify-center>
     <button class="i-ri:settings-line" @click="openDialog" />
-    <dialog ref="dialog" h-50vh rounded p0 @click="handleDialogClick">
+    <dialog ref="dialog" min-h-130 rounded p0 @click="handleDialogClick">
       <div py2 text-center text-lg font-bold>
         反混淆配置
         <button
@@ -106,7 +106,14 @@ watchEffect(() => {
           <label class="inline-flex items-center gap-2">
             <span class="flex-1">是否输出到控制台</span>
             <input v-model="options.isLog" type="checkbox">
+          </label>
 
+          <div class="border-b border-gray-200 text-lg mt-2">
+            输出配置
+          </div>
+          <label class="inline-flex items-center gap-2">
+            <span class="flex-1">是否压缩代码 (将不会有任何注释)</span>
+            <input v-model="options.isMinifiedEnable" type="checkbox">
           </label>
         </div>
       </div>

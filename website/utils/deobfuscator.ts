@@ -9,7 +9,14 @@ self.addEventListener(
       return
 
     const start = performance.now()
-    const deob = new Deob(code)
+    const deob = new Deob(code, {
+      opts: {
+        minified: options.isMinifiedEnable ?? false,
+        jsescOption: { minimal: true },
+        compact: options.isMinifiedEnable ?? false,
+        comments: !options.isMinifiedEnable ?? true,
+      },
+    })
 
     if (options.isDecryptFnEnabled)
       deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)

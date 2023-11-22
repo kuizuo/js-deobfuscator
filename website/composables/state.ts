@@ -6,7 +6,6 @@ export const ast = shallowRef<unknown>({})
 export const error = shallowRef<unknown>()
 
 export interface Options {
-
   /** 解密函数调用次数 */
   decryptFnCallCount: number
   /** 是否执行解密操作 */
@@ -16,8 +15,6 @@ export interface Options {
 
   /** 循环执行次数 */
   execCount: number
-  /** 是否 switch 平坦化 */
-  isSwitchFlatEnabled: boolean
 
   /** 是否计算二项式常量 */
   isCalcBinaryEnable: boolean
@@ -38,6 +35,9 @@ export interface Options {
 
   /** 是否日志输出(会影响还原效率) */
   isLog: boolean
+
+  /** 压缩代码 */
+  isMinifiedEnable: boolean
 }
 
 const defaultOptions: Options = {
@@ -45,7 +45,6 @@ const defaultOptions: Options = {
   isDecryptFnEnabled: true,
   isRemoveDecryptFn: true,
 
-  isSwitchFlatEnabled: true,
   execCount: 2,
 
   isCalcBinaryEnable: true,
@@ -58,6 +57,7 @@ const defaultOptions: Options = {
   keywords: ['debugger'],
 
   isLog: true,
+  isMinifiedEnable: false,
 }
 
 export const options = ref<Options>(defaultOptions)

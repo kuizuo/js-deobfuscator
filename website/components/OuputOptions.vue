@@ -44,6 +44,10 @@ watchEffect(() => {
       <div p-4 w-30vw>
         <div flex="~ col gap-2" text-base w-full>
           <label class="inline-flex items-center gap-2">
+            <span class="flex-1">强力清除(会对解混淆后的代码再次执行,慎用)</span>
+            <input v-model="options.isStrongRemove" type="checkbox">
+          </label>
+          <label class="inline-flex items-center gap-2">
             <span class="flex-1">执行解密函数</span>
             调用次数
             <input

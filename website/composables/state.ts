@@ -7,6 +7,8 @@ export const error = shallowRef<unknown>()
 export const parseTime = ref(0)
 
 export interface Options {
+  /** 是否强力清除 */
+  isStrongRemove: boolean
   /** 解密函数调用次数 */
   decryptFnCallCount: number
   /** 是否执行解密操作 */
@@ -42,6 +44,7 @@ export interface Options {
 }
 
 const defaultOptions: Options = {
+  isStrongRemove: false,
   decryptFnCallCount: 150,
   isDecryptFnEnabled: true,
   isRemoveDecryptFn: true,

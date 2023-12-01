@@ -1,3 +1,1 @@
-declare module '@deob/utils' {
-  export { Deob } from './main'
-}
+export { Deob } from './deob'

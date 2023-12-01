@@ -104,7 +104,7 @@ export class Deob {
   }
 
   /**
-   * @description 再次解析重新生成新的ast
+   * 再次解析重新生成新的ast
    */
   reParse() {
     const jscode = generator(this.ast, this.opts).code
@@ -121,7 +121,7 @@ export class Deob {
   }
 
   /**
-   * @description 记录解析后生成的代码 方便调试查看
+   * 记录解析后生成的代码 方便调试查看
    * @param {string} fileName
    * @param {number} i
    */
@@ -139,7 +139,7 @@ export class Deob {
   }
 
   /**
-   * @description 输出成好看形式 用于对比
+   * 输出成好看形式 用于对比
    */
   async prettierCode() {
     const newCode = generator(this.ast, {
@@ -173,7 +173,38 @@ export class Deob {
   }
 
   /**
-   * @description 执行解密替换
+   * 移除自调用函数
+   * @example !(fucntion) {
+   *  // xxx
+   * }();
+   *  ⬇️
+   * // xxx
+   */
+  removeSelfCallFn() {
+    traverse(this.ast, {
+      Program(p) {
+        p.traverse({
+          ExpressionStatement(path) {
+            const expression = path.node.expression
+            if (
+              expression.type === 'UnaryExpression'
+                  && expression.argument.type === 'CallExpression'
+                  && expression.argument.callee.type === 'FunctionExpression'
+                  && expression.argument.arguments.length === 0
+            ) {
+              path.replaceWith(expression.argument.callee.body)
+              path.skip()
+            }
+          },
+        })
+      },
+    })
+
+    this.reParse()
+  }
+
+  /**
+   * 执行解密替换
    * @example _0x4698(_0x13ee81, _0x3dfa50) ---> 原始字符串
    */
   decryptReplace(ast, decryptFnCode) {
@@ -251,7 +282,7 @@ export class Deob {
   }
 
   /**
-   * @description 根据函数调用次数寻找到解密函数 并执行解密操作
+   * 根据函数调用次数寻找到解密函数 并执行解密操作
    * @param {number} count 解密函数调用次数
    * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
    */
@@ -322,7 +353,7 @@ export class Deob {
   }
 
   /**
-   * @description 指明解密函数,会将解密函数以上的代码注入执行
+   * 指明解密函数,会将解密函数以上的代码注入执行
    * @param {string[]} decryptFnList 多个解密函数名
    * @param {*} isRemove 是否移除解密函数(后续用不到)
    */
@@ -386,13 +417,13 @@ export class Deob {
   }
 
   /**
-   * @description 输入解密函数代码
+   * 输入解密函数代码
    * TODO:
    */
   InjectDecryptFnCode(decryptFnCode) { }
 
   /**
-   * @description 嵌套函数花指令替换 需要优先执行,通常与解密函数配合
+   * 嵌套函数花指令替换 需要优先执行,通常与解密函数配合
    * @example
    *  _0x4698 为解密函数
    *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
@@ -502,7 +533,7 @@ export class Deob {
   }
 
   /**
-   * @description 保存所有对象 用于后续替换
+   * 保存所有对象 用于后续替换
    * @example
    * var _0x52627b = {
    *  'QqaUY': "attribute",
@@ -534,7 +565,7 @@ export class Deob {
   }
 
   /**
-   * @description 花指令 对象属性替换  前提需要执行 saveAllObjectect 用于保存所有变量
+   * 花指令 对象属性替换  前提需要执行 saveAllObjectect 用于保存所有变量
    * @example
    * var _0x52627b = {
    *  'QqaUY': "attribute",
@@ -737,7 +768,7 @@ export class Deob {
   }
 
   /**
-   * @description 自调用函数执行并替换
+   * 自调用函数执行并替换
    * @example
    * ;(function (_0x4f0d08) {
        return function (_0x4f0d08) {
@@ -808,7 +839,7 @@ export class Deob {
   }
 
   /**
-   * @description 将 for 初始化赋值前置
+   * 将 for 初始化赋值前置
    * @example
      for (a = 1, w = "2|1|2|3"["split"]("|"), void 0;;) {
        var a;
@@ -877,7 +908,7 @@ export class Deob {
   }
 
   /**
-   * @description switch 混淆扁平化
+   * switch 混淆扁平化
    * @example
    * function a() {
    *     var _0x263cfa = "1|3|2|0"["split"]("|"),
@@ -990,7 +1021,7 @@ export class Deob {
   }
 
   /**
-   * @description 还原逗号表达式
+   * 还原逗号表达式
    */
   restoreSequence() {
     traverse(this.ast, {
@@ -1010,7 +1041,7 @@ export class Deob {
   }
 
   /**
-   * @description 将对象['属性'] 改为对象.属性
+   * 将对象['属性'] 改为对象.属性
    */
   changeObjectAccessMode() {
     traverse(this.ast, {
@@ -1025,7 +1056,7 @@ export class Deob {
   }
 
   /**
-   * @description 将字符串和数值 **常量** 直接替换对应的变量引用地方
+   * 将字符串和数值 **常量** 直接替换对应的变量引用地方
    */
   replaceConstant() {
     traverse(this.ast, {
@@ -1060,7 +1091,7 @@ export class Deob {
   }
 
   /**
-   * @description 计算二项式字面量 计算布尔值
+   * 计算二项式字面量 计算布尔值
    * @example
    * 1 + 2   "debu" + "gger"
    * ⬇️
@@ -1112,7 +1143,7 @@ export class Deob {
   }
 
   /**
-   * @description 清理无用变量与函数
+   * 清理无用变量与函数
    */
   removeUnusedVariables(variableNames = null, excludeProgram = true) {
     traverse(this.ast, {
@@ -1149,7 +1180,7 @@ export class Deob {
   }
 
   /**
-   * @description 剔除始终不会执行的代码块
+   * 剔除始终不会执行的代码块
    * @example if(false){ }
    */
   removeUnusedBlock() {
@@ -1167,7 +1198,7 @@ export class Deob {
   }
 
   /**
-   * @description 清理十六进制编码
+   * 清理十六进制编码
    * @example '\x49\x63\x4b\x72\x77\x70\x2f\x44\x6c\x67\x3d\x3d' ---> "IcKrwp/Dlg=="
    */
   deleteExtra() {
@@ -1182,7 +1213,7 @@ export class Deob {
   }
 
   /**
-   * @description 给关键函数、标识符 设置注释
+   * 给关键函数、标识符 设置注释
    * @example // TOLOOK
    */
   markComment(keywords = [], label = ' TOLOOK') {
@@ -1239,7 +1270,7 @@ export class Deob {
   }
 
   /**
-   * @description 优化变量名
+   * 优化变量名
    * @example catch (_0x292610) {} ---> 如 catch (error) {}
    * @deprecated
    */

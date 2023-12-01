@@ -6,7 +6,9 @@ import generator1 from '@babel/generator'
 import { codeFrameColumns } from '@babel/code-frame'
 import * as t from '@babel/types'
 
+/** @type generator1 */
 const generator = generator1?.default || generator1
+/** @type traverse1 */
 const traverse = traverse1?.default || traverse1
 
 if (typeof window !== 'undefined')
@@ -254,6 +256,10 @@ export class Deob {
    * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
    */
   findDecryptFnByCallCount(count = 100, isRemove = false) {
+    // 如果多次调用则无需继续
+    if (globalState.decryptFnList.length > 0)
+      return
+
     let index = 0 // 定义解密函数所在语句下标
 
     // 先遍历所有函数(作用域在Program)，并根据引用次数来判断是否为解密函数
@@ -386,126 +392,113 @@ export class Deob {
   InjectDecryptFnCode(decryptFnCode) { }
 
   /**
-   * @description 嵌套函数花指令替换
-   * @deprecated
+   * @description 嵌套函数花指令替换 需要优先执行,通常与解密函数配合
    * @example
    *  _0x4698 为解密函数
    *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
             return _0x4698(_0x13ee81 - -674, _0x3dfa50);
-        };
-        ⬇️
-        _0x49afe4(-57, 1080, 828, 1138, 469) ---> _0x4698(_0x13ee81 - -674, _0x3dfa50)
-        _0x4698('469' - -674, '828') ---> 调用解密函数得到原字符串
+      };
+      _0x49afe4(-57, 1080, 828, 1138, 469)
+      ⬇️
+      _0x49afe4(-57, 1080, 828, 1138, 469) ---> _0x4698(_0x13ee81 - -674, _0x3dfa50)
+      _0x4698('469' - -674, '828') ---> 调用解密函数得到原字符串
    */
   nestedFnReplace() {
-    if (globalState.decryptFnList.length === 0)
-      return
-
     traverse(this.ast, {
-      VariableDeclarator(path) {
-        if (globalState.decryptFnList.includes(path.node.id.name)) {
-          const decryptFuncName = globalState.decryptFnList.find(
-            f => f === path.node.id.name,
-          )
-          const binding_decFunc = path.scope.getBinding(decryptFuncName)
-          binding_decFunc
-            && binding_decFunc.referencePaths.forEach((p_dec) => {
-              if (
-                !(
-                  p_dec.parentPath.isCallExpression()
-                  && p_dec.parentPath.node.arguments.length === 2
-                )
-              )
+      CallExpression(path) {
+        const { callee, arguments: args } = path.node
+
+        // 排除解密函数
+        if (globalState.decryptFnList.includes(callee.name))
+          return
+
+        if (callee.type !== 'Identifier')
+          return
+
+        // 所有参数都是字面量 视情况分析
+        // if (!args.every(a => t.isLiteral(a) || a.type === 'UnaryExpression'))
+        //   return
+
+        // 判断函数体的返回表达式是否为函数 且是解密函数
+        const binding = path.scope.getBinding(callee.name)
+
+        if (!binding)
+          return
+
+        const isVariableDeclarator = binding.path.node.type === 'VariableDeclarator'
+        const orgFn = isVariableDeclarator
+          ? binding.path.node.init
+          : binding.path.node
+
+        if (!orgFn) return
+
+        // 在原代码中，函数体就一行 return 语句 并且 参数还是函数表达式
+        const firstStatement = orgFn.body?.body?.[0]
+
+        if (!firstStatement) return
+        if (firstStatement.type !== 'ReturnStatement') return
+        if (firstStatement.argument?.type !== 'CallExpression') return
+
+        const returnCallFn = isVariableDeclarator
+          ? binding.path.get('init').get('body').get('body')[0].get('argument')
+          : binding.path.get('body').get('body')[0].get('argument')
+
+        if (!returnCallFn?.node)
+          return
+
+        const newArgument = []
+
+        // 遍历返回的函数的所有变量,将变量替换成字面量
+        returnCallFn.traverse({
+          Identifier: {
+            exit(p) {
+              // 从形参定位再从实参替换
+              const paramIndex = orgFn.params.findIndex(param => param.name === p.node.name)
+              if (paramIndex === -1)
                 return
-              // 寻找嵌套函数 剔除多次调用无用的花指令
-              // var _0x1b0063 = function(_0x3b85ee, _0x422ba8, _0x399819, _0x41dc9e, _0x14fe2f) {
-              //    return _0x4698(_0x41dc9e - -0x2d1, _0x422ba8);
-              // };
-              // 不是return语句,则判断不是解密函数花指令
-              if (!p_dec.parentPath.parentPath.isReturnStatement())
-                return
-              const callFuncVarPath = p_dec.findParent(
-                p => p.node.type === 'VariableDeclarator',
-              )
 
-              const callFuncName = callFuncVarPath.node.id.name
-              const orgcallFuncInit = cloneDeep(callFuncVarPath.node.init) // 用于后续重命名还原原始函数
+              // 最关键的代码
+              for (const a of returnCallFn.node.arguments) {
+                if (a.type === 'Identifier' && a.name === p.node.name) {
+                  newArgument.push(args[paramIndex])
+                  break
+                }
+                else if (a.type === 'BinaryExpression') {
+                  let newLeft = a.left
+                  let newRight = a.right
 
-              // 获取嵌套函数的binding 在根据嵌套函数的作用域referencePaths 遍历调用嵌套函数的地方
-              const binding_callFunc = p_dec.scope.getBinding(callFuncName)
-              binding_callFunc
-                && binding_callFunc.referencePaths.forEach((p_call) => {
-                  // 获取实参
-                  const argumentList = p_call.parentPath.node.arguments
-                  const orgArgumentList = cloneDeep(argumentList)
-                  const params = callFuncVarPath.node.init.params
-                  const orgParams = cloneDeep(params)
-                  // 实参中如果有变量则直接跳出不替换
-                  const hasIdentifier = orgArgumentList.some(a =>
-                    t.isIdentifier(a),
-                  )
-                  if (hasIdentifier)
-                    return
+                  if (a.left.type === 'Identifier' && a.left.name === p.node.name)
+                    newLeft = args[paramIndex]
 
-                  const nameMap = {}
-                  // 实参有可能小于形参 所以遍历实参
-                  for (let i = 0; i < orgArgumentList.length; i++) {
-                    const paramName = orgParams[i].name
-                    let argumentName
+                  if (a.right.type === 'Identifier' && a.right.name === p.node.name)
+                    newRight = args[paramIndex]
 
-                    if (orgArgumentList[i].type === 'UnaryExpression') {
-                      argumentName
-                        = orgArgumentList[i].operator
-                        + orgArgumentList[i].argument.value
-                    }
-                    else {
-                      argumentName = orgArgumentList[i].value
-                    }
-                    argumentName = `'${argumentName}'`
-                    // 将形参变为传入的实参 并指定作用域为嵌套函数内
-                    p_dec.parentPath.scope.rename(paramName, argumentName)
-                    nameMap[paramName] = argumentName
+                  // 如果都没有变化的话
+                  if (!(newLeft === a.left && newRight === a.right)) {
+                    const newBinary = t.binaryExpression(a.operator, newLeft, newRight)
+                    newArgument.push(newBinary)
+                    break
                   }
-                  // if (callFuncName === '_0x262585') {
-                  //   console.log(orgParams.map((p) => p.name));
-                  //   console.log(orgArgumentList.map((p) => p.value));
+                }
+              }
+            },
+          },
+        })
 
-                  //   console.log(p_call.parentPath.toString());
-                  //   console.log(p_dec.parentPath.toString());
-                  // }
+        const callFnName = returnCallFn.node?.callee.name
+        if (callFnName) {
+          // 构造出要替换的表达式
+          const newCallExpression = t.callExpression(
+            t.identifier(callFnName),
+            newArgument,
+          )
 
-                  // 将形参都转为实参后 然后生成对应解密后的代码 直接替换原本调用嵌套函数的地方 后面解密函数要处理
-                  const code = p_dec.parentPath.toString()
-                  p_call.parentPath.replaceWithSourceString(code)
-
-                  // 然后重命名回来
-                  Object.entries(nameMap).forEach((o) => {
-                    const paramName = o[0]
-                    const argumentName = o[1]
-                    p_dec.parentPath.scope.rename(argumentName, paramName)
-                  })
-
-                  /* 重命名后此时内嵌函数将会变成
-                                      _0x49afe4 = function ('-57', '1080', '828', '1138', '469') {
-                                        return _0x4698('469' - -674, '828');
-                                      }'
-                                    但形参不能为字面量,所以就需要转化成原先的参数
-                                    */
-                  callFuncVarPath.node.init = orgcallFuncInit
-
-                  // p_call.parentPath.toString()
-                  // '_0x49afe4(-57, 1080, 828, 1138, 469)'
-                  // p_dec.parentPath.toString()
-                  // '_0x4698(_0x13ee81 - -674, _0x3dfa50)'
-                  // funcVarPath.toString()
-                  // _0x49afe4 = function ('-57', '1080', '828', '1138', '469') {
-                  //   return _0x4698('469' - -0x2a2, '828');
-                  // }
-                })
-            })
+          path.replaceWith(newCallExpression)
         }
       },
     })
+
+    this.reParse()
   }
 
   /**
@@ -536,11 +529,12 @@ export class Deob {
         },
       },
     })
-    this.log(`已保存所有对象: `, Object.entries(globalState.objectVariables).map(([key, value]) => ({ key, value: generator(value).code })))
+    // this.log(`已保存所有对象: ${Object.entries(globalState.objectVariables).map(([key, value]) => ({ key, value: generator(value).code }))}`)
+    this.log(`已保存所有对象`)
   }
 
   /**
-   * @description 对象属性替换  前提需要执行 saveAllObjectect 用于保存所有变量
+   * @description 花指令 对象属性替换  前提需要执行 saveAllObjectect 用于保存所有变量
    * @example
    * var _0x52627b = {
    *  'QqaUY': "attribute",
@@ -618,6 +612,7 @@ export class Deob {
       },
     })
 
+    this.reParse()
     // 在执行
     // _0x52627b["GOEUR"](a, b) ---> a + b
     // _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
@@ -885,43 +880,43 @@ export class Deob {
    * @description switch 混淆扁平化
    * @example
    * function a() {
-         var _0x263cfa = "1|3|2|0"["split"]("|"),
-           _0x105b9b = 0;
-
-         while (true) {
-           switch (_0x263cfa[_0x105b9b++]) {
-             case "0":
-               return _0x4b70fb;
-
-             case "1":
-               if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
-                 return;
-               }
-
-               continue;
-
-             case "2":
-               _0x4b70fb["charset"] = "utf-8";
-               continue;
-
-             case "3":
-               var _0x4b70fb = document["createElement"](_0x3d66ff);
-
-               continue;
-           }
-
-           break;
-         }
-       }
-       ⬇️
-       function a(){
-          if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
-            return;
-          }
-          var _0x4b70fb = document["createElement"](_0x3d66ff);
-          _0x4b70fb["charset"] = "utf-8";
-          return _0x4b70fb;
-       }
+   *     var _0x263cfa = "1|3|2|0"["split"]("|"),
+   *       _0x105b9b = 0;
+   *
+   *     while (true) {
+   *       switch (_0x263cfa[_0x105b9b++]) {
+   *         case "0":
+   *           return _0x4b70fb;
+   *
+   *         case "1":
+   *           if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
+   *             return;
+   *           }
+   *
+   *           continue;
+   *
+   *         case "2":
+   *           _0x4b70fb["charset"] = "utf-8";
+   *           continue;
+   *
+   *         case "3":
+   *           var _0x4b70fb = document["createElement"](_0x3d66ff);
+   *
+   *           continue;
+   *       }
+   *
+   *       break;
+   *     }
+   *   }
+   *   ⬇️
+   *   function a(){
+   *      if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
+   *        return;
+   *      }
+   *      var _0x4b70fb = document["createElement"](_0x3d66ff);
+   *      _0x4b70fb["charset"] = "utf-8";
+   *      return _0x4b70fb;
+   *   }
    */
   switchFlat() {
     this.transformForLoop()
@@ -1010,51 +1005,6 @@ export class Deob {
           })
           path.replaceInline(finalExpression)
         },
-      },
-    })
-  }
-
-  /**
-   * @description 将形参中所包含的对象的改为实参形式
-   * @deprecated
-   */
-  convParam() {
-    traverse(this.ast, {
-      ExpressionStatement(path) {
-        const node = path.node
-        if (!t.isCallExpression(node.expression))
-          return
-        if (
-          !node.expression.arguments
-          || !node.expression.callee.params
-          || node.expression.arguments.length
-          > node.expression.callee.params.length
-        )
-          return
-
-        // 获取形参和实参
-        const argumentList = node.expression.arguments
-        const paramList = node.expression.callee.params
-        // 实参可能会比形参少，所以我们对实参进行遍历， 查看当前作用域内是否有该实参的引用
-        for (let i = 0; i < argumentList.length; i++) {
-          const argumentName = argumentList[i].name
-          const paramName = paramList[i].name
-          path.traverse({
-            MemberExpression(_path) {
-              const _node = _path.node
-              if (
-                !t.isIdentifier(_node.object)
-                || _node.object.name !== paramName
-              )
-                return
-              // 有对实参的引用则 将形参的名字改为实参的名字
-              _node.object.name = argumentName
-            },
-          })
-        }
-        // 删除实参和形参的列表。
-        // node.expression.arguments.length = 0
-        // node.expression.callee.params.length = 0
       },
     })
   }
@@ -1168,13 +1118,7 @@ export class Deob {
     traverse(this.ast, {
       'VariableDeclarator|FunctionDeclaration': function (path) {
         const { id, init } = path.node
-        if (
-          !(
-            t.isLiteral(init)
-            || t.isObjectExpression(init)
-            || t.isFunctionExpression(init)
-          )
-        )
+        if (!(t.isLiteral(init) || t.isObjectExpression(init) || t.isFunctionExpression(init)))
           return
 
         const name = id.name
@@ -1219,6 +1163,7 @@ export class Deob {
         }
       },
     })
+    this.reParse()
   }
 
   /**

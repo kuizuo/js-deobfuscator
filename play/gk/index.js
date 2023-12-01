@@ -6,8 +6,6 @@ import { Deob } from '@deob/utils'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-class MyDeOb extends Deob { }
-
 ; (async function () {
   const fileName = 'code'
 
@@ -15,26 +13,38 @@ class MyDeOb extends Deob { }
     encoding: 'utf-8',
   })
 
-  const deob = new MyDeOb(rawCode, {
+  const deob = new Deob(rawCode, {
     dir: __dirname,
     isWriteFile: true,
   })
 
   await deob.prettierCode()
 
-  deob.findDecryptFnByCallCount(100, true)
+  for (let i = 1; i <= 2; i++) {
+    deob.nestedFnReplace()
+    await deob.record(fileName, 0)
 
-  await deob.record(fileName, 1)
+    deob.findDecryptFnByCallCount(800, true)
 
-  deob.saveAllObject()
-  deob.objectMemberReplace()
-  deob.reParse()
-  await deob.record(fileName, 2)
+    await deob.record(fileName, 1)
 
-  deob.switchFlat()
-  deob.switchFlat()
-  deob.reParse()
-  await deob.record(fileName, 3)
+    for (let i = 1; i <= 2; i++) {
+      deob.saveAllObject()
+      deob.objectMemberReplace()
+      deob.switchFlat()
+    }
+
+    deob.calcBinary()
+
+    deob.replaceConstant()
+    deob.reParse()
+    await deob.record(fileName, 4)
+
+    deob.removeUnusedVariables()
+    deob.removeUnusedBlock()
+  }
+
+  deob.selfCallFnReplace()
 
   // 最后通用处理
   deob.calcBinary()
@@ -43,9 +53,10 @@ class MyDeOb extends Deob { }
   deob.reParse()
   await deob.record(fileName, 4)
 
-  deob.removeUnusedBlock()
-  deob.removeUnusedVariables()
-  deob.selfCallFnReplace()
+  for (let i = 1; i <= 2; i++) {
+    deob.removeUnusedVariables()
+    deob.removeUnusedBlock()
+  }
 
   // 优化
   // deob.changeObjectAccessMode()

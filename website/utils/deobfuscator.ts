@@ -20,8 +20,10 @@ self.addEventListener(
 
     deob.splitMultipleDeclarations()
 
-    if (options.isDecryptFnEnabled)
+    if (options.isDecryptFnEnabled) {
+      deob.nestedFnReplace()
       deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
+    }
 
     for (let i = 1; i <= options.execCount; i++) {
       deob.saveAllObject()

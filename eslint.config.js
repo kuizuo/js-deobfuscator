@@ -7,5 +7,7 @@ export default antfu({
     'no-console': 'off',
     'unused-imports/no-unused-vars': 'warn',
     'no-restricted-globals': 'off',
+
+    'antfu/if-newline': 'off',
   },
 })

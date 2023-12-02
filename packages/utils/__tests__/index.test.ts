@@ -49,6 +49,53 @@ for (void 0;;) {
     expect(code).toBe(`console.log("kuizuo");`)
   })
 
+  it('evalCode', () => {
+    const evalCode = `
+    function foo(){
+      return 'bar'
+    }
+    `
+
+    const deob = new Deob('var a = 1;')
+
+    deob.evalCode(evalCode)
+    const result = global.foo()
+
+    expect(result).toBe(`bar`)
+  })
+
+  it('designDecryptFn', () => {
+    const rawCode = `
+      var a = foo;
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.designDecryptFn('foo')
+
+    const code = deob.getCode()
+
+    expect(code).toBe(`var foo = foo;`)
+  })
+
+  it('nestedFnReplace', () => {
+    const rawCode = `
+    var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
+      return _0x4698(_0x13ee81 - -674, _0x3dfa50);
+    };
+    _0x49afe4(-57, 1080, 828, 1138, 469)
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.nestedFnReplace()
+    deob.removeUnusedVariables(null, false)
+
+    const code = deob.getCode()
+
+    expect(code).toBe(`_0x4698(469 - -674, 828);`)
+  })
+
   it('removeUnusedBlock', () => {
     const rawCode = `
         if(false){ 

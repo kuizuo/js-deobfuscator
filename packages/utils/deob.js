@@ -1,4 +1,4 @@
-import { promises as fs } from 'node:fs'
+import { promises as fs, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import * as parser from '@babel/parser'
 import traverse1 from '@babel/traverse'
@@ -116,6 +116,10 @@ export class Deob {
       console.error('代码替换有误,导致解析失败!')
       handleError(error, jscode)
 
+      // 将错误代码写入
+      writeFileSync(path.join(this.dir, `errorCode.js`), jscode)
+      this.log(`错误代码 errorCode.js 写入成功`)
+
       throw new Error(error)
     }
   }
@@ -206,31 +210,33 @@ export class Deob {
   /**
    * 执行解密替换
    * @example _0x4698(_0x13ee81, _0x3dfa50) ---> 原始字符串
+   * @param {*} ast
+   * @param {*} decryptFnCode
    */
-  decryptReplace(ast, decryptFnCode) {
-    if (!decryptFnCode) {
-      this.log('无解密函数,已跳过')
+  decryptReplace(decryptFnCode = null) {
+    if (globalState.decryptFnList.length === 0)
       return
-    }
 
+    if (decryptFnCode) {
     // 执行解密函数的代码，这样就可以在 nodejs 中运行解密函数来还原数据
-    try {
-      this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
-      // this.log(`解密函数代码为: ${decryptFnCode}`)
-      // eslint-disable-next-line no-eval
-      const result = global.eval(decryptFnCode)
-      this.log('解密函数执行结果:', result)
-    }
-    catch (e) {
-      this.log(`解密函数代码为: ${decryptFnCode}`)
-      throw new Error('解密函数无法 eval 运行, 请在控制台中查看解密函数是否定位正确')
+      try {
+        this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
+        // this.log(`解密函数代码为: ${decryptFnCode}`)
+
+        const result = global.eval(decryptFnCode)
+        this.log('解密函数执行结果:', result)
+      }
+      catch (e) {
+        this.log(`解密函数代码为: ${decryptFnCode}`)
+        throw new Error('解密函数无法 eval 运行, 请在控制台中查看解密函数是否定位正确')
+      }
     }
 
     const map = new Map()
     /**
      * 执行数组乱序与解密函数代码并将混淆字符串数值还原
      */
-    traverse(ast, {
+    traverse(this.ast, {
       // 解密函数可能是 var _0x3e22 = function(){ } 或 function _0x3e22(){}
       'VariableDeclarator|FunctionDeclaration': function (path) {
         if (globalState.decryptFnList.includes(path.node.id.name)) {
@@ -257,7 +263,6 @@ export class Deob {
               // 执行 _0x4698(_0x13ee81, _0x3dfa50) 代码, 并替换原始位置
               const callCode = p.parentPath.toString()
 
-              // eslint-disable-next-line no-eval
               const decStr = eval(callCode)
               map.set(callCode, decStr)
 
@@ -344,7 +349,7 @@ export class Deob {
     // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
     const decryptFnCode = generator(descryptAst, { compact: true }).code
 
-    this.decryptReplace(this.ast, decryptFnCode)
+    this.decryptReplace(decryptFnCode)
 
     if (isRemove)
       this.ast.program.body = this.ast.program.body.slice(index)
@@ -353,74 +358,64 @@ export class Deob {
   }
 
   /**
-   * 指明解密函数,会将解密函数以上的代码注入执行
-   * @param {string[]} decryptFnList 多个解密函数名
-   * @param {*} isRemove 是否移除解密函数(后续用不到)
+   * 指明解密函数 (需要配合代码注入实现)
+   * 当指明后,所有引用该变量赋值的代码都将替换成解密函数
+   * @param {string | string[]} decryptFnList
+   * @example
+   * function xxx(){} // xxx 为解密函数
+   *
+   * var a = xxx ---> var xxx = xxx
    */
-  designDecryptFn(decryptFnList, isRemove = false) {
+  designDecryptFn(decryptFnList) {
     if (!Array.isArray(decryptFnList))
       globalState.decryptFnList = [decryptFnList]
+    else
+      globalState.decryptFnList = decryptFnList
 
-    let index = 0 // 定义解密函数所在语句下标
-
+    // 先遍历所有函数(作用域在Program)，并根据引用次数来判断是否为解密函数
     traverse(this.ast, {
-      Program(p) {
-        p.traverse({
-          'FunctionDeclaration|VariableDeclarator': function (path) {
-            if (
-              !(
-                t.isFunctionDeclaration(path.node)
-                || t.isFunctionExpression(path.node.init)
-              )
-            )
-              return
+      'FunctionDeclaration|VariableDeclarator': function (path) {
+        if (!(t.isFunctionDeclaration(path.node) || t.isFunctionExpression(path.node?.init)))
+          return
 
-            const name = path.node.id.name
+        const name = path.node.id.name
 
-            if (!globalState.decryptFnList.includes(name))
-              return
+        const decryptFn = globalState.decryptFnList.find(n => n === name)
 
-            // 根据最后一个解密函数来定义解密函数所在语句下标
-            const binding = p.scope.getBinding(name)
-            if (!binding)
-              return
-
-            const parent = binding.path.find(
-              p => p.isFunctionDeclaration() || p.isVariableDeclaration(),
-            )
-            if (!parent)
-              return
-            const body = p.scope.block.body
-            for (let i = 0; i < body.length; i++) {
-              const node = body[i]
-              if (node.start === parent.node.start)
-                index = i + 1
-            }
-            // 遍历完当前节点,就不再往子节点遍历
-            path.skip()
-          },
-        })
+        if (decryptFn)
+          path.remove()
       },
     })
 
-    const descryptAst = parser.parse('')
-    descryptAst.program.body = this.ast.program.body.slice(0, index)
-    // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
-    const decryptFnCode = generator(descryptAst, { compact: true }).code
+    // 将所有引用解密函数的变量都复制为
+    traverse(this.ast, {
+      VariableDeclarator(path) {
+        const { id, init } = path.node
 
-    this.decryptReplace(this.ast, decryptFnCode)
+        if (init && init.type === 'Identifier') {
+          const decryptFn = globalState.decryptFnList.find(n => n === init.name)
 
-    if (isRemove)
-      this.ast.program.body = this.ast.program.body.slice(index)
+          // 直接替换会导致与原解密函数重定义,因此需要删除原原解密函数
+          if (decryptFn)
+            path.scope.rename(id.name, decryptFn)
+        }
+      },
+    })
+    this.reParse()
+
+    this.decryptReplace()
 
     this.reParse() // 切记一定要在替换后执行, 因为替换后此时 ast 并未更新, 就可能会导致后续处理都使用原先的 ast
   }
 
   /**
-   * 输入解密函数代码
-   * TODO:
+   * 注入代码 eval 执行
    */
-  InjectDecryptFnCode(decryptFnCode) { }
+  evalCode(code) {
+    const result = global.eval(code)
+
+    this.log('注入代码执行结果', result)
+  }
 
   /**
    * 嵌套函数花指令替换 需要优先执行,通常与解密函数配合
@@ -546,6 +541,25 @@ export class Deob {
    */
   saveAllObject() {
     globalState.objectVariables = {}
+
+    // TODO: 针对以下代码转换处理
+    // var e = {};
+    // e["ESKQL"] = function (n, t) {
+    //   return n ^ t;
+    // }, e["mznfP"] = function (n, t) {
+    //   return n ^ t;
+    // };
+    // var u = e;
+    // 🔽
+    // var u = {
+    //  "ESKQL":function (n, t) {
+    //    return n ^ t;
+    //  },
+    //  "mznfP" : function (n, t) {
+    //    return n ^ t;
+    //  }
+    // };
+
     traverse(this.ast, {
       VariableDeclaration: {
         exit(path, state) {
@@ -643,7 +657,6 @@ export class Deob {
       },
     })
 
-    this.reParse()
     // 在执行
     // _0x52627b["GOEUR"](a, b) ---> a + b
     // _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
@@ -955,9 +968,8 @@ export class Deob {
     traverse(this.ast, {
       SwitchStatement(path) {
         // 判断父节点是否为循环节点
-        const forOrWhileStatementPath = path.findParent(
-          p => p.isForStatement() || p.isWhileStatement(),
-        )
+        const forOrWhileStatementPath = path.findParent(p => p.isForStatement() || p.isWhileStatement())
+
         if (!forOrWhileStatementPath)
           return
 
@@ -1003,7 +1015,10 @@ export class Deob {
           .filter(p => p.test?.type === 'StringLiteral')
           .map(p => p.consequent[0])
 
-        const sequences = shufferArr.map(v => myArr[v])
+        const sequences = shufferArr
+          .map(s => myArr[s])
+          .filter(s => s?.type !== 'ContinueStatement') // 如果 case 语句 只有 continue 则跳过
+
         fnBlockStatementPath.node.body.push(...sequences)
 
         // 将整个 while 循环体都移除

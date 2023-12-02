@@ -34,6 +34,7 @@ function handleError(error, rawCode) {
     })
 
     console.error(codeFrame)
+    return codeFrame
   }
 }
 
@@ -67,7 +68,7 @@ export class Deob {
       comments: true,
     }
 
-    this.dir = options.dir ?? './'
+    this.dir = options.dir ?? '.'
     this.isWriteFile = options.isWriteFile ?? false
     this.isLog = options.isLog ?? true
     this.throwWithEval = options.throwWithEval ?? false
@@ -83,9 +84,8 @@ export class Deob {
     catch (error) {
       console.error('代码初始化解析有误!')
 
-      handleError(error, rawCode)
-
-      throw new Error(error)
+      const codeFrame = handleError(error, rawCode)
+      throw new Error(codeFrame)
     }
   }
 
@@ -113,14 +113,14 @@ export class Deob {
       this.ast = parser.parse(jscode, { sourceType: 'script' })
     }
     catch (error) {
-      console.error('代码替换有误,导致解析失败!')
-      handleError(error, jscode)
+      // eslint-disable-next-line node/prefer-global/process
+      if (!process.browser) {
+        writeFileSync(path.join(this.dir, `errorCode.js`), jscode)
+        this.log(`生成的错误代码请到 ${this.dir}/errorCode.js 查看`)
+      }
 
-      // 将错误代码写入
-      writeFileSync(path.join(this.dir, `errorCode.js`), jscode)
-      this.log(`错误代码 errorCode.js 写入成功`)
-
-      throw new Error(error)
+      const codeFrame = handleError(error, jscode)
+      throw new Error(`代码替换有误,解析失败! 请到控制台中查看 ${error}`)
     }
   }
 
@@ -157,7 +157,7 @@ export class Deob {
 
   /**
    * 分离多个 var 赋值
-   * @example var a = 1, b = 2;  ---> var a = 1; var b = 2;
+   * @example var a = 1, b = 2;  --->  var a = 1; var b = 2;
    */
   splitMultipleDeclarations() {
     traverse(this.ast, {
@@ -714,8 +714,6 @@ export class Deob {
                   usedObjects[objectName].add(propertyName)
 
                   path.replaceWith(prop.value)
-
-                  // TODO: 后续如果没用到 prop 则可以删除
                 }
               }
             }
@@ -1207,6 +1205,8 @@ export class Deob {
         }
       },
     })
+
+    this.reParse()
   }
 
   /**

@@ -8,7 +8,8 @@
   "dependencies": {
     "@babel/core": "^7.18.9",
     "crypto-js": "^4.1.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "@babel/code-frame": "^7.22.13",

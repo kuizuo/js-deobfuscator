@@ -236,6 +236,36 @@ function a() {
     )
   })
 
+  it('saveAllObject', () => {
+    const rawCode = `
+    var _0x52627b = {
+      'QqaUY': "attribute",
+      'SDgrw': function (_0x45e680) {
+         return _0x45e680();
+      },
+      'GOEUR': function (_0xeaa58e, _0x247ba7) {
+         return _0xeaa58e + _0x247ba7;
+      }
+    }
+
+    var e = {};
+    e["ESKQL"] = function (n, t) {
+      return n ^ t;
+    }, e["mznfP"] = function (n, t) {
+      return n ^ t;
+    };
+    var u = e;
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.saveAllObject()
+
+    const objects = deob.getAllObject()
+    console.log(objects)
+    expect(Object.keys(objects).length).toBe(2)
+  })
+
   it('objectMemberReplace', () => {
     const rawCode = `
     var _0x52627b = {

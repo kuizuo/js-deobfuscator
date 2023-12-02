@@ -5,6 +5,7 @@ import traverse1 from '@babel/traverse'
 import generator1 from '@babel/generator'
 import { codeFrameColumns } from '@babel/code-frame'
 import * as t from '@babel/types'
+import { cloneDeep } from 'lodash-es'
 
 /** @type generator1 */
 const generator = generator1?.default || generator1
@@ -542,24 +543,6 @@ export class Deob {
   saveAllObject() {
     globalState.objectVariables = {}
 
-    // TODO: 针对以下代码转换处理
-    // var e = {};
-    // e["ESKQL"] = function (n, t) {
-    //   return n ^ t;
-    // }, e["mznfP"] = function (n, t) {
-    //   return n ^ t;
-    // };
-    // var u = e;
-    // 🔽
-    // var u = {
-    //  "ESKQL":function (n, t) {
-    //    return n ^ t;
-    //  },
-    //  "mznfP" : function (n, t) {
-    //    return n ^ t;
-    //  }
-    // };
-
     traverse(this.ast, {
       VariableDeclaration: {
         exit(path, state) {
@@ -568,18 +551,93 @@ export class Deob {
               const variableName = declaration.id.name
               const start = declaration.start
               if (declaration.init?.type === 'ObjectExpression')
-                globalState.objectVariables[`${start}_${variableName}`] = declaration.init
+                globalState.objectVariables[`${start}_${variableName}`] = cloneDeep(declaration.init)
             }
           })
         },
       },
+
     })
+
+    const scopes = []
+
+    // 针对类似以下代码保存处理 (无需转换)
+    // var e = {};
+    // e["ESKQL"] = function (n, t) {
+    //   return n ^ t;
+    // }, e["mznfP"] = function (n, t) {
+    //   return n ^ t;
+    // };
+    // var u = e;
+    traverse(this.ast, {
+      AssignmentExpression: {
+        exit(path) {
+          const left = path.node.left
+          if (left.type !== 'MemberExpression') return
+
+          if (!t.isLiteral(left.property)) return
+
+          const objectName = left.object.name
+
+          const binding = path.scope.getBinding(objectName)
+
+          // 判断 原 object 是否为 var e = {}
+          if (!(binding && binding.path.node.type === 'VariableDeclarator' && binding.path.node.init?.type === 'ObjectExpression')) return
+
+          const start = binding.path.node.start
+
+          const right = path.node.right
+
+          try {
+            const prop = t.objectProperty(left.property, right)
+            if (globalState.objectVariables[`${start}_${objectName}`])
+              globalState.objectVariables[`${start}_${objectName}`].properties.push(prop)
+          }
+          catch (error) {
+            throw new Errror('生成表达式失败')
+          }
+
+          // 没被修改过
+          if (!binding.constant && binding.constantViolations.length === 0) return
+
+          // 在同作用域下将变量重命名  var u = e; ---> var e = e;
+          // 记录父亲作用域
+          scopes.push({
+            parentPath: path.getStatementParent()?.parentPath,
+            objectName,
+          })
+
+          path.skip()
+        },
+      },
+    })
+
+    scopes.forEach(({ parentPath, objectName }) => {
+      parentPath?.traverse({
+        VariableDeclarator(p) {
+          const { id, init } = p.node
+
+          if (init && init.type === 'Identifier' && id.type === 'Identifier') {
+            if (init.name === objectName) {
+              p.scope.rename(id.name, objectName)
+              p.parentPath.remove()
+            }
+          }
+        },
+      })
+    })
+
     // this.log(`已保存所有对象: ${Object.entries(globalState.objectVariables).map(([key, value]) => ({ key, value: generator(value).code }))}`)
     this.log(`已保存所有对象`)
   }
 
+  /** 获取已保存的所有变量 (供测试用) */
+  getAllObject() {
+    return globalState.objectVariables
+  }
+
   /**
-   * 花指令 对象属性替换  前提需要执行 saveAllObjectect 用于保存所有变量
+   * 花指令 对象属性替换 需要先执行 saveAllObjectect 用于保存所有变量
    * @example
    * var _0x52627b = {
    *  'QqaUY': "attribute",
@@ -623,8 +681,7 @@ export class Deob {
           const start = binding.identifier.start
 
           //    xxx            obj['xxx']                  obj.xxx
-          const propertyName
-            = path.node.property.value || path.node.property.name
+          const propertyName = path.node.property.value || path.node.property.name
 
           if (globalState.objectVariables[`${start}_${objectName}`]) {
             const objectInit = globalState.objectVariables[`${start}_${objectName}`]
@@ -649,6 +706,8 @@ export class Deob {
                   set.add(objectName)
 
                   path.replaceWith(prop.value)
+
+                  // TODO: 后续如果没用到 prop 则可以删除
                 }
               }
             }
@@ -662,10 +721,7 @@ export class Deob {
     // _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
     traverse(this.ast, {
       CallExpression(path) {
-        if (
-          path.node.callee.type === 'MemberExpression'
-          && path.node.callee.object.type === 'Identifier'
-        ) {
+        if (path.node.callee.type === 'MemberExpression' && path.node.callee.object.type === 'Identifier') {
           const objectName = path.node.callee.object.name
           const propertyName
             = path.node.callee.property.value || path.node.callee.property.name
@@ -1110,20 +1166,26 @@ export class Deob {
    * @example
    * 1 + 2   "debu" + "gger"
    * ⬇️
-   * 3        "debugger"
+   * 3       "debugger"
    */
   calcBinary() {
+    // 递归处理二项式 例 '1' + '2' + '3' ---> '123'
+    function transformConcatenated(path) {
+      const { left, right } = path.node
+
+      const hasIdentifier = [left, right].some(a => t.isIdentifier(a))
+      if (hasIdentifier) return
+
+      if (t.isLiteral(left) && t.isLiteral(right)) {
+        const { confident, value } = path.evaluate()
+        confident && path.replaceWith(t.valueToNode(value))
+        transformConcatenated(path.parentPath)
+      }
+    }
+
     traverse(this.ast, {
       BinaryExpression(path) {
-        const { left, right } = path.node
-        const hasIdentifier = [left, right].some(a => t.isIdentifier(a))
-        if (hasIdentifier)
-          return
-        if (t.isLiteral(left) && t.isLiteral(right)) {
-          const { confident, value } = path.evaluate()
-          confident && path.replaceWith(t.valueToNode(value))
-          path.skip()
-        }
+        transformConcatenated(path)
       },
       UnaryExpression(path) {
         if (path.node.operator !== '!')

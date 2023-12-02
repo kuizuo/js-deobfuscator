@@ -18,48 +18,32 @@ const __dirname = dirname(__filename)
     isWriteFile: true,
   })
 
+  let index = 0
   await deob.prettierCode()
 
+  deob.nestedFnReplace()
+
+  deob.findDecryptFnByCallCount(800, true)
+  await deob.record(fileName, ++index)
+
   for (let i = 1; i <= 2; i++) {
-    deob.nestedFnReplace()
-    await deob.record(fileName, 0)
-
-    deob.findDecryptFnByCallCount(800, true)
-
-    await deob.record(fileName, 1)
-
-    for (let i = 1; i <= 2; i++) {
+    for (let j = 1; j <= 2; j++) {
       deob.saveAllObject()
       deob.objectMemberReplace()
       deob.switchFlat()
+      deob.calcBinary()
     }
-
-    deob.calcBinary()
-
-    deob.replaceConstant()
-    deob.reParse()
-    await deob.record(fileName, 4)
-
-    deob.removeUnusedVariables()
-    deob.removeUnusedBlock()
+    await deob.record(fileName, ++index)
   }
 
-  deob.selfCallFnReplace()
-
-  // 最后通用处理
+  // 通用处理
+  deob.replaceConstant()
   deob.calcBinary()
 
-  deob.replaceConstant()
-  deob.reParse()
-  await deob.record(fileName, 4)
+  deob.removeUnusedBlock()
+  deob.removeUnusedVariables()
+  deob.selfCallFnReplace()
 
-  for (let i = 1; i <= 2; i++) {
-    deob.removeUnusedVariables()
-    deob.removeUnusedBlock()
-  }
-
-  // 优化
-  // deob.changeObjectAccessMode()
   deob.deleteExtra()
   deob.markComment()
 

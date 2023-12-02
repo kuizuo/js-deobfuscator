@@ -386,8 +386,6 @@ export class Deob {
     })
 
     this.reParse()
-
-    this.decryptReplace()
   }
 
   /**
@@ -568,10 +566,12 @@ export class Deob {
     traverse(this.ast, {
       AssignmentExpression: {
         exit(path) {
-          const left = path.node.left
+          const { left, right } = path.node
           if (left.type !== 'MemberExpression') return
 
           if (!t.isLiteral(left.property)) return
+
+          if (right.type !== 'FunctionExpression' || !t.isLiteral(right)) return
 
           const objectName = left.object.name
 
@@ -582,6 +582,10 @@ export class Deob {
           if (!(binding && binding.path.node.type === 'VariableDeclarator' && binding.path.node.init?.type === 'ObjectExpression')) return
           if (!binding.constant && binding.constantViolations.length === 0) return
 
+          // 同时判断对象初始化的成员长度(避免不必要的替换),一般为空 {}
+          if (binding.path.node.init.properties.length !== 0)
+            return
+
           scopes.push({
             parentPath: path.getStatementParent()?.parentPath,
             objectName,
@@ -591,7 +595,7 @@ export class Deob {
 
           let isReplace = false
           try {
-            const prop = t.objectProperty(left.property, path.node.right)
+            const prop = t.objectProperty(left.property, right)
             if (globalState.objectVariables[`${start}_${objectName}`]) {
               const keyIndex = globalState.objectVariables[`${start}_${objectName}`].properties.findIndex((p) => {
                 return left.property.value === p.key.name || left.property.value === p.key.value
@@ -708,6 +712,10 @@ export class Deob {
                 // 还需要判断 objectName[propertyName] 是否被修改过
                 const binding = path.scope.getBinding(objectName)
                 if (binding && binding.constant && binding.constantViolations.length === 0) {
+                  // 针对一些特殊代码处理 如 _0x52627b["QqaUY"]++
+                  if (path.parent.type === 'UpdateExpression')
+                    return
+
                   usedMap.set(`${objectName}.${propertyName}`, generator(prop.value).code)
 
                   usedObjects[objectName] = usedObjects[objectName] || new Set()
@@ -883,77 +891,6 @@ export class Deob {
 
     if (removeSet.size > 0)
       this.log(`已移除key列表:`, removeSet)
-  }
-
-  /**
-   * 自调用函数执行并替换
-   * @example
-   * ;(function (_0x4f0d08) {
-       return function (_0x4f0d08) {
-         return Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
-       }(_0x4f0d08);
-     })("bugger")("de");
-     🔽
-     Function("Function(arguments[0]+\"" + "bugger" + "\")()")("de")
-   */
-  selfCallFnReplace() {
-    traverse(this.ast, {
-      CallExpression(path) {
-        if (t.isFunctionExpression(path.node.callee)) {
-          // 找到 return 语句
-          const firstStatement = path.node.callee.body.body?.[0]
-          if (!(firstStatement?.type === 'ReturnStatement'))
-            return
-
-          // ['bugger']
-          const outerArguments = path.node.arguments
-
-          // function (_0x4f0d08) { return xxx }(_0x4f0d08)
-          const innerFunction = firstStatement.argument
-
-          // [_0x4f0d08]
-          const innerArguments = innerFunction.arguments
-          if (!innerArguments)
-            return
-
-          // 还需要根据传递的参数 将 _0x4f0d08 改成 bugger
-          innerArguments?.forEach((argument, index) => {
-            path
-              .get('callee')
-              .get('body')
-              .get('body')[0]
-              .get('argument')
-              .get('callee')
-              .traverse({
-                Identifier(p) {
-                  if (
-                    p.parentKey !== 'params'
-                    && p.node.name === argument.name
-                  )
-                    p.replaceWith(outerArguments[index])
-                },
-              })
-          })
-
-          if (
-            t.isCallExpression(innerFunction)
-            && innerFunction.arguments.length === 1
-          ) {
-            const firstStatement = innerFunction.callee.body?.body?.[0]
-            if (!(firstStatement?.type === 'ReturnStatement'))
-              return
-
-            // Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
-            const finalExpression = firstStatement.argument
-
-            if (finalExpression.type === 'CallExpression')
-              path.replaceWith(finalExpression)
-
-            path.skip()
-          }
-        }
-      },
-    })
   }
 
   /**
@@ -1168,6 +1105,77 @@ export class Deob {
           const name = path.node.property.value
           path.node.property = t.identifier(name)
           path.node.computed = false
+        }
+      },
+    })
+  }
+
+  /**
+   * 自调用函数执行并替换 (慎用!)
+   * @example
+   * ;(function (_0x4f0d08) {
+       return function (_0x4f0d08) {
+         return Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
+       }(_0x4f0d08);
+     })("bugger")("de");
+     🔽
+     Function("Function(arguments[0]+\"" + "bugger" + "\")()")("de")
+   */
+  selfCallFnReplace() {
+    traverse(this.ast, {
+      CallExpression(path) {
+        if (t.isFunctionExpression(path.node.callee)) {
+          // 找到 return 语句
+          const firstStatement = path.node.callee.body.body?.[0]
+          if (!(firstStatement?.type === 'ReturnStatement'))
+            return
+
+          // ['bugger']
+          const outerArguments = path.node.arguments
+
+          // function (_0x4f0d08) { return xxx }(_0x4f0d08)
+          const innerFunction = firstStatement.argument
+
+          // [_0x4f0d08]
+          const innerArguments = innerFunction.arguments
+          if (!innerArguments)
+            return
+
+          // 还需要根据传递的参数 将 _0x4f0d08 改成 bugger
+          innerArguments?.forEach((argument, index) => {
+            path
+              .get('callee')
+              .get('body')
+              .get('body')[0]
+              .get('argument')
+              .get('callee')
+              .traverse({
+                Identifier(p) {
+                  if (
+                    p.parentKey !== 'params'
+                      && p.node.name === argument.name
+                  )
+                    p.replaceWith(outerArguments[index])
+                },
+              })
+          })
+
+          if (
+            t.isCallExpression(innerFunction)
+              && innerFunction.arguments.length === 1
+          ) {
+            const firstStatement = innerFunction.callee.body?.body?.[0]
+            if (!(firstStatement?.type === 'ReturnStatement'))
+              return
+
+            // Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
+            const finalExpression = firstStatement.argument
+
+            if (finalExpression.type === 'CallExpression')
+              path.replaceWith(finalExpression)
+
+            path.skip()
+          }
         }
       },
     })

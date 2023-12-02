@@ -6,3 +6,5 @@ node_modules
 *.log
 .vercel
 out
+
+code_*.js

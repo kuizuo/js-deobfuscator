@@ -33,11 +33,12 @@ class MyDeOb extends Deob { }
 
   // 注入解密函数并指明解密函数
   deob.evalCode(evalCode)
+  deob.designDecryptFn('qt')
+  deob.splitMultipleDeclarations()
+  await deob.record(fileName, ++index)
 
   for (let i = 1; i <= 5; i++) {
-    deob.splitMultipleDeclarations()
-
-    deob.designDecryptFn('qt')
+    deob.decryptReplace()
 
     for (let j = 1; j <= 2; j++) {
       deob.saveAllObject()
@@ -51,10 +52,14 @@ class MyDeOb extends Deob { }
 
   // 最后通用处理
   deob.replaceConstant()
+  deob.calcBinary()
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
   deob.selfCallFnReplace()
+
+  deob.deleteExtra()
+  deob.markComment()
 
   const code = deob.getCode()
   await fs.writeFile(`${__dirname}/output.js`, code)

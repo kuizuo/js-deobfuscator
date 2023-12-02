@@ -229,15 +229,11 @@
   }
 
   !function (n, t) {
-    var e = n();
-
-    for (void 0;;) {
-      try {
-        if (453777 === -parseInt("1xhsOcC") / 1 * (-parseInt("893128MBVuGP") / 2) + -parseInt("60qtMpUa") / 3 * (parseInt("155484hhjXPC") / 4) + parseInt("36955UKFMcE") / 5 * (parseInt("42jKlDHK") / 6) + -parseInt("78722KVktdx") / 7 + parseInt("2280MZvCDy") / 8 * (-parseInt("2475MVgMor") / 9) + -parseInt("453410HehfoD") / 10 * (-parseInt("88SmUZqN") / 11) + parseInt("5517468jnGKXd") / 12) break;
-        e.push(e.shift());
-      } catch (n) {
-        e.push(e.shift());
-      }
+    for (var e = n();;) try {
+      if (453777 === -parseInt("1xhsOcC") / 1 * (-parseInt("893128MBVuGP") / 2) + -parseInt("60qtMpUa") / 3 * (parseInt("155484hhjXPC") / 4) + parseInt("36955UKFMcE") / 5 * (parseInt("42jKlDHK") / 6) + -parseInt("78722KVktdx") / 7 + parseInt("2280MZvCDy") / 8 * (-parseInt("2475MVgMor") / 9) + -parseInt("453410HehfoD") / 10 * (-parseInt("88SmUZqN") / 11) + parseInt("5517468jnGKXd") / 12) break;
+      e.push(e.shift());
+    } catch (n) {
+      e.push(e.shift());
     }
   }(An);
   var d = "not Computed";
@@ -318,7 +314,7 @@
     var v = "";
     var o = p["createBuffer"]();
     p["bindBuffer"](p["ARRAY_BUFFER"], o);
-    var b = new Float32Array([-.2, -.9, 0, .4, -.26, 0, 0, .732134444, 0]);
+    var b = new Float32Array([-0.2, -0.9, 0, 0.4, -0.26, 0, 0, 0.732134444, 0]);
     p["bufferData"](p["ARRAY_BUFFER"], b, p["STATIC_DRAW"]);
     o["itemSize"] = 3;
     o["numItems"] = 3;
@@ -562,7 +558,6 @@
       }
     }["vKwlE"](t, e, e["exports"]), e["exports"];
   }(function (r, e) {
-    var c = {};
     var i = typeof Uint8Array !== "undefined" && typeof Uint16Array !== "undefined" && typeof Int32Array !== "undefined";
 
     function o(n, t) {
@@ -570,13 +565,11 @@
     }
 
     e["assign"] = function (n) {
-      var e = Array["prototype"]["slice"]["call"](arguments, 1);
-
-      for (void 0; e["length"];) {
+      for (var e = Array["prototype"]["slice"]["call"](arguments, 1); e["length"];) {
         var i = e["shift"]();
 
         if (i) {
-          if (t(i) !== "object") throw new TypeError(c["RImCC"](i, "must be non-object"));
+          if (t(i) !== "object") throw new TypeError(i + "must be non-object");
 
           for (var a in i) o(i, a) && (n[a] = i[a]);
         }
@@ -602,11 +595,7 @@
     };
     var f = {
       arraySet: function (n, t, r, e, i) {
-        var a = 0;
-
-        for (void 0; c["PxWRy"](a, e); a++) {
-          n[i + a] = t[r + a];
-        }
+        for (var a = 0; a < e; a++) n[i + a] = t[r + a];
       },
       flattenChunks: function (n) {
         return []["concat"]["apply"]([], n);
@@ -625,12 +614,13 @@
     }
   }
 
-  var X = 2 * 286 + 1;
+  var q = 286;
+  var X = 2 * q + 1;
   var W = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0];
   var K = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
   var _ = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7];
   var $ = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
-  var nn = new Array(2 * (286 + 2));
+  var nn = new Array(2 * (q + 2));
   B(nn);
   var tn = new Array(60);
   B(tn);
@@ -784,11 +774,11 @@
 
     for (; a <= 287;) nn[a * 2 + 1] = 8, a++, c[8]++;
 
-    gn(nn, 286 + 1, c);
+    gn(nn, q + 1, c);
 
     for (a = 0; a < 30; a++) tn[a * 2 + 1] = 5, tn[a * 2] = kn(a, 5);
 
-    cn = new sn(nn, W, 257, 286, 15);
+    cn = new sn(nn, W, 257, q, 15);
     on = new sn(tn, K, 0, 30, 15);
     an = new sn(new Array(0), _, 0, 19, 7);
   }
@@ -796,7 +786,7 @@
   function yn(t) {
     var o;
 
-    for (o = 0; o < 286; o++) t["dyn_ltree"][o * 2] = 0;
+    for (o = 0; o < q; o++) t["dyn_ltree"][o * 2] = 0;
 
     for (o = 0; o < 30; o++) t["dyn_dtree"][o * 2] = 0;
 
@@ -1036,7 +1026,7 @@
     var s = 0;
 
     for (void 0; e !== 0;) {
-      s = e > 2e3 ? 2e3 : e;
+      s = e > 2000 ? 2000 : e;
       e -= s;
 
       do {
@@ -1087,6 +1077,8 @@
   var _n = -2;
 
   var $n = -1;
+  var ot = 573;
+  var vt = 262;
 
   function It(t, r) {
     return t["msg"] = Dn[r], r;
@@ -1149,7 +1141,7 @@
     var f = t["strstart"];
     var s = t["prev_length"];
     var v = t["nice_match"];
-    var h = t["strstart"] > t["w_size"] - 262 ? t["strstart"] - (t["w_size"] - 262) : 0;
+    var h = t["strstart"] > t["w_size"] - vt ? t["strstart"] - (t["w_size"] - vt) : 0;
     var l = t["window"];
     var w = t["w_mask"];
     var d = t["prev"];
@@ -1183,7 +1175,7 @@
     var f = t["w_size"];
 
     do {
-      if (c = t["window_size"] - t["lookahead"] - t["strstart"], t["strstart"] >= f + (f - 262)) {
+      if (c = t["window_size"] - t["lookahead"] - t["strstart"], t["strstart"] >= f + (f - vt)) {
         t["match_start"] -= f;
         t["strstart"] -= f;
         r = e;
@@ -1211,7 +1203,7 @@
 
         for (; t["insert"] && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][i + 3 - 1]) & t["hash_mask"], t["prev"][i & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = i, i++, t["insert"]--, !(t["lookahead"] + t["insert"] < 3)););
       }
-    } while (t["lookahead"] < 262 && t["strm"]["avail_in"] !== 0);
+    } while (t["lookahead"] < vt && t["strm"]["avail_in"] !== 0);
   }
 
   function Ut(t, r) {
@@ -1219,12 +1211,12 @@
       var e;
       var u;
 
-      if (t["lookahead"] < 262) {
-        if (Ft(t), t["lookahead"] < 262 && r === 0) return 1;
+      if (t["lookahead"] < vt) {
+        if (Ft(t), t["lookahead"] < vt && r === 0) return 1;
         if (t["lookahead"] === 0) break;
       }
 
-      if (e = 0, t["lookahead"] >= 3 && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), e !== 0 && t["strstart"] - e <= t["w_size"] - 262 && (t["match_length"] = Vt(t, e)), t["match_length"] >= 3) {
+      if (e = 0, t["lookahead"] >= 3 && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), e !== 0 && t["strstart"] - e <= t["w_size"] - vt && (t["match_length"] = Vt(t, e)), t["match_length"] >= 3) {
         if (u = zn["_tr_tally"](t, t["strstart"] - t["match_start"], t["match_length"] - 3), t["lookahead"] -= t["match_length"], t["match_length"] <= t["max_lazy_match"] && t["lookahead"] >= 3) {
           t["match_length"]--;
 
@@ -1248,12 +1240,12 @@
       var u;
       var c;
 
-      if (t["lookahead"] < 262) {
-        if (Ft(t), t["lookahead"] < 262 && r === 0) return 1;
+      if (t["lookahead"] < vt) {
+        if (Ft(t), t["lookahead"] < vt && r === 0) return 1;
         if (t["lookahead"] === 0) break;
       }
 
-      if (e = 0, t["lookahead"] >= 3 && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), t["prev_length"] = t["match_length"], t["prev_match"] = t["match_start"], t["match_length"] = 2, e !== 0 && t["prev_length"] < t["max_lazy_match"] && t["strstart"] - e <= t["w_size"] - 262 && (t["match_length"] = Vt(t, e), t["match_length"] <= 5 && (t["strategy"] === 1 || t["match_length"] === 3 && t["strstart"] - t["match_start"] > 4096) && (t["match_length"] = 2)), t["prev_length"] >= 3 && t["match_length"] <= t["prev_length"]) {
+      if (e = 0, t["lookahead"] >= 3 && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), t["prev_length"] = t["match_length"], t["prev_match"] = t["match_start"], t["match_length"] = 2, e !== 0 && t["prev_length"] < t["max_lazy_match"] && t["strstart"] - e <= t["w_size"] - vt && (t["match_length"] = Vt(t, e), t["match_length"] <= 5 && (t["strategy"] === 1 || t["match_length"] === 3 && t["strstart"] - t["match_start"] > 4096) && (t["match_length"] = 2)), t["prev_length"] >= 3 && t["match_length"] <= t["prev_length"]) {
         c = t["strstart"] + t["lookahead"] - 3;
         u = zn["_tr_tally"](t, t["strstart"] - 1 - t["prev_match"], t["prev_length"] - 3);
         t["lookahead"] -= t["prev_length"] - 1;
@@ -1384,7 +1376,7 @@
     this["strategy"] = 0;
     this["good_match"] = 0;
     this["nice_match"] = 0;
-    this["dyn_ltree"] = new S["Buf16"](573 * 2);
+    this["dyn_ltree"] = new S["Buf16"](ot * 2);
     this["dyn_dtree"] = new S["Buf16"](122);
     this["bl_tree"] = new S["Buf16"](78);
     pt(this["dyn_ltree"]);
@@ -1485,7 +1477,7 @@
       t["strstart"] += t["lookahead"], t["lookahead"] = 0;
       var i = t["block_start"] + c;
       if ((t["strstart"] === 0 || t["strstart"] >= i) && (t["lookahead"] = t["strstart"] - i, t["strstart"] = i, Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
-      if (t["strstart"] - t["block_start"] >= t["w_size"] - 262 && (Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
+      if (t["strstart"] - t["block_start"] >= t["w_size"] - vt && (Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
     }
 
     return t["insert"] = 0, r === 4 ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? 3 : 4) : (t["strstart"] > t["block_start"] && (Rt(t, false), t["strm"]["avail_out"] === 0), 1);
@@ -2309,9 +2301,11 @@
     }
 
     Br[t(1340)](Zr, [void 0, r], mr[t(192) + "PE"][t(2239)]);
-  })[Br[jr(1912)]](function () {}), Hr = Fr ? setTimeout(function () {
+  })[Br[jr(1912)]](function () {}), Hr = Fr ? // TOLOOK
+  setTimeout(function () {
     clearTimeout(Hr), postMessage(["overtime"]);
-  }, 2e4) : setTimeout(function () {
+  }, 20000) : // TOLOOK
+  setTimeout(function () {
     clearTimeout(Hr);
 
     try {
@@ -2321,7 +2315,8 @@
       };
       Vr["fire"](e);
     } catch (n) {}
-  }, 2e4), setInterval(function () {
+  }, 20000), // TOLOOK
+  setInterval(function () {
     if (Fr) Gr && (postMessage(["hasInterval_done"]), Gr = false);else if (Gr) try {
       var e = {
         "type": mr["MESSAGE_TYPE"]["HASINTERVAL_DONE"],
@@ -2329,5 +2324,5 @@
       };
       Vr["fire"](e), Gr = false;
     } catch (n) {}
-  }, 3e3);
+  }, 3000);
 }

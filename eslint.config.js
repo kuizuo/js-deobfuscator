@@ -1,7 +1,7 @@
 import { antfu } from '@antfu/eslint-config'
 
 export default antfu({
-  ignores: ['**/code.js', '**/code_*.js', '**/output.js', '**/pretty.js', '**/errorCode.js', '**/evalCode.js'],
+  ignores: ['**/code.js', '**/code copy.js', '**/code_*.js', '**/output.js', '**/pretty.js', '**/errorCode.js', '**/evalCode.js'],
 }, {
   rules: {
     'no-console': 'off',

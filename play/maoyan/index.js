@@ -20,34 +20,29 @@ class MyDeOb extends Deob { }
     isWriteFile: true,
   })
 
+  let index = 0
+
   await deob.prettierCode()
 
   deob.splitMultipleDeclarations()
-
   deob.findDecryptFnByCallCount(1000, true)
-  await deob.record(fileName, 1)
+  await deob.record(fileName, ++index)
 
-  // 根据情况可 在执行平坦化
-  for (let i = 0; i <= 3; i++) {
+  for (let j = 1; j <= 3; j++) {
     deob.saveAllObject()
     deob.objectMemberReplace()
     deob.switchFlat()
-    console.log(`执行第${i + 1}遍 平坦化完成`)
+    deob.calcBinary()
   }
-  await deob.record(fileName, 3)
+  await deob.record(fileName, ++index)
 
-  // 最后通用处理
-  deob.calcBinary()
+  // 通用处理
   deob.replaceConstant()
-  deob.reParse()
+  deob.calcBinary()
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
-  // deob.selfCallFnReplace()
-  await deob.record(fileName, 4)
 
-  // 优化
-  // deob.changeObjectAccessMode()
   deob.deleteExtra()
   deob.markComment()
 

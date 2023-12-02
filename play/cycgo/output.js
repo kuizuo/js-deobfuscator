@@ -49,7 +49,7 @@ var _0xcb15e7 = _0x132c6c(this, function () {
     var _0x122529;
 
     try {
-      _0x122529 = Function("return (function() {}.constructor(\"return this\")( )" + ");")();
+      _0x122529 = Function("return (function() {}.constructor(\"return this\")( ));")();
     } catch (_0x58db5c) {
       _0x122529 = window;
     }
@@ -188,7 +188,7 @@ var _0x2ba768 = _0x511f60(this, function () {
     var _0xa3cb10;
 
     try {
-      _0xa3cb10 = Function("return (function() {}.constructor(\"return this\")( )" + ");")();
+      _0xa3cb10 = Function("return (function() {}.constructor(\"return this\")( ));")();
     } catch (_0x8229c8) {
       _0xa3cb10 = window;
     }
@@ -435,12 +435,12 @@ function i_GYjtw() {
 }
 
 function i_Frwnk() {
-  0 == i_iDpHde ? (i_jPzhfu(i_GHKWya["o"], 1), // TOLOOK
+  0 == i_iDpHde ? (i_jPzhfu(14, 1), // TOLOOK
   setTimeout(function () {
-    i_jPzhfu(i_GHKWya["o"], 0), i_xmzByr("重开了游戏");
-  }, 50)) : i_pjQNyo() ? (i_jPzhfu(i_GHKWya["o"], 1), // TOLOOK
+    i_jPzhfu(14, 0), i_xmzByr("重开了游戏");
+  }, 50)) : i_pjQNyo() ? (i_jPzhfu(14, 1), // TOLOOK
   setTimeout(function () {
-    i_jPzhfu(i_GHKWya["o"], 0), i_hnXPpo("message", "房主重开了游戏");
+    i_jPzhfu(14, 0), i_hnXPpo("message", "房主重开了游戏");
   }, 50)) : i_Wkbybr("非房主不可重开");
 }
 
@@ -493,7 +493,7 @@ function i_tbcTA() {
 }
 
 function i_AsYjS() {
-  "undefined" != typeof SharedArrayBuffer && "1" != i_tdBda_("geeker") && null != (i_hFSCU = new SharedArrayBuffer(2048)) && (document["title"] += "*", i_kAGRD = new SharedArrayBuffer(306144), i_jwsYB = new Uint16Array(i_hFSCU, 0, 2), i_kCasJ = new Uint16Array(i_hFSCU, 64, 1024 - 64 / 2), i_XSGMQ = new Uint32Array(i_hFSCU, 8, 4), i_MjAfV = new Int32Array(i_hFSCU, 32, 4), i_RfwZZ = new Uint32Array(i_hFSCU, 48, 4));
+  "undefined" != typeof SharedArrayBuffer && "1" != i_tdBda_("geeker") && null != (i_hFSCU = new SharedArrayBuffer(2048)) && (document["title"] += "*", i_kAGRD = new SharedArrayBuffer(306144), i_jwsYB = new Uint16Array(i_hFSCU, 0, 2), i_kCasJ = new Uint16Array(i_hFSCU, 64, 992), i_XSGMQ = new Uint32Array(i_hFSCU, 8, 4), i_MjAfV = new Int32Array(i_hFSCU, 32, 4), i_RfwZZ = new Uint32Array(i_hFSCU, 48, 4));
 }
 
 function i_hhhKC() {
@@ -507,12 +507,12 @@ function i_AfXQO() {
 }
 
 function i_GzppX() {
-  0 == i_iDpHde ? (i_jPzhfu(i_GHKWya["o"], 1), // TOLOOK
+  0 == i_iDpHde ? (i_jPzhfu(14, 1), // TOLOOK
   setTimeout(function () {
-    i_jPzhfu(i_GHKWya["o"], 0), i_rrYppt("重开了游戏");
-  }, 50)) : i_pjQNyo() ? (i_jPzhfu(i_GHKWya["o"], 1), // TOLOOK
+    i_jPzhfu(14, 0), i_rrYppt("重开了游戏");
+  }, 50)) : i_pjQNyo() ? (i_jPzhfu(14, 1), // TOLOOK
   setTimeout(function () {
-    i_jPzhfu(i_GHKWya["o"], 0), i_hnXPpo("message", "房主重开了游戏");
+    i_jPzhfu(14, 0), i_hnXPpo("message", "房主重开了游戏");
   }, 50)) : i_iZhRvt("非房主不可重开");
 }
 
@@ -553,12 +553,6 @@ function i_TQeTre(_0x2e35c4) {
 }
 
 var i_yYwPle = {
-  GameType: "",
-  GameID: 0,
-  u: 0,
-  _: 0,
-  v: 0,
-  p: 0,
   m: 0
 };
 
@@ -567,14 +561,14 @@ function i_TEthue() {
 }
 
 function i_nSNmfe() {
-  i_yYwPle["_"] = new Date(), i_yYwPle["v"] = i_yYwPle["_"] - i_yYwPle["u"];
+  i_yYwPle["_"] = new Date(), i_yYwPle["v"] = 0;
   var _0x12e92e = "link";
   0 == i_iDpHde ? _0x12e92e = "local" : i_njFT_l && (_0x12e92e = "look"), i_TQeTre({
-    GameType: i_yYwPle["GameType"],
-    GameID: i_yYwPle["GameID"],
+    GameType: "",
+    GameID: 0,
     Version: "v1.0",
-    StrData: [_0x12e92e, i_wesTbe + "_" + i_ZmCwpe, i_yYwPle["u"], i_yYwPle["_"], i_yYwPle["v"] + ""],
-    IntData: [i_DdTaQf["LevelInfo"]["Level"], i_DdTaQf["LevelInfo"]["AllXP"], i_DdTaQf["LevelInfo"]["VipLevel"], i_DdTaQf["LevelInfo"]["Svip"], i_yYwPle["p"]]
+    StrData: [_0x12e92e, i_wesTbe + "_" + i_ZmCwpe, 0, 0, "0"],
+    IntData: [i_DdTaQf["LevelInfo"]["Level"], i_DdTaQf["LevelInfo"]["AllXP"], i_DdTaQf["LevelInfo"]["VipLevel"], i_DdTaQf["LevelInfo"]["Svip"], 0]
   });
 }
 
@@ -1131,7 +1125,7 @@ function i_mPGKyn(_0x1b417d) {
 }
 
 function i_JKSNwn(_0x12f0d5) {
-  i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["A"] && (document["getElementById"]("X" + _0x12f0d5 + "A")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["B"] && (document["getElementById"]("X" + _0x12f0d5 + "B")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["C"] && (document["getElementById"]("X" + _0x12f0d5 + "C")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["L"] && (document["getElementById"]("X" + _0x12f0d5 + "D")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["E"] && (document["getElementById"]("X" + _0x12f0d5 + "E")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & i_TEaXzu["q"] && (document["getElementById"]("X" + _0x12f0d5 + "F")["checked"] = true);
+  i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & 1 && (document["getElementById"]("X" + _0x12f0d5 + "A")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & 2 && (document["getElementById"]("X" + _0x12f0d5 + "B")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & 4 && (document["getElementById"]("X" + _0x12f0d5 + "C")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & 8 && (document["getElementById"]("X" + _0x12f0d5 + "D")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & 16 && (document["getElementById"]("X" + _0x12f0d5 + "E")["checked"] = true), i_WmyDOu["gExtX" + _0x12f0d5 + "Key"] & 32 && (document["getElementById"]("X" + _0x12f0d5 + "F")["checked"] = true);
 }
 
 function i_Bckxkn() {
@@ -1192,7 +1186,7 @@ function i_CmAEPn(_0x1d5f31) {
     _0x3d0671["addEventListener"]("change", function () {
       var _0x41273d = this;
 
-      _0x41273d["id"] == "X" + _0x1d5f31 + "A" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["A"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~i_TEaXzu["A"]), _0x41273d["id"] == "X" + _0x1d5f31 + "B" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["B"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~i_TEaXzu["B"]), _0x41273d["id"] == "X" + _0x1d5f31 + "C" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["C"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~i_TEaXzu["C"]), _0x41273d["id"] == "X" + _0x1d5f31 + "D" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["L"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~i_TEaXzu["L"]), _0x41273d["id"] == "X" + _0x1d5f31 + "E" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["E"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~i_TEaXzu["E"]), _0x41273d["id"] == "X" + _0x1d5f31 + "F" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["q"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~i_TEaXzu["q"]);
+      _0x41273d["id"] == "X" + _0x1d5f31 + "A" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["A"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~1), _0x41273d["id"] == "X" + _0x1d5f31 + "B" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["B"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~2), _0x41273d["id"] == "X" + _0x1d5f31 + "C" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["C"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~4), _0x41273d["id"] == "X" + _0x1d5f31 + "D" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["L"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~8), _0x41273d["id"] == "X" + _0x1d5f31 + "E" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["E"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~16), _0x41273d["id"] == "X" + _0x1d5f31 + "F" && (_0x41273d["checked"] ? i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] |= i_TEaXzu["q"] : i_WmyDOu["gExtX" + _0x1d5f31 + "Key"] &= ~32);
     });
   });
 }
@@ -1765,17 +1759,13 @@ var i_kJKK$t = {
 },
     i_cQmQBt = {
   d1: 0,
-  d1i: null,
   d2: 0,
-  d2i: null,
   d3: 0,
-  d3i: null,
-  d4: 0,
-  d4i: null
+  d4: 0
 };
 
 function i_pSswFt() {
-  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), null == i_cQmQBt["d1i"] && (i_cQmQBt["d1i"] = "/fc/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), null == i_cQmQBt["d2i"] && (i_cQmQBt["d2i"] = "/fc/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), null == i_cQmQBt["d3i"] && (i_cQmQBt["d3i"] = "/fc/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), null == i_cQmQBt["d4i"] && (i_cQmQBt["d4i"] = "/fc/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/fc/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/fc/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/fc/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/fc/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
+  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), true && (i_cQmQBt["d1i"] = "/fc/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), true && (i_cQmQBt["d2i"] = "/fc/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), true && (i_cQmQBt["d3i"] = "/fc/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), true && (i_cQmQBt["d4i"] = "/fc/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/fc/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/fc/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/fc/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/fc/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
 }
 
 function i_TkwGLt() {
@@ -1967,9 +1957,7 @@ function i_hGaila(_0x110ba3) {
 }
 
 var i_ankaua = {
-  fe: null,
   path: null,
-  IGWorld: false,
   _e: {
     ve: "",
     de: 1400,
@@ -1984,28 +1972,28 @@ var i_ankaua = {
     Te: true
   },
   g: function () {
-    return true === window["IGWorld"] && null === i_ankaua["fe"] && (i_ankaua["IGWorld"] = true, i_ankaua["fe"] = eval("require('electron')['ipcRenderer'];"), i_ankaua["path"] = eval("if ('kbOPg' !== _0x3628('0x3e7')) {\n    var _0x3ef490 = i_sxfci_(_0x3628('0x23b')), _0x18295c = i_sxfci_('Broomownerflag');\n    0 == i_Ebjce ? (_0x3ef490['style'][_0x3628('0x282')] = _0x3628('0x1cd'), _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x22e'), _0x18295c['style'][_0x3628('0x270')] = _0x3628('0x3e3')) : 1 == i_Ebjce ? (_0x3ef490['style']['left'] = _0x3628('0x1cd'), _0x3ef490['style'][_0x3628('0x270')] = _0x3628('0x1f6'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xc8')) : 2 == i_Ebjce ? (_0x3ef490['style']['left'] = '128px', _0x3ef490[_0x3628('0x3e')]['top'] = _0x3628('0x54'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x1f')) : 3 == i_Ebjce && (_0x3ef490['style'][_0x3628('0x282')] = '128px', _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xe5'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x4a6'));\n} else {\n    require(_0x3628('0x82'));\n}"), i_ankaua["fe"]["on"]("syncconfig", function (_0x282905, _0x2cd389) {
+    return true === window["IGWorld"] && true && (i_ankaua["IGWorld"] = true, i_ankaua["fe"] = eval("require('electron')['ipcRenderer'];"), i_ankaua["path"] = eval("if ('kbOPg' !== _0x3628('0x3e7')) {\n    var _0x3ef490 = i_sxfci_(_0x3628('0x23b')), _0x18295c = i_sxfci_('Broomownerflag');\n    0 == i_Ebjce ? (_0x3ef490['style'][_0x3628('0x282')] = _0x3628('0x1cd'), _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x22e'), _0x18295c['style'][_0x3628('0x270')] = _0x3628('0x3e3')) : 1 == i_Ebjce ? (_0x3ef490['style']['left'] = _0x3628('0x1cd'), _0x3ef490['style'][_0x3628('0x270')] = _0x3628('0x1f6'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xc8')) : 2 == i_Ebjce ? (_0x3ef490['style']['left'] = '128px', _0x3ef490[_0x3628('0x3e')]['top'] = _0x3628('0x54'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x1f')) : 3 == i_Ebjce && (_0x3ef490['style'][_0x3628('0x282')] = '128px', _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xe5'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x4a6'));\n} else {\n    require(_0x3628('0x82'));\n}"), null["on"]("syncconfig", function (_0x282905, _0x2cd389) {
       i_ankaua["_e"] = _0x2cd389;
-    }), i_ankaua["_e"] = i_ankaua["fe"]["sendSync"]("loadconfig")), // TOLOOK
-    setTimeout(this["xe"], 2000), window["addEventListener"]("focus", this["xe"]), window["addEventListener"]("beforeunload", this["Me"]), i_ankaua["IGWorld"];
+    }), i_ankaua["_e"] = null["sendSync"]("loadconfig")), // TOLOOK
+    setTimeout(this["xe"], 2000), window["addEventListener"]("focus", this["xe"]), window["addEventListener"]("beforeunload", this["Me"]), false;
   },
   Pe: function (_0x60d1f4) {
     0 < navigator["userAgent"]["indexOf"]("igwmobgame") && "function" == typeof window["IGWGameCore"] && (null == i_ankaua["Ee"] && (i_ankaua["Ee"] = new window["IGWGameCore"]()), null != i_ankaua["Ee"] && i_ankaua["Ee"]["call"]("{\"type\":\"screen\", \"style\":" + _0x60d1f4 + "}"));
   },
   Ae: function (_0x579b4b, _0x490cd8) {
-    null != i_ankaua["fe"] && i_ankaua["fe"]["send"](_0x579b4b, _0x490cd8);
+    false && null["send"](_0x579b4b, _0x490cd8);
   },
   Se: function (_0x5c1ed0, _0x74ae3c) {
-    null != i_ankaua["fe"] && i_ankaua["fe"]["send"]("run", _0x5c1ed0, _0x74ae3c);
+    false && null["send"]("run", _0x5c1ed0, _0x74ae3c);
   },
   Ce: function (_0x8ac8b8, _0x43a9b3, _0x81460c) {
-    null != i_ankaua["fe"] && i_ankaua["fe"]["send"]("wincmd", _0x8ac8b8, _0x43a9b3, _0x81460c);
+    false && null["send"]("wincmd", _0x8ac8b8, _0x43a9b3, _0x81460c);
   },
   Ke: function (_0x5a3a5e, _0x46321b) {
     if (null != this["fe"]) return this["fe"]["sendSync"]("syncrun", _0x5a3a5e, _0x46321b);
   },
   Oe: function (_0x25244c, _0x10ade9) {
-    null == i_ankaua["fe"] ? window["open"](_0x25244c) : i_ankaua["fe"]["send"]("openwin", _0x10ade9, _0x25244c, winargs);
+    true ? window["open"](_0x25244c) : null["send"]("openwin", _0x10ade9, _0x25244c, winargs);
   },
   j: function () {
     i_ankaua["Ce"]("game", "self.minimize();");
@@ -2033,7 +2021,7 @@ var i_ankaua = {
     i_ankaua["ue"]("state", "lobby", "");
   },
   ue: function (_0x3752be, _0x89cd2f, _0x2129b7) {
-    return null != i_ankaua["fe"] ? (i_ankaua["Ce"]("lobby", "self.webContents.send('gamesync'," + JSON["stringify"]({
+    return false ? (i_ankaua["Ce"]("lobby", "self.webContents.send('gamesync'," + JSON["stringify"]({
       event: _0x3752be,
       type: _0x89cd2f,
       data: _0x2129b7
@@ -2093,19 +2081,19 @@ function i_yQQtma() {
       break;
 
     case "5":
-      i_HaCAva["Ie"]["push"](16 | 64);
+      i_HaCAva["Ie"]["push"](80);
       break;
 
     case "6":
-      i_HaCAva["Ie"]["push"](16 | 128);
+      i_HaCAva["Ie"]["push"](144);
       break;
 
     case "7":
-      i_HaCAva["Ie"]["push"](32 | 64);
+      i_HaCAva["Ie"]["push"](96);
       break;
 
     case "8":
-      i_HaCAva["Ie"]["push"](32 | 128);
+      i_HaCAva["Ie"]["push"](160);
       break;
 
     case "A":
@@ -2154,19 +2142,19 @@ function i_yQQtma() {
       break;
 
     case "5":
-      i_HaCAva["Ne"]["push"](16 | 64);
+      i_HaCAva["Ne"]["push"](80);
       break;
 
     case "6":
-      i_HaCAva["Ne"]["push"](16 | 128);
+      i_HaCAva["Ne"]["push"](144);
       break;
 
     case "7":
-      i_HaCAva["Ne"]["push"](32 | 64);
+      i_HaCAva["Ne"]["push"](96);
       break;
 
     case "8":
-      i_HaCAva["Ne"]["push"](32 | 128);
+      i_HaCAva["Ne"]["push"](160);
       break;
 
     case "A":
@@ -2215,19 +2203,19 @@ function i_yQQtma() {
       break;
 
     case "5":
-      i_HaCAva["Ue"]["push"](16 | 64);
+      i_HaCAva["Ue"]["push"](80);
       break;
 
     case "6":
-      i_HaCAva["Ue"]["push"](16 | 128);
+      i_HaCAva["Ue"]["push"](144);
       break;
 
     case "7":
-      i_HaCAva["Ue"]["push"](32 | 64);
+      i_HaCAva["Ue"]["push"](96);
       break;
 
     case "8":
-      i_HaCAva["Ue"]["push"](32 | 128);
+      i_HaCAva["Ue"]["push"](160);
       break;
 
     case "A":
@@ -2276,19 +2264,19 @@ function i_yQQtma() {
       break;
 
     case "5":
-      i_HaCAva["De"]["push"](16 | 64);
+      i_HaCAva["De"]["push"](80);
       break;
 
     case "6":
-      i_HaCAva["De"]["push"](16 | 128);
+      i_HaCAva["De"]["push"](144);
       break;
 
     case "7":
-      i_HaCAva["De"]["push"](32 | 64);
+      i_HaCAva["De"]["push"](96);
       break;
 
     case "8":
-      i_HaCAva["De"]["push"](32 | 128);
+      i_HaCAva["De"]["push"](160);
       break;
 
     case "A":
@@ -2336,16 +2324,6 @@ function i_pAJwha(_0x19d8bc) {
 
 var i_MQwnba = navigator["userAgent"],
     i_GHKWya = {
-  $e: 0,
-  Be: 1,
-  Ge: 2,
-  Fe: 3,
-  Le: 7,
-  qe: 8,
-  Ve: 9,
-  je: 10,
-  Ye: 13,
-  o: 14,
   He: function () {
     i_WmyDOu["gCtlZD"] && null != navigator["vibrate"] && navigator["vibrate"](32);
   },
@@ -2508,33 +2486,33 @@ function i_PxXari(_0x1d02a5) {
           break;
 
         case 10:
-          _0x2fb6d9 |= 64 | 16;
+          _0x2fb6d9 |= 80;
           break;
 
         case 4:
-          _0x2fb6d9 |= 64 | 32;
+          _0x2fb6d9 |= 96;
           break;
 
         case -1:
-          _0x2fb6d9 |= 128 | 32;
+          _0x2fb6d9 |= 160;
           break;
 
         case -7:
-          _0x2fb6d9 |= 128 | 16;
+          _0x2fb6d9 |= 144;
       }
 
       i_WmyDOu["GPSetx"]["gKeyRevLR"] && _0x2fb6d9 & mask_leftright && (_0x2fb6d9 ^= mask_leftright), i_WmyDOu["GPSetx"]["gKeyRev"] && (_0x2fb6d9 & mask_leftright && (_0x2fb6d9 ^= mask_leftright), _0x2fb6d9 & mask_updown && (_0x2fb6d9 ^= mask_updown));
     } else i_WmyDOu["GPSetx"]["gKeyRev"] ? (i_WmyDOu["GPSetx"]["gKeyRevLR"] ? (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] < -0.5 && (_0x2fb6d9 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && 0.5 < _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] && (_0x2fb6d9 |= 128)) : (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && 0.5 < _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] && (_0x2fb6d9 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] < -0.5 && (_0x2fb6d9 |= 128)), -1 != i_WmyDOu["GPSetx"]["KeyUp"] && 0.5 < _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyUp"]] && (_0x2fb6d9 |= 16), -1 != i_WmyDOu["GPSetx"]["KeyDown"] && _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyDown"]] < -0.5 && (_0x2fb6d9 |= 32)) : (i_WmyDOu["GPSetx"]["gKeyRevLR"] ? (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && 0.5 < _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] && (_0x2fb6d9 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] < -0.5 && (_0x2fb6d9 |= 128)) : (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] < -0.5 && (_0x2fb6d9 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && 0.5 < _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] && (_0x2fb6d9 |= 128)), -1 != i_WmyDOu["GPSetx"]["KeyUp"] && _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyUp"]] < -0.5 && (_0x2fb6d9 |= 16), -1 != i_WmyDOu["GPSetx"]["KeyDown"] && 0.5 < _0x9bfa13["axes"][i_WmyDOu["GPSetx"]["KeyDown"]] && (_0x2fb6d9 |= 32));
   } else -1 != i_WmyDOu["GPSetx"]["KeyUp"] && -1 != i_WmyDOu["GPSetx"]["KeyDown"] && -1 != i_WmyDOu["GPSetx"]["KeyLeft"] && -1 != i_WmyDOu["GPSetx"]["KeyRight"] && (_0x9bfa13["buttons"][i_WmyDOu["GPSetx"]["KeyUp"]]["pressed"] && (_0x2fb6d9 |= 16), _0x9bfa13["buttons"][i_WmyDOu["GPSetx"]["KeyDown"]]["pressed"] && (_0x2fb6d9 |= 32), _0x9bfa13["buttons"][i_WmyDOu["GPSetx"]["KeyLeft"]]["pressed"] && (_0x2fb6d9 |= 64), _0x9bfa13["buttons"][i_WmyDOu["GPSetx"]["KeyRight"]]["pressed"] && (_0x2fb6d9 |= 128));
 
-  return -1 != i_WmyDOu["GPSetx"]["KeyX1"] && _0x9bfa13["buttons"][i_WmyDOu["GPSetx"]["KeyX1"]]["pressed"] && (_0x2fb6d9 |= 1 | 2), _0x2fb6d9;
+  return -1 != i_WmyDOu["GPSetx"]["KeyX1"] && _0x9bfa13["buttons"][i_WmyDOu["GPSetx"]["KeyX1"]]["pressed"] && (_0x2fb6d9 |= 3), _0x2fb6d9;
 }
 
 function i_Gjbpli() {
   var _0x7266c6 = i_PxXari(0),
       _0x3f1c60 = i_PxXari(1);
 
-  _0x7266c6 != i_Mhjhai && (i_Mhjhai = _0x7266c6, i_jPzhfu(i_GHKWya["$e"], i_Mhjhai)), _0x3f1c60 != i_CBwzii && (i_CBwzii = _0x3f1c60, i_aCbGuu(i_GHKWya["$e"], i_CBwzii)), null != i_MjAfV && (i_MjAfV[1] = 1, Atomics["notify"](i_MjAfV, 1, 1));
+  _0x7266c6 != i_Mhjhai && (i_Mhjhai = _0x7266c6, i_jPzhfu(0, i_Mhjhai)), _0x3f1c60 != i_CBwzii && (i_CBwzii = _0x3f1c60, i_aCbGuu(0, i_CBwzii)), null != i_MjAfV && (i_MjAfV[1] = 1, Atomics["notify"](i_MjAfV, 1, 1));
 }
 
 function i_TBswui() {
@@ -2597,26 +2575,26 @@ function i_TBswui() {
               break;
 
             case 10:
-              _0x597831 |= 64 | 16;
+              _0x597831 |= 80;
               break;
 
             case 4:
-              _0x597831 |= 64 | 32;
+              _0x597831 |= 96;
               break;
 
             case -1:
-              _0x597831 |= 128 | 32;
+              _0x597831 |= 160;
               break;
 
             case -7:
-              _0x597831 |= 128 | 16;
+              _0x597831 |= 144;
           }
 
           i_WmyDOu["GPSetx"]["gKeyRevLR"] && _0x597831 & mask_leftright && (_0x597831 ^= mask_leftright), i_WmyDOu["GPSetx"]["gKeyRev"] && (_0x597831 & mask_leftright && (_0x597831 ^= mask_leftright), _0x597831 & mask_updown && (_0x597831 ^= mask_updown));
         } else i_WmyDOu["GPSetx"]["gKeyRev"] ? (i_WmyDOu["GPSetx"]["gKeyRevLR"] ? (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] < -0.5 && (_0x597831 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && 0.5 < i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] && (_0x597831 |= 128)) : (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && 0.5 < i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] && (_0x597831 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] < -0.5 && (_0x597831 |= 128)), -1 != i_WmyDOu["GPSetx"]["KeyUp"] && 0.5 < i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyUp"]] && (_0x597831 |= 16), -1 != i_WmyDOu["GPSetx"]["KeyDown"] && i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyDown"]] < -0.5 && (_0x597831 |= 32)) : (i_WmyDOu["GPSetx"]["gKeyRevLR"] ? (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && 0.5 < i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] && (_0x597831 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] < -0.5 && (_0x597831 |= 128)) : (-1 != i_WmyDOu["GPSetx"]["KeyLeft"] && i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyLeft"]] < -0.5 && (_0x597831 |= 64), -1 != i_WmyDOu["GPSetx"]["KeyRight"] && 0.5 < i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyRight"]] && (_0x597831 |= 128)), -1 != i_WmyDOu["GPSetx"]["KeyUp"] && i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyUp"]] < -0.5 && (_0x597831 |= 16), -1 != i_WmyDOu["GPSetx"]["KeyDown"] && 0.5 < i_TBnkka["axes"][i_WmyDOu["GPSetx"]["KeyDown"]] && (_0x597831 |= 32));
       } else -1 != i_WmyDOu["GPSetx"]["KeyUp"] && -1 != i_WmyDOu["GPSetx"]["KeyDown"] && -1 != i_WmyDOu["GPSetx"]["KeyLeft"] && -1 != i_WmyDOu["GPSetx"]["KeyRight"] && (i_TBnkka["buttons"][i_WmyDOu["GPSetx"]["KeyUp"]]["pressed"] && (_0x597831 |= 16), i_TBnkka["buttons"][i_WmyDOu["GPSetx"]["KeyDown"]]["pressed"] && (_0x597831 |= 32), i_TBnkka["buttons"][i_WmyDOu["GPSetx"]["KeyLeft"]]["pressed"] && (_0x597831 |= 64), i_TBnkka["buttons"][i_WmyDOu["GPSetx"]["KeyRight"]]["pressed"] && (_0x597831 |= 128));
 
-      -1 != i_WmyDOu["GPSetx"]["KeyX1"] && i_TBnkka["buttons"][i_WmyDOu["GPSetx"]["KeyX1"]]["pressed"] && (_0x597831 |= 1 | 2), _0x597831 != i_cdHwBa && (i_cdHwBa = _0x597831, 1 == i_DFBCti ? i_aCbGuu(i_GHKWya["$e"], i_cdHwBa) : i_jPzhfu(i_GHKWya["$e"], i_cdHwBa)), null != i_MjAfV && (i_MjAfV[1] = 1, Atomics["notify"](i_MjAfV, 1, 1));
+      -1 != i_WmyDOu["GPSetx"]["KeyX1"] && i_TBnkka["buttons"][i_WmyDOu["GPSetx"]["KeyX1"]]["pressed"] && (_0x597831 |= 3), _0x597831 != i_cdHwBa && (i_cdHwBa = _0x597831, 1 == i_DFBCti ? i_aCbGuu(0, i_cdHwBa) : i_jPzhfu(0, i_cdHwBa)), null != i_MjAfV && (i_MjAfV[1] = 1, Atomics["notify"](i_MjAfV, 1, 1));
     }
   } else i_Gjbpli();
 }
@@ -2821,43 +2799,43 @@ function i_mDiGLi(_0xe38575, _0x466b24, _0xc21f4f) {
   var _0x99f40c = _0xc21f4f;
 
   switch (_0x466b24) {
-    case i_GHKWya["$e"]:
+    case 0:
       _0xe38575 = _0x99f40c;
       break;
 
-    case i_GHKWya["o"]:
+    case 14:
       1 & _0x99f40c ? _0xe38575 |= 256 : _0xe38575 &= ~256;
       break;
 
-    case i_GHKWya["Ye"]:
-      1 & _0x99f40c ? _0xe38575 |= 1 | 2 : _0xe38575 &= ~(1 | 2);
+    case 13:
+      1 & _0x99f40c ? _0xe38575 |= 3 : _0xe38575 &= ~3;
       break;
 
-    case i_GHKWya["Be"]:
+    case 1:
       1 == _0x99f40c ? _0xe38575 |= 8 : _0xe38575 &= ~8;
       break;
 
-    case i_GHKWya["Ge"]:
+    case 2:
       1 == _0x99f40c ? _0xe38575 |= 4 : _0xe38575 &= ~4;
       break;
 
-    case i_GHKWya["Le"]:
+    case 7:
       0 < _0x99f40c ? (_0xe38575 |= 1, 2 == _0x99f40c && (i_QSiQSi |= 1, i_ebaBuo |= 1)) : (_0xe38575 &= ~1, i_QSiQSi &= ~1, i_ebaBuo &= ~1);
       break;
 
-    case i_GHKWya["qe"]:
+    case 8:
       0 < _0x99f40c ? (_0xe38575 |= 2, 2 == _0x99f40c && (i_QSiQSi |= 2, i_ebaBuo |= 2)) : (_0xe38575 &= ~2, i_QSiQSi &= ~2, i_ebaBuo &= ~2);
       break;
 
-    case i_GHKWya["Ve"]:
+    case 9:
       1 == _0x99f40c ? (_0xe38575 &= ~16128, _0xe38575 |= 1, _0xe38575 |= 256 * i_HSeGX_ + 16384) : (_0xe38575 &= ~1, _0xe38575 &= ~16384);
       break;
 
-    case i_GHKWya["je"]:
+    case 10:
       1 == _0x99f40c ? (_0xe38575 &= ~16128, _0xe38575 |= 2, _0xe38575 |= 256 * i_HSeGX_ + 32768) : (_0xe38575 &= ~2, _0xe38575 &= ~32768);
       break;
 
-    case i_GHKWya["Fe"]:
+    case 3:
       1 & _0x99f40c ? _0xe38575 |= 16 : _0xe38575 &= ~16, 2 & _0x99f40c ? _0xe38575 |= 32 : _0xe38575 &= ~32, 4 & _0x99f40c ? _0xe38575 |= 64 : _0xe38575 &= ~64, 8 & _0x99f40c ? _0xe38575 |= 128 : _0xe38575 &= ~128;
   }
 
@@ -2865,11 +2843,11 @@ function i_mDiGLi(_0xe38575, _0x466b24, _0xc21f4f) {
 }
 
 function i_xWZnqi(_0x237dd1) {
-  null != i_jwsYB ? i_jwsYB[1] = _0x237dd1 : i_zXJHnu(i_cZwcUl["vn"], 255 & _0x237dd1, _0x237dd1 / 256);
+  null != i_jwsYB ? i_jwsYB[1] = _0x237dd1 : i_zXJHnu(18, 255 & _0x237dd1, _0x237dd1 / 256);
 }
 
 function i_aGfyVi(_0x1e54f9) {
-  i_zXJHnu(i_cZwcUl["dn"], 255 & _0x1e54f9, _0x1e54f9 / 256);
+  i_zXJHnu(28, 255 & _0x1e54f9, _0x1e54f9 / 256);
 }
 
 var i_FZEFji = null,
@@ -2941,7 +2919,7 @@ function i_ckezgo() {
   setTimeout(function () {
     i_sxfci_("sharedtip")["style"]["display"] = "none";
   }, 3000)), "1" == _0x1a71a6 ? (i_sCrNao = new WebSocket("wss://link00" + _0xabda29 + ".wo1wan.com:6001/fcnext/watch?lid=" + i_ZmCwpe + "&gid=" + gid + _0x5500bf + _0x1cc68c), i_nibwYi = true, i_PYYZNo()) : i_sCrNao = new WebSocket("wss://link00" + _0xabda29 + ".wo1wan.com:6001/fcnext/link?lid=" + i_ZmCwpe + "&max=2&gid=" + gid + _0x5500bf + _0x1cc68c), i_sCrNao["binaryType"] = "arraybuffer", i_sCrNao["onopen"] = function (_0xffd461) {}, i_sCrNao["onclose"] = function (_0x502804) {
-    i_iDQBme ? (i_zkHZqn(), i_bPrAQi = true) : 1 < 0 && i_ZQAWMu();
+    i_iDQBme ? (i_zkHZqn(), i_bPrAQi = true) : false && i_ZQAWMu();
   }, i_sCrNao["onmessage"] = "1" == _0x1a71a6 ? i_ixDmzo : i_GkDzho;
 }
 
@@ -3301,7 +3279,7 @@ function i_YDWfzc(_0xb20023, _0x41a933, _0x400fe4, _0x5653e5) {
   var _0x30931b = _0xb20023["createLinearGradient"](0, 2 * _0x5c5894["r"], 0, 0);
 
   _0x30931b["addColorStop"](0, "rgba(249, 161, 66,0.8)"), _0x30931b["addColorStop"](1, "rgba(249, 211, 66, 0.9)"), _0xb20023["strokeStyle"] = _0x30931b, _0xb20023["lineWidth"] = 1;
-  _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.55, _0x5c5894["y"] - _0x5c5894["r"] * 0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66, _0x5c5894["y"] - _0x5c5894["r"] * 0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66 + (0.67 - 0.66), _0x5c5894["y"] - _0x5c5894["r"] * 0.55), _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.55, _0x5c5894["y"] - _0x5c5894["r"] * -0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66, _0x5c5894["y"] - _0x5c5894["r"] * -0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66 + (0.67 - 0.66), _0x5c5894["y"] - _0x5c5894["r"] * -0.55), _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.55, _0x5c5894["y"] - _0x5c5894["r"] * -0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66, _0x5c5894["y"] - _0x5c5894["r"] * -0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66 + (0.67 - 0.66), _0x5c5894["y"] - _0x5c5894["r"] * -0.55), _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.55, _0x5c5894["y"] - _0x5c5894["r"] * 0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66, _0x5c5894["y"] - _0x5c5894["r"] * 0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66 + (0.67 - 0.66), _0x5c5894["y"] - _0x5c5894["r"] * 0.55), _0xb20023["stroke"](), _0xb20023["beginPath"](), _0xb20023["arc"](_0x5c5894["x"], _0x5c5894["y"], _0x5c5894["r"] + 10, 0, 2 * Math["PI"]);
+  _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.55, _0x5c5894["y"] - _0x5c5894["r"] * 0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66, _0x5c5894["y"] - _0x5c5894["r"] * 0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66 + 0.010000000000000009, _0x5c5894["y"] - _0x5c5894["r"] * 0.55), _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.55, _0x5c5894["y"] - _0x5c5894["r"] * -0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66, _0x5c5894["y"] - _0x5c5894["r"] * -0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * -0.66 + 0.010000000000000009, _0x5c5894["y"] - _0x5c5894["r"] * -0.55), _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.55, _0x5c5894["y"] - _0x5c5894["r"] * -0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66, _0x5c5894["y"] - _0x5c5894["r"] * -0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66 + 0.010000000000000009, _0x5c5894["y"] - _0x5c5894["r"] * -0.55), _0xb20023["moveTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.55, _0x5c5894["y"] - _0x5c5894["r"] * 0.67), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66, _0x5c5894["y"] - _0x5c5894["r"] * 0.66), _0xb20023["lineTo"](_0x5c5894["x"] + _0x5c5894["r"] * 0.66 + 0.010000000000000009, _0x5c5894["y"] - _0x5c5894["r"] * 0.55), _0xb20023["stroke"](), _0xb20023["beginPath"](), _0xb20023["arc"](_0x5c5894["x"], _0x5c5894["y"], _0x5c5894["r"] + 10, 0, 2 * Math["PI"]);
 
   var _0x226a22 = _0xb20023["createLinearGradient"](0, 2 * _0x5c5894["r"] + 20, 0, -10);
 
@@ -3401,7 +3379,7 @@ function i_rXBXDc() {
 
   var _0x26b484 = i_THGAxc["getContext"]("2d");
 
-  _0x26b484["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], i_tJNMUc(_0x26b484, 160, false, false, 0), (_0x26b484 = (i_fWFkMc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], i_tJNMUc(_0x26b484, 160, true, false, 1), (_0x26b484 = (i_fjHDAc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](160 / 2, 160 / 2), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, true, false, 2), (_0x26b484 = (i_YWwjPc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](160 / 2, 160 / 2), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, true, false, 3), (_0x26b484 = (i_xrnsEc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](160 / 2, 160 / 2), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, true, false, 4), (_0x26b484 = (i_wZSQSc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], i_tJNMUc(_0x26b484, 160, false, true, 1.5), (_0x26b484 = (i_BkJeCc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](160 / 2, 160 / 2), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, false, true, 2.5), (_0x26b484 = (i_xrSbOc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](160 / 2, 160 / 2), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, false, true, 3.5), (_0x26b484 = (i_RpTkKc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](160 / 2, 160 / 2), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, false, true, 4.5), i_cffPrs["Pad"]["Obj"] = i_THGAxc, i_cffPrs["Pad"]["Reinit"] = i_rXBXDc;
+  _0x26b484["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], i_tJNMUc(_0x26b484, 160, false, false, 0), (_0x26b484 = (i_fWFkMc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], i_tJNMUc(_0x26b484, 160, true, false, 1), (_0x26b484 = (i_fjHDAc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](80, 80), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, true, false, 2), (_0x26b484 = (i_YWwjPc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](80, 80), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, true, false, 3), (_0x26b484 = (i_xrnsEc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](80, 80), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, true, false, 4), (_0x26b484 = (i_wZSQSc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], i_tJNMUc(_0x26b484, 160, false, true, 1.5), (_0x26b484 = (i_BkJeCc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](80, 80), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, false, true, 2.5), (_0x26b484 = (i_xrSbOc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](80, 80), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, false, true, 3.5), (_0x26b484 = (i_RpTkKc = i_THGAxc["cloneNode"](true))["getContext"]("2d"))["scale"](i_cffPrs["Pad"]["Size"], i_cffPrs["Pad"]["Size"]), _0x26b484["globalAlpha"] = i_cffPrs["Pad"]["Alpha"], _0x26b484["translate"](80, 80), _0x26b484["translate"](-160 / 2, -160 / 2), i_tJNMUc(_0x26b484, 160, false, true, 4.5), i_cffPrs["Pad"]["Obj"] = i_THGAxc, i_cffPrs["Pad"]["Reinit"] = i_rXBXDc;
 }
 
 function i_FwbC$c() {
@@ -4271,7 +4249,7 @@ function i_XENaLr() {
 
   var _0x562080 = new XMLHttpRequest();
 
-  _0x562080["open"]("GET", "/" + "fc" + "/svload?game=" + gid, true), _0x562080["responseType"] = "json", _0x562080["onreadystatechange"] = function () {
+  _0x562080["open"]("GET", "/fc/svload?game=" + gid, true), _0x562080["responseType"] = "json", _0x562080["onreadystatechange"] = function () {
     if (_0x562080["readyState"] == XMLHttpRequest["DONE"] && 200 == _0x562080["status"]) {
       var _0x38b5c9 = _0x562080["response"];
       i_kJKK$t = _0x38b5c9, i_NcxYqr();
@@ -4280,13 +4258,13 @@ function i_XENaLr() {
 }
 
 function i_NcxYqr() {
-  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), null == i_cQmQBt["d1i"] && (i_cQmQBt["d1i"] = "/" + "fc" + "/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), null == i_cQmQBt["d2i"] && (i_cQmQBt["d2i"] = "/" + "fc" + "/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), null == i_cQmQBt["d3i"] && (i_cQmQBt["d3i"] = "/" + "fc" + "/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), null == i_cQmQBt["d4i"] && (i_cQmQBt["d4i"] = "/" + "fc" + "/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/" + "fc" + "/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/" + "fc" + "/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/" + "fc" + "/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/" + "fc" + "/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
+  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), true && (i_cQmQBt["d1i"] = "/fc/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), true && (i_cQmQBt["d2i"] = "/fc/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), true && (i_cQmQBt["d3i"] = "/fc/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), true && (i_cQmQBt["d4i"] = "/fc/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/fc/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/fc/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/fc/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/fc/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
 }
 
 function i_PNGrVr() {
   var _0x3da4b2 = new XMLHttpRequest();
 
-  _0x3da4b2["open"]("POST", "/" + "fc" + "/svupdate?game=" + gid, true), _0x3da4b2["setRequestHeader"]("Content-type", "application/json"), _0x3da4b2["onreadystatechange"] = function () {
+  _0x3da4b2["open"]("POST", "/fc/svupdate?game=" + gid, true), _0x3da4b2["setRequestHeader"]("Content-type", "application/json"), _0x3da4b2["onreadystatechange"] = function () {
     _0x3da4b2["readyState"] == XMLHttpRequest["DONE"] && _0x3da4b2["status"];
   }, _0x3da4b2["send"](JSON["stringify"](i_kJKK$t)), i_NcxYqr();
 }
@@ -4326,7 +4304,7 @@ function i_WTCyHr() {
 }
 
 function i_fKBDWr(_0x3ad4f1) {
-  document["getElementById"]("cb_xbtnA")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & i_TEaXzu["A"], document["getElementById"]("cb_xbtnB")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & i_TEaXzu["B"], document["getElementById"]("cb_xbtnC")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & i_TEaXzu["C"], document["getElementById"]("cb_xbtnD")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & i_TEaXzu["L"], document["getElementById"]("cb_xbtnE")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & i_TEaXzu["E"], document["getElementById"]("cb_xbtnF")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & i_TEaXzu["q"];
+  document["getElementById"]("cb_xbtnA")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & 1, document["getElementById"]("cb_xbtnB")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & 2, document["getElementById"]("cb_xbtnC")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & 4, document["getElementById"]("cb_xbtnD")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & 8, document["getElementById"]("cb_xbtnE")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & 16, document["getElementById"]("cb_xbtnF")["checked"] = i_WmyDOu["gExtX" + _0x3ad4f1 + "Key"] & 32;
 }
 
 function i_WKxiJr() {
@@ -4379,27 +4357,27 @@ function i_PYeZel() {
 
     switch (this["id"]) {
       case "cb_xbtnA":
-        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["A"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~i_TEaXzu["A"];
+        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["A"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~1;
         break;
 
       case "cb_xbtnB":
-        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["B"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~i_TEaXzu["B"];
+        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["B"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~2;
         break;
 
       case "cb_xbtnC":
-        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["C"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~i_TEaXzu["C"];
+        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["C"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~4;
         break;
 
       case "cb_xbtnD":
-        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["L"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~i_TEaXzu["L"];
+        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["L"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~8;
         break;
 
       case "cb_xbtnE":
-        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["E"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~i_TEaXzu["E"];
+        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["E"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~16;
         break;
 
       case "cb_xbtnF":
-        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["q"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~i_TEaXzu["q"];
+        this["checked"] ? i_WmyDOu["gExtX" + _0x24017a + "Key"] |= i_TEaXzu["q"] : i_WmyDOu["gExtX" + _0x24017a + "Key"] &= ~32;
     }
   });
 }
@@ -4531,15 +4509,15 @@ function i_icQdyl() {
 }
 
 function i_Newnwl(_0x1fc90f, _0x24d09e) {
-  SendBigCommand(i_cZwcUl["gn"], _0x1fc90f, _0x24d09e);
+  SendBigCommand(23, _0x1fc90f, _0x24d09e);
 }
 
 function i_SWyJkl(_0x3f97f2) {
-  SendBigCommand(i_cZwcUl["hn"], _0x3f97f2, 0);
+  SendBigCommand(24, _0x3f97f2, 0);
 }
 
 function i_heWQTl(_0x1b34f3) {
-  i_EtKHbl && SendBigCommand(i_cZwcUl["bn"], _0x1b34f3);
+  i_EtKHbl && SendBigCommand(25, _0x1b34f3);
 }
 
 function i_nZDNxl() {
@@ -4614,7 +4592,7 @@ function i_DPmFKl(_0x3f8808) {
 
       i_kRDkS_ = i_thkew_["width"], i_kPQcC_ = i_thkew_["height"], i_iDQBme && (i_thkew_["width"] *= i_yhDYO_, i_thkew_["height"] *= i_yhDYO_), ctlEnable = _0x3f8808["data"][14], i_ecCpE_ = i_CrAfx_(), i_dHGrA_ = "  varying highp vec2 v_textureCoord;\n\n            uniform sampler2D u_sampler;\n\n            void main(void) {\n                gl_FragColor = texture2D(u_sampler, vec2(v_textureCoord.s, v_textureCoord.t));\n            }", i_kNJaU_(), i_CzBHSl(), i_iDQBme ? (i_DYNBTe["onmessage"] = i_hDFGNl, // TOLOOK
       setTimeout(i_wbiGr, 3000), i_Gphxdn(100)) : (i_DYNBTe["onmessage"] = i_hDFGNl, i_pPaJir(100)), 1 == i_iDpHde && i_ckezgo();
-    } else "process" == _0x3f8808["data"]["act"] ? -1 == _0x3f8808["data"]["pos"] ? i_sxfci_("loadingimg")["src"] = "./img/loadfail.png" : -2 == _0x3f8808["data"]["pos"] || (i_iDQBme ? i_Gphxdn(_0x3f8808["data"]["pos"]) : i_pPaJir(_0x3f8808["data"]["pos"])) : i_zXJHnu(i_cZwcUl["vn"], 255 & i_iChyAi, i_iChyAi / 256);
+    } else "process" == _0x3f8808["data"]["act"] ? -1 == _0x3f8808["data"]["pos"] ? i_sxfci_("loadingimg")["src"] = "./img/loadfail.png" : -2 == _0x3f8808["data"]["pos"] || (i_iDQBme ? i_Gphxdn(_0x3f8808["data"]["pos"]) : i_pPaJir(_0x3f8808["data"]["pos"])) : i_zXJHnu(18, 255 & i_iChyAi, i_iChyAi / 256);
     i_EtKHbl && i_YijrMl();
   } else i_KKCaXl(_0x3f8808["data"]);
 }
@@ -4631,7 +4609,7 @@ i_iZEzAl["s"] = function () {
 
 function i_KKCaXl(_0x184d40) {
   var _0xf1e26d = _0x184d40[0];
-  if (_0xf1e26d == i_cZwcUl["Tn"]) i_TBswui();else if (_0xf1e26d == i_cZwcUl["xn"]) {
+  if (_0xf1e26d == 26) i_TBswui();else if (_0xf1e26d == 7) {
     var _0xf5bb29 = _0x184d40[2];
 
     if (1 == _0x184d40[1]) {
@@ -4681,12 +4659,12 @@ function i_KKCaXl(_0x184d40) {
       }, _0x2b8f18["send"](_0x575595);
     }
   } else {
-    if (_0xf1e26d == i_cZwcUl["Sn"]) {
+    if (_0xf1e26d == 8) {
       _0xf5bb29 = _0x184d40[2];
       return void (i_iDQBme && i_MKbRHt(_0xf5bb29));
     }
 
-    _0xf1e26d == i_cZwcUl["Cn"] ? 1 == _0x184d40[1] ? i_ePsnwo() : i_sCnmko() : _0xf1e26d == i_cZwcUl["Kn"] ? gid < 99999 && i_MNhEfn() : _0xf1e26d == i_cZwcUl["On"] && i_sEwEen("延时过高,请稍后");
+    _0xf1e26d == 13 ? 1 == _0x184d40[1] ? i_ePsnwo() : i_sCnmko() : _0xf1e26d == 16 ? gid < 99999 && i_MNhEfn() : _0xf1e26d == 20 && i_sEwEen("延时过高,请稍后");
   }
 }
 
@@ -4721,7 +4699,7 @@ function i_hDFGNl(_0x132ddb) {
         } else {
           for (_0x2cd6fd = 0; _0x2cd6fd < i_cNjsB_ && (102400 <= i_bjXRwf && (i_bjXRwf = 0), !(i_akCNBf < i_iWFTUf - i_pTEbDf)); _0x2cd6fd++) i_daHxIf[i_bjXRwf] = _0x2e8260[_0x2cd6fd + 1] / 6553.5, i_bjXRwf++, i_iWFTUf++;
 
-          null != i_MjAfV ? i_MjAfV[3] = (i_iWFTUf - i_pTEbDf) / 1024 : i_akCNBf - 1024 < i_iWFTUf - i_pTEbDf && i_MChKiu % 30 == 0 && i_zXJHnu(i_cZwcUl["Xn"], (i_iWFTUf - i_pTEbDf) / 1024, 0);
+          null != i_MjAfV ? i_MjAfV[3] = (i_iWFTUf - i_pTEbDf) / 1024 : i_akCNBf - 1024 < i_iWFTUf - i_pTEbDf && i_MChKiu % 30 == 0 && i_zXJHnu(27, (i_iWFTUf - i_pTEbDf) / 1024, 0);
         }
       }
 
@@ -4733,34 +4711,10 @@ function i_hDFGNl(_0x132ddb) {
 }
 
 var i_cZwcUl = {
-  Rn: 1,
-  zn: 2,
-  In: 3,
-  Nn: 4,
   Un: 5,
-  Dn: 6,
-  xn: 7,
-  Sn: 8,
-  $n: 9,
-  Bn: 10,
   Gn: 11,
-  Fn: 12,
-  Cn: 13,
-  Ln: 14,
   qn: 15,
-  Kn: 16,
-  Vn: 17,
-  vn: 18,
-  jn: 19,
-  On: 20,
   Yn: 21,
-  Hn: 22,
-  gn: 23,
-  hn: 24,
-  bn: 25,
-  Tn: 26,
-  Xn: 27,
-  dn: 28,
   Wn: 29,
   Jn: 30
 };
@@ -4792,72 +4746,72 @@ function i_aCbGuu(_0xbaa3c3, _0x557895) {
 }
 
 function i_jPzhfu(_0x45aa6b, _0x469d0a) {
-  16 * _0x45aa6b + _0x469d0a == i_mnEKru && _0x45aa6b != i_GHKWya["$e"] || 0 < i_HaCAva["length"] && _0x45aa6b != i_GHKWya["$e"] || (_0x45aa6b == i_GHKWya["Fe"] && (_0x469d0a & 64 ? i_iYai_a = 1 : _0x469d0a & 128 && (i_iYai_a = 0)), i_mnEKru = 16 * _0x45aa6b + _0x469d0a, 1 == i_iDpHde ? i_fJfXvo(_0x45aa6b, _0x469d0a) : (i_GHKWya["$e"], i_kcihCi(_0x45aa6b, _0x469d0a)), i_yYwPle["p"]++);
+  16 * _0x45aa6b + _0x469d0a == i_mnEKru && _0x45aa6b != 0 || 0 < i_HaCAva["length"] && _0x45aa6b != 0 || (_0x45aa6b == 3 && (_0x469d0a & 64 ? i_iYai_a = 1 : _0x469d0a & 128 && (i_iYai_a = 0)), i_mnEKru = 16 * _0x45aa6b + _0x469d0a, 1 == i_iDpHde ? i_fJfXvo(_0x45aa6b, _0x469d0a) : (0, i_kcihCi(_0x45aa6b, _0x469d0a)), i_yYwPle["p"]++);
 }
 
 var i_yDbf_u = 1;
 
 function i_xCyTvu() {
-  0 != i_WmyDOu["gSkipFrame"] && i_yDbf_u < 3 && (i_iDQBme || (i_yDbf_u++, i_zXJHnu(i_cZwcUl["In"], i_yDbf_u, 0)));
+  0 != i_WmyDOu["gSkipFrame"] && i_yDbf_u < 3 && (i_iDQBme || (i_yDbf_u++, i_zXJHnu(3, i_yDbf_u, 0)));
 }
 
 function i_ARBMdu() {
-  i_zXJHnu(i_cZwcUl["In"], 1, 0);
+  i_zXJHnu(3, 1, 0);
 }
 
 function i_XFSipu(_0x598291) {
-  i_HSeGX_ = 2 * (9 - _0x598291), i_zXJHnu(i_cZwcUl["$n"], i_HSeGX_, 0);
+  i_HSeGX_ = 2 * (9 - _0x598291), i_zXJHnu(9, i_HSeGX_, 0);
 }
 
 function i_cxmKmu() {}
 
 function i_nYekgu(_0x5a7cfa, _0x5a012a) {
-  i_ecwRtu(i_cZwcUl["Cn"], _0x5a7cfa, _0x5a012a);
+  i_ecwRtu(13, _0x5a7cfa, _0x5a012a);
 }
 
 function i_bkNDhu(_0x564b49) {
-  i_hipxcu = _0x564b49, i_zXJHnu(i_cZwcUl["zn"], _0x564b49, 0);
+  i_hipxcu = _0x564b49, i_zXJHnu(2, _0x564b49, 0);
 }
 
 function i_bAiBbu(_0x1b9288) {
-  i_WYbZsu = _0x1b9288, i_CCRpou = 0, i_zXJHnu(i_cZwcUl["Dn"], _0x1b9288, 0);
+  i_WYbZsu = _0x1b9288, i_CCRpou = 0, i_zXJHnu(6, _0x1b9288, 0);
 }
 
 function i_WmWryu(_0x15a1c5) {
-  i_zXJHnu(i_cZwcUl["xn"], _0x15a1c5, 0);
+  i_zXJHnu(7, _0x15a1c5, 0);
 }
 
 function i_ZjZkwu(_0x24c0cc) {
-  i_zXJHnu(i_cZwcUl["Sn"], _0x24c0cc, 0);
+  i_zXJHnu(8, _0x24c0cc, 0);
 }
 
 function i_piEjku(_0x465242) {
   0 == i_ZHidMe ? // TOLOOK
-  setTimeout(i_piEjku, 2000, _0x465242) : i_zXJHnu(i_cZwcUl["Rn"], _0x465242, 0);
+  setTimeout(i_piEjku, 2000, _0x465242) : i_zXJHnu(1, _0x465242, 0);
 }
 
 function i_ndBeTu(_0xcd7d68) {
-  i_zXJHnu(i_cZwcUl["Bn"], _0xcd7d68, 0);
+  i_zXJHnu(10, _0xcd7d68, 0);
 }
 
 function i_Pxzfxu(_0xd9a80f) {
-  i_zXJHnu(i_cZwcUl["Fn"], 255 & _0xd9a80f, _0xd9a80f / 256);
+  i_zXJHnu(12, 255 & _0xd9a80f, _0xd9a80f / 256);
 }
 
 function i_ZQAWMu(_0x3d240b) {
-  i_zXJHnu(i_cZwcUl["Ln"], _0x3d240b, 0);
+  i_zXJHnu(14, _0x3d240b, 0);
 }
 
 function i_jnKJPu() {
-  i_zXJHnu(i_cZwcUl["Vn"], 0, 0);
+  i_zXJHnu(17, 0, 0);
 }
 
 function i_ktCsEu(_0x183a97) {
-  i_zXJHnu(i_cZwcUl["jn"], _0x183a97, 0);
+  i_zXJHnu(19, _0x183a97, 0);
 }
 
 function i_XwGBAu() {
-  i_zXJHnu(i_cZwcUl["Hn"], 0, 0);
+  i_zXJHnu(22, 0, 0);
 }
 
 var i_GCasSu = {};
@@ -5031,14 +4985,7 @@ var i_XejQKu = false,
   gKeyRev: false,
   gKeyRevLR: false
 },
-    i_TEaXzu = {
-  A: 1,
-  B: 2,
-  C: 4,
-  L: 8,
-  E: 16,
-  q: 32
-},
+    i_TEaXzu = {},
     i_wtWEIu = {
   Lock43: false,
   ScrStyle: false,
@@ -5671,7 +5618,7 @@ function i_QMCCq_(_0x5c76d9) {
       if (++i_MChKiu % i_WmyDOu["gGesSpeed"] == 0) {
         var _0x432453 = GetAutoPlay();
 
-        null != _0x432453 && SendKey(i_GHKWya["$e"], _0x432453);
+        null != _0x432453 && SendKey(0, _0x432453);
       }
 
       if (i_MChKiu < 5000 && (1 == i_MChKiu && i_ZSfTwa && i_cxmKmu(), i_MChKiu % 59 == 0 && 1 == i_WmyDOu["gSkipFrame"])) {
@@ -5687,7 +5634,7 @@ function i_QMCCq_(_0x5c76d9) {
         0 < i_KzHiyf && 0 == i_bjXRwf && (i_iDPymf["set"](i_mSNPbf), i_asXxpf["set"](i_nZPkhf), i_bjXRwf = i_KzHiyf, i_KzHiyf = 0);
 
         for (var _0x55af9f = 0; _0x55af9f < i_cNjsB_; _0x55af9f++) if (i_SEwKkf <= i_bjXRwf) {
-          if (i_SEwKkf / 2 <= i_KzHiyf && 1 != i_iDpHde && 0 == _0x34047d && (SendCommand(i_cZwcUl["Nn"], 0, 0), _0x34047d = true), i_SEwKkf <= i_KzHiyf) break;
+          if (i_SEwKkf / 2 <= i_KzHiyf && 1 != i_iDpHde && 0 == _0x34047d && (SendCommand(4, 0, 0), _0x34047d = true), i_SEwKkf <= i_KzHiyf) break;
           i_mSNPbf[i_KzHiyf] = _0x4dd94c[2 * _0x55af9f] / 32768, i_nZPkhf[i_KzHiyf] = _0x4dd94c[2 * _0x55af9f + 1] / 32768, i_KzHiyf++;
         } else i_iDPymf[i_bjXRwf] = _0x4dd94c[2 * _0x55af9f] / 32768, i_asXxpf[i_bjXRwf] = _0x4dd94c[2 * _0x55af9f + 1] / 32768, i_bjXRwf++;
       }

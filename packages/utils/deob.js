@@ -17,8 +17,8 @@ if (typeof window !== 'undefined')
   global = window
 
 let globalState = {
-  objectVariables: {},
-  decryptFnList: [],
+  objectVariables: {}, // 所有对象变量
+  decryptFnList: [], // 解密函数列表
 }
 
 function handleError(error, rawCode) {
@@ -551,7 +551,7 @@ export class Deob {
               const variableName = declaration.id.name
               const start = declaration.start
               if (declaration.init?.type === 'ObjectExpression')
-                globalState.objectVariables[`${start}_${variableName}`] = cloneDeep(declaration.init)
+                globalState.objectVariables[`${start}_${variableName}`] = declaration.init
             }
           })
         },
@@ -561,14 +561,13 @@ export class Deob {
 
     const scopes = []
 
-    // 针对类似以下代码保存处理 (无需转换)
+    // 针对类似以下代码保存处理
     // var e = {};
     // e["ESKQL"] = function (n, t) {
     //   return n ^ t;
     // }, e["mznfP"] = function (n, t) {
     //   return n ^ t;
     // };
-    // var u = e;
     traverse(this.ast, {
       AssignmentExpression: {
         exit(path) {
@@ -588,10 +587,22 @@ export class Deob {
 
           const right = path.node.right
 
+          let isReplace = false
           try {
             const prop = t.objectProperty(left.property, right)
-            if (globalState.objectVariables[`${start}_${objectName}`])
-              globalState.objectVariables[`${start}_${objectName}`].properties.push(prop)
+            if (globalState.objectVariables[`${start}_${objectName}`]) {
+              // 如果有相同 key 则覆盖
+              const keyIndex = globalState.objectVariables[`${start}_${objectName}`].properties.findIndex((p) => {
+                return left.property.value === p.key.name || left.property.value === p.key.value
+              })
+              if (keyIndex !== -1)
+                globalState.objectVariables[`${start}_${objectName}`].properties[keyIndex] = prop
+
+              else
+                globalState.objectVariables[`${start}_${objectName}`].properties.push(prop)
+
+              isReplace = true
+            }
           }
           catch (error) {
             throw new Errror('生成表达式失败')
@@ -606,6 +617,9 @@ export class Deob {
             parentPath: path.getStatementParent()?.parentPath,
             objectName,
           })
+
+          if (isReplace)
+            path.remove() // 移除自身赋值语句
 
           path.skip()
         },
@@ -655,8 +669,8 @@ export class Deob {
    */
   objectMemberReplace() {
     // 记录被替换的对象, 如何对象没被修改过则删除
-    const set = new Set()
-    const map = new Map()
+    const usedMap = new Map()
+    let usedObjects = {}
 
     // 先执行 _0x52627b["QqaUY"] ---> "attribute"
     traverse(this.ast, {
@@ -691,19 +705,17 @@ export class Deob {
               const keyName = prop.key.value || prop.key.name
               if (
                 (prop.key.type === 'StringLiteral'
-                  || prop.key.type === 'Identifier')
+                || prop.key.type === 'Identifier')
                 && keyName === propertyName
                 && t.isLiteral(prop.value)
               ) {
                 // 还需要判断 objectName[propertyName] 是否被修改过
                 const binding = path.scope.getBinding(objectName)
-                if (
-                  binding
-                  && binding.constant
-                  && binding.constantViolations.length === 0
-                ) {
-                  map.set(`${objectName}.${propertyName}`, generator(prop.value).code)
-                  set.add(objectName)
+                if (binding && binding.constant && binding.constantViolations.length === 0) {
+                  usedMap.set(`${objectName}.${propertyName}`, generator(prop.value).code)
+
+                  usedObjects[objectName] = usedObjects[objectName] || new Set()
+                  usedObjects[objectName].add(propertyName)
 
                   path.replaceWith(prop.value)
 
@@ -745,7 +757,7 @@ export class Deob {
               const keyName = prop.key.value || prop.key.name
               if (
                 (prop.key.type === 'StringLiteral'
-                  || prop.key.type === 'Identifier')
+                || prop.key.type === 'Identifier')
                 && prop.value.type === 'FunctionExpression'
                 && keyName === propertyName
               ) {
@@ -754,10 +766,9 @@ export class Deob {
 
                 // 在原代码中，函数体就一行 return 语句，取出其中的 argument 属性与调用节点替换
                 const firstStatement = orgFn.body.body?.[0]
-                if (!(firstStatement?.type === 'ReturnStatement'))
-                  return
+                if (firstStatement?.type !== 'ReturnStatement') return
 
-                map.set(`${objectName}.${propertyName}`, generator(orgFn).code)
+                usedMap.set(`${objectName}.${propertyName}`, generator(orgFn).code)
 
                 // 返回参数
                 const returnArgument = firstStatement.argument
@@ -819,8 +830,10 @@ export class Deob {
                   isReplace = true
                 }
 
-                if (isReplace)
-                  set.add(objectName)
+                if (isReplace) {
+                  usedObjects[objectName] = usedObjects[objectName] || new Set()
+                  usedObjects[objectName].add(propertyName)
+                }
               }
             }
           }
@@ -830,10 +843,53 @@ export class Deob {
 
     this.reParse()
 
-    this.log(`已被替换对象: `, map)
-    // 删除无用变量名已替换过的对象变量
-    // this.log(`已被替换的对象列表:`, set)
-    // this.removeUnusedVariables([...set])
+    /**
+     * 移除已使用过的 key
+     * var _0x52627b = {
+     *  'QqaUY': "attribute",
+     *  SDgrw: "123"
+     * }
+     * _0x52627b["QqaUY"]
+     * 🔽
+     * var _0x52627b = {
+     *  SDgrw: "123"
+     * }
+     * "attribute"
+     */
+    const removeSet = new Set()
+    traverse(this.ast, {
+      ObjectProperty(path) {
+        let objectName = ''
+        if (path.parentPath.parentPath.type === 'AssignmentExpression')
+          objectName = path.parentPath.parentPath.node.left.name
+
+        else if (path.parentPath.parentPath.type === 'VariableDeclarator')
+          objectName = path.parentPath.parentPath.node.id.name
+
+        if (!objectName) return
+
+        const propertyName = path.node.key.value || path.node.key.name
+
+        if (usedObjects[objectName]?.has(propertyName)) {
+          path.remove()
+          removeSet.add(`${objectName}.${propertyName}`)
+        }
+      },
+    })
+
+    this.reParse()
+
+    usedObjects = {}
+
+    if (usedMap.size > 0)
+      this.log(`已被替换对象: `, usedMap)
+
+    if (removeSet.size > 0)
+      this.log(`已移除key列表:`, removeSet)
+  }
+
+  removeUsedObjectProperty() {
+
   }
 
   /**
@@ -1348,7 +1404,7 @@ export class Deob {
 
   /**
    * 优化变量名
-   * @example catch (_0x292610) {} ---> 如 catch (error) {}
+   * @example catch (_0x292610) {} ---> 如 catch (error) {}   _0x52627b ---> _0xaaaaaa
    * @deprecated
    */
   renameIdentifier() {
@@ -1360,7 +1416,7 @@ export class Deob {
           Identifier(p) {
             path.scope.rename(
               p.node.name,
-              path.scope.generateUidIdentifier('_0xabc').name,
+              path.scope.generateUidIdentifier('_0xaaaaaa').name,
             )
           },
         })

@@ -85,7 +85,7 @@ export class Deob {
       console.error('代码初始化解析有误!')
 
       const codeFrame = handleError(error, rawCode)
-      throw new Error(codeFrame)
+      throw new Error(`代码初始化解析有误! ${error}`)
     }
   }
 

@@ -5,7 +5,7 @@ import traverse1 from '@babel/traverse'
 import generator1 from '@babel/generator'
 import { codeFrameColumns } from '@babel/code-frame'
 import * as t from '@babel/types'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, isEmpty } from 'lodash-es'
 
 /** @type generator1 */
 const generator = generator1?.default || generator1
@@ -53,7 +53,6 @@ export class Deob {
     if (!rawCode)
       throw new Error('请载入js代码')
     console.clear()
-    console.log('start deob')
 
     /**
      * The raw JavaScript code.
@@ -105,7 +104,7 @@ export class Deob {
   }
 
   /**
-   * 再次解析重新生成新的ast
+   * 当执行替换(replace,rename 等)操作时,需要执行一次更新新的 ast
    */
   reParse() {
     const jscode = generator(this.ast, this.opts).code
@@ -282,9 +281,8 @@ export class Deob {
       },
     })
 
+    this.reParse()
     this.log('解密结果:', map)
-
-    this.reParse() // 切记一定要在替换后执行, 因为替换后此时 ast 并未更新, 就可能会导致后续处理都使用原先的 ast
   }
 
   /**
@@ -354,8 +352,6 @@ export class Deob {
 
     if (isRemove)
       this.ast.program.body = this.ast.program.body.slice(index)
-
-    this.reParse()
   }
 
   /**
@@ -365,7 +361,7 @@ export class Deob {
    * @example
    * function xxx(){} // xxx 为解密函数
    *
-   * var a = xxx ---> var xxx = xxx
+   * var a = xxx ---> var xxx = xxx --->  移除 var xxx = xxx
    */
   designDecryptFn(decryptFnList) {
     if (!Array.isArray(decryptFnList))
@@ -373,22 +369,7 @@ export class Deob {
     else
       globalState.decryptFnList = decryptFnList
 
-    // 先遍历所有函数(作用域在Program)，并根据引用次数来判断是否为解密函数
-    traverse(this.ast, {
-      'FunctionDeclaration|VariableDeclarator': function (path) {
-        if (!(t.isFunctionDeclaration(path.node) || t.isFunctionExpression(path.node?.init)))
-          return
-
-        const name = path.node.id.name
-
-        const decryptFn = globalState.decryptFnList.find(n => n === name)
-
-        if (decryptFn)
-          path.remove()
-      },
-    })
-
-    // 将所有引用解密函数的变量都复制为
+    // 将所有引用解密函数的变量都重命名变为解密函数, 同时移除自身
     traverse(this.ast, {
       VariableDeclarator(path) {
         const { id, init } = path.node
@@ -396,17 +377,17 @@ export class Deob {
         if (init && init.type === 'Identifier') {
           const decryptFn = globalState.decryptFnList.find(n => n === init.name)
 
-          // 直接替换会导致与原解密函数重定义,因此需要删除原原解密函数
-          if (decryptFn)
+          if (decryptFn) {
             path.scope.rename(id.name, decryptFn)
+            path.remove()
+          }
         }
       },
     })
+
     this.reParse()
 
     this.decryptReplace()
-
-    this.reParse() // 切记一定要在替换后执行, 因为替换后此时 ast 并未更新, 就可能会导致后续处理都使用原先的 ast
   }
 
   /**
@@ -543,15 +524,31 @@ export class Deob {
   saveAllObject() {
     globalState.objectVariables = {}
 
+    const scopes = []
+
+    function addReplaceScope() {
+
+    }
+
     traverse(this.ast, {
       VariableDeclaration: {
         exit(path, state) {
           path.node.declarations.forEach((declaration) => {
             if (declaration.id.type === 'Identifier') {
-              const variableName = declaration.id.name
-              const start = declaration.start
-              if (declaration.init?.type === 'ObjectExpression')
-                globalState.objectVariables[`${start}_${variableName}`] = declaration.init
+              const objectName = declaration.id.name
+              if (declaration.init?.type === 'ObjectExpression') {
+                globalState.objectVariables[`${declaration.start}_${objectName}`] = declaration.init
+
+                // 在同作用域下将变量重命名 var u = e; ---> var e = e; 同时一并移除
+                const binding = path.scope.getBinding(objectName)
+                if (!(binding && binding.path.node.type === 'VariableDeclarator' && binding.path.node.init?.type === 'ObjectExpression')) return
+                if (!binding.constant && binding.constantViolations.length === 0) return
+
+                scopes.push({
+                  parentPath: path.getStatementParent()?.parentPath,
+                  objectName,
+                })
+              }
             }
           })
         },
@@ -559,15 +556,15 @@ export class Deob {
 
     })
 
-    const scopes = []
-
-    // 针对类似以下代码保存处理
-    // var e = {};
-    // e["ESKQL"] = function (n, t) {
-    //   return n ^ t;
-    // }, e["mznfP"] = function (n, t) {
-    //   return n ^ t;
-    // };
+    /**
+     * 合并对象  如果有相同 key 则覆盖
+     * var a = {}
+     * a["b"] = 123
+     * ⬇️
+     * var a = {
+     *  "b": 123
+     * }
+     */
     traverse(this.ast, {
       AssignmentExpression: {
         exit(path) {
@@ -578,20 +575,24 @@ export class Deob {
 
           const objectName = left.object.name
 
+          // 在同作用域下将变量重命名 var u = e; ---> var e = e; 同时一并移除
           const binding = path.scope.getBinding(objectName)
 
           // 判断 原 object 是否为 var e = {}
           if (!(binding && binding.path.node.type === 'VariableDeclarator' && binding.path.node.init?.type === 'ObjectExpression')) return
+          if (!binding.constant && binding.constantViolations.length === 0) return
 
-          const start = binding.path.node.start
+          scopes.push({
+            parentPath: path.getStatementParent()?.parentPath,
+            objectName,
+          })
 
-          const right = path.node.right
+          const start = binding.identifier.start
 
           let isReplace = false
           try {
-            const prop = t.objectProperty(left.property, right)
+            const prop = t.objectProperty(left.property, path.node.right)
             if (globalState.objectVariables[`${start}_${objectName}`]) {
-              // 如果有相同 key 则覆盖
               const keyIndex = globalState.objectVariables[`${start}_${objectName}`].properties.findIndex((p) => {
                 return left.property.value === p.key.name || left.property.value === p.key.value
               })
@@ -608,18 +609,10 @@ export class Deob {
             throw new Errror('生成表达式失败')
           }
 
-          // 没被修改过
-          if (!binding.constant && binding.constantViolations.length === 0) return
-
-          // 在同作用域下将变量重命名  var u = e; ---> var e = e;
-          // 记录父亲作用域
-          scopes.push({
-            parentPath: path.getStatementParent()?.parentPath,
-            objectName,
-          })
-
-          if (isReplace)
-            path.remove() // 移除自身赋值语句
+          if (isReplace) {
+            if (path.parentPath.type === 'SequenceExpression' || path.parentPath.type === 'ExpressionStatement')
+              path.remove() // 移除自身赋值语句
+          }
 
           path.skip()
         },
@@ -634,6 +627,7 @@ export class Deob {
           if (init && init.type === 'Identifier' && id.type === 'Identifier') {
             if (init.name === objectName) {
               p.scope.rename(id.name, objectName)
+              // !!! 移除后 再次解析会导致 start 定位变更, 致使后续对象替换失效, 因此注释下列 this.reParse 代码
               p.parentPath.remove()
             }
           }
@@ -641,8 +635,7 @@ export class Deob {
       })
     })
 
-    // this.log(`已保存所有对象: ${Object.entries(globalState.objectVariables).map(([key, value]) => ({ key, value: generator(value).code }))}`)
-    this.log(`已保存所有对象`)
+    // this.reParse()
   }
 
   /** 获取已保存的所有变量 (供测试用) */
@@ -672,7 +665,10 @@ export class Deob {
     const usedMap = new Map()
     let usedObjects = {}
 
-    // 先执行 _0x52627b["QqaUY"] ---> "attribute"
+    /**
+     * 先执行 字面量花指令还原
+     * _0x52627b["QqaUY"] ---> "attribute"
+     */
     traverse(this.ast, {
       MemberExpression(path) {
         // // 父级表达式不能是赋值语句
@@ -728,9 +724,11 @@ export class Deob {
       },
     })
 
-    // 在执行
-    // _0x52627b["GOEUR"](a, b) ---> a + b
-    // _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
+    /**
+     * 再执行 函数花指令还原
+     * _0x52627b["GOEUR"](a, b) ---> a + b
+     * _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
+     */
     traverse(this.ast, {
       CallExpression(path) {
         if (path.node.callee.type === 'MemberExpression' && path.node.callee.object.type === 'Identifier') {
@@ -843,8 +841,10 @@ export class Deob {
 
     this.reParse()
 
+    const removeSet = new Set()
+
     /**
-     * 移除已使用过的 key
+     * 移除已使用过的 property(key)
      * var _0x52627b = {
      *  'QqaUY': "attribute",
      *  SDgrw: "123"
@@ -856,28 +856,27 @@ export class Deob {
      * }
      * "attribute"
      */
-    const removeSet = new Set()
-    traverse(this.ast, {
-      ObjectProperty(path) {
-        let objectName = ''
-        if (path.parentPath.parentPath.type === 'AssignmentExpression')
-          objectName = path.parentPath.parentPath.node.left.name
+    if (!isEmpty(usedObjects)) {
+      traverse(this.ast, {
+        ObjectProperty(path) {
+          let objectName = ''
+          if (path.parentPath.parentPath.type === 'AssignmentExpression')
+            objectName = path.parentPath.parentPath.node.left.name
 
-        else if (path.parentPath.parentPath.type === 'VariableDeclarator')
-          objectName = path.parentPath.parentPath.node.id.name
+          else if (path.parentPath.parentPath.type === 'VariableDeclarator')
+            objectName = path.parentPath.parentPath.node.id.name
 
-        if (!objectName) return
+          if (!objectName) return
 
-        const propertyName = path.node.key.value || path.node.key.name
+          const propertyName = path.node.key.value || path.node.key.name
 
-        if (usedObjects[objectName]?.has(propertyName)) {
-          path.remove()
-          removeSet.add(`${objectName}.${propertyName}`)
-        }
-      },
-    })
-
-    this.reParse()
+          if (usedObjects[objectName]?.has(propertyName)) {
+            path.remove()
+            removeSet.add(`${objectName}.${propertyName}`)
+          }
+        },
+      })
+    }
 
     usedObjects = {}
 
@@ -886,10 +885,6 @@ export class Deob {
 
     if (removeSet.size > 0)
       this.log(`已移除key列表:`, removeSet)
-  }
-
-  removeUsedObjectProperty() {
-
   }
 
   /**
@@ -1143,8 +1138,6 @@ export class Deob {
         path.skip()
       },
     })
-
-    this.reParse()
   }
 
   /**
@@ -1214,7 +1207,6 @@ export class Deob {
         }
       },
     })
-    this.reParse()
   }
 
   /**
@@ -1227,7 +1219,7 @@ export class Deob {
   calcBinary() {
     // 递归处理二项式 例 '1' + '2' + '3' ---> '123'
     function transformConcatenated(path) {
-      const { left, right } = path.node
+      const { left, right, operator } = path.node
 
       const hasIdentifier = [left, right].some(a => t.isIdentifier(a))
       if (hasIdentifier) return
@@ -1235,7 +1227,11 @@ export class Deob {
       if (t.isLiteral(left) && t.isLiteral(right)) {
         const { confident, value } = path.evaluate()
         confident && path.replaceWith(t.valueToNode(value))
-        transformConcatenated(path.parentPath)
+
+        if (path.parentPath.type === 'BinaryExpression')
+          transformConcatenated(path.parentPath)
+
+        path.skip()
       }
     }
 
@@ -1243,6 +1239,11 @@ export class Deob {
       BinaryExpression(path) {
         transformConcatenated(path)
       },
+    })
+
+    this.reParse()
+
+    traverse(this.ast, {
       UnaryExpression(path) {
         if (path.node.operator !== '!')
           return // 避免判断成 void
@@ -1273,6 +1274,8 @@ export class Deob {
         }
       },
     })
+
+    this.reParse()
   }
 
   /**
@@ -1308,8 +1311,6 @@ export class Deob {
         path.remove()
       },
     })
-
-    this.reParse()
   }
 
   /**

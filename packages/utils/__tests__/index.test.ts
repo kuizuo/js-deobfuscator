@@ -66,6 +66,7 @@ for (void 0;;) {
 
   it('designDecryptFn', () => {
     const rawCode = `
+      function foo() {}
       var a = foo;
     `
 
@@ -75,7 +76,7 @@ for (void 0;;) {
 
     const code = deob.getCode()
 
-    expect(code).toBe(`var foo = foo;`)
+    expect(code).toBe(`function foo() {}`)
   })
 
   it('nestedFnReplace', () => {

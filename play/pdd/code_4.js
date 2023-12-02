@@ -2,7 +2,6 @@
   "use strict";
 
   function t(n) {
-    var e = {};
     return t = "function" == typeof Symbol && "symbol" == typeof Symbol["iterator"] ? function (n) {
       return typeof n;
     } : function (n) {
@@ -11,55 +10,23 @@
   }
 
   function r(n, t) {
-    var c = {};
     return o(n) || i(n, t) || u(n, t) || e();
   }
 
   function e() {
-    var t = {};
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   function u(n, t) {
-    var e = {
-      NigeB: "0|2|4|5|1|3"
-    };
-    var u = e["NigeB"]["split"]("|");
-    var i = 0;
-
-    for (void 0;;) {
-      switch (u[i++]) {
-        case "0":
-          if (!n) return;
-          continue;
-
-        case "1":
-          if (o === "Map" || o === "Set") return Array["from"](n);
-          continue;
-
-        case "2":
-          if (typeof n === "string") return c(n, t);
-          continue;
-
-        case "3":
-          if (o === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/["test"](o)) return c(n, t);
-          continue;
-
-        case "4":
-          var o = Object["prototype"]["toString"]["call"](n)["slice"](8, -1);
-          continue;
-
-        case "5":
-          o === "Object" && n["constructor"] && (o = n["constructor"]["name"]);
-          continue;
-      }
-
-      break;
-    }
+    if (!n) return;
+    if (typeof n === "string") return c(n, t);
+    var o = Object["prototype"]["toString"]["call"](n)["slice"](8, -1);
+    o === "Object" && n["constructor"] && (o = n["constructor"]["name"]);
+    if (o === "Map" || o === "Set") return Array["from"](n);
+    if (o === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/["test"](o)) return c(n, t);
   }
 
   function c(n, t) {
-    var e = {};
     (t == null || t > n["length"]) && (t = n["length"]);
     var c = 0;
     var i = new Array(t);
@@ -72,7 +39,6 @@
   }
 
   function i(n, t) {
-    var e = {};
     var u = null == n ? null : "undefined" != typeof Symbol && n[Symbol["iterator"]] || n["@@iterator"];
 
     if (null != u) {
@@ -108,565 +74,162 @@
   }
 
   function a(n, t) {
-    var e = {
-      "ouiZC": "9|0|3|12|8|14|5|6|4|11|2|7|13|1|10",
-      "wWruh": function (n, t) {
-        return n >>> t;
-      },
-      "foXGt": function (n, t) {
-        return n & t;
-      },
-      "ISMiM": function (n, t) {
-        return n & t;
-      },
-      "PRTMT": function (n, t) {
-        return n + t;
-      },
-      "iJzcR": function (n, t) {
-        return n >>> t;
-      },
-      "KTcEv": function (n, t) {
-        return n >>> t;
-      },
-      "IThCj": function (n, t) {
-        return n & t;
-      },
-      "QFIHt": function (n, t) {
-        return n >>> t;
-      },
-      "SPkcw": function (n, t) {
-        return n & t;
-      },
-      "TfPfd": function (n, t) {
-        return n | t;
-      },
-      "RFZPa": function (n, t) {
-        return n << t;
-      },
-      "ViBDR": function (n, t) {
-        return n | t;
-      },
-      "orcQa": function (n, t) {
-        return n + t;
-      }
-    };
-    var u = e;
-    var c = u["ouiZC"]["split"]("|");
+    var e = {};
     var i = 0;
-
-    for (void 0;;) {
-      switch (c[i++]) {
-        case "0":
-          t = [u["wWruh"](t[0], 16), u["foXGt"](t[0], 65535), u["wWruh"](t[1], 16), u["ISMiM"](t[1], 65535)];
-          continue;
-
-        case "1":
-          o[0] &= 65535;
-          continue;
-
-        case "2":
-          o[0] += u["wWruh"](o[1], 16);
-          continue;
-
-        case "3":
-          var o = [0, 0, 0, 0];
-          continue;
-
-        case "4":
-          o[2] &= 65535;
-          continue;
-
-        case "5":
-          o[2] += u["PRTMT"](n[2], t[2]);
-          continue;
-
-        case "6":
-          o[1] += u["wWruh"](o[2], 16);
-          continue;
-
-        case "7":
-          o[1] &= 65535;
-          continue;
-
-        case "8":
-          o[2] += u["iJzcR"](o[3], 16);
-          continue;
-
-        case "9":
-          n = [u["KTcEv"](n[0], 16), u["IThCj"](n[0], 65535), u["QFIHt"](n[1], 16), u["SPkcw"](n[1], 65535)];
-          continue;
-
-        case "10":
-          return [u["TfPfd"](u["RFZPa"](o[0], 16), o[1]), u["ViBDR"](u["RFZPa"](o[2], 16), o[3])];
-
-        case "11":
-          o[1] += u["orcQa"](n[1], t[1]);
-          continue;
-
-        case "12":
-          o[3] += u["orcQa"](n[3], t[3]);
-          continue;
-
-        case "13":
-          o[0] += u["orcQa"](n[0], t[0]);
-          continue;
-
-        case "14":
-          o[3] &= 65535;
-          continue;
-      }
-
-      break;
-    }
+    n = [n[0] >>> 16, n[0] & 65535, n[1] >>> 16, n[1] & 65535];
+    t = [t[0] >>> 16, t[0] & 65535, t[1] >>> 16, t[1] & 65535];
+    var o = [0, 0, 0, 0];
+    o[3] += n[3] + t[3];
+    o[2] += o[3] >>> 16;
+    o[3] &= 65535;
+    o[2] += n[2] + t[2];
+    o[1] += o[2] >>> 16;
+    o[2] &= 65535;
+    o[1] += n[1] + t[1];
+    o[0] += o[1] >>> 16;
+    o[1] &= 65535;
+    o[0] += n[0] + t[0];
+    o[0] &= 65535;
+    return [o[0] << 16 | o[1], o[2] << 16 | o[3]];
   }
 
   function f(n, t) {
-    var e = {
-      "vcepd": "7|21|9|1|20|15|18|12|8|5|4|16|14|6|19|2|23|3|0|10|11|17|13|22",
-      "xEEgN": function (n, t) {
-        return n * t;
-      },
-      "jJJvY": function (n, t) {
-        return n * t;
-      },
-      "yLdeX": function (n, t) {
-        return n * t;
-      },
-      "xpsIy": function (n, t) {
-        return n >>> t;
-      },
-      "UmaYD": function (n, t) {
-        return n >>> t;
-      },
-      "DGAmS": function (n, t) {
-        return n >>> t;
-      },
-      "ANrXp": function (n, t) {
-        return n & t;
-      },
-      "yRxAS": function (n, t) {
-        return n & t;
-      },
-      "gbGwC": function (n, t) {
-        return n + t;
-      },
-      "XXgRY": function (n, t) {
-        return n * t;
-      },
-      "uQMVd": function (n, t) {
-        return n * t;
-      },
-      "TPHIy": function (n, t) {
-        return n * t;
-      },
-      "lCild": function (n, t) {
-        return n * t;
-      },
-      "NdSEG": function (n, t) {
-        return n * t;
-      },
-      "bGcLm": function (n, t) {
-        return n >>> t;
-      },
-      "NOROx": function (n, t) {
-        return n >>> t;
-      },
-      "VjjHQ": function (n, t) {
-        return n & t;
-      },
-      "PiTuG": function (n, t) {
-        return n >>> t;
-      },
-      "tkcSY": function (n, t) {
-        return n & t;
-      },
-      "MEhbu": function (n, t) {
-        return n | t;
-      },
-      "tyAsu": function (n, t) {
-        return n << t;
-      },
-      "ohxOG": function (n, t) {
-        return n | t;
-      },
-      "Hqwia": function (n, t) {
-        return n << t;
-      }
-    };
-    var u = e;
-    var c = u["vcepd"]["split"]("|");
+    var e = {};
     var i = 0;
-
-    for (void 0;;) {
-      switch (c[i++]) {
-        case "0":
-          o[1] += u["xEEgN"](n[3], t[1]);
-          continue;
-
-        case "1":
-          o[3] += u["jJJvY"](n[3], t[3]);
-          continue;
-
-        case "2":
-          o[1] += u["yLdeX"](n[2], t[2]);
-          continue;
-
-        case "3":
-        case "11":
-        case "19":
-          o[1] &= 65535;
-          continue;
-
-        case "4":
-          o[1] += u["xpsIy"](o[2], 16);
-          continue;
-
-        case "5":
-          o[2] += u["yLdeX"](n[3], t[2]);
-          continue;
-
-        case "6":
-          o[0] += u["UmaYD"](o[1], 16);
-          continue;
-
-        case "7":
-          n = [u["DGAmS"](n[0], 16), u["ANrXp"](n[0], 65535), u["DGAmS"](n[1], 16), u["yRxAS"](n[1], 65535)];
-          continue;
-
-        case "8":
-        case "16":
-          o[2] &= 65535;
-          continue;
-
-        case "9":
-          var o = [0, 0, 0, 0];
-          continue;
-
-        case "10":
-          o[0] += u["DGAmS"](o[1], 16);
-          continue;
-
-        case "12":
-          o[1] += u["DGAmS"](o[2], 16);
-          continue;
-
-        case "13":
-          o[0] &= 65535;
-          continue;
-
-        case "14":
-          o[1] += u["yLdeX"](n[1], t[3]);
-          continue;
-
-        case "15":
-          o[3] &= 65535;
-          continue;
-
-        case "17":
-          o[0] += u["gbGwC"](u["gbGwC"](u["gbGwC"](u["XXgRY"](n[0], t[3]), u["uQMVd"](n[1], t[2])), u["TPHIy"](n[2], t[1])), u["lCild"](n[3], t[0]));
-          continue;
-
-        case "18":
-          o[2] += u["NdSEG"](n[2], t[3]);
-          continue;
-
-        case "20":
-          o[2] += u["bGcLm"](o[3], 16);
-          continue;
-
-        case "21":
-          t = [u["NOROx"](t[0], 16), u["VjjHQ"](t[0], 65535), u["PiTuG"](t[1], 16), u["tkcSY"](t[1], 65535)];
-          continue;
-
-        case "22":
-          return [u["MEhbu"](u["tyAsu"](o[0], 16), o[1]), u["ohxOG"](u["Hqwia"](o[2], 16), o[3])];
-
-        case "23":
-          o[0] += u["PiTuG"](o[1], 16);
-          continue;
-      }
-
-      break;
-    }
+    o[2] += n[3] * t[2];
+    t = [t[0] >>> 16, t[0] & 65535, t[1] >>> 16, t[1] & 65535];
+    n = [n[0] >>> 16, n[0] & 65535, n[1] >>> 16, n[1] & 65535];
+    o[3] += n[3] * t[3];
+    o[2] += o[3] >>> 16;
+    o[0] &= 65535;
+    o[0] += n[0] * t[3] + n[1] * t[2] + n[2] * t[1] + n[3] * t[0];
+    var o = [0, 0, 0, 0];
+    o[0] += o[1] >>> 16;
+    o[1] &= 65535;
+    o[1] += n[1] * t[3];
+    o[1] += o[2] >>> 16;
+    o[1] += o[2] >>> 16;
+    o[2] += n[2] * t[3];
+    o[1] += n[2] * t[2];
+    o[0] += o[1] >>> 16;
+    o[1] += n[3] * t[1];
+    o[2] &= 65535;
+    o[3] &= 65535;
+    o[0] += o[1] >>> 16;
+    return [o[0] << 16 | o[1], o[2] << 16 | o[3]];
   }
 
   function s(n, t) {
-    var e = {};
     return t %= 64, t === 32 ? [n[1], n[0]] : t < 32 ? [n[0] << t | n[1] >>> 32 - t, n[1] << t | n[0] >>> 32 - t] : (t -= 32, [n[1] << t | n[0] >>> 32 - t, n[0] << t | n[1] >>> 32 - t]);
   }
 
   function v(n, t) {
-    var e = {};
     return t %= 64, t === 0 ? n : t < 32 ? [n[0] << t | n[1] >>> 32 - t, n[1] << t] : [n[1] << t - 32, 0];
   }
 
   function h(n, t) {
-    var e = {};
     return [n[0] ^ t[0], n[1] ^ t[1]];
   }
 
   function l(n) {
-    var r = {
-      WzHjn: "0|2|3|5|4|1"
-    };
-    var e = r["WzHjn"]["split"]("|");
-    var u = 0;
-
-    for (void 0;;) {
-      switch (e[u++]) {
-        case "0":
-          n = h(n, [0, n[0] >>> 1]);
-          continue;
-
-        case "1":
-          return n;
-
-        case "2":
-          n = f(n, [4283543511, 3981806797]);
-          continue;
-
-        case "3":
-          n = h(n, [0, n[0] >>> 1]);
-          continue;
-
-        case "4":
-          n = h(n, [0, n[0] >>> 1]);
-          continue;
-
-        case "5":
-          n = f(n, [3301882366, 444984403]);
-          continue;
-      }
-
-      break;
-    }
+    n = h(n, [0, n[0] >>> 1]);
+    n = f(n, [4283543511, 3981806797]);
+    n = h(n, [0, n[0] >>> 1]);
+    n = f(n, [3301882366, 444984403]);
+    n = h(n, [0, n[0] >>> 1]);
+    return n;
   }
 
   function w(n, t) {
-    var e = {
-      RuZuV: "15|12|10|13|7|16|14|11|4|20|0|23|18|8|19|9|21|6|2|1|5|22|3|17",
-      ZKEsH: "0|7|5|11|2|3|1|4|8|13|15|12|10|9|14|6"
-    };
-    var u = e["RuZuV"]["split"]("|");
-    var c = 0;
+    n = n || "";
+    t = t || 0;
+    var d = n["length"] % 16;
+    var E = n["length"] - d;
+    var w = [0, t];
+    var g = [0, t];
+    var b = [0, 0];
+    var k = [0, 0];
+    var o = [2277735313, 289559509];
+    var I = [1291169091, 658871167];
+    var i;
 
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          var i;
-          continue;
-
-        case "1":
-          w = l(w);
-          continue;
-
-        case "2":
-        case "3":
-          g = a(g, w);
-          continue;
-
-        case "4":
-          var o = [2277735313, 289559509];
-          continue;
-
-        case "5":
-          g = l(g);
-          continue;
-
-        case "6":
-          w = a(w, g);
-          continue;
-
-        case "7":
-          var w = [0, t];
-          continue;
-
-        case "8":
-          k = [0, 0];
-          continue;
-
-        case "9":
-          w = h(w, [0, n["length"]]);
-          continue;
-
-        case "10":
-          var d = n["length"] % 16;
-          continue;
-
-        case "11":
-          var k = [0, 0];
-          continue;
-
-        case "12":
-          t = t || 0;
-          continue;
-
-        case "13":
-          var E = n["length"] - d;
-          continue;
-
-        case "14":
-          var b = [0, 0];
-          continue;
-
-        case "15":
-          n = n || "";
-          continue;
-
-        case "16":
-          var g = [0, t];
-          continue;
-
-        case "17":
-          return ("00000000" + (w[0] >>> 0)["toString"](16))["slice"](-8) + ("00000000" + (w[1] >>> 0)["toString"](16))["slice"](-8) + ("00000000" + (g[0] >>> 0)["toString"](16))["slice"](-8) + ("00000000" + (g[1] >>> 0)["toString"](16))["slice"](-8);
-
-        case "18":
-          b = [0, 0];
-          continue;
-
-        case "19":
-          switch (d) {
-            case 15:
-              k = h(k, v([0, n["charCodeAt"](i + 14)], 48));
-
-            case 14:
-              k = h(k, v([0, n["charCodeAt"](i + 13)], 40));
-
-            case 13:
-              k = h(k, v([0, n["charCodeAt"](i + 12)], 32));
-
-            case 12:
-              k = h(k, v([0, n["charCodeAt"](i + 11)], 24));
-
-            case 11:
-              k = h(k, v([0, n["charCodeAt"](i + 10)], 16));
-
-            case 10:
-              k = h(k, v([0, n["charCodeAt"](i + 9)], 8));
-
-            case 9:
-              k = h(k, [0, n["charCodeAt"](i + 8)]), k = f(k, I), k = s(k, 33), k = f(k, o), g = h(g, k);
-
-            case 8:
-              b = h(b, v([0, n["charCodeAt"](i + 7)], 56));
-
-            case 7:
-              b = h(b, v([0, n["charCodeAt"](i + 6)], 48));
-
-            case 6:
-              b = h(b, v([0, n["charCodeAt"](i + 5)], 40));
-
-            case 5:
-              b = h(b, v([0, n["charCodeAt"](i + 4)], 32));
-
-            case 4:
-              b = h(b, v([0, n["charCodeAt"](i + 3)], 24));
-
-            case 3:
-              b = h(b, v([0, n["charCodeAt"](i + 2)], 16));
-
-            case 2:
-              b = h(b, v([0, n["charCodeAt"](i + 1)], 8));
-
-            case 1:
-              b = h(b, [0, n["charCodeAt"](i)]), b = f(b, o), b = s(b, 31), b = f(b, I), w = h(w, b);
-          }
-
-          continue;
-
-        case "20":
-          var I = [1291169091, 658871167];
-          continue;
-
-        case "21":
-          g = h(g, [0, n["length"]]);
-          continue;
-
-        case "22":
-          w = a(w, g);
-          continue;
-
-        case "23":
-          for (i = 0; i < E; i = i + 16) {
-            var y = e["ZKEsH"]["split"]("|");
-            var p = 0;
-
-            for (void 0;;) {
-              switch (y[p++]) {
-                case "0":
-                  b = [n["charCodeAt"](i + 4) & 255 | (n["charCodeAt"](i + 5) & 255) << 8 | (n["charCodeAt"](i + 6) & 255) << 16 | (n["charCodeAt"](i + 7) & 255) << 24, n["charCodeAt"](i) & 255 | (n["charCodeAt"](i + 1) & 255) << 8 | (n["charCodeAt"](i + 2) & 255) << 16 | (n["charCodeAt"](i + 3) & 255) << 24];
-                  continue;
-
-                case "1":
-                  w = s(w, 27);
-                  continue;
-
-                case "2":
-                  b = f(b, I);
-                  continue;
-
-                case "3":
-                  w = h(w, b);
-                  continue;
-
-                case "4":
-                  w = a(w, g);
-                  continue;
-
-                case "5":
-                  b = f(b, o);
-                  continue;
-
-                case "6":
-                  g = a(f(g, [0, 5]), [0, 944331445]);
-                  continue;
-
-                case "7":
-                  k = [n["charCodeAt"](i + 12) & 255 | (n["charCodeAt"](i + 13) & 255) << 8 | (n["charCodeAt"](i + 14) & 255) << 16 | (n["charCodeAt"](i + 15) & 255) << 24, n["charCodeAt"](i + 8) & 255 | (n["charCodeAt"](i + 9) & 255) << 8 | (n["charCodeAt"](i + 10) & 255) << 16 | (n["charCodeAt"](i + 11) & 255) << 24];
-                  continue;
-
-                case "8":
-                  w = a(f(w, [0, 5]), [0, 1390208809]);
-                  continue;
-
-                case "9":
-                  g = s(g, 31);
-                  continue;
-
-                case "10":
-                  g = h(g, k);
-                  continue;
-
-                case "11":
-                  b = s(b, 31);
-                  continue;
-
-                case "12":
-                  k = f(k, o);
-                  continue;
-
-                case "13":
-                  k = f(k, I);
-                  continue;
-
-                case "14":
-                  g = a(g, w);
-                  continue;
-
-                case "15":
-                  k = s(k, 33);
-                  continue;
-              }
-
-              break;
-            }
-          }
-
-          continue;
-      }
-
-      break;
+    for (i = 0; i < E; i = i + 16) {
+      b = [n["charCodeAt"](i + 4) & 255 | (n["charCodeAt"](i + 5) & 255) << 8 | (n["charCodeAt"](i + 6) & 255) << 16 | (n["charCodeAt"](i + 7) & 255) << 24, n["charCodeAt"](i) & 255 | (n["charCodeAt"](i + 1) & 255) << 8 | (n["charCodeAt"](i + 2) & 255) << 16 | (n["charCodeAt"](i + 3) & 255) << 24];
+      k = [n["charCodeAt"](i + 12) & 255 | (n["charCodeAt"](i + 13) & 255) << 8 | (n["charCodeAt"](i + 14) & 255) << 16 | (n["charCodeAt"](i + 15) & 255) << 24, n["charCodeAt"](i + 8) & 255 | (n["charCodeAt"](i + 9) & 255) << 8 | (n["charCodeAt"](i + 10) & 255) << 16 | (n["charCodeAt"](i + 11) & 255) << 24];
+      b = f(b, o);
+      b = s(b, 31);
+      b = f(b, I);
+      w = h(w, b);
+      w = s(w, 27);
+      w = a(w, g);
+      w = a(f(w, [0, 5]), [0, 1390208809]);
+      k = f(k, I);
+      k = s(k, 33);
+      k = f(k, o);
+      g = h(g, k);
+      g = s(g, 31);
+      g = a(g, w);
+      g = a(f(g, [0, 5]), [0, 944331445]);
     }
+
+    b = [0, 0];
+    k = [0, 0];
+
+    switch (d) {
+      case 15:
+        k = h(k, v([0, n["charCodeAt"](i + 14)], 48));
+
+      case 14:
+        k = h(k, v([0, n["charCodeAt"](i + 13)], 40));
+
+      case 13:
+        k = h(k, v([0, n["charCodeAt"](i + 12)], 32));
+
+      case 12:
+        k = h(k, v([0, n["charCodeAt"](i + 11)], 24));
+
+      case 11:
+        k = h(k, v([0, n["charCodeAt"](i + 10)], 16));
+
+      case 10:
+        k = h(k, v([0, n["charCodeAt"](i + 9)], 8));
+
+      case 9:
+        k = h(k, [0, n["charCodeAt"](i + 8)]), k = f(k, I), k = s(k, 33), k = f(k, o), g = h(g, k);
+
+      case 8:
+        b = h(b, v([0, n["charCodeAt"](i + 7)], 56));
+
+      case 7:
+        b = h(b, v([0, n["charCodeAt"](i + 6)], 48));
+
+      case 6:
+        b = h(b, v([0, n["charCodeAt"](i + 5)], 40));
+
+      case 5:
+        b = h(b, v([0, n["charCodeAt"](i + 4)], 32));
+
+      case 4:
+        b = h(b, v([0, n["charCodeAt"](i + 3)], 24));
+
+      case 3:
+        b = h(b, v([0, n["charCodeAt"](i + 2)], 16));
+
+      case 2:
+        b = h(b, v([0, n["charCodeAt"](i + 1)], 8));
+
+      case 1:
+        b = h(b, [0, n["charCodeAt"](i)]), b = f(b, o), b = s(b, 31), b = f(b, I), w = h(w, b);
+    }
+
+    w = h(w, [0, n["length"]]);
+    g = h(g, [0, n["length"]]);
+    w = a(w, g);
+    w = l(w);
+    g = l(g);
+    w = a(w, g);
+    g = a(g, w);
+    return ("00000000" + (w[0] >>> 0)["toString"](16))["slice"](-8) + ("00000000" + (w[1] >>> 0)["toString"](16))["slice"](-8) + ("00000000" + (g[0] >>> 0)["toString"](16))["slice"](-8) + ("00000000" + (g[1] >>> 0)["toString"](16))["slice"](-8);
   }
 
   !function (n, t) {
@@ -684,8 +247,6 @@
   var d = "not Computed";
 
   var k = function () {
-    var r = {};
-
     if (d === "not Computed") {
       var u = new OffscreenCanvas(300, 150);
       var c = !(!u["getContext"] || !u["getContext"]("2d"));
@@ -696,48 +257,22 @@
   };
 
   var E = function () {
-    var r = {
-      "PzXHf": "0|2|4|3|1",
-      "wPpOS": "webgl",
-      "pJnbu": "experimental-webgl"
-    };
-    var e = r;
-    var u = e["PzXHf"]["split"]("|");
+    var r = {};
     var c = 0;
+    var i = new OffscreenCanvas(300, 150);
+    var o = null;
 
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          var i = new OffscreenCanvas(300, 150);
-          continue;
+    try {
+      o = i["getContext"]("webgl") || i["getContext"]("experimental-webgl");
+    } catch (n) {}
 
-        case "1":
-          return o;
-
-        case "2":
-          var o = null;
-          continue;
-
-        case "3":
-          !o && (o = null);
-          continue;
-
-        case "4":
-          try {
-            o = i["getContext"](e["wPpOS"]) || i["getContext"](e["pJnbu"]);
-          } catch (n) {}
-
-          continue;
-      }
-
-      break;
-    }
+    !o && (o = null);
+    return o;
   };
 
   var b = "not Computed";
 
   var g = function () {
-    var r = {};
     if (!k()) return false;
 
     if (b === "not Computed") {
@@ -750,7 +285,6 @@
   };
 
   var I = function (t, r) {
-    var u = {};
     if (Array["prototype"]["forEach"] && t["forEach"] === Array["prototype"]["forEach"]) t["forEach"](r);else if (t["length"] === +t["length"]) {
       var c = 0;
       var i = t["length"];
@@ -762,450 +296,134 @@
   };
 
   function y(t) {
-    var e = {
-      MoNzn: "9|34|25|21|27|23|5|33|18|28|29|2|6|30|19|10|11|32|8|14|7|26|15|4|3|16|31|0|24|20|13|22|12|17|1",
-      zGyjX: "EXT_texture_filter_anisotropic",
-      FvMCe: "WEBKIT_EXT_texture_filter_anisotropic",
-      WfRut: "MOZ_EXT_texture_filter_anisotropic",
-      LFodP: "9|14|3|33|5|27|13|8|31|4|36|29|22|17|34|28|0|19|2|11|10|32|12|20|18|24|37|1|35|26|25|15|39|23|38|7|30|21|16|6",
-      ynhIa: "webgl max anisotropy:",
-      HOGXm: "webgl max viewport dims:",
-      EBYnN: "webgl max cube map texture size:",
-      xSuVz: "webgl aliased line width range:",
-      zzRgQ: "webgl max render buffer size:",
-      lhUoU: "webgl max fragment uniform vectors:",
-      COcfy: "webgl max texture size:",
-      fdUIR: "webgl stencil bits:",
-      pkASR: "webgl blue bits:",
-      AthZi: "webgl max vertex attribs:",
-      gHcDd: "webgl max combined texture image units:",
-      Ozedt: "webgl max varying vectors:",
-      rFCeu: "webgl antialiasing:",
-      MDZeI: "webgl version:",
-      CAipt: "webgl max vertex texture image units:",
-      jrhLh: "webgl shading language version:",
-      Muufn: "webgl renderer:",
-      FVPMU: "webgl green bits:",
-      knDsM: "webgl alpha bits:",
-      BkLQx: "extensions:",
-      xQXWU: "webgl max texture image units:",
-      hWoMQ: "webgl depth bits:",
-      iCYbL: "webgl red bits:",
-      fzPam: "webgl aliased point size range:",
-      PpANt: "webgl max vertex uniform vectors:",
-      CpPIW: "WEBGL_debug_renderer_info",
-      KziYm: "webgl unmasked vendor:",
-      VGHBz: "webgl unmasked renderer:",
-      OrpKp: "webgl vendor:",
-      vdMao: "uniformOffset",
-      LIPRI: "attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}",
-      EeHVw: "precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}"
+    var p;
+
+    var l = function (n) {
+      p["clearColor"](0, 0, 0, 1);
+      p["enable"](p["DEPTH_TEST"]);
+      p["depthFunc"](p["LEQUAL"]);
+      p["clear"](p["COLOR_BUFFER_BIT"] | p["DEPTH_BUFFER_BIT"]);
+      return "[" + n[0] + ", " + n[1] + "]";
     };
-    var u = e["MoNzn"]["split"]("|");
-    var c = 0;
+
+    var h = function (n) {
+      var e = n["getExtension"]("EXT_texture_filter_anisotropic") || n["getExtension"]("WEBKIT_EXT_texture_filter_anisotropic") || n["getExtension"]("MOZ_EXT_texture_filter_anisotropic");
+
+      if (e) {
+        var u = n["getParameter"](e["MAX_TEXTURE_MAX_ANISOTROPY_EXT"]);
+        return u === 0 && (u = 2), u;
+      }
+
+      return null;
+    };
+
+    p = E();
+    if (!p) return null;
+    var a = [];
+    var y = [];
+    var v = "";
+    var o = p["createBuffer"]();
+    p["bindBuffer"](p["ARRAY_BUFFER"], o);
+    var b = new Float32Array([-.2, -.9, 0, .4, -.26, 0, 0, .732134444, 0]);
+    p["bufferData"](p["ARRAY_BUFFER"], b, p["STATIC_DRAW"]);
+    o["itemSize"] = 3;
+    o["numItems"] = 3;
+    var g = p["createProgram"]();
+    var f = p["createShader"](p["VERTEX_SHADER"]);
+    p["shaderSource"](f, "attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}");
+    p["compileShader"](f);
+    var w = p["createShader"](p["FRAGMENT_SHADER"]);
+    p["shaderSource"](w, "precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}");
+    p["compileShader"](w);
+    p["attachShader"](g, f);
+    p["attachShader"](g, w);
+    p["linkProgram"](g);
+    p["useProgram"](g);
+    g["vertexPosAttrib"] = p["getAttribLocation"](g, "attrVertex");
+    g["offsetUniform"] = p["getUniformLocation"](g, "uniformOffset");
+    p["enableVertexAttribArray"](g["vertexPosArray"]);
+    p["vertexAttribPointer"](g["vertexPosAttrib"], o["itemSize"], p["FLOAT"], false, 0, 0);
+    p["uniform2f"](g["offsetUniform"], 1, 1);
+    p["drawArrays"](p["TRIANGLE_STRIP"], 0, o["numItems"]);
 
     try {
       var i = p["canvas"];
       i["convertToBlob"]()["then"](function (n) {
-        var u = {
-          zkFJO: s["GaUKR"],
-          qlJqg: function (n, t) {
-            return s["VdpXR"](n, t);
-          },
-          bEwfr: s["LNPYY"],
-          oeowh: function (n, t) {
-            return s["Zhrsh"](n, t);
-          },
-          btuDY: s["ayUDn"],
-          yNqvT: function (n, t) {
-            return s["Zhrsh"](n, t);
-          },
-          tzGNI: function (n, t) {
-            return s["ZCtwI"](n, t);
-          },
-          OuwFU: s["uicwu"],
-          IOUAS: s["ZAifC"],
-          wQUqk: s["QXsBa"],
-          EFbNB: function (n, t) {
-            return s["LUdeG"](n, t);
-          },
-          jaHTU: s["cVDWK"],
-          mkCZX: s["EwEcw"],
-          fFmIK: s["WXtkE"],
-          GmzQH: s["GDZgP"],
-          rLhAk: function (n, t, r) {
-            return s["LeQrV"](n, t, r);
-          },
-          AUzCx: s["DMvqO"],
-          gisFN: s["HwbTv"],
-          CfEug: s["tJklJ"],
-          ISHeU: s["qjVzy"],
-          OUqKW: s["LDVgI"],
-          eJbVp: s["MEehZ"],
-          NJDgy: s["mAnpH"],
-          yWcLf: function (n, t) {
-            return s["kLwen"](n, t);
-          },
-          lWGOQ: s["wcleD"],
-          ejInJ: s["YpzBt"],
-          cwlGT: s["ACWdY"],
-          fagsI: s["djrQR"],
-          flanV: function (n, t) {
-            return s["qjLHw"](n, t);
-          },
-          bXiBN: s["vuNyg"],
-          jcctO: s["rQJlj"],
-          cFHRU: s["zXfOP"],
-          JeXvp: function (n, t) {
-            return s["hJWVj"](n, t);
-          },
-          KikWT: s["MajMH"],
-          GLHwz: function (n, t) {
-            return s["yyYfa"](n, t);
-          },
-          ZJXPw: s["xikYN"],
-          GvwdZ: s["WhDIQ"],
-          gHRyi: s["AQOvI"],
-          GwtRF: s["MfxAO"],
-          EdmqR: function (n, t) {
-            return s["yyYfa"](n, t);
-          },
-          dJAER: s["mYvxW"],
-          VjNzL: s["bTIdJ"],
-          NYMrZ: function (n, t) {
-            return s["yyYfa"](n, t);
-          },
-          KeYfN: s["ZHiYC"],
-          BgOEk: s["SJlae"],
-          JWgon: function (n, t, r) {
-            return s["LeQrV"](n, t, r);
-          },
-          VHLZI: s["ZoYZQ"],
-          AqHZc: s["kCYXu"],
-          bCzWT: s["cdNLa"],
-          vWfDg: function (n, t) {
-            return s["yyYfa"](n, t);
-          },
-          uwVux: s["irtpB"],
-          XNlPR: s["TegZL"],
-          SDUSn: s["GTMHX"],
-          HdkBb: function (n, t) {
-            return s["YrkYq"](n, t);
-          },
-          qcNAA: s["XSRtH"],
-          tYlQL: function (n, t) {
-            return s["Zhrsh"](n, t);
-          },
-          EFhPM: function (n, t) {
-            return s["YrkYq"](n, t);
-          },
-          mBKaF: s["lemPf"],
-          OEHVY: s["RjkDO"],
-          aOksK: function (n, t) {
-            return s["YrkYq"](n, t);
-          },
-          cIJzL: s["AQSAy"],
-          OTYEY: function (n, t) {
-            return s["YrkYq"](n, t);
-          },
-          CuCff: s["tlcvT"],
-          rdOGR: function (n, t) {
-            return s["YrkYq"](n, t);
-          },
-          dfDTF: s["argPe"]
-        };
         var c = new FileReader();
         c["readAsDataURL"](n), c["onloadend"] = function () {
-          var r = u["zkFJO"]["split"]("|");
-          var o = 0;
+          v = c["result"];
+          var f = new OffscreenCanvas(300, 150);
+          var g = f["getContext"]("2d");
+          g["drawImage"](i, 0, 0, 32, 32);
+          var b = g["getImageData"](0, 0, 32, 32);
+          var d = b ? b["data"] : [];
+          y = d;
+          a["push"]("extensions:" + (p["getSupportedExtensions"]() || [])["join"](";"));
+          a["push"]("webgl aliased line width range:" + l(p["getParameter"](p["ALIASED_LINE_WIDTH_RANGE"])));
+          a["push"]("webgl aliased point size range:" + l(p["getParameter"](p["ALIASED_POINT_SIZE_RANGE"])));
+          a["push"]("webgl alpha bits:" + p["getParameter"](p["ALPHA_BITS"]));
+          a["push"]("webgl antialiasing:" + (p["getContextAttributes"]()["antialias"] ? "yes" : "no"));
+          a["push"]("webgl blue bits:" + p["getParameter"](p["BLUE_BITS"]));
+          a["push"]("webgl depth bits:" + p["getParameter"](p["DEPTH_BITS"]));
+          a["push"]("webgl green bits:" + p["getParameter"](p["GREEN_BITS"]));
+          a["push"]("webgl max anisotropy:" + h(p));
+          a["push"]("webgl max combined texture image units:" + p["getParameter"](p["MAX_COMBINED_TEXTURE_IMAGE_UNITS"]));
+          a["push"]("webgl max cube map texture size:" + p["getParameter"](p["MAX_CUBE_MAP_TEXTURE_SIZE"]));
+          a["push"]("webgl max fragment uniform vectors:" + p["getParameter"](p["MAX_FRAGMENT_UNIFORM_VECTORS"]));
+          a["push"]("webgl max render buffer size:" + p["getParameter"](p["MAX_RENDERBUFFER_SIZE"]));
+          a["push"]("webgl max texture image units:" + p["getParameter"](p["MAX_TEXTURE_IMAGE_UNITS"]));
+          a["push"]("webgl max texture size:" + p["getParameter"](p["MAX_TEXTURE_SIZE"]));
+          a["push"]("webgl max varying vectors:" + p["getParameter"](p["MAX_VARYING_VECTORS"]));
+          a["push"]("webgl max vertex attribs:" + p["getParameter"](p["MAX_VERTEX_ATTRIBS"]));
+          a["push"]("webgl max vertex texture image units:" + p["getParameter"](p["MAX_VERTEX_TEXTURE_IMAGE_UNITS"]));
+          a["push"]("webgl max vertex uniform vectors:" + p["getParameter"](p["MAX_VERTEX_UNIFORM_VECTORS"]));
+          a["push"]("webgl max viewport dims:" + l(p["getParameter"](p["MAX_VIEWPORT_DIMS"])));
+          a["push"]("webgl red bits:" + p["getParameter"](p["RED_BITS"]));
+          a["push"]("webgl renderer:" + p["getParameter"](p["RENDERER"]));
+          a["push"]("webgl shading language version:" + p["getParameter"](p["SHADING_LANGUAGE_VERSION"]));
+          a["push"]("webgl stencil bits:" + p["getParameter"](p["STENCIL_BITS"]));
+          a["push"]("webgl vendor:" + p["getParameter"](p["VENDOR"]));
+          a["push"]("webgl version:" + p["getParameter"](p["VERSION"]));
 
-          for (void 0;;) {
-            switch (r[o++]) {
-              case "0":
-                a["push"](u["qlJqg"](u["bEwfr"], u["oeowh"](h, p)));
-                continue;
+          try {
+            var T = p["getExtension"]("WEBGL_debug_renderer_info");
+            T && (a["push"]("webgl unmasked vendor:" + p["getParameter"](T["UNMASKED_VENDOR_WEBGL"])), a["push"]("webgl unmasked renderer:" + p["getParameter"](T["UNMASKED_RENDERER_WEBGL"])));
+          } catch (n) {}
 
-              case "1":
-                a["push"](u["qlJqg"](u["btuDY"], u["yNqvT"](l, p["getParameter"](p["MAX_VIEWPORT_DIMS"]))));
-                continue;
-
-              case "2":
-                a["push"](u["tzGNI"](u["OuwFU"], p["getParameter"](p["MAX_CUBE_MAP_TEXTURE_SIZE"])));
-                continue;
-
-              case "3":
-                var f = new OffscreenCanvas(300, 150);
-                continue;
-
-              case "4":
-                a["push"](u["tzGNI"](u["IOUAS"], u["yNqvT"](l, p["getParameter"](p["ALIASED_LINE_WIDTH_RANGE"]))));
-                continue;
-
-              case "5":
-                g["drawImage"](i, 0, 0, 32, 32);
-                continue;
-
-              case "6":
-                return k;
-
-              case "7":
-                if (!p["getShaderPrecisionFormat"]) {
-                  var s = {
-                    "result": a,
-                    "pixels": y,
-                    "base64": v
-                  };
-                  return s;
-                }
-
-                continue;
-
-              case "8":
-                y = d;
-                continue;
-
-              case "9":
-                var w = {
-                  cTjLS: function (t, r) {
-                    return u["tzGNI"](t, r);
-                  },
-                  hQPqs: u["wQUqk"],
-                  RQtZt: function (t, r) {
-                    return u["EFbNB"](t, r);
-                  },
-                  wioss: u["jaHTU"],
-                  IeFva: u["mkCZX"],
-                  dTqsz: u["fFmIK"],
-                  mYozI: u["GmzQH"],
-                  Plsoh: function (t, r, e) {
-                    return u["rLhAk"](t, r, e);
-                  },
-                  WNCnK: u["AUzCx"],
-                  kbXeh: u["gisFN"],
-                  lnVIm: u["CfEug"],
-                  pIfMw: u["ISHeU"],
-                  dgSnA: u["OUqKW"],
-                  GKUxx: u["eJbVp"],
-                  jloBR: u["NJDgy"]
-                };
-                continue;
-
-              case "10":
-                a["push"](u["yWcLf"](u["lWGOQ"], p["getParameter"](p["MAX_RENDERBUFFER_SIZE"])));
-                continue;
-
-              case "11":
-                a["push"](u["yWcLf"](u["ejInJ"], p["getParameter"](p["MAX_FRAGMENT_UNIFORM_VECTORS"])));
-                continue;
-
-              case "12":
-                a["push"](u["yWcLf"](u["cwlGT"], p["getParameter"](p["MAX_TEXTURE_SIZE"])));
-                continue;
-
-              case "13":
-                var d = b ? b["data"] : [];
-                continue;
-
-              case "14":
-                v = c["result"];
-                continue;
-
-              case "15":
-                a["push"](u["yWcLf"](u["fagsI"], p["getParameter"](p["STENCIL_BITS"])));
-                continue;
-
-              case "16":
-                u["yNqvT"](t, k);
-                continue;
-
-              case "17":
-                a["push"](u["flanV"](u["bXiBN"], p["getParameter"](p["BLUE_BITS"])));
-                continue;
-
-              case "18":
-                a["push"](u["flanV"](u["jcctO"], p["getParameter"](p["MAX_VERTEX_ATTRIBS"])));
-                continue;
-
-              case "19":
-                a["push"](u["flanV"](u["cFHRU"], p["getParameter"](p["MAX_COMBINED_TEXTURE_IMAGE_UNITS"])));
-                continue;
-
-              case "20":
-                a["push"](u["JeXvp"](u["KikWT"], p["getParameter"](p["MAX_VARYING_VECTORS"])));
-                continue;
-
-              case "21":
-                var k = {
-                  "result": a,
-                  "pixels": y,
-                  "base64": v
-                };
-                continue;
-
-              case "22":
-                a["push"](u["GLHwz"](u["ZJXPw"], p["getContextAttributes"]()["antialias"] ? u["GvwdZ"] : "no"));
-                continue;
-
-              case "23":
-                a["push"](u["GLHwz"](u["gHRyi"], p["getParameter"](p["VERSION"])));
-                continue;
-
-              case "24":
-                a["push"](u["GLHwz"](u["GwtRF"], p["getParameter"](p["MAX_VERTEX_TEXTURE_IMAGE_UNITS"])));
-                continue;
-
-              case "25":
-                a["push"](u["EdmqR"](u["dJAER"], p["getParameter"](p["SHADING_LANGUAGE_VERSION"])));
-                continue;
-
-              case "26":
-                a["push"](u["EdmqR"](u["VjNzL"], p["getParameter"](p["RENDERER"])));
-                continue;
-
-              case "27":
-                var b = g["getImageData"](0, 0, 32, 32);
-                continue;
-
-              case "28":
-                a["push"](u["NYMrZ"](u["KeYfN"], p["getParameter"](p["GREEN_BITS"])));
-                continue;
-
-              case "29":
-                a["push"](u["NYMrZ"](u["BgOEk"], p["getParameter"](p["ALPHA_BITS"])));
-                continue;
-
-              case "30":
-                u["JWgon"](I, [u["VHLZI"], u["AqHZc"]], function (t) {
-                  var e = {
-                    Oqvqz: function (n, t) {
-                      return w["cTjLS"](n, t);
-                    },
-                    TNjHc: w["hQPqs"],
-                    pFVbH: function (n, t) {
-                      return w["RQtZt"](n, t);
-                    },
-                    WRnsx: w["wioss"],
-                    psiTR: function (n, t) {
-                      return w["cTjLS"](n, t);
-                    },
-                    RkJDM: w["IeFva"],
-                    BPBut: w["dTqsz"],
-                    aVItq: w["mYozI"],
-                    nmJWN: function (n, t, e) {
-                      return w["Plsoh"](n, t, e);
-                    },
-                    lOVwr: w["WNCnK"],
-                    rUipj: w["kbXeh"],
-                    EzUHq: w["lnVIm"],
-                    HsAtv: w["pIfMw"],
-                    jeDvE: w["dgSnA"]
-                  };
-                  w["Plsoh"](I, [w["GKUxx"], w["jloBR"]], function (n) {
-                    var c = {
-                      JfQuY: function (n, t) {
-                        return e["Oqvqz"](n, t);
-                      },
-                      iniQb: e["TNjHc"],
-                      frWBP: function (n, t) {
-                        return e["pFVbH"](n, t);
-                      },
-                      QpQqS: e["WRnsx"],
-                      NoNbD: function (n, t) {
-                        return e["psiTR"](n, t);
-                      },
-                      cRRnE: e["RkJDM"],
-                      mKPIk: e["BPBut"],
-                      cYYTu: e["aVItq"],
-                      jKuvd: function (n, t, r) {
-                        return e["nmJWN"](n, t, r);
-                      },
-                      YhIuf: e["lOVwr"],
-                      IrFyz: e["rUipj"]
-                    };
-                    e["nmJWN"](I, [e["EzUHq"], e["HsAtv"], e["jeDvE"]], function (r) {
-                      var i = {
-                        WiVvK: function (n, t) {
-                          return c["JfQuY"](n, t);
-                        },
-                        tQvjO: c["iniQb"],
-                        AkSHV: function (n, t) {
-                          return c["frWBP"](n, t);
-                        },
-                        aYIjK: c["QpQqS"],
-                        CgWTc: function (n, t) {
-                          return c["NoNbD"](n, t);
-                        },
-                        woOER: c["cRRnE"],
-                        hiuls: c["mKPIk"],
-                        FIvtR: c["cYYTu"]
-                      };
-                      c["jKuvd"](I, [c["QpQqS"], c["YhIuf"], c["IrFyz"]], function (u) {
-                        var o = p["getShaderPrecisionFormat"](p[i["WiVvK"](n, i["tQvjO"])], p[i["WiVvK"](i["WiVvK"](r, "_"), t)])[u];
-                        i["AkSHV"](u, i["aYIjK"]) && (u = i["CgWTc"](i["woOER"], u));
-                        var f = [i["hiuls"], n["toLowerCase"](), i["FIvtR"], r["toLowerCase"](), " ", t["toLowerCase"](), " ", u, ":", o]["join"]("");
-                        a["push"](f);
-                      });
-                    });
-                  });
-                });
-                continue;
-
-              case "31":
-                a["push"](u["NYMrZ"](u["bCzWT"], (p["getSupportedExtensions"]() || [])["join"](";")));
-                continue;
-
-              case "32":
-                a["push"](u["vWfDg"](u["uwVux"], p["getParameter"](p["MAX_TEXTURE_IMAGE_UNITS"])));
-                continue;
-
-              case "33":
-                var g = f["getContext"]("2d");
-                continue;
-
-              case "34":
-                a["push"](u["vWfDg"](u["XNlPR"], p["getParameter"](p["DEPTH_BITS"])));
-                continue;
-
-              case "35":
-                a["push"](u["vWfDg"](u["SDUSn"], p["getParameter"](p["RED_BITS"])));
-                continue;
-
-              case "36":
-                a["push"](u["HdkBb"](u["qcNAA"], u["tYlQL"](l, p["getParameter"](p["ALIASED_POINT_SIZE_RANGE"]))));
-                continue;
-
-              case "37":
-                a["push"](u["EFhPM"](u["mBKaF"], p["getParameter"](p["MAX_VERTEX_UNIFORM_VECTORS"])));
-                continue;
-
-              case "38":
-                try {
-                  var T = p["getExtension"](u["OEHVY"]);
-                  T && (a["push"](u["aOksK"](u["cIJzL"], p["getParameter"](T["UNMASKED_VENDOR_WEBGL"]))), a["push"](u["OTYEY"](u["CuCff"], p["getParameter"](T["UNMASKED_RENDERER_WEBGL"]))));
-                } catch (n) {}
-
-                continue;
-
-              case "39":
-                a["push"](u["rdOGR"](u["dfDTF"], p["getParameter"](p["VENDOR"])));
-                continue;
-            }
-
-            break;
+          if (!p["getShaderPrecisionFormat"]) {
+            var s = {
+              "result": a,
+              "pixels": y,
+              "base64": v
+            };
+            return s;
           }
+
+          I(["FLOAT", "INT"], function (t) {
+            I(["VERTEX", "FRAGMENT"], function (n) {
+              I(["HIGH", "MEDIUM", "LOW"], function (r) {
+                I(["precision", "rangeMin", "rangeMax"], function (u) {
+                  var o = p["getShaderPrecisionFormat"](p[n + "_SHADER"], p[r + "_" + t])[u];
+                  u !== "precision" && (u = "precision " + u);
+                  var f = ["webgl ", n["toLowerCase"](), " shader ", r["toLowerCase"](), " ", t["toLowerCase"](), " ", u, ":", o]["join"]("");
+                  a["push"](f);
+                });
+              });
+            });
+          });
+          var k = {
+            "result": a,
+            "pixels": y,
+            "base64": v
+          };
+          t(k);
+          return k;
         };
       });
     } catch (n) {}
-
-    p["useProgram"](g);
-    p["attachShader"](g, f);
-    var o = p["createBuffer"]();
-    p["compileShader"](w);
   }
 
   var p = function () {
-    var r = {};
-
     try {
       var e = E();
       var u = e["getExtension"]("WEBGL_debug_renderer_info");
@@ -1216,7 +434,6 @@
   };
 
   function T() {
-    var r = {};
     return g() ? p() : "not available";
   }
 
@@ -1226,7 +443,6 @@
       dTNTI: "not available"
     };
     return new Promise(function (n) {
-      var c = {};
       if (g()) y(function (r) {
         t = w(r["base64"]);
         var i = {
@@ -1253,11 +469,8 @@
   }
 
   function P(t) {
-    var e = {};
     return new Promise(function (n) {
-      var c = {};
       t["convertToBlob"]()["then"](function (t) {
-        var e = {};
         var i = new FileReader();
         i["readAsDataURL"](t), i["onloadend"] = function () {
           n(w(i["result"]));
@@ -1270,12 +483,10 @@
 
   function V() {
     var e = {
-      VYIwC: "15|17|27|35|34|0|24|3|19|8|11|18|29|33|9|20|21|4|13|1|31|10|32|30|28|26|16|25|7|5|2|6|23|22|14|12",
       RjuJK: "alphabetic",
       ZPFfN: "rgb(255,0,255)",
       tBPTc: "11pt no-real-font-123",
       rJjXh: "rgb(0,255,255)",
-      xZKTi: "Cwm fjordbank glyphs vext quiz, 😃",
       iATpx: "rgb(255,255,0)",
       CcrlZ: "#069",
       kZEyw: "multiply",
@@ -1283,163 +494,55 @@
       nMyBR: "rgba(102, 204, 0, 0.2)",
       aCjdS: "18pt Arial"
     };
-    var u = e["VYIwC"]["split"]("|");
-    var c = 0;
+    v["fillText"]("Cwm fjordbank glyphs vext quiz, 😃", 4, 45);
+    v["arc"](75, 75, 25, 0, Math.PI * 2, true);
+    v["rect"](0, 0, 10, 10);
+    v["rect"](2, 2, 6, 6);
+    v["textBaseline"] = e["RjuJK"];
+    v["fillText"]("Cwm fjordbank glyphs vext quiz, 😃", 2, 15);
+    v["closePath"]();
+    v["arc"](50, 50, 50, 0, Math.PI * 2, true);
+    return new Promise(function (n) {
+      P(s)["then"](function (t) {
+        var u = {
+          "hash": t
+        };
+        n(u);
+      });
+    });
+    v["fillStyle"] = e["LWfdT"];
+    v["font"] = e["aCjdS"];
+    v["fill"]("evenodd");
+    v["arc"](75, 100, 50, 0, Math.PI * 2, true);
+    v["fillStyle"] = e["nMyBR"];
+    v["beginPath"]();
+    v["arc"](100, 50, 50, 0, Math.PI * 2, true);
 
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          v["textBaseline"] = e["RjuJK"];
-          continue;
-
-        case "1":
-        case "5":
-        case "28":
-          v["closePath"]();
-          continue;
-
-        case "2":
-        case "26":
-        case "31":
-          v["fill"]();
-          continue;
-
-        case "3":
-          v["fillRect"](125, 1, 62, 20);
-          continue;
-
-        case "4":
-        case "25":
-        case "32":
-          v["beginPath"]();
-          continue;
-
-        case "6":
-        case "21":
-          v["fillStyle"] = e["ZPFfN"];
-          continue;
-
-        case "7":
-          v["arc"](75, 100, 50, 0, Math.PI * 2, true);
-          continue;
-
-        case "8":
-          v["font"] = e["tBPTc"];
-          continue;
-
-        case "9":
-          v["fillText"](i, 4, 45);
-          continue;
-
-        case "10":
-          v["fillStyle"] = e["rJjXh"];
-          continue;
-
-        case "11":
-          var i = e["xZKTi"];
-          continue;
-
-        case "12":
-          return new Promise(function (n) {
-            P(s)["then"](function (t) {
-              var u = {
-                "hash": t
-              };
-              n(u);
-            });
-          });
-
-        case "13":
-          v["arc"](50, 50, 50, 0, Math.PI * 2, true);
-          continue;
-
-        case "14":
-          v["fill"]("evenodd");
-          continue;
-
-        case "15":
-          var o = {};
-          continue;
-
-        case "16":
-          v["fillStyle"] = e["iATpx"];
-          continue;
-
-        case "17":
-          var a = m();
-          var f = r(a, 2);
-          var s = f[0];
-          var v = f[1];
-          continue;
-
-        case "18":
-          v["fillText"](i, 2, 15);
-          continue;
-
-        case "19":
-          v["fillStyle"] = e["CcrlZ"];
-          continue;
-
-        case "20":
-          v["globalCompositeOperation"] = e["kZEyw"];
-          continue;
-
-        case "22":
-          v["arc"](75, 75, 25, 0, Math.PI * 2, true);
-          continue;
-
-        case "23":
-          v["arc"](75, 75, 75, 0, Math.PI * 2, true);
-          continue;
-
-        case "24":
-          v["fillStyle"] = e["LWfdT"];
-          continue;
-
-        case "27":
-          if (!A(s, v)) {
-            var h = {
-              "winding": false,
-              "data": ""
-            };
-            return h;
-          }
-
-          continue;
-
-        case "29":
-          v["fillStyle"] = e["nMyBR"];
-          continue;
-
-        case "30":
-          v["arc"](100, 50, 50, 0, Math.PI * 2, true);
-          continue;
-
-        case "33":
-          v["font"] = e["aCjdS"];
-          continue;
-
-        case "34":
-          v["rect"](2, 2, 6, 6);
-          continue;
-
-        case "35":
-          v["rect"](0, 0, 10, 10);
-          continue;
-      }
-
-      break;
+    if (!A(s, v)) {
+      var h = {
+        "winding": false,
+        "data": ""
+      };
+      return h;
     }
+
+    v["arc"](75, 75, 75, 0, Math.PI * 2, true);
+    v["globalCompositeOperation"] = e["kZEyw"];
+    v["fillStyle"] = e["rJjXh"];
+    v["fillStyle"] = e["CcrlZ"];
+    v["fillRect"](125, 1, 62, 20);
+    v["fill"]();
+    var a = m();
+    v["fillStyle"] = e["iATpx"];
+    v["font"] = e["tBPTc"];
+    v["fillStyle"] = e["ZPFfN"];
   }
 
   function F() {
-    var r = {};
     return typeof OffscreenCanvas !== "undefined";
   }
 
   var U = function (t, r, e) {
-    var c = {};
-    var a = 0;
     t = t + "";
     r = r - t["length"];
     if (r <= 0) return t;
@@ -1494,7 +597,6 @@
         if (t["subarray"] && n["subarray"]) n["set"](t["subarray"](r, r + e), i);else for (var a = 0; a < e; a++) n[i + a] = t[r + a];
       },
       flattenChunks: function (n) {
-        var e = 0;
         var i;
         a = 0;
         var i = 0;
@@ -1521,59 +623,37 @@
     }, e["setTyped"](i);
   });
 
-  var Z = 0;
-  var j = 1;
-
   function B(t) {
-    var e = {
-      "yKYDh": function (n, t) {
-        return n >= t;
-      }
-    };
-    var u = e;
+    var e = {};
     var c = t["length"];
 
-    for (void 0; u["yKYDh"](--c, 0);) {
+    for (void 0; --c >= 0;) {
       t[c] = 0;
     }
   }
 
-  var H = 0;
-  var G = 29;
-  var O = 256;
-  var q = O + 1 + G;
-  var C = 30;
-  var z = 19;
+  var q = 286;
   var X = 2 * q + 1;
-  var J = 15;
-  var L = 16;
-  var N = 7;
-  var D = 256;
-  var Y = 16;
-  var Q = 17;
-  var x = 18;
   var W = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0];
   var K = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
   var _ = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7];
   var $ = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
   var nn = new Array(2 * (q + 2));
   B(nn);
-  var tn = new Array(2 * C);
+  var tn = new Array(60);
   B(tn);
   var rn = new Array(512);
   B(rn);
   var en = new Array(256);
   B(en);
-  var un = new Array(G);
+  var un = new Array(29);
   B(un);
   var cn;
   var on;
   var an;
-  var fn = new Array(C);
+  var fn = new Array(30);
 
   function sn(t, r, e, u, c) {
-    var o = {};
-    var f = 0;
     this["static_tree"] = t;
     this["extra_bits"] = r;
     this["extra_base"] = e;
@@ -1587,27 +667,22 @@
   }
 
   function hn(t) {
-    var e = {};
     return t < 256 ? rn[t] : rn[256 + (t >>> 7)];
   }
 
   function ln(t, r) {
-    var u = {};
     t["pending_buf"][t["pending"]++] = r & 255, t["pending_buf"][t["pending"]++] = r >>> 8 & 255;
   }
 
   function wn(t, r, e) {
-    var c = {};
-    t["bi_valid"] > L - e ? (t["bi_buf"] |= r << t["bi_valid"] & 65535, ln(t, t["bi_buf"]), t["bi_buf"] = r >> L - t["bi_valid"], t["bi_valid"] += e - L) : (t["bi_buf"] |= r << t["bi_valid"] & 65535, t["bi_valid"] += e);
+    t["bi_valid"] > 16 - e ? (t["bi_buf"] |= r << t["bi_valid"] & 65535, ln(t, t["bi_buf"]), t["bi_buf"] = r >> 16 - t["bi_valid"], t["bi_valid"] += e - 16) : (t["bi_buf"] |= r << t["bi_valid"] & 65535, t["bi_valid"] += e);
   }
 
   function dn(t, r, e) {
-    var c = {};
     wn(t, e[r * 2], e[r * 2 + 1]);
   }
 
   function kn(t, r) {
-    var u = {};
     var i = 0;
 
     do {
@@ -1618,12 +693,10 @@
   }
 
   function En(t) {
-    var e = {};
     t["bi_valid"] === 16 ? (ln(t, t["bi_buf"]), t["bi_buf"] = 0, t["bi_valid"] = 0) : t["bi_valid"] >= 8 && (t["pending_buf"][t["pending"]++] = t["bi_buf"] & 255, t["bi_buf"] >>= 8, t["bi_valid"] -= 8);
   }
 
   function bn(t, r) {
-    var u = {};
     var c;
     var i;
     var o;
@@ -1639,7 +712,7 @@
     var b = r["stat_desc"]["max_length"];
     var g = 0;
 
-    for (a = 0; a <= J; a++) t["bl_count"][a] = 0;
+    for (a = 0; a <= 15; a++) t["bl_count"][a] = 0;
 
     var c = t["heap_max"] + 1;
 
@@ -1647,7 +720,6 @@
 
     if (!(g === 0)) {
       do {
-        var y = 0;
         a = b - 1;
 
         for (; t["bl_count"][a] === 0;) a--;
@@ -1665,11 +737,10 @@
   function gn(t, r, e) {
     var u;
     var c;
-    var o = {};
-    var a = new Array(J + 1);
+    var a = new Array(16);
     var f = 0;
 
-    for (u = 1; u <= J; u++) a[u] = f = f + e[u - 1] << 1;
+    for (u = 1; u <= 15; u++) a[u] = f = f + e[u - 1] << 1;
 
     for (c = 0; c <= r; c++) {
       var s = t[c * 2 + 1];
@@ -1678,213 +749,89 @@
   }
 
   function In() {
-    var r = {
-      wZsjk: "11|5|19|16|10|1|20|0|6|3|17|7|13|18|22|21|4|12|8|15|2|23|9|14"
-    };
-    var e = r["wZsjk"]["split"]("|");
-    var u = 0;
+    var a;
+    var i;
+    var s;
+    var f;
+    var o;
+    var c = new Array(16);
+    s = 0;
 
-    for (void 0;;) {
-      switch (e[u++]) {
-        case "0":
-          for (f = 0; f < G - 1; f++) {
-            var a = 0;
+    for (f = 0; f < 28; f++) {
+      var a = 0;
 
-            for (; a < 1 << W[f]; a++) en[s++] = f;
-          }
-
-          continue;
-
-        case "1":
-          var c = new Array(J + 1);
-          continue;
-
-        case "2":
-          for (a = 0; a < C; a++) tn[a * 2 + 1] = 5, tn[a * 2] = kn(a, 5);
-
-          continue;
-
-        case "3":
-          o = 0;
-          continue;
-
-        case "4":
-          for (; a <= 255;) nn[a * 2 + 1] = 9, a++, c[9]++;
-
-          continue;
-
-        case "5":
-          var i;
-          continue;
-
-        case "6":
-          en[s - 1] = f;
-          continue;
-
-        case "7":
-          o >>= 7;
-          continue;
-
-        case "8":
-          for (; a <= 287;) nn[a * 2 + 1] = 8, a++, c[8]++;
-
-          continue;
-
-        case "9":
-          on = new sn(tn, K, 0, C, J);
-          continue;
-
-        case "10":
-          var o;
-          continue;
-
-        case "11":
-          var a;
-          continue;
-
-        case "12":
-          for (; a <= 279;) nn[a * 2 + 1] = 7, a++, c[7]++;
-
-          continue;
-
-        case "13":
-          for (; f < C; f++) {
-            var a = 0;
-
-            for (; a < 1 << K[f] - 7; a++) rn[256 + o++] = f;
-          }
-
-          continue;
-
-        case "14":
-          an = new sn(new Array(0), _, 0, z, N);
-          continue;
-
-        case "15":
-          gn(nn, q + 1, c);
-          continue;
-
-        case "16":
-          var f;
-          continue;
-
-        case "17":
-          for (f = 0; f < 16; f++) {
-            var a = 0;
-
-            for (; a < 1 << K[f]; a++) rn[o++] = f;
-          }
-
-          continue;
-
-        case "18":
-          for (i = 0; i <= J; i++) c[i] = 0;
-
-          continue;
-
-        case "19":
-          var s;
-          continue;
-
-        case "20":
-          s = 0;
-          continue;
-
-        case "21":
-          for (; a <= 143;) nn[a * 2 + 1] = 8, a++, c[8]++;
-
-          continue;
-
-        case "22":
-          a = 0;
-          continue;
-
-        case "23":
-          cn = new sn(nn, W, O + 1, q, J);
-          continue;
-      }
-
-      break;
+      for (; a < 1 << W[f]; a++) en[s++] = f;
     }
+
+    en[s - 1] = f;
+    o = 0;
+
+    for (f = 0; f < 16; f++) {
+      var a = 0;
+
+      for (; a < 1 << K[f]; a++) rn[o++] = f;
+    }
+
+    o >>= 7;
+
+    for (; f < 30; f++) {
+      var a = 0;
+
+      for (; a < 1 << K[f] - 7; a++) rn[256 + o++] = f;
+    }
+
+    for (i = 0; i <= 15; i++) c[i] = 0;
+
+    a = 0;
+
+    for (; a <= 143;) nn[a * 2 + 1] = 8, a++, c[8]++;
+
+    for (; a <= 255;) nn[a * 2 + 1] = 9, a++, c[9]++;
+
+    for (; a <= 279;) nn[a * 2 + 1] = 7, a++, c[7]++;
+
+    for (; a <= 287;) nn[a * 2 + 1] = 8, a++, c[8]++;
+
+    gn(nn, q + 1, c);
+
+    for (a = 0; a < 30; a++) tn[a * 2 + 1] = 5, tn[a * 2] = kn(a, 5);
+
+    cn = new sn(nn, W, 257, q, 15);
+    on = new sn(tn, K, 0, 30, 15);
+    an = new sn(new Array(0), _, 0, 19, 7);
   }
 
   function yn(t) {
-    var e = {
-      "AptAb": "1|4|2|5|0|3|6",
-      "ALfor": function (n, t) {
-        return n * t;
-      },
-      "CxSwV": function (n, t) {
-        return n < t;
-      },
-      "PSHEg": function (n, t) {
-        return n < t;
-      },
-      "dyjBZ": function (n, t) {
-        return n * t;
-      }
-    };
-    var u = e;
-    var c = u["AptAb"]["split"]("|");
+    var e = {};
     var i = 0;
+    var o;
 
-    for (void 0;;) {
-      switch (c[i++]) {
-        case "0":
-          t["dyn_ltree"][u["ALfor"](D, 2)] = 1;
-          continue;
+    for (o = 0; o < q; o++) t["dyn_ltree"][o * 2] = 0;
 
-        case "1":
-          var o;
-          continue;
+    for (o = 0; o < 30; o++) t["dyn_dtree"][o * 2] = 0;
 
-        case "2":
-          for (o = 0; u["CxSwV"](o, C); o++) t["dyn_dtree"][u["ALfor"](o, 2)] = 0;
+    for (o = 0; o < 19; o++) t["bl_tree"][o * 2] = 0;
 
-          continue;
-
-        case "3":
-          t["opt_len"] = t["static_len"] = 0;
-          continue;
-
-        case "4":
-          for (o = 0; u["CxSwV"](o, q); o++) t["dyn_ltree"][u["ALfor"](o, 2)] = 0;
-
-          continue;
-
-        case "5":
-          for (o = 0; u["PSHEg"](o, z); o++) t["bl_tree"][u["dyjBZ"](o, 2)] = 0;
-
-          continue;
-
-        case "6":
-          t["last_lit"] = t["matches"] = 0;
-          continue;
-      }
-
-      break;
-    }
+    t["dyn_ltree"][512] = 1;
+    t["opt_len"] = t["static_len"] = 0;
+    t["last_lit"] = t["matches"] = 0;
   }
 
   function pn(t) {
-    var e = {};
     t["bi_valid"] > 8 ? ln(t, t["bi_buf"]) : t["bi_valid"] > 0 && (t["pending_buf"][t["pending"]++] = t["bi_buf"]), t["bi_buf"] = 0, t["bi_valid"] = 0;
   }
 
   function Tn(t, r, e, u) {
-    var i = {};
     pn(t), u && (ln(t, e), ln(t, ~e)), S["arraySet"](t["pending_buf"], t["window"], r, e, t["pending"]), t["pending"] += e;
   }
 
   function Rn(t, r, e, u) {
-    var i = {};
     var a = r * 2;
     var f = e * 2;
     return t[a] < t[f] || t[a] === t[f] && u[r] <= u[e];
   }
 
   function mn(t, r, e) {
-    var c = {};
     var i = t["heap"][e];
     var o = e << 1;
 
@@ -1903,121 +850,73 @@
   }
 
   function Pn(t, r, e) {
-    var c = {
-      huqmo: "6|0|5|3|2|4|1",
-      jseIr: "4|0|1|5|3|8|2|7|6"
-    };
-    var i = c["huqmo"]["split"]("|");
-    var o = 0;
-
-    for (void 0;;) {
-      switch (i[o++]) {
-        case "0":
-          var a;
-          continue;
-
-        case "1":
-          dn(t, D, r);
-          continue;
-
-        case "2":
-          var f;
-          continue;
-
-        case "3":
-          var s;
-          continue;
-
-        case "4":
-          if (t["last_lit"] !== 0) do {
-            if (w = t["pending_buf"][t["d_buf"] + l * 2] << 8 | t["pending_buf"][t["d_buf"] + l * 2 + 1], a = t["pending_buf"][t["l_buf"] + l], l++, w === 0) dn(t, a, r);else {
-              var v = c["jseIr"]["split"]("|");
-              var h = 0;
-
-              for (void 0;;) {
-                switch (v[h++]) {
-                  case "0":
-                    dn(t, s + O + 1, r);
-                    continue;
-
-                  case "1":
-                    f = W[s];
-                    continue;
-
-                  case "2":
-                    dn(t, s, e);
-                    continue;
-
-                  case "3":
-                    w--;
-                    continue;
-
-                  case "4":
-                    s = en[a];
-                    continue;
-
-                  case "5":
-                    f !== 0 && (a -= un[s], wn(t, a, f));
-                    continue;
-
-                  case "6":
-                    f !== 0 && (w -= fn[s], wn(t, w, f));
-                    continue;
-
-                  case "7":
-                    f = K[s];
-                    continue;
-
-                  case "8":
-                    s = hn(w);
-                    continue;
-                }
-
-                break;
-              }
-            }
-          } while (l < t["last_lit"]);
-          continue;
-
-        case "5":
-          var l = 0;
-          continue;
-
-        case "6":
-          var w;
-          continue;
+    var w;
+    var a;
+    var l = 0;
+    var s;
+    var f;
+    if (t["last_lit"] !== 0) do {
+      if (w = t["pending_buf"][t["d_buf"] + l * 2] << 8 | t["pending_buf"][t["d_buf"] + l * 2 + 1], a = t["pending_buf"][t["l_buf"] + l], l++, w === 0) dn(t, a, r);else {
+        s = en[a];
+        dn(t, s + 256 + 1, r);
+        f = W[s];
+        f !== 0 && (a -= un[s], wn(t, a, f));
+        w--;
+        s = hn(w);
+        dn(t, s, e);
+        f = K[s];
+        f !== 0 && (w -= fn[s], wn(t, w, f));
       }
-
-      break;
-    }
+    } while (l < t["last_lit"]);
+    dn(t, 256, r);
   }
 
   function Vn(t, r) {
-    var u = {
-      ItwYd: "7|17|0|11|1|12|14|15|5|8|16|6|9|4|10|2|3|13",
-      VkMFM: "2|8|6|10|9|3|7|4|1|0|5"
-    };
-    var c = u["ItwYd"]["split"]("|");
-    var i = 0;
-    var a;
-    t["heap"][--t["heap_max"]] = t["heap"][1];
-    d = l;
+    var s = r["dyn_tree"];
+    var b = r["stat_desc"]["static_tree"];
     var o = r["stat_desc"]["has_stree"];
+    var l = r["stat_desc"]["elems"];
+    var a;
+    var w = -1;
+    var d;
+    t["heap_len"] = 0;
+    t["heap_max"] = X;
+
+    for (a = 0; a < l; a++) s[a * 2] !== 0 ? (t["heap"][++t["heap_len"]] = w = a, t["depth"][a] = 0) : s[a * 2 + 1] = 0;
+
+    for (; t["heap_len"] < 2;) {
+      d = t["heap"][++t["heap_len"]] = w < 2 ? ++w : 0;
+      s[d * 2] = 1;
+      t["depth"][d] = 0;
+      t["opt_len"]--;
+      o && (t["static_len"] -= b[d * 2 + 1]);
+    }
+
+    r["max_code"] = w;
+
+    for (a = t["heap_len"] >> 1; a >= 1; a--) mn(t, s, a);
+
+    d = l;
+
+    do {
+      a = t["heap"][1];
+      t["heap"][1] = t["heap"][t["heap_len"]--];
+      mn(t, s, 1);
+      f = t["heap"][1];
+      t["heap"][--t["heap_max"]] = a;
+      t["heap"][--t["heap_max"]] = f;
+      s[d * 2] = s[a * 2] + s[f * 2];
+      t["depth"][d] = (t["depth"][a] >= t["depth"][f] ? t["depth"][a] : t["depth"][f]) + 1;
+      s[a * 2 + 1] = s[f * 2 + 1] = d;
+      t["heap"][1] = d++;
+    } while (t["heap_len"] >= 2);
+
+    t["heap"][--t["heap_max"]] = t["heap"][1];
     bn(t, r);
+    gn(s, w, t["bl_count"]);
   }
 
   function Fn(t, r, e) {
-    var c = {
-      "gQyfE": function (n, t) {
-        return n + t;
-      },
-      "uVTMr": function (n, t) {
-        return n * t;
-      },
-      "kXszn": function (n, t) {
-        return n + t;
-      }
-    };
     var i;
     var o;
     var f = -1;
@@ -2027,13 +926,12 @@
     var l = 4;
     var i = 0;
 
-    for (s === 0 && (h = 138, l = 3); i <= e; i++) o = s, s = r[(i + 1) * 2 + 1], ++v < h && o === s || (v < l ? t["bl_tree"][o * 2] += v : o !== 0 ? (o !== f && t["bl_tree"][o * 2]++, t["bl_tree"][Y * 2]++) : v <= 10 ? t["bl_tree"][Q * 2]++ : t["bl_tree"][x * 2]++, v = 0, f = o, s === 0 ? (h = 138, l = 3) : o === s ? (h = 6, l = 3) : (h = 7, l = 4));
+    for (s === 0 && (h = 138, l = 3); i <= e; i++) o = s, s = r[(i + 1) * 2 + 1], ++v < h && o === s || (v < l ? t["bl_tree"][o * 2] += v : o !== 0 ? (o !== f && t["bl_tree"][o * 2]++, t["bl_tree"][32]++) : v <= 10 ? t["bl_tree"][34]++ : t["bl_tree"][36]++, v = 0, f = o, s === 0 ? (h = 138, l = 3) : o === s ? (h = 6, l = 3) : (h = 7, l = 4));
   }
 
   function Un(t, r, e) {
     var u;
     var c;
-    var o = {};
     var a = -1;
     var f = r[1];
     var s = 0;
@@ -2044,15 +942,14 @@
     for (f === 0 && (v = 138, h = 3); u <= e; u++) if (c = f, f = r[(u + 1) * 2 + 1], !(++s < v) || !(c === f)) {
       if (s < h) do {
         dn(t, c, t["bl_tree"]);
-      } while (--s !== 0);else c !== 0 ? (c !== a && (dn(t, c, t["bl_tree"]), s--), dn(t, Y, t["bl_tree"]), wn(t, s - 3, 2)) : s <= 10 ? (dn(t, Q, t["bl_tree"]), wn(t, s - 3, 3)) : (dn(t, x, t["bl_tree"]), wn(t, s - 11, 7));
+      } while (--s !== 0);else c !== 0 ? (c !== a && (dn(t, c, t["bl_tree"]), s--), dn(t, 16, t["bl_tree"]), wn(t, s - 3, 2)) : s <= 10 ? (dn(t, 17, t["bl_tree"]), wn(t, s - 3, 3)) : (dn(t, 18, t["bl_tree"]), wn(t, s - 11, 7));
       s = 0, a = c, f === 0 ? (v = 138, h = 3) : c === f ? (v = 6, h = 3) : (v = 7, h = 4);
     }
   }
 
   function Mn(t) {
     var r;
-    var u = {};
-    var r = z - 1;
+    var r = 18;
 
     for (Fn(t, t["dyn_ltree"], t["l_desc"]["max_code"]), Fn(t, t["dyn_dtree"], t["d_desc"]["max_code"]), Vn(t, t["bl_desc"]); r >= 3 && !(t["bl_tree"][$[r] * 2 + 1] !== 0); r--);
 
@@ -2060,288 +957,81 @@
   }
 
   function Sn(t, r, e, u) {
-    var i = {
-      YWYsq: "2|5|4|0|3|6|1"
-    };
-    var o = i["YWYsq"]["split"]("|");
-    var a = 0;
+    var f;
+    wn(t, r - 257, 5);
+    wn(t, e - 1, 5);
+    wn(t, u - 4, 4);
 
-    for (void 0;;) {
-      switch (o[a++]) {
-        case "0":
-          wn(t, u - 4, 4);
-          continue;
+    for (f = 0; f < u; f++) wn(t, t["bl_tree"][$[f] * 2 + 1], 3);
 
-        case "1":
-          Un(t, t["dyn_dtree"], e - 1);
-          continue;
-
-        case "2":
-          var f;
-          continue;
-
-        case "3":
-          for (f = 0; f < u; f++) wn(t, t["bl_tree"][$[f] * 2 + 1], 3);
-
-          continue;
-
-        case "4":
-          wn(t, e - 1, 5);
-          continue;
-
-        case "5":
-          wn(t, r - 257, 5);
-          continue;
-
-        case "6":
-          Un(t, t["dyn_ltree"], r - 1);
-          continue;
-      }
-
-      break;
-    }
+    Un(t, t["dyn_ltree"], r - 1);
+    Un(t, t["dyn_dtree"], e - 1);
   }
 
   function Zn(t) {
-    var e = {
-      "xjxLT": "5|2|1|3|4|0",
-      "SGIkq": function (n, t) {
-        return n <= t;
-      },
-      "DvHRd": function (n, t) {
-        return n & t;
-      },
-      "hnpAF": function (n, t) {
-        return n !== t;
-      },
-      "JcHOi": function (n, t) {
-        return n * t;
-      },
-      "uVJGQ": function (n, t) {
-        return n !== t;
-      },
-      "sUMNp": function (n, t) {
-        return n * t;
-      },
-      "kYLgZ": function (n, t) {
-        return n !== t;
-      },
-      "YaoKn": function (n, t) {
-        return n * t;
-      },
-      "mjiTJ": function (n, t) {
-        return n < t;
-      },
-      "cNBUn": function (n, t) {
-        return n !== t;
-      }
-    };
-    var u = e;
-    var c = u["xjxLT"]["split"]("|");
+    var e = {};
     var i = 0;
+    var a = 4093624447;
+    var o;
 
-    for (void 0;;) {
-      switch (c[i++]) {
-        case "0":
-          return Z;
+    for (o = 0; o <= 31; o++, a >>>= 1) if (a & 1 && t["dyn_ltree"][o * 2] !== 0) return 0;
 
-        case "1":
-          for (o = 0; u["SGIkq"](o, 31); o++, a >>>= 1) if (u["DvHRd"](a, 1) && u["hnpAF"](t["dyn_ltree"][u["JcHOi"](o, 2)], 0)) return Z;
+    if (t["dyn_ltree"][18] !== 0 || t["dyn_ltree"][20] !== 0 || t["dyn_ltree"][26] !== 0) return 1;
 
-          continue;
+    for (o = 32; o < 256; o++) if (t["dyn_ltree"][o * 2] !== 0) return 1;
 
-        case "2":
-          var o;
-          continue;
-
-        case "3":
-          if (u["uVJGQ"](t["dyn_ltree"][u["JcHOi"](9, 2)], 0) || u["uVJGQ"](t["dyn_ltree"][u["sUMNp"](10, 2)], 0) || u["kYLgZ"](t["dyn_ltree"][u["YaoKn"](13, 2)], 0)) return j;
-          continue;
-
-        case "4":
-          for (o = 32; u["mjiTJ"](o, O); o++) if (u["cNBUn"](t["dyn_ltree"][u["YaoKn"](o, 2)], 0)) return j;
-
-          continue;
-
-        case "5":
-          var a = 4093624447;
-          continue;
-      }
-
-      break;
-    }
+    return 0;
   }
 
   B(fn);
   var jn = false;
 
   function Bn(t, r, e, u) {
-    var i = {};
-    wn(t, (H << 1) + (u ? 1 : 0), 3), Tn(t, r, e, true);
+    wn(t, 0 + (u ? 1 : 0), 3), Tn(t, r, e, true);
   }
 
   var Hn = function (t) {
-    var e = {
-      pomuR: "2|0|3|1|4|6|5"
-    };
-    var u = e["pomuR"]["split"]("|");
-    var c = 0;
-
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          t["l_desc"] = new vn(t["dyn_ltree"], cn);
-          continue;
-
-        case "1":
-          t["bl_desc"] = new vn(t["bl_tree"], an);
-          continue;
-
-        case "2":
-          !jn && (In(), jn = true);
-          continue;
-
-        case "3":
-          t["d_desc"] = new vn(t["dyn_dtree"], on);
-          continue;
-
-        case "4":
-          t["bi_buf"] = 0;
-          continue;
-
-        case "5":
-          yn(t);
-          continue;
-
-        case "6":
-          t["bi_valid"] = 0;
-          continue;
-      }
-
-      break;
-    }
+    !jn && (In(), jn = true);
+    t["l_desc"] = new vn(t["dyn_ltree"], cn);
+    t["d_desc"] = new vn(t["dyn_dtree"], on);
+    t["bl_desc"] = new vn(t["bl_tree"], an);
+    t["bi_buf"] = 0;
+    t["bi_valid"] = 0;
+    yn(t);
   };
 
   var Gn = Bn;
 
   var On = function (t, r, e, u) {
-    var i = {
-      MrwqS: "2|3|5|4|1|0",
-      daXhd: "4|1|2|3|6|5|0"
-    };
-    var o = i["MrwqS"]["split"]("|");
-    var a = 0;
+    var f;
+    var v = 0;
 
-    for (void 0;;) {
-      switch (o[a++]) {
-        case "0":
-          u && pn(t);
-          continue;
+    if (t["level"] > 0) {
+      t["strm"]["data_type"] === 2 && (t["strm"]["data_type"] = Zn(t));
+      Vn(t, t["l_desc"]);
+      Vn(t, t["d_desc"]);
+      v = Mn(t);
+      f = t["opt_len"] + 3 + 7 >>> 3;
+      s = t["static_len"] + 3 + 7 >>> 3;
+      s <= f && (f = s);
+    } else f = s = e + 5;
 
-        case "1":
-          yn(t);
-          continue;
-
-        case "2":
-          var f;
-          var s;
-          continue;
-
-        case "3":
-          var v = 0;
-          continue;
-
-        case "4":
-          e + 4 <= f && r !== -1 ? Bn(t, r, e, u) : t["strategy"] === 4 || s === f ? (wn(t, 2 + (u ? 1 : 0), 3), Pn(t, nn, tn)) : (wn(t, 4 + (u ? 1 : 0), 3), Sn(t, t["l_desc"]["max_code"] + 1, t["d_desc"]["max_code"] + 1, v + 1), Pn(t, t["dyn_ltree"], t["dyn_dtree"]));
-          continue;
-
-        case "5":
-          if (t["level"] > 0) {
-            var h = i["daXhd"]["split"]("|");
-            var l = 0;
-
-            for (void 0;;) {
-              switch (h[l++]) {
-                case "0":
-                  s <= f && (f = s);
-                  continue;
-
-                case "1":
-                  Vn(t, t["l_desc"]);
-                  continue;
-
-                case "2":
-                  Vn(t, t["d_desc"]);
-                  continue;
-
-                case "3":
-                  v = Mn(t);
-                  continue;
-
-                case "4":
-                  t["strm"]["data_type"] === 2 && (t["strm"]["data_type"] = Zn(t));
-                  continue;
-
-                case "5":
-                  s = t["static_len"] + 3 + 7 >>> 3;
-                  continue;
-
-                case "6":
-                  f = t["opt_len"] + 3 + 7 >>> 3;
-                  continue;
-              }
-
-              break;
-            }
-          } else f = s = e + 5;
-
-          continue;
-      }
-
-      break;
-    }
+    e + 4 <= f && r !== -1 ? Bn(t, r, e, u) : t["strategy"] === 4 || s === f ? (wn(t, 2 + (u ? 1 : 0), 3), Pn(t, nn, tn)) : (wn(t, 4 + (u ? 1 : 0), 3), Sn(t, t["l_desc"]["max_code"] + 1, t["d_desc"]["max_code"] + 1, v + 1), Pn(t, t["dyn_ltree"], t["dyn_dtree"]));
+    yn(t);
+    u && pn(t);
   };
 
   var qn = function (t, r, e) {
-    var c = {
-      IrFqK: "1|5|2|3|4|0"
-    };
-    var i = c["IrFqK"]["split"]("|");
-    var o = 0;
-
-    for (void 0;;) {
-      switch (i[o++]) {
-        case "0":
-          return t["last_lit"] === t["lit_bufsize"] - 1;
-
-        case "1":
-          t["pending_buf"][t["d_buf"] + t["last_lit"] * 2] = r >>> 8 & 255;
-          continue;
-
-        case "2":
-          t["pending_buf"][t["l_buf"] + t["last_lit"]] = e & 255;
-          continue;
-
-        case "3":
-          t["last_lit"]++;
-          continue;
-
-        case "4":
-          r === 0 ? t["dyn_ltree"][e * 2]++ : (t["matches"]++, r--, t["dyn_ltree"][(en[e] + O + 1) * 2]++, t["dyn_dtree"][hn(r) * 2]++);
-          continue;
-
-        case "5":
-          t["pending_buf"][t["d_buf"] + t["last_lit"] * 2 + 1] = r & 255;
-          continue;
-      }
-
-      break;
-    }
+    t["pending_buf"][t["d_buf"] + t["last_lit"] * 2] = r >>> 8 & 255;
+    t["pending_buf"][t["d_buf"] + t["last_lit"] * 2 + 1] = r & 255;
+    t["pending_buf"][t["l_buf"] + t["last_lit"]] = e & 255;
+    t["last_lit"]++;
+    r === 0 ? t["dyn_ltree"][e * 2]++ : (t["matches"]++, r--, t["dyn_ltree"][(en[e] + 256 + 1) * 2]++, t["dyn_dtree"][hn(r) * 2]++);
+    return t["last_lit"] === t["lit_bufsize"] - 1;
   };
 
   var Cn = function (t) {
-    var e = {};
-    wn(t, 2, 3), dn(t, D, nn), En(t);
+    wn(t, 2, 3), dn(t, 256, nn), En(t);
   };
 
   var zn = {
@@ -2353,108 +1043,37 @@
   };
 
   var Jn = function (t, r, e, u) {
-    var i = {
-      "DuyeR": function (n, t) {
-        return n | t;
-      },
-      "dnhMN": function (n, t) {
-        return n & t;
-      },
-      "ljTHM": function (n, t) {
-        return n | t;
-      },
-      "LIKsD": function (n, t) {
-        return n & t;
-      },
-      "bHZro": function (n, t) {
-        return n >>> t;
-      },
-      "zquJd": function (n, t) {
-        return n !== t;
-      },
-      "QgWre": "3|4|2|1|0",
-      "RhFNV": function (n, t) {
-        return n + t;
-      },
-      "PEJMx": function (n, t) {
-        return n + t;
-      },
-      "XjHXx": function (n, t) {
-        return n > t;
-      },
-      "NeDJh": function (n, t) {
-        return n << t;
-      }
-    };
-    var o = i;
-    var a = o["DuyeR"](o["dnhMN"](t, 65535), 0);
-    var f = o["ljTHM"](o["LIKsD"](o["bHZro"](t, 16), 65535), 0);
+    var i = {};
+    var a = t & 65535 | 0;
+    var f = t >>> 16 & 65535 | 0;
     var s = 0;
 
-    for (void 0; o["zquJd"](e, 0);) {
-      var v = o["QgWre"]["split"]("|");
+    for (void 0; e !== 0;) {
       var h = 0;
+      s = e > 2e3 ? 2e3 : e;
+      e -= s;
 
-      for (void 0;;) {
-        switch (v[h++]) {
-          case "0":
-            f %= 65521;
-            continue;
+      do {
+        a = a + r[u++] | 0, f = f + a | 0;
+      } while (--s);
 
-          case "1":
-            a %= 65521;
-            continue;
-
-          case "2":
-            do {
-              a = o["ljTHM"](o["RhFNV"](a, r[u++]), 0), f = o["ljTHM"](o["PEJMx"](f, a), 0);
-            } while (--s);
-
-            continue;
-
-          case "3":
-            s = o["XjHXx"](e, 2e3) ? 2e3 : e;
-            continue;
-
-          case "4":
-            e -= s;
-            continue;
-        }
-
-        break;
-      }
+      a %= 65521;
+      f %= 65521;
     }
 
-    return o["ljTHM"](o["ljTHM"](a, o["NeDJh"](f, 16)), 0);
+    return a | f << 16 | 0;
   };
 
   var Ln = function () {
-    var r = {
-      "aEQwb": function (n, t) {
-        return n < t;
-      },
-      "Aucnx": function (n, t) {
-        return n & t;
-      },
-      "zwhip": function (n, t) {
-        return n ^ t;
-      },
-      "CPUBG": function (n, t) {
-        return n >>> t;
-      },
-      "YcOlo": function (n, t) {
-        return n >>> t;
-      }
-    };
-    var u = r;
+    var r = {};
     var c = [];
     var i = 0;
 
-    for (void 0; u["aEQwb"](i, 256); i++) {
+    for (void 0; i < 256; i++) {
       var e;
       e = i;
 
-      for (var o = 0; u["aEQwb"](o, 8); o++) e = u["Aucnx"](e, 1) ? u["zwhip"](3988292384, u["CPUBG"](e, 1)) : u["YcOlo"](e, 1);
+      for (var o = 0; o < 8; o++) e = e & 1 ? 3988292384 ^ e >>> 1 : e >>> 1;
 
       c[i] = e;
     }
@@ -2463,7 +1082,6 @@
   }();
 
   var Nn = function (t, r, e, u) {
-    var i = {};
     var a = Ln;
     var f = u + e;
     t ^= -1;
@@ -2480,127 +1098,47 @@
   };
   Dn[-1] = "file error", Dn[-2] = "stream error", Dn[-3] = "data error", Dn[-4] = "insufficient memory", Dn[-5] = "buffer error", Dn[-6] = "incompatible version";
   var Yn;
-  var xn = 0;
-  var Wn = 4;
-  var Kn = 0;
 
   var _n = -2;
 
   var $n = -1;
-  var nt = 4;
-  var tt = 2;
-  var rt = 8;
-  var et = 9;
-  var ut = 286;
-  var ct = 30;
-  var it = 19;
-  var ot = 2 * ut + 1;
-  var at = 15;
-  var ft = 3;
-  var st = 258;
-  var vt = st + ft + 1;
-  var ht = 42;
-  var lt = 103;
-  var wt = 113;
-  var dt = 666;
-  var kt = 1;
-  var Et = 2;
-  var bt = 3;
-  var gt = 4;
+  var ot = 573;
+  var vt = 262;
 
   function It(t, r) {
     return t["msg"] = Dn[r], r;
   }
 
   function yt(t) {
-    var e = {};
     return (t << 1) - (t > 4 ? 9 : 0);
   }
 
   function pt(t) {
-    var e = {
-      "nPHWR": function (n, t) {
-        return n >= t;
-      }
-    };
-    var u = e;
+    var e = {};
     var c = t["length"];
 
-    for (void 0; u["nPHWR"](--c, 0);) {
+    for (void 0; --c >= 0;) {
       t[c] = 0;
     }
   }
 
   function Tt(t) {
-    var e = {
-      "TzgMp": "2|4|5|7|3|6|8|9|0|10|1",
-      "qVITT": function (n, t) {
-        return n === t;
-      },
-      "GZdZf": function (n, t) {
-        return n > t;
-      },
-      "azijQ": function (n, t) {
-        return n === t;
-      }
-    };
-    var u = e;
-    var c = u["TzgMp"]["split"]("|");
+    var e = {};
     var i = 0;
-
-    for (void 0;;) {
-      switch (c[i++]) {
-        case "0":
-          t["avail_out"] -= a;
-          continue;
-
-        case "1":
-          u["qVITT"](o["pending"], 0) && (o["pending_out"] = 0);
-          continue;
-
-        case "2":
-          var o = t["state"];
-          continue;
-
-        case "3":
-          S["arraySet"](t["output"], o["pending_buf"], o["pending_out"], a, t["next_out"]);
-          continue;
-
-        case "4":
-          var a = o["pending"];
-          continue;
-
-        case "5":
-          u["GZdZf"](a, t["avail_out"]) && (a = t["avail_out"]);
-          continue;
-
-        case "6":
-          t["next_out"] += a;
-          continue;
-
-        case "7":
-          if (u["azijQ"](a, 0)) return;
-          continue;
-
-        case "8":
-          o["pending_out"] += a;
-          continue;
-
-        case "9":
-          t["total_out"] += a;
-          continue;
-
-        case "10":
-          o["pending"] -= a;
-          continue;
-      }
-
-      break;
-    }
+    var o = t["state"];
+    var a = o["pending"];
+    a > t["avail_out"] && (a = t["avail_out"]);
+    if (a === 0) return;
+    S["arraySet"](t["output"], o["pending_buf"], o["pending_out"], a, t["next_out"]);
+    t["next_out"] += a;
+    o["pending_out"] += a;
+    t["total_out"] += a;
+    t["avail_out"] -= a;
+    o["pending"] -= a;
+    o["pending"] === 0 && (o["pending_out"] = 0);
   }
 
   function Rt(t, r) {
-    var u = {};
     zn["_tr_flush_block"](t, t["block_start"] >= 0 ? t["block_start"] : -1, t["strstart"] - t["block_start"], r), t["block_start"] = t["strstart"], Tt(t["strm"]);
   }
 
@@ -2609,61 +1147,22 @@
   }
 
   function At(t, r) {
-    var u = {};
     t["pending_buf"][t["pending"]++] = r >>> 8 & 255, t["pending_buf"][t["pending"]++] = r & 255;
   }
 
   function Pt(t, r, e, u) {
-    var i = {
-      IqsJb: "3|0|6|7|4|8|2|1|5"
-    };
-    var o = i["IqsJb"]["split"]("|");
-    var a = 0;
-
-    for (void 0;;) {
-      switch (o[a++]) {
-        case "0":
-          f > u && (f = u);
-          continue;
-
-        case "1":
-          t["total_in"] += f;
-          continue;
-
-        case "2":
-          t["next_in"] += f;
-          continue;
-
-        case "3":
-          var f = t["avail_in"];
-          continue;
-
-        case "4":
-          S["arraySet"](r, t["input"], t["next_in"], f, e);
-          continue;
-
-        case "5":
-          return f;
-
-        case "6":
-          if (f === 0) return 0;
-          continue;
-
-        case "7":
-          t["avail_in"] -= f;
-          continue;
-
-        case "8":
-          t["state"]["wrap"] === 1 ? t["adler"] = Jn(t["adler"], r, f, e) : t["state"]["wrap"] === 2 && (t["adler"] = Nn(t["adler"], r, f, e));
-          continue;
-      }
-
-      break;
-    }
+    var f = t["avail_in"];
+    f > u && (f = u);
+    if (f === 0) return 0;
+    t["avail_in"] -= f;
+    S["arraySet"](r, t["input"], t["next_in"], f, e);
+    t["state"]["wrap"] === 1 ? t["adler"] = Jn(t["adler"], r, f, e) : t["state"]["wrap"] === 2 && (t["adler"] = Nn(t["adler"], r, f, e));
+    t["next_in"] += f;
+    t["total_in"] += f;
+    return f;
   }
 
   function Vt(t, r) {
-    var u = {};
     var c;
     var i;
     var a = t["max_chain_length"];
@@ -2674,7 +1173,7 @@
     var l = t["window"];
     var w = t["w_mask"];
     var d = t["prev"];
-    var k = t["strstart"] + st;
+    var k = t["strstart"] + 258;
     var E = l[f + s - 1];
     var b = l[f + s];
     t["prev_length"] >= t["good_match"] && (a >>= 2), v > t["lookahead"] && (v = t["lookahead"]);
@@ -2685,7 +1184,7 @@
 
         do {} while (l[++f] === l[++c] && l[++f] === l[++c] && l[++f] === l[++c] && l[++f] === l[++c] && l[++f] === l[++c] && l[++f] === l[++c] && l[++f] === l[++c] && l[++f] === l[++c] && f < k);
 
-        if (i = st - (k - f), f = k - st, i > s) {
+        if (i = 258 - (k - f), f = k - 258, i > s) {
           if (t["match_start"] = r, s = i, i >= v) break;
           E = l[f + s - 1], b = l[f + s];
         }
@@ -2701,12 +1200,10 @@
     var u;
     var c;
     var i;
-    var a = {};
     var f = t["w_size"];
 
     do {
       if (c = t["window_size"] - t["lookahead"] - t["strstart"], t["strstart"] >= f + (f - vt)) {
-        var v = 0;
         t["match_start"] -= f;
         t["strstart"] -= f;
         r = e;
@@ -2729,122 +1226,80 @@
 
       if (t["strm"]["avail_in"] === 0) break;
 
-      if (e = Pt(t["strm"], t["window"], t["strstart"] + t["lookahead"], c), t["lookahead"] += e, t["lookahead"] + t["insert"] >= ft) {
+      if (e = Pt(t["strm"], t["window"], t["strstart"] + t["lookahead"], c), t["lookahead"] += e, t["lookahead"] + t["insert"] >= 3) {
         var i = t["strstart"] - t["insert"];
 
-        for (; t["insert"] && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][i + ft - 1]) & t["hash_mask"], t["prev"][i & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = i, i++, t["insert"]--, !(t["lookahead"] + t["insert"] < ft)););
+        for (; t["insert"] && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][i + 3 - 1]) & t["hash_mask"], t["prev"][i & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = i, i++, t["insert"]--, !(t["lookahead"] + t["insert"] < 3)););
       }
     } while (t["lookahead"] < vt && t["strm"]["avail_in"] !== 0);
   }
 
   function Ut(t, r) {
-    var i = {};
-
     for (void 0;;) {
       var e;
       var u;
 
       if (t["lookahead"] < vt) {
-        if (Ft(t), t["lookahead"] < vt && r === xn) return kt;
+        if (Ft(t), t["lookahead"] < vt && r === 0) return 1;
         if (t["lookahead"] === 0) break;
       }
 
-      if (e = 0, t["lookahead"] >= ft && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + ft - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), e !== 0 && t["strstart"] - e <= t["w_size"] - vt && (t["match_length"] = Vt(t, e)), t["match_length"] >= ft) {
-        if (u = zn["_tr_tally"](t, t["strstart"] - t["match_start"], t["match_length"] - ft), t["lookahead"] -= t["match_length"], t["match_length"] <= t["max_lazy_match"] && t["lookahead"] >= ft) {
+      if (e = 0, t["lookahead"] >= 3 && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), e !== 0 && t["strstart"] - e <= t["w_size"] - vt && (t["match_length"] = Vt(t, e)), t["match_length"] >= 3) {
+        if (u = zn["_tr_tally"](t, t["strstart"] - t["match_start"], t["match_length"] - 3), t["lookahead"] -= t["match_length"], t["match_length"] <= t["max_lazy_match"] && t["lookahead"] >= 3) {
           t["match_length"]--;
 
           do {
-            t["strstart"]++, t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + ft - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"];
+            t["strstart"]++, t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"];
           } while (--t["match_length"] !== 0);
 
           t["strstart"]++;
         } else t["strstart"] += t["match_length"], t["match_length"] = 0, t["ins_h"] = t["window"][t["strstart"]], t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 1]) & t["hash_mask"];
       } else u = zn["_tr_tally"](t, 0, t["window"][t["strstart"]]), t["lookahead"]--, t["strstart"]++;
 
-      if (u && (Rt(t, false), t["strm"]["avail_out"] === 0)) return kt;
+      if (u && (Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
     }
 
-    return t["insert"] = t["strstart"] < ft - 1 ? t["strstart"] : ft - 1, r === Wn ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? bt : gt) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? kt : Et;
+    return t["insert"] = t["strstart"] < 2 ? t["strstart"] : 2, r === 4 ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? 3 : 4) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? 1 : 2;
   }
 
   function Mt(t, r) {
-    var o = {
-      gHtXY: "4|0|5|3|2|1|8|6|7"
-    };
-
     for (void 0;;) {
       var e;
       var u;
       var c;
 
       if (t["lookahead"] < vt) {
-        if (Ft(t), t["lookahead"] < vt && r === xn) return kt;
+        if (Ft(t), t["lookahead"] < vt && r === 0) return 1;
         if (t["lookahead"] === 0) break;
       }
 
-      if (e = 0, t["lookahead"] >= ft && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + ft - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), t["prev_length"] = t["match_length"], t["prev_match"] = t["match_start"], t["match_length"] = ft - 1, e !== 0 && t["prev_length"] < t["max_lazy_match"] && t["strstart"] - e <= t["w_size"] - vt && (t["match_length"] = Vt(t, e), t["match_length"] <= 5 && (t["strategy"] === 1 || t["match_length"] === ft && t["strstart"] - t["match_start"] > 4096) && (t["match_length"] = ft - 1)), t["prev_length"] >= ft && t["match_length"] <= t["prev_length"]) {
-        var a = o["gHtXY"]["split"]("|");
-        var f = 0;
+      if (e = 0, t["lookahead"] >= 3 && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]), t["prev_length"] = t["match_length"], t["prev_match"] = t["match_start"], t["match_length"] = 2, e !== 0 && t["prev_length"] < t["max_lazy_match"] && t["strstart"] - e <= t["w_size"] - vt && (t["match_length"] = Vt(t, e), t["match_length"] <= 5 && (t["strategy"] === 1 || t["match_length"] === 3 && t["strstart"] - t["match_start"] > 4096) && (t["match_length"] = 2)), t["prev_length"] >= 3 && t["match_length"] <= t["prev_length"]) {
+        c = t["strstart"] + t["lookahead"] - 3;
+        u = zn["_tr_tally"](t, t["strstart"] - 1 - t["prev_match"], t["prev_length"] - 3);
+        t["lookahead"] -= t["prev_length"] - 1;
+        t["prev_length"] -= 2;
 
-        for (void 0;;) {
-          switch (a[f++]) {
-            case "0":
-              u = zn["_tr_tally"](t, t["strstart"] - 1 - t["prev_match"], t["prev_length"] - ft);
-              continue;
+        do {
+          ++t["strstart"] <= c && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + 3 - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]);
+        } while (--t["prev_length"] !== 0);
 
-            case "1":
-              t["match_available"] = 0;
-              continue;
-
-            case "2":
-              do {
-                ++t["strstart"] <= c && (t["ins_h"] = (t["ins_h"] << t["hash_shift"] ^ t["window"][t["strstart"] + ft - 1]) & t["hash_mask"], e = t["prev"][t["strstart"] & t["w_mask"]] = t["head"][t["ins_h"]], t["head"][t["ins_h"]] = t["strstart"]);
-              } while (--t["prev_length"] !== 0);
-
-              continue;
-
-            case "3":
-              t["prev_length"] -= 2;
-              continue;
-
-            case "4":
-              c = t["strstart"] + t["lookahead"] - ft;
-              continue;
-
-            case "5":
-              t["lookahead"] -= t["prev_length"] - 1;
-              continue;
-
-            case "6":
-              t["strstart"]++;
-              continue;
-
-            case "7":
-              if (u && (Rt(t, false), t["strm"]["avail_out"] === 0)) return kt;
-              continue;
-
-            case "8":
-              t["match_length"] = ft - 1;
-              continue;
-          }
-
-          break;
-        }
+        t["match_available"] = 0;
+        t["match_length"] = 2;
+        t["strstart"]++;
+        if (u && (Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
       } else if (t["match_available"]) {
-        var v = 0;
         u = zn["_tr_tally"](t, 0, t["window"][t["strstart"] - 1]);
         u && Rt(t, false);
         t["strstart"]++;
         t["lookahead"]--;
-        if (t["strm"]["avail_out"] === 0) return kt;
+        if (t["strm"]["avail_out"] === 0) return 1;
       } else t["match_available"] = 1, t["strstart"]++, t["lookahead"]--;
     }
 
-    return t["match_available"] && (u = zn["_tr_tally"](t, 0, t["window"][t["strstart"] - 1]), t["match_available"] = 0), t["insert"] = t["strstart"] < ft - 1 ? t["strstart"] : ft - 1, r === Wn ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? bt : gt) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? kt : Et;
+    return t["match_available"] && (u = zn["_tr_tally"](t, 0, t["window"][t["strstart"] - 1]), t["match_available"] = 0), t["insert"] = t["strstart"] < 2 ? t["strstart"] : 2, r === 4 ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? 3 : 4) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? 1 : 2;
   }
 
   function St(t, r) {
-    var a = {};
     var f = t["window"];
 
     for (void 0;;) {
@@ -2853,45 +1308,41 @@
       var c;
       var i;
 
-      if (t["lookahead"] <= st) {
-        if (Ft(t), t["lookahead"] <= st && r === xn) return kt;
+      if (t["lookahead"] <= 258) {
+        if (Ft(t), t["lookahead"] <= 258 && r === 0) return 1;
         if (t["lookahead"] === 0) break;
       }
 
-      if (t["match_length"] = 0, t["lookahead"] >= ft && t["strstart"] > 0 && (u = f[c = t["strstart"] - 1], u === f[++c] && u === f[++c] && u === f[++c])) {
-        i = t["strstart"] + st;
+      if (t["match_length"] = 0, t["lookahead"] >= 3 && t["strstart"] > 0 && (u = f[c = t["strstart"] - 1], u === f[++c] && u === f[++c] && u === f[++c])) {
+        i = t["strstart"] + 258;
 
         do {} while (u === f[++c] && u === f[++c] && u === f[++c] && u === f[++c] && u === f[++c] && u === f[++c] && u === f[++c] && u === f[++c] && c < i);
 
-        t["match_length"] = st - (i - c), t["match_length"] > t["lookahead"] && (t["match_length"] = t["lookahead"]);
+        t["match_length"] = 258 - (i - c), t["match_length"] > t["lookahead"] && (t["match_length"] = t["lookahead"]);
       }
 
-      if (t["match_length"] >= ft ? (e = zn["_tr_tally"](t, 1, t["match_length"] - ft), t["lookahead"] -= t["match_length"], t["strstart"] += t["match_length"], t["match_length"] = 0) : (e = zn["_tr_tally"](t, 0, t["window"][t["strstart"]]), t["lookahead"]--, t["strstart"]++), e && (Rt(t, false), t["strm"]["avail_out"] === 0)) return kt;
+      if (t["match_length"] >= 3 ? (e = zn["_tr_tally"](t, 1, t["match_length"] - 3), t["lookahead"] -= t["match_length"], t["strstart"] += t["match_length"], t["match_length"] = 0) : (e = zn["_tr_tally"](t, 0, t["window"][t["strstart"]]), t["lookahead"]--, t["strstart"]++), e && (Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
     }
 
-    return t["insert"] = 0, r === Wn ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? bt : gt) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? kt : Et;
+    return t["insert"] = 0, r === 4 ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? 3 : 4) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? 1 : 2;
   }
 
   function Zt(t, r) {
-    var c = {};
-
     for (void 0;;) {
       var e;
 
       if (t["lookahead"] === 0 && (Ft(t), t["lookahead"] === 0)) {
-        if (r === xn) return kt;
+        if (r === 0) return 1;
         break;
       }
 
-      if (t["match_length"] = 0, e = zn["_tr_tally"](t, 0, t["window"][t["strstart"]]), t["lookahead"]--, t["strstart"]++, e && (Rt(t, false), t["strm"]["avail_out"] === 0)) return kt;
+      if (t["match_length"] = 0, e = zn["_tr_tally"](t, 0, t["window"][t["strstart"]]), t["lookahead"]--, t["strstart"]++, e && (Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
     }
 
-    return t["insert"] = 0, r === Wn ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? bt : gt) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? kt : Et;
+    return t["insert"] = 0, r === 4 ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? 3 : 4) : t["last_lit"] && (Rt(t, false), t["strm"]["avail_out"] === 0) ? 1 : 2;
   }
 
   function jt(t, r, e, u, c) {
-    var o = {};
-    var f = 0;
     this["good_length"] = t;
     this["max_lazy"] = r;
     this["nice_length"] = e;
@@ -2900,406 +1351,106 @@
   }
 
   function Bt(t) {
-    var e = {
-      gyGdg: "2|3|9|1|8|4|6|0|10|11|12|7|5"
-    };
-    var u = e["gyGdg"]["split"]("|");
-    var c = 0;
-
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          t["block_start"] = 0;
-          continue;
-
-        case "1":
-          t["good_match"] = Yn[t["level"]]["good_length"];
-          continue;
-
-        case "2":
-          t["window_size"] = 2 * t["w_size"];
-          continue;
-
-        case "3":
-          pt(t["head"]);
-          continue;
-
-        case "4":
-          t["max_chain_length"] = Yn[t["level"]]["max_chain"];
-          continue;
-
-        case "5":
-          t["ins_h"] = 0;
-          continue;
-
-        case "6":
-          t["strstart"] = 0;
-          continue;
-
-        case "7":
-          t["match_available"] = 0;
-          continue;
-
-        case "8":
-          t["nice_match"] = Yn[t["level"]]["nice_length"];
-          continue;
-
-        case "9":
-          t["max_lazy_match"] = Yn[t["level"]]["max_lazy"];
-          continue;
-
-        case "10":
-          t["lookahead"] = 0;
-          continue;
-
-        case "11":
-          t["insert"] = 0;
-          continue;
-
-        case "12":
-          t["match_length"] = t["prev_length"] = ft - 1;
-          continue;
-      }
-
-      break;
-    }
+    t["window_size"] = 2 * t["w_size"];
+    pt(t["head"]);
+    t["max_lazy_match"] = Yn[t["level"]]["max_lazy"];
+    t["good_match"] = Yn[t["level"]]["good_length"];
+    t["nice_match"] = Yn[t["level"]]["nice_length"];
+    t["max_chain_length"] = Yn[t["level"]]["max_chain"];
+    t["strstart"] = 0;
+    t["block_start"] = 0;
+    t["lookahead"] = 0;
+    t["insert"] = 0;
+    t["match_length"] = t["prev_length"] = 2;
+    t["match_available"] = 0;
+    t["ins_h"] = 0;
   }
 
   function Ht() {
-    var r = {
-      MTtIo: "37|40|27|59|23|57|21|44|33|62|41|61|58|20|2|34|52|14|48|29|39|35|54|0|47|30|12|53|3|56|22|46|8|24|50|11|17|55|43|16|38|32|25|9|31|45|7|15|4|1|6|49|36|18|5|10|42|13|26|60|28|51|19"
-    };
-    var e = r["MTtIo"]["split"]("|");
-    var u = 0;
-
-    for (void 0;;) {
-      switch (e[u++]) {
-        case "0":
-          this["block_start"] = 0;
-          continue;
-
-        case "1":
-          this["heap_len"] = 0;
-          continue;
-
-        case "2":
-          this["window"] = null;
-          continue;
-
-        case "3":
-          this["match_start"] = 0;
-          continue;
-
-        case "4":
-          pt(this["heap"]);
-          continue;
-
-        case "5":
-          this["lit_bufsize"] = 0;
-          continue;
-
-        case "6":
-          this["heap_max"] = 0;
-          continue;
-
-        case "7":
-          this["bl_count"] = new S["Buf16"](at + 1);
-          continue;
-
-        case "8":
-          this["max_lazy_match"] = 0;
-          continue;
-
-        case "9":
-          this["l_desc"] = null;
-          continue;
-
-        case "10":
-          this["last_lit"] = 0;
-          continue;
-
-        case "11":
-          this["good_match"] = 0;
-          continue;
-
-        case "12":
-          this["match_available"] = 0;
-          continue;
-
-        case "13":
-          this["opt_len"] = 0;
-          continue;
-
-        case "14":
-          this["head"] = null;
-          continue;
-
-        case "15":
-          this["heap"] = new S["Buf16"](2 * ut + 1);
-          continue;
-
-        case "16":
-          this["bl_tree"] = new S["Buf16"]((2 * it + 1) * 2);
-          continue;
-
-        case "17":
-          this["nice_match"] = 0;
-          continue;
-
-        case "18":
-          this["l_buf"] = 0;
-          continue;
-
-        case "19":
-          this["bi_valid"] = 0;
-          continue;
-
-        case "20":
-          this["w_mask"] = 0;
-          continue;
-
-        case "21":
-          this["wrap"] = 0;
-          continue;
-
-        case "22":
-          this["prev_length"] = 0;
-          continue;
-
-        case "23":
-          this["pending_out"] = 0;
-          continue;
-
-        case "24":
-          this["level"] = 0;
-          continue;
-
-        case "25":
-          pt(this["bl_tree"]);
-          continue;
-
-        case "26":
-          this["static_len"] = 0;
-          continue;
-
-        case "27":
-          this["pending_buf"] = null;
-          continue;
-
-        case "28":
-          this["insert"] = 0;
-          continue;
-
-        case "29":
-          this["hash_size"] = 0;
-          continue;
-
-        case "30":
-          this["prev_match"] = 0;
-          continue;
-
-        case "31":
-          this["d_desc"] = null;
-          continue;
-
-        case "32":
-          pt(this["dyn_dtree"]);
-          continue;
-
-        case "33":
-          this["gzindex"] = 0;
-          continue;
-
-        case "34":
-          this["window_size"] = 0;
-          continue;
-
-        case "35":
-          this["hash_mask"] = 0;
-          continue;
-
-        case "36":
-          pt(this["depth"]);
-          continue;
-
-        case "37":
-          this["strm"] = null;
-          continue;
-
-        case "38":
-          pt(this["dyn_ltree"]);
-          continue;
-
-        case "39":
-          this["hash_bits"] = 0;
-          continue;
-
-        case "40":
-          this["status"] = 0;
-          continue;
-
-        case "41":
-          this["last_flush"] = -1;
-          continue;
-
-        case "42":
-          this["d_buf"] = 0;
-          continue;
-
-        case "43":
-          this["dyn_dtree"] = new S["Buf16"]((2 * ct + 1) * 2);
-          continue;
-
-        case "44":
-          this["gzhead"] = null;
-          continue;
-
-        case "45":
-          this["bl_desc"] = null;
-          continue;
-
-        case "46":
-          this["max_chain_length"] = 0;
-          continue;
-
-        case "47":
-          this["match_length"] = 0;
-          continue;
-
-        case "48":
-          this["ins_h"] = 0;
-          continue;
-
-        case "49":
-          this["depth"] = new S["Buf16"](2 * ut + 1);
-          continue;
-
-        case "50":
-          this["strategy"] = 0;
-          continue;
-
-        case "51":
-          this["bi_buf"] = 0;
-          continue;
-
-        case "52":
-          this["prev"] = null;
-          continue;
-
-        case "53":
-          this["strstart"] = 0;
-          continue;
-
-        case "54":
-          this["hash_shift"] = 0;
-          continue;
-
-        case "55":
-          this["dyn_ltree"] = new S["Buf16"](ot * 2);
-          continue;
-
-        case "56":
-          this["lookahead"] = 0;
-          continue;
-
-        case "57":
-          this["pending"] = 0;
-          continue;
-
-        case "58":
-          this["w_bits"] = 0;
-          continue;
-
-        case "59":
-          this["pending_buf_size"] = 0;
-          continue;
-
-        case "60":
-          this["matches"] = 0;
-          continue;
-
-        case "61":
-          this["w_size"] = 0;
-          continue;
-
-        case "62":
-          this["method"] = rt;
-          continue;
-      }
-
-      break;
-    }
+    this["strm"] = null;
+    this["status"] = 0;
+    this["pending_buf"] = null;
+    this["pending_buf_size"] = 0;
+    this["pending_out"] = 0;
+    this["pending"] = 0;
+    this["wrap"] = 0;
+    this["gzhead"] = null;
+    this["gzindex"] = 0;
+    this["method"] = 8;
+    this["last_flush"] = -1;
+    this["w_size"] = 0;
+    this["w_bits"] = 0;
+    this["w_mask"] = 0;
+    this["window"] = null;
+    this["window_size"] = 0;
+    this["prev"] = null;
+    this["head"] = null;
+    this["ins_h"] = 0;
+    this["hash_size"] = 0;
+    this["hash_bits"] = 0;
+    this["hash_mask"] = 0;
+    this["hash_shift"] = 0;
+    this["block_start"] = 0;
+    this["match_length"] = 0;
+    this["prev_match"] = 0;
+    this["match_available"] = 0;
+    this["strstart"] = 0;
+    this["match_start"] = 0;
+    this["lookahead"] = 0;
+    this["prev_length"] = 0;
+    this["max_chain_length"] = 0;
+    this["max_lazy_match"] = 0;
+    this["level"] = 0;
+    this["strategy"] = 0;
+    this["good_match"] = 0;
+    this["nice_match"] = 0;
+    this["dyn_ltree"] = new S["Buf16"](ot * 2);
+    this["dyn_dtree"] = new S["Buf16"](122);
+    this["bl_tree"] = new S["Buf16"](78);
+    pt(this["dyn_ltree"]);
+    pt(this["dyn_dtree"]);
+    pt(this["bl_tree"]);
+    this["l_desc"] = null;
+    this["d_desc"] = null;
+    this["bl_desc"] = null;
+    this["bl_count"] = new S["Buf16"](16);
+    this["heap"] = new S["Buf16"](573);
+    pt(this["heap"]);
+    this["heap_len"] = 0;
+    this["heap_max"] = 0;
+    this["depth"] = new S["Buf16"](573);
+    pt(this["depth"]);
+    this["l_buf"] = 0;
+    this["lit_bufsize"] = 0;
+    this["last_lit"] = 0;
+    this["d_buf"] = 0;
+    this["opt_len"] = 0;
+    this["static_len"] = 0;
+    this["matches"] = 0;
+    this["insert"] = 0;
+    this["bi_buf"] = 0;
+    this["bi_valid"] = 0;
   }
 
   function Gt(t) {
-    var e = {
-      iaOvp: "10|3|8|12|6|0|9|2|1|4|5|11|7"
-    };
-    var u = e["iaOvp"]["split"]("|");
-    var c = 0;
-
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          i["pending"] = 0;
-          continue;
-
-        case "1":
-          i["status"] = i["wrap"] ? ht : wt;
-          continue;
-
-        case "2":
-          i["wrap"] < 0 && (i["wrap"] = -i["wrap"]);
-          continue;
-
-        case "3":
-          if (!t || !t["state"]) return It(t, _n);
-          continue;
-
-        case "4":
-          t["adler"] = i["wrap"] === 2 ? 0 : 1;
-          continue;
-
-        case "5":
-          i["last_flush"] = xn;
-          continue;
-
-        case "6":
-          i = t["state"];
-          continue;
-
-        case "7":
-          return Kn;
-
-        case "8":
-          t["total_in"] = t["total_out"] = 0;
-          continue;
-
-        case "9":
-          i["pending_out"] = 0;
-          continue;
-
-        case "10":
-          var i;
-          continue;
-
-        case "11":
-          zn["_tr_init"](i);
-          continue;
-
-        case "12":
-          t["data_type"] = tt;
-          continue;
-      }
-
-      break;
-    }
+    var i;
+    if (!t || !t["state"]) return It(t, _n);
+    t["total_in"] = t["total_out"] = 0;
+    t["data_type"] = 2;
+    i = t["state"];
+    i["pending"] = 0;
+    i["pending_out"] = 0;
+    i["wrap"] < 0 && (i["wrap"] = -i["wrap"]);
+    i["status"] = i["wrap"] ? 42 : 113;
+    t["adler"] = i["wrap"] === 2 ? 0 : 1;
+    i["last_flush"] = 0;
+    zn["_tr_init"](i);
+    return 0;
   }
 
   function Ot(t) {
-    var e = {};
     var u = Gt(t);
-    return u === Kn && Bt(t["state"]), u;
+    return u === 0 && Bt(t["state"]), u;
   }
 
   function qt(n, t) {
@@ -3310,155 +1461,54 @@
   }
 
   function Ct(t, r, e, u, c, i) {
-    var a = {
-      wjdpU: "0|4|15|13|10|16|14|18|12|20|22|7|6|27|8|19|29|25|17|24|1|2|28|3|5|21|9|23|11|26"
-    };
-    var f = a["wjdpU"]["split"]("|");
-    var s = 0;
-
-    for (void 0;;) {
-      switch (f[s++]) {
-        case "0":
-          if (!t) return _n;
-          continue;
-
-        case "1":
-          h["prev"] = new S["Buf16"](h["w_size"]);
-          continue;
-
-        case "2":
-          h["lit_bufsize"] = 1 << c + 6;
-          continue;
-
-        case "3":
-          h["pending_buf"] = new S["Buf8"](h["pending_buf_size"]);
-          continue;
-
-        case "4":
-          var v = 1;
-          continue;
-
-        case "5":
-          h["d_buf"] = 1 * h["lit_bufsize"];
-          continue;
-
-        case "6":
-          h["w_size"] = 1 << h["w_bits"];
-          continue;
-
-        case "7":
-          h["w_bits"] = u;
-          continue;
-
-        case "8":
-          h["hash_bits"] = c + 7;
-          continue;
-
-        case "9":
-          h["level"] = r;
-          continue;
-
-        case "10":
-          if (c < 1 || c > et || e !== rt || u < 8 || u > 15 || r < 0 || r > 9 || i < 0 || i > nt) return It(t, _n);
-          continue;
-
-        case "11":
-          h["method"] = e;
-          continue;
-
-        case "12":
-          h["strm"] = t;
-          continue;
-
-        case "13":
-          u < 0 ? (v = 0, u = -u) : u > 15 && (v = 2, u -= 16);
-          continue;
-
-        case "14":
-          var h = new Ht();
-          continue;
-
-        case "15":
-          r === $n && (r = 6);
-          continue;
-
-        case "16":
-          u === 8 && (u = 9);
-          continue;
-
-        case "17":
-          h["window"] = new S["Buf8"](h["w_size"] * 2);
-          continue;
-
-        case "18":
-          t["state"] = h;
-          continue;
-
-        case "19":
-          h["hash_size"] = 1 << h["hash_bits"];
-          continue;
-
-        case "20":
-          h["wrap"] = v;
-          continue;
-
-        case "21":
-          h["l_buf"] = 3 * h["lit_bufsize"];
-          continue;
-
-        case "22":
-          h["gzhead"] = null;
-          continue;
-
-        case "23":
-          h["strategy"] = i;
-          continue;
-
-        case "24":
-          h["head"] = new S["Buf16"](h["hash_size"]);
-          continue;
-
-        case "25":
-          h["hash_shift"] = ~~((h["hash_bits"] + ft - 1) / ft);
-          continue;
-
-        case "26":
-          return Ot(t);
-
-        case "27":
-          h["w_mask"] = h["w_size"] - 1;
-          continue;
-
-        case "28":
-          h["pending_buf_size"] = h["lit_bufsize"] * 4;
-          continue;
-
-        case "29":
-          h["hash_mask"] = h["hash_size"] - 1;
-          continue;
-      }
-
-      break;
-    }
+    if (!t) return _n;
+    var v = 1;
+    r === $n && (r = 6);
+    u < 0 ? (v = 0, u = -u) : u > 15 && (v = 2, u -= 16);
+    if (c < 1 || c > 9 || e !== 8 || u < 8 || u > 15 || r < 0 || r > 9 || i < 0 || i > 4) return It(t, _n);
+    u === 8 && (u = 9);
+    var h = new Ht();
+    t["state"] = h;
+    h["strm"] = t;
+    h["wrap"] = v;
+    h["gzhead"] = null;
+    h["w_bits"] = u;
+    h["w_size"] = 1 << h["w_bits"];
+    h["w_mask"] = h["w_size"] - 1;
+    h["hash_bits"] = c + 7;
+    h["hash_size"] = 1 << h["hash_bits"];
+    h["hash_mask"] = h["hash_size"] - 1;
+    h["hash_shift"] = ~~((h["hash_bits"] + 3 - 1) / 3);
+    h["window"] = new S["Buf8"](h["w_size"] * 2);
+    h["head"] = new S["Buf16"](h["hash_size"]);
+    h["prev"] = new S["Buf16"](h["w_size"]);
+    h["lit_bufsize"] = 1 << c + 6;
+    h["pending_buf_size"] = h["lit_bufsize"] * 4;
+    h["pending_buf"] = new S["Buf8"](h["pending_buf_size"]);
+    h["d_buf"] = 1 * h["lit_bufsize"];
+    h["l_buf"] = 3 * h["lit_bufsize"];
+    h["level"] = r;
+    h["strategy"] = i;
+    h["method"] = e;
+    return Ot(t);
   }
 
   Yn = [new jt(0, 0, 0, 0, function (t, r) {
-    var u = {};
     var c = 65535;
 
     for (c > t["pending_buf_size"] - 5 && (c = t["pending_buf_size"] - 5);;) {
       if (t["lookahead"] <= 1) {
-        if (Ft(t), t["lookahead"] === 0 && r === xn) return kt;
+        if (Ft(t), t["lookahead"] === 0 && r === 0) return 1;
         if (t["lookahead"] === 0) break;
       }
 
       t["strstart"] += t["lookahead"], t["lookahead"] = 0;
       var i = t["block_start"] + c;
-      if ((t["strstart"] === 0 || t["strstart"] >= i) && (t["lookahead"] = t["strstart"] - i, t["strstart"] = i, Rt(t, false), t["strm"]["avail_out"] === 0)) return kt;
-      if (t["strstart"] - t["block_start"] >= t["w_size"] - vt && (Rt(t, false), t["strm"]["avail_out"] === 0)) return kt;
+      if ((t["strstart"] === 0 || t["strstart"] >= i) && (t["lookahead"] = t["strstart"] - i, t["strstart"] = i, Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
+      if (t["strstart"] - t["block_start"] >= t["w_size"] - vt && (Rt(t, false), t["strm"]["avail_out"] === 0)) return 1;
     }
 
-    return t["insert"] = 0, r === Wn ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? bt : gt) : (t["strstart"] > t["block_start"] && (Rt(t, false), t["strm"]["avail_out"] === 0), kt);
+    return t["insert"] = 0, r === 4 ? (Rt(t, true), t["strm"]["avail_out"] === 0 ? 3 : 4) : (t["strstart"] > t["block_start"] && (Rt(t, false), t["strm"]["avail_out"] === 0), 1);
   }), new jt(4, 4, 8, 4, Ut), new jt(4, 5, 16, 8, Ut), new jt(4, 6, 32, 32, Ut), new jt(4, 4, 16, 16, Mt), new jt(8, 16, 32, 32, Mt), new jt(8, 16, 128, 128, Mt), new jt(8, 32, 128, 256, Mt), new jt(32, 128, 258, 1024, Mt), new jt(32, 258, 258, 4096, Mt)];
 
   var zt = function (t, r) {
@@ -3466,7 +1516,7 @@
       aReIr: function (n, t, r, e, u, c, i) {
         return n(t, r, e, u, c, i);
       }
-    }["aReIr"](Ct, t, r, rt, 15, 8, 0);
+    }["aReIr"](Ct, t, r, 8, 15, 8, 0);
   };
 
   var Xt = Ct;
@@ -3474,8 +1524,7 @@
   var Lt = Gt;
 
   var Nt = function (t, r) {
-    var u = {};
-    return t && t["state"] ? t["state"]["wrap"] !== 2 ? _n : (t["state"]["gzhead"] = r, Kn) : _n;
+    return t && t["state"] ? t["state"]["wrap"] !== 2 ? _n : (t["state"]["gzhead"] = r, 0) : _n;
   };
 
   var Dt = function (t, r) {
@@ -3483,18 +1532,15 @@
     var u;
     var c;
     var i;
-    var a = {};
     if (!t || !t["state"] || r > 5 || r < 0) return t ? It(t, _n) : _n;
-    if (u = t["state"], !t["output"] || !t["input"] && t["avail_in"] !== 0 || u["status"] === dt && r !== Wn) return It(t, t["avail_out"] === 0 ? -5 : _n);
-    if (u["strm"] = t, e = u["last_flush"], u["last_flush"] = r, u["status"] === ht) if (u["wrap"] === 2) {
-      var s = 0;
+    if (u = t["state"], !t["output"] || !t["input"] && t["avail_in"] !== 0 || u["status"] === 666 && r !== 4) return It(t, t["avail_out"] === 0 ? -5 : _n);
+    if (u["strm"] = t, e = u["last_flush"], u["last_flush"] = r, u["status"] === 42) if (u["wrap"] === 2) {
       t["adler"] = 0;
       mt(u, 31);
       mt(u, 139);
       mt(u, 8);
 
       if (u["gzhead"]) {
-        var h = 0;
         mt(u, (u["gzhead"]["text"] ? 1 : 0) + (u["gzhead"]["hcrc"] ? 2 : 0) + (u["gzhead"]["extra"] ? 4 : 0) + (u["gzhead"]["name"] ? 8 : 0) + (u["gzhead"]["comment"] ? 16 : 0));
         mt(u, u["gzhead"]["time"] & 255);
         mt(u, u["gzhead"]["time"] >> 8 & 255);
@@ -3507,23 +1553,21 @@
         u["gzindex"] = 0;
         u["status"] = 69;
       } else {
-        var w = 0;
         mt(u, 0);
         mt(u, 0);
         mt(u, 0);
         mt(u, u["level"] === 9 ? 2 : u["strategy"] >= 2 || u["level"] < 2 ? 4 : 0);
         mt(u, 3);
-        u["status"] = wt;
+        u["status"] = 113;
       }
     } else {
-      var k = 0;
-      var E = rt + (u["w_bits"] - 8 << 4) << 8;
+      var E = 8 + (u["w_bits"] - 8 << 4) << 8;
       var b = -1;
       b = u["strategy"] >= 2 || u["level"] < 2 ? 0 : u["level"] < 6 ? 1 : u["level"] === 6 ? 2 : 3;
       E |= b << 6;
       u["strstart"] !== 0 && (E |= 32);
       E += 31 - E % 31;
-      u["status"] = wt;
+      u["status"] = 113;
       At(u, E);
       u["strstart"] !== 0 && (At(u, t["adler"] >>> 16), At(u, t["adler"] & 65535));
       t["adler"] = 1;
@@ -3559,26 +1603,25 @@
         i = u["gzindex"] < u["gzhead"]["comment"]["length"] ? u["gzhead"]["comment"]["charCodeAt"](u["gzindex"]++) & 255 : 0, mt(u, i);
       } while (i !== 0);
 
-      u["gzhead"]["hcrc"] && u["pending"] > c && (t["adler"] = Nn(t["adler"], u["pending_buf"], u["pending"] - c, c)), i === 0 && (u["status"] = lt);
-    } else u["status"] = lt;
+      u["gzhead"]["hcrc"] && u["pending"] > c && (t["adler"] = Nn(t["adler"], u["pending_buf"], u["pending"] - c, c)), i === 0 && (u["status"] = 103);
+    } else u["status"] = 103;
 
-    if (u["status"] === lt && (u["gzhead"]["hcrc"] ? (u["pending"] + 2 > u["pending_buf_size"] && Tt(t), u["pending"] + 2 <= u["pending_buf_size"] && (mt(u, t["adler"] & 255), mt(u, t["adler"] >> 8 & 255), t["adler"] = 0, u["status"] = wt)) : u["status"] = wt), u["pending"] !== 0) {
-      if (Tt(t), t["avail_out"] === 0) return u["last_flush"] = -1, Kn;
-    } else if (t["avail_in"] === 0 && yt(r) <= yt(e) && r !== Wn) return It(t, -5);
+    if (u["status"] === 103 && (u["gzhead"]["hcrc"] ? (u["pending"] + 2 > u["pending_buf_size"] && Tt(t), u["pending"] + 2 <= u["pending_buf_size"] && (mt(u, t["adler"] & 255), mt(u, t["adler"] >> 8 & 255), t["adler"] = 0, u["status"] = 113)) : u["status"] = 113), u["pending"] !== 0) {
+      if (Tt(t), t["avail_out"] === 0) return u["last_flush"] = -1, 0;
+    } else if (t["avail_in"] === 0 && yt(r) <= yt(e) && r !== 4) return It(t, -5);
 
-    if (u["status"] === dt && t["avail_in"] !== 0) return It(t, -5);
+    if (u["status"] === 666 && t["avail_in"] !== 0) return It(t, -5);
 
-    if (t["avail_in"] !== 0 || u["lookahead"] !== 0 || r !== xn && u["status"] !== dt) {
+    if (t["avail_in"] !== 0 || u["lookahead"] !== 0 || r !== 0 && u["status"] !== 666) {
       var g = u["strategy"] === 2 ? Zt(u, r) : u["strategy"] === 3 ? St(u, r) : Yn[u["level"]]["func"](u, r);
-      if ((g === bt || g === gt) && (u["status"] = dt), g === kt || g === bt) return t["avail_out"] === 0 && (u["last_flush"] = -1), Kn;
-      if (g === Et && (r === 1 ? zn["_tr_align"](u) : r !== 5 && (zn["_tr_stored_block"](u, 0, 0, false), r === 3 && (pt(u["head"]), u["lookahead"] === 0 && (u["strstart"] = 0, u["block_start"] = 0, u["insert"] = 0))), Tt(t), t["avail_out"] === 0)) return u["last_flush"] = -1, Kn;
+      if ((g === 3 || g === 4) && (u["status"] = 666), g === 1 || g === 3) return t["avail_out"] === 0 && (u["last_flush"] = -1), 0;
+      if (g === 2 && (r === 1 ? zn["_tr_align"](u) : r !== 5 && (zn["_tr_stored_block"](u, 0, 0, false), r === 3 && (pt(u["head"]), u["lookahead"] === 0 && (u["strstart"] = 0, u["block_start"] = 0, u["insert"] = 0))), Tt(t), t["avail_out"] === 0)) return u["last_flush"] = -1, 0;
     }
 
-    if (r !== Wn) return Kn;
+    if (r !== 4) return 0;
     if (u["wrap"] <= 0) return 1;
 
     if (u["wrap"] === 2) {
-      var y = 0;
       mt(u, t["adler"] & 255);
       mt(u, t["adler"] >> 8 & 255);
       mt(u, t["adler"] >> 16 & 255);
@@ -3589,61 +1632,76 @@
       mt(u, t["total_in"] >> 24 & 255);
     } else At(u, t["adler"] >>> 16), At(u, t["adler"] & 65535);
 
-    return Tt(t), u["wrap"] > 0 && (u["wrap"] = -u["wrap"]), u["pending"] !== 0 ? Kn : 1;
+    return Tt(t), u["wrap"] > 0 && (u["wrap"] = -u["wrap"]), u["pending"] !== 0 ? 0 : 1;
   };
 
   var Yt = function (t) {
-    var e = {
-      zTGsJ: "1|2|0|4|3|5"
-    };
-    var u = e["zTGsJ"]["split"]("|");
-    var c = 0;
-
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          i = t["state"]["status"];
-          continue;
-
-        case "1":
-          var i;
-          continue;
-
-        case "2":
-          if (!t || !t["state"]) return _n;
-          continue;
-
-        case "3":
-          t["state"] = null;
-          continue;
-
-        case "4":
-          if (i !== ht && i !== 69 && i !== 73 && i !== 91 && i !== lt && i !== wt && i !== dt) return It(t, _n);
-          continue;
-
-        case "5":
-          return i === wt ? It(t, -3) : Kn;
-      }
-
-      break;
-    }
+    var i;
+    if (!t || !t["state"]) return _n;
+    i = t["state"]["status"];
+    if (i !== 42 && i !== 69 && i !== 73 && i !== 91 && i !== 103 && i !== 113 && i !== 666) return It(t, _n);
+    t["state"] = null;
+    return i === 113 ? It(t, -3) : 0;
   };
 
   var Qt = function (t, r) {
-    var u = {
-      GULMa: "15|3|30|18|20|19|8|22|14|10|1|25|16|23|33|21|24|7|11|17|5|13|26|9|27|28|0|32|2|6|31|12|4|29",
-      HNKkr: "0|4|2|1|5|3"
-    };
-    var c = u["GULMa"]["split"]("|");
-    var i = 0;
-    o["lookahead"] = 0;
-    o["match_available"] = 0;
+    var f = r["length"];
     var o;
-    o["wrap"] = s;
+    var k;
+    var s;
+    var h;
+    var v;
+    var a;
+    var l;
+    if (!t || !t["state"]) return _n;
+    o = t["state"];
     s = o["wrap"];
+    if (s === 2 || s === 1 && o["status"] !== 42 || o["lookahead"]) return _n;
+    s === 1 && (t["adler"] = Jn(t["adler"], r, f, 0));
+    o["wrap"] = 0;
+
+    if (f >= o["w_size"]) {
+      s === 0 && (pt(o["head"]), o["strstart"] = 0, o["block_start"] = 0, o["insert"] = 0);
+      l = new S["Buf8"](o["w_size"]);
+      S["arraySet"](l, r, f - o["w_size"], o["w_size"], 0);
+      r = l;
+      f = o["w_size"];
+    }
+
+    h = t["avail_in"];
+    v = t["next_in"];
+    a = t["input"];
+    t["avail_in"] = f;
+    t["next_in"] = 0;
+    t["input"] = r;
+    Ft(o);
+
+    for (; o["lookahead"] >= 3;) {
+      k = o["strstart"];
+      E = o["lookahead"] - 2;
+
+      do {
+        o["ins_h"] = (o["ins_h"] << o["hash_shift"] ^ o["window"][k + 3 - 1]) & o["hash_mask"], o["prev"][k & o["w_mask"]] = o["head"][o["ins_h"]], o["head"][o["ins_h"]] = k, k++;
+      } while (--E);
+
+      o["strstart"] = k;
+      o["lookahead"] = 2;
+      Ft(o);
+    }
+
+    o["strstart"] += o["lookahead"];
+    o["block_start"] = o["strstart"];
+    o["insert"] = o["lookahead"];
+    o["lookahead"] = 0;
+    o["match_length"] = o["prev_length"] = 2;
+    o["match_available"] = 0;
+    t["next_in"] = v;
+    t["input"] = a;
+    t["avail_in"] = h;
+    o["wrap"] = s;
+    return 0;
   };
 
-  var xt = "pako deflate (from Nodeca project)";
   var Wt = {
     "deflate": Dt,
     "deflateEnd": Yt,
@@ -3653,7 +1711,7 @@
     "deflateResetKeep": Lt,
     "deflateSetHeader": Nt,
     "deflateSetDictionary": Qt,
-    "deflateInfo": xt
+    "deflateInfo": "pako deflate (from Nodeca project)"
   };
   var _t = true;
   var $t = true;
@@ -3680,7 +1738,6 @@
   nr[254] = nr[254] = 1;
 
   function rr(t, r) {
-    var u = {};
     if (r < 65534 && (t["subarray"] && $t || !t["subarray"] && _t)) return String["fromCharCode"]["apply"](null, S["shrinkBuf"](t, r));
     var i = "";
     var o = 0;
@@ -3694,145 +1751,21 @@
 
   var er = {
     "string2buf": function (t) {
-      var e = {
-        "DGnlP": "4|3|2|1|0",
-        "OeunY": function (n, t) {
-          return n < t;
-        },
-        "FvvCk": function (n, t) {
-          return n === t;
-        },
-        "UREue": function (n, t) {
-          return n & t;
-        },
-        "MybOA": function (n, t) {
-          return n + t;
-        },
-        "Bzgjr": function (n, t) {
-          return n + t;
-        },
-        "VMJOe": function (n, t) {
-          return n === t;
-        },
-        "htejg": function (n, t) {
-          return n & t;
-        },
-        "cgkZP": function (n, t) {
-          return n << t;
-        },
-        "Orfiq": function (n, t) {
-          return n - t;
-        },
-        "YFbmN": function (n, t) {
-          return n - t;
-        },
-        "cblub": function (n, t) {
-          return n | t;
-        },
-        "cgkoI": function (n, t) {
-          return n >>> t;
-        },
-        "cFLej": function (n, t) {
-          return n | t;
-        },
-        "cUtQY": function (n, t) {
-          return n | t;
-        },
-        "nFhsA": function (n, t) {
-          return n >>> t;
-        },
-        "JrEpG": function (n, t) {
-          return n & t;
-        },
-        "dswrQ": function (n, t) {
-          return n | t;
-        },
-        "CCtaq": function (n, t) {
-          return n & t;
-        },
-        "QSVJB": function (n, t) {
-          return n >>> t;
-        },
-        "dbevk": function (n, t) {
-          return n | t;
-        },
-        "gfsGT": function (n, t) {
-          return n >>> t;
-        },
-        "FDNYp": function (n, t) {
-          return n | t;
-        },
-        "fumMj": function (n, t) {
-          return n & t;
-        },
-        "uDtlz": function (n, t) {
-          return n & t;
-        },
-        "CXeCm": function (n, t) {
-          return n + t;
-        },
-        "PkzgX": function (n, t) {
-          return n === t;
-        },
-        "rRbwY": function (n, t) {
-          return n - t;
-        },
-        "kokiB": function (n, t) {
-          return n - t;
-        },
-        "Cvuth": function (n, t) {
-          return n < t;
-        },
-        "TKHPE": function (n, t) {
-          return n < t;
-        }
-      };
-      var u = e;
-      var c = u["DGnlP"]["split"]("|");
+      var e = {};
       var i = 0;
+      var o;
 
-      for (void 0;;) {
-        switch (c[i++]) {
-          case "0":
-            return o;
+      for (s = 0; s < h; s++) a = t["charCodeAt"](s), (a & 64512) === 55296 && s + 1 < h && (f = t["charCodeAt"](s + 1), (f & 64512) === 56320 && (a = 65536 + (a - 55296 << 10) + (f - 56320), s++)), l += a < 128 ? 1 : a < 2048 ? 2 : a < 65536 ? 3 : 4;
 
-          case "1":
-            var v = 0;
-            var s = 0;
-
-            for (; u["OeunY"](v, l); s++) a = t["charCodeAt"](s), u["FvvCk"](u["UREue"](a, 64512), 55296) && u["OeunY"](u["MybOA"](s, 1), h) && (f = t["charCodeAt"](u["Bzgjr"](s, 1)), u["VMJOe"](u["htejg"](f, 64512), 56320) && (a = u["Bzgjr"](u["Bzgjr"](65536, u["cgkZP"](u["Orfiq"](a, 55296), 10)), u["YFbmN"](f, 56320)), s++)), u["OeunY"](a, 128) ? o[v++] = a : u["OeunY"](a, 2048) ? (o[v++] = u["cblub"](192, u["cgkoI"](a, 6)), o[v++] = u["cblub"](128, u["htejg"](a, 63))) : u["OeunY"](a, 65536) ? (o[v++] = u["cFLej"](224, u["cgkoI"](a, 12)), o[v++] = u["cUtQY"](128, u["htejg"](u["nFhsA"](a, 6), 63)), o[v++] = u["cUtQY"](128, u["JrEpG"](a, 63))) : (o[v++] = u["cUtQY"](240, u["nFhsA"](a, 18)), o[v++] = u["dswrQ"](128, u["CCtaq"](u["QSVJB"](a, 12), 63)), o[v++] = u["dbevk"](128, u["CCtaq"](u["gfsGT"](a, 6), 63)), o[v++] = u["FDNYp"](128, u["fumMj"](a, 63)));
-
-            continue;
-
-          case "2":
-            o = new S["Buf8"](l);
-            continue;
-
-          case "3":
-            for (s = 0; u["OeunY"](s, h); s++) a = t["charCodeAt"](s), u["VMJOe"](u["uDtlz"](a, 64512), 55296) && u["OeunY"](u["CXeCm"](s, 1), h) && (f = t["charCodeAt"](u["CXeCm"](s, 1)), u["PkzgX"](u["uDtlz"](f, 64512), 56320) && (a = u["CXeCm"](u["CXeCm"](65536, u["cgkZP"](u["rRbwY"](a, 55296), 10)), u["kokiB"](f, 56320)), s++)), l += u["Cvuth"](a, 128) ? 1 : u["TKHPE"](a, 2048) ? 2 : u["TKHPE"](a, 65536) ? 3 : 4;
-
-            continue;
-
-          case "4":
-            var o;
-            var a;
-            var f;
-            var s;
-            var v;
-            var h = t["length"];
-            var l = 0;
-            continue;
-        }
-
-        break;
-      }
+      o = new S["Buf8"](l);
+      var v = 0;
+      return o;
     },
     "buf2string": function (t, r) {
       var e;
       var u;
       var c;
       var i;
-      var a = {};
       var f = r || t["length"];
       var s = new Array(f * 2);
       var u = 0;
@@ -3847,74 +1780,18 @@
       return rr(s, u);
     },
     "utf8border": function (t, r) {
-      var u = {
-        "sLckX": "1|5|2|3|4|0|7|6",
-        "YIJXr": function (n, t) {
-          return n < t;
-        },
-        "hAOiH": function (n, t) {
-          return n > t;
-        },
-        "NXjAZ": function (n, t) {
-          return n - t;
-        },
-        "vgwyr": function (n, t) {
-          return n >= t;
-        },
-        "HFpLq": function (n, t) {
-          return n === t;
-        },
-        "ehNQs": function (n, t) {
-          return n & t;
-        },
-        "BJqbz": function (n, t) {
-          return n > t;
-        },
-        "BHLpG": function (n, t) {
-          return n + t;
-        }
-      };
-      var c = u;
-      var i = c["sLckX"]["split"]("|");
+      var u = {};
       var o = 0;
+      var a;
+      r = r || t["length"];
+      r > t["length"] && (r = t["length"]);
+      a = r - 1;
 
-      for (void 0;;) {
-        switch (i[o++]) {
-          case "0":
-            if (c["YIJXr"](a, 0)) return r;
-            continue;
+      for (; a >= 0 && (t[a] & 192) === 128;) a--;
 
-          case "1":
-            var a;
-            continue;
-
-          case "2":
-            c["hAOiH"](r, t["length"]) && (r = t["length"]);
-            continue;
-
-          case "3":
-            a = c["NXjAZ"](r, 1);
-            continue;
-
-          case "4":
-            for (; c["vgwyr"](a, 0) && c["HFpLq"](c["ehNQs"](t[a], 192), 128);) a--;
-
-            continue;
-
-          case "5":
-            r = r || t["length"];
-            continue;
-
-          case "6":
-            return c["BJqbz"](c["BHLpG"](a, nr[t[a]]), r) ? a : r;
-
-          case "7":
-            if (c["HFpLq"](a, 0)) return r;
-            continue;
-        }
-
-        break;
-      }
+      if (a < 0) return r;
+      if (a === 0) return r;
+      return a + nr[t[a]] > r ? a : r;
     },
     "buf2binstring": function (t) {
       return {
@@ -3924,17 +1801,12 @@
       }["ympWP"](rr, t, t["length"]);
     },
     "binstring2buf": function (t) {
-      var e = {
-        "QzGdY": function (n, t) {
-          return n < t;
-        }
-      };
-      var u = e;
+      var e = {};
       var c = new S["Buf8"](t["length"]);
       var i = 0;
       var o = c["length"];
 
-      for (void 0; u["QzGdY"](i, o); i++) {
+      for (void 0; i < o; i++) {
         c[i] = t["charCodeAt"](i);
       }
 
@@ -3943,8 +1815,6 @@
   };
 
   var cr = function () {
-    var r = {};
-    var u = 0;
     this["input"] = null;
     this["next_in"] = 0;
     this["avail_in"] = 0;
@@ -3960,144 +1830,39 @@
   };
 
   var ir = Object["prototype"]["toString"];
-  var or = 0;
   var ar = -1;
-  var fr = 0;
-  var sr = 8;
 
   function vr(t) {
-    var e = {
-      "iOTjD": "13|9|4|6|8|7|1|3|5|2|0|12|11|10",
-      "UCQLy": function (n, t) {
-        return n > t;
-      },
-      "mqiyT": function (n, t) {
-        return n > t;
-      },
-      "uKSbr": function (n, t) {
-        return n < t;
-      },
-      "bcgDH": function (n, t) {
-        return n || t;
-      },
-      "gAwnq": "1|4|3|0|2",
-      "Thenq": function (n, t) {
-        return n !== t;
-      },
-      "VVDpc": function (n, t) {
-        return n === t;
-      },
-      "BGDwI": "string",
-      "jldoY": "[object ArrayBuffer]",
-      "zAjhD": function (n, t) {
-        return n !== t;
-      },
-      "HGPrJ": function (n, t) {
-        return n instanceof t;
-      }
-    };
-    var u = e;
-    var c = u["iOTjD"]["split"]("|");
+    var e = {};
     var i = 0;
+    if (!(this instanceof vr)) return new vr(t);
+    var f = {
+      "level": ar,
+      "method": 8,
+      "chunkSize": 16384,
+      "windowBits": 15,
+      "memLevel": 8,
+      "strategy": 0
+    };
+    var a = this["options"];
+    a["raw"] && a["windowBits"] > 0 ? a["windowBits"] = -a["windowBits"] : a["gzip"] && a["windowBits"] > 0 && a["windowBits"] < 16 && (a["windowBits"] += 16);
+    this["err"] = 0;
+    this["msg"] = "";
+    this["ended"] = false;
+    this["chunks"] = [];
+    this["strm"] = new cr();
+    this["strm"]["avail_out"] = 0;
+    var o = Wt["deflateInit2"](this["strm"], a["level"], a["method"], a["windowBits"], a["memLevel"], a["strategy"]);
+    if (o !== 0) throw new Error(Dn[o]);
+    a["header"] && Wt["deflateSetHeader"](this["strm"], a["header"]);
 
-    for (void 0;;) {
-      switch (c[i++]) {
-        case "0":
-          var o = Wt["deflateInit2"](this["strm"], a["level"], a["method"], a["windowBits"], a["memLevel"], a["strategy"]);
-          continue;
-
-        case "1":
-          this["ended"] = false;
-          continue;
-
-        case "2":
-          this["strm"]["avail_out"] = 0;
-          continue;
-
-        case "3":
-          this["chunks"] = [];
-          continue;
-
-        case "4":
-          var a = this["options"];
-          continue;
-
-        case "5":
-          this["strm"] = new cr();
-          continue;
-
-        case "6":
-          a["raw"] && u["UCQLy"](a["windowBits"], 0) ? a["windowBits"] = -a["windowBits"] : a["gzip"] && u["mqiyT"](a["windowBits"], 0) && u["uKSbr"](a["windowBits"], 16) && (a["windowBits"] += 16);
-          continue;
-
-        case "7":
-          this["msg"] = "";
-          continue;
-
-        case "8":
-          this["err"] = 0;
-          continue;
-
-        case "9":
-          var f = {
-            "level": ar,
-            "method": sr,
-            "chunkSize": 16384,
-            "windowBits": 15,
-            "memLevel": 8,
-            "strategy": fr
-          };
-          f.to = "", this["options"] = S["assign"](f, u["bcgDH"](t, {}));
-          continue;
-
-        case "10":
-          if (a["dictionary"]) {
-            var s = u["gAwnq"]["split"]("|");
-            var v = 0;
-
-            for (void 0;;) {
-              switch (s[v++]) {
-                case "0":
-                  if (u["Thenq"](o, or)) throw new Error(Dn[o]);
-                  continue;
-
-                case "1":
-                  var h;
-                  continue;
-
-                case "2":
-                  this["_dict_set"] = true;
-                  continue;
-
-                case "3":
-                  o = Wt["deflateSetDictionary"](this["strm"], h);
-                  continue;
-
-                case "4":
-                  h = u["VVDpc"](typeof a["dictionary"], u["BGDwI"]) ? er["string2buf"](a["dictionary"]) : u["VVDpc"](ir["call"](a["dictionary"]), u["jldoY"]) ? new Uint8Array(a["dictionary"]) : a["dictionary"];
-                  continue;
-              }
-
-              break;
-            }
-          }
-
-          continue;
-
-        case "11":
-          a["header"] && Wt["deflateSetHeader"](this["strm"], a["header"]);
-          continue;
-
-        case "12":
-          if (u["zAjhD"](o, or)) throw new Error(Dn[o]);
-          continue;
-
-        case "13":
-          if (!u["HGPrJ"](this, vr)) return new vr(t);
-          continue;
-      }
-
-      break;
+    if (a["dictionary"]) {
+      var v = 0;
+      var h;
+      h = typeof a["dictionary"] === "string" ? er["string2buf"](a["dictionary"]) : ir["call"](a["dictionary"]) === "[object ArrayBuffer]" ? new Uint8Array(a["dictionary"]) : a["dictionary"];
+      o = Wt["deflateSetDictionary"](this["strm"], h);
+      if (o !== 0) throw new Error(Dn[o]);
+      this["_dict_set"] = true;
     }
   }
 
@@ -4108,124 +1873,38 @@
   }
 
   vr["prototype"]["push"] = function (t, r) {
-    var u = {
-      "ImbTo": "11|10|0|9|6|3|5|4|7|1|8|2",
-      "zPtSD": function (n, t) {
-        return n === t;
-      },
-      "wHTYv": function (n, t) {
-        return n === t;
-      },
-      "AfjHJ": "string",
-      "XzbZG": function (n, t) {
-        return n === t;
-      },
-      "VcInV": "[object ArrayBuffer]",
-      "SkewA": function (n, t) {
-        return n === t;
-      },
-      "veVwf": function (n, t) {
-        return n === t;
-      },
-      "vSicZ": function (n, t) {
-        return n !== t;
-      },
-      "pNYcQ": function (n, t) {
-        return n !== t;
-      },
-      "HNFBS": function (n, t) {
-        return n === t;
-      },
-      "ygtKz": function (n, t) {
-        return n === t;
-      },
-      "VDIRt": function (n, t) {
-        return n > t;
-      },
-      "SYXhq": function (n, t) {
-        return n === t;
-      },
-      "RflqA": function (n, t) {
-        return n === t;
-      }
-    };
-    var c = u;
-    var i = c["ImbTo"]["split"]("|");
+    var u = {};
     var o = 0;
+    var v = this["strm"];
+    var s = this["options"]["chunkSize"];
+    var a;
+    if (this["ended"]) return false;
+    f = r === ~~r ? r : r === true ? 4 : 0;
+    typeof t === "string" ? v["input"] = er["string2buf"](t) : ir["call"](t) === "[object ArrayBuffer]" ? v["input"] = new Uint8Array(t) : v["input"] = t;
+    v["next_in"] = 0;
+    v["avail_in"] = v["input"]["length"];
 
-    for (void 0;;) {
-      switch (i[o++]) {
-        case "0":
-          var a;
-          var f;
-          continue;
+    do {
+      if (v["avail_out"] === 0 && (v["output"] = new S["Buf8"](s), v["next_out"] = 0, v["avail_out"] = s), a = Wt["deflate"](v, f), a !== 1 && a !== 0) return this["onEnd"](a), this["ended"] = true, false;
+      (v["avail_out"] === 0 || v["avail_in"] === 0 && (f === 4 || f === 2)) && (this["options"].to === "string" ? this["onData"](er["buf2binstring"](S["shrinkBuf"](v["output"], v["next_out"]))) : this["onData"](S["shrinkBuf"](v["output"], v["next_out"])));
+    } while ((v["avail_in"] > 0 || v["avail_out"] === 0) && a !== 1);
 
-        case "1":
-          if (c["zPtSD"](f, 4)) return a = Wt["deflateEnd"](this["strm"]), this["onEnd"](a), this["ended"] = true, c["zPtSD"](a, or);
-          continue;
-
-        case "2":
-          return true;
-
-        case "3":
-          c["wHTYv"](typeof t, c["AfjHJ"]) ? v["input"] = er["string2buf"](t) : c["XzbZG"](ir["call"](t), c["VcInV"]) ? v["input"] = new Uint8Array(t) : v["input"] = t;
-          continue;
-
-        case "4":
-          v["avail_in"] = v["input"]["length"];
-          continue;
-
-        case "5":
-          v["next_in"] = 0;
-          continue;
-
-        case "6":
-          f = c["SkewA"](r, ~~r) ? r : c["SkewA"](r, true) ? 4 : 0;
-          continue;
-
-        case "7":
-          do {
-            if (c["veVwf"](v["avail_out"], 0) && (v["output"] = new S["Buf8"](s), v["next_out"] = 0, v["avail_out"] = s), a = Wt["deflate"](v, f), c["vSicZ"](a, 1) && c["pNYcQ"](a, or)) return this["onEnd"](a), this["ended"] = true, false;
-            (c["HNFBS"](v["avail_out"], 0) || c["HNFBS"](v["avail_in"], 0) && (c["HNFBS"](f, 4) || c["HNFBS"](f, 2))) && (c["ygtKz"](this["options"].to, c["AfjHJ"]) ? this["onData"](er["buf2binstring"](S["shrinkBuf"](v["output"], v["next_out"]))) : this["onData"](S["shrinkBuf"](v["output"], v["next_out"])));
-          } while ((c["VDIRt"](v["avail_in"], 0) || c["SYXhq"](v["avail_out"], 0)) && c["pNYcQ"](a, 1));
-
-          continue;
-
-        case "8":
-          if (c["RflqA"](f, 2)) return this["onEnd"](or), v["avail_out"] = 0, true;
-          continue;
-
-        case "9":
-          if (this["ended"]) return false;
-          continue;
-
-        case "10":
-          var s = this["options"]["chunkSize"];
-          continue;
-
-        case "11":
-          var v = this["strm"];
-          continue;
-      }
-
-      break;
-    }
+    if (f === 4) return a = Wt["deflateEnd"](this["strm"]), this["onEnd"](a), this["ended"] = true, a === 0;
+    if (f === 2) return this["onEnd"](0), v["avail_out"] = 0, true;
+    return true;
   }, vr["prototype"]["onData"] = function (t) {
     this["chunks"]["push"](t);
   }, vr["prototype"]["onEnd"] = function (t) {
-    var e = {};
-    t === or && (this["options"].to === "string" ? this["result"] = this["chunks"]["join"]("") : this["result"] = S["flattenChunks"](this["chunks"])), this["chunks"] = [], this["err"] = t, this["msg"] = this["strm"]["msg"];
+    t === 0 && (this["options"].to === "string" ? this["result"] = this["chunks"]["join"]("") : this["result"] = S["flattenChunks"](this["chunks"])), this["chunks"] = [], this["err"] = t, this["msg"] = this["strm"]["msg"];
   };
   var lr = vr;
   var wr = hr;
 
   var dr = function (t, r) {
-    var u = {};
     return (r = r || {})["raw"] = true, hr(t, r);
   };
 
   var kr = function (t, r) {
-    var u = {};
     return (r = r || {})["gzip"] = true, hr(t, r);
   };
 
@@ -4241,11 +1920,10 @@
     "/": "_",
     "=": ""
   };
-  var yr = Ir;
 
   function pr(t) {
     return t["replace"](/[+\/=]/g, function (n) {
-      return yr[n];
+      return Ir[n];
     });
   }
 
@@ -4254,176 +1932,46 @@
       return Er["deflate"](t);
     },
     base64: function (t) {
-      var e = {
-        eaOUA: "8|7|10|3|2|6|0|5|1|9|4"
-      };
-      var u = e["eaOUA"]["split"]("|");
-      var c = 0;
+      var h;
+      var v;
+      var l;
+      var f = "";
+      var a = t["length"];
+      var s = 0;
+      var i = parseInt(a / 3) * 3;
 
-      for (void 0;;) {
-        switch (u[c++]) {
-          case "0":
-            var i = parseInt(a / 3) * 3;
-            continue;
+      for (; s < i;) h = t[s++], v = t[s++], l = t[s++], f += gr[h >>> 2] + gr[(h << 4 | v >>> 4) & 63] + gr[(v << 2 | l >>> 6) & 63] + gr[l & 63];
 
-          case "1":
-            var o = a - i;
-            continue;
-
-          case "2":
-            var a = t["length"];
-            continue;
-
-          case "3":
-            var f = "";
-            continue;
-
-          case "4":
-            return pr(f);
-
-          case "5":
-            for (; s < i;) h = t[s++], v = t[s++], l = t[s++], f += gr[h >>> 2] + gr[(h << 4 | v >>> 4) & 63] + gr[(v << 2 | l >>> 6) & 63] + gr[l & 63];
-
-            continue;
-
-          case "6":
-            var s = 0;
-            continue;
-
-          case "7":
-            var v;
-            continue;
-
-          case "8":
-            var h;
-            continue;
-
-          case "9":
-            o === 1 ? (h = t[s], f += gr[h >>> 2] + gr[h << 4 & 63] + "==") : o === 2 && (h = t[s++], v = t[s], f += gr[h >>> 2] + gr[(h << 4 | v >>> 4) & 63] + gr[v << 2 & 63] + "=");
-            continue;
-
-          case "10":
-            var l;
-            continue;
-        }
-
-        break;
-      }
+      var o = a - i;
+      o === 1 ? (h = t[s], f += gr[h >>> 2] + gr[h << 4 & 63] + "==") : o === 2 && (h = t[s++], v = t[s], f += gr[h >>> 2] + gr[(h << 4 | v >>> 4) & 63] + gr[v << 2 & 63] + "=");
+      return pr(f);
     },
     charCode: function (t) {
-      var e = {
-        "lGuEC": "4|2|1|3|0",
-        "KoBlD": function (n, t) {
-          return n <= t;
-        },
-        "NGGEn": function (n, t) {
-          return n >> t;
-        },
-        "kPvnv": function (n, t) {
-          return n & t;
-        },
-        "Bgkcp": function (n, t) {
-          return n < t;
-        },
-        "vZWfA": function (n, t) {
-          return n >= t;
-        },
-        "kNqkP": function (n, t) {
-          return n <= t;
-        },
-        "ViCGQ": function (n, t) {
-          return n >= t;
-        },
-        "Fqbip": function (n, t) {
-          return n <= t;
-        },
-        "LEaVK": function (n, t) {
-          return n | t;
-        },
-        "qvVrH": function (n, t) {
-          return n >> t;
-        },
-        "mWNaQ": function (n, t) {
-          return n | t;
-        },
-        "GHPHk": function (n, t) {
-          return n & t;
-        },
-        "zHyoJ": function (n, t) {
-          return n < t;
-        }
-      };
-      var u = e;
-      var c = u["lGuEC"]["split"]("|");
+      var e = {};
       var i = 0;
+      var v = [];
+      var f = 0;
 
-      for (void 0;;) {
-        switch (c[i++]) {
-          case "0":
-            return u["KoBlD"](f, 255) ? [0, f]["concat"](v) : [u["NGGEn"](f, 8), u["kPvnv"](f, 255)]["concat"](v);
-
-          case "1":
-            for (var o = 0; u["Bgkcp"](o, t["length"]); o += 1) {
-              var a = t["charCodeAt"](o);
-              u["vZWfA"](a, 0) && u["kNqkP"](a, 127) ? (v["push"](a), f += 1) : (u["vZWfA"](a, 2048) && u["kNqkP"](a, 55295) || u["ViCGQ"](a, 57344) && u["Fqbip"](a, 65535)) && (f += 3, v["push"](u["LEaVK"](224, u["kPvnv"](15, u["qvVrH"](a, 12)))), v["push"](u["mWNaQ"](128, u["GHPHk"](63, u["qvVrH"](a, 6)))), v["push"](u["mWNaQ"](128, u["GHPHk"](63, a))));
-            }
-
-            continue;
-
-          case "2":
-            var f = 0;
-            continue;
-
-          case "3":
-            for (var s = 0; u["zHyoJ"](s, v["length"]); s += 1) v[s] &= 255;
-
-            continue;
-
-          case "4":
-            var v = [];
-            continue;
-        }
-
-        break;
+      for (var o = 0; o < t["length"]; o += 1) {
+        var a = t["charCodeAt"](o);
+        a >= 0 && a <= 127 ? (v["push"](a), f += 1) : (a >= 2048 && a <= 55295 || a >= 57344 && a <= 65535) && (f += 3, v["push"](224 | 15 & a >> 12), v["push"](128 | 63 & a >> 6), v["push"](128 | 63 & a));
       }
+
+      for (var s = 0; s < v["length"]; s += 1) v[s] &= 255;
+
+      return f <= 255 ? [0, f]["concat"](v) : [f >> 8, f & 255]["concat"](v);
     },
     es: function (t) {
       var e = {
-        "iumUT": "5|4|3|2|0|1",
         "shEem": "undefined"
       };
-      var u = e;
-      var c = u["iumUT"]["split"]("|");
       var i = 0;
-
-      for (void 0;;) {
-        switch (c[i++]) {
-          case "0":
-            f = f["concat"](this["enn"](241), o, a);
-            continue;
-
-          case "1":
-            return f;
-
-          case "2":
-            var o = this["enn"](a["length"]);
-            continue;
-
-          case "3":
-            var a = this["charCode"](t)["slice"](2);
-            continue;
-
-          case "4":
-            var f = [];
-            continue;
-
-          case "5":
-            t || (t = u["shEem"]);
-            continue;
-        }
-
-        break;
-      }
+      t || (t = e["shEem"]);
+      var f = [];
+      var a = this["charCode"](t)["slice"](2);
+      var o = this["enn"](a["length"]);
+      f = f["concat"](this["enn"](241), o, a);
+      return f;
     },
     en1: function (t) {
       t || (t = 0);
@@ -4435,119 +1983,44 @@
       return []["concat"](this["enn"](239), this["enn"](e));
     },
     en: function (t) {
-      var e = {
-        Qkuhp: "4|1|8|0|10|9|3|6|2|5|7"
-      };
-      var u = e["Qkuhp"]["split"]("|");
-      var c = 0;
+      t || (t = 0);
+      var i = parseInt(t);
+      var s = [];
+      i > 0 ? s["push"](0) : s["push"](1);
+      var h = Math["abs"](i)["toString"](2)["split"]("");
 
-      for (void 0;;) {
-        switch (u[c++]) {
-          case "0":
-            i > 0 ? s["push"](0) : s["push"](1);
-            continue;
+      for (var v = 0; h["length"] % 8 !== 0; v++) h["unshift"]("0");
 
-          case "1":
-            var i = parseInt(t);
-            continue;
+      h = h["join"]("");
+      var f = Math["ceil"](h["length"] / 8);
 
-          case "2":
-            for (var o = 0; o < f; o++) {
-              var a = h["substring"](o * 8, (o + 1) * 8);
-              s["push"](parseInt(a, 2));
-            }
-
-            continue;
-
-          case "3":
-            h = h["join"]("");
-            continue;
-
-          case "4":
-            t || (t = 0);
-            continue;
-
-          case "5":
-            s["unshift"](s["length"]);
-            continue;
-
-          case "6":
-            var f = Math["ceil"](h["length"] / 8);
-            continue;
-
-          case "7":
-            return s;
-
-          case "8":
-            var s = [];
-            continue;
-
-          case "9":
-            for (var v = 0; h["length"] % 8 !== 0; v++) h["unshift"]("0");
-
-            continue;
-
-          case "10":
-            var h = Math["abs"](i)["toString"](2)["split"]("");
-            continue;
-        }
-
-        break;
+      for (var o = 0; o < f; o++) {
+        var a = h["substring"](o * 8, (o + 1) * 8);
+        s["push"](parseInt(a, 2));
       }
+
+      s["unshift"](s["length"]);
+      return s;
     },
     sc: function (t) {
       return t || (t = ""), this["charCode"](t)["slice"](2);
     },
     nc: function (t) {
-      var e = {
-        GaLsS: "4|0|3|2|6|1|5|7"
-      };
-      var u = e["GaLsS"]["split"]("|");
-      var c = 0;
+      t || (t = 0);
+      var i = Math["abs"](parseInt(t));
+      var f = i["toString"](2);
+      var a = Math["ceil"](f["length"] / 8);
+      f = U(f, a * 8, "0");
+      var o = [];
 
-      for (void 0;;) {
-        switch (u[c++]) {
-          case "0":
-            var i = Math["abs"](parseInt(t));
-            continue;
-
-          case "1":
-            var o = [];
-            continue;
-
-          case "2":
-            var a = Math["ceil"](f["length"] / 8);
-            continue;
-
-          case "3":
-            var f = i["toString"](2);
-            continue;
-
-          case "4":
-            t || (t = 0);
-            continue;
-
-          case "5":
-            for (var s = 0; s < a; s++) {
-              var v = f["substring"](s * 8, (s + 1) * 8);
-              o["push"](parseInt(v, 2));
-            }
-
-            continue;
-
-          case "6":
-            f = U(f, a * 8, "0");
-            continue;
-
-          case "7":
-            return o;
-        }
-
-        break;
+      for (var s = 0; s < a; s++) {
+        var v = f["substring"](s * 8, (s + 1) * 8);
+        o["push"](parseInt(v, 2));
       }
+
+      return o;
     },
     enn: function (t) {
-      var e = {};
       t || (t = 0);
       var u = parseInt(t);
       var c = u << 1 ^ u >> 31;
@@ -4571,41 +2044,14 @@
       });
     },
     ecl: function (t) {
-      var e = {
-        gBNcY: "2|0|3|1|5|4"
-      };
-      var u = e["gBNcY"]["split"]("|");
-      var c = 0;
+      var o = [];
+      var i = t["toString"](2)["split"]("");
 
-      for (void 0;;) {
-        switch (u[c++]) {
-          case "0":
-            var i = t["toString"](2)["split"]("");
-            continue;
+      for (var a = 0; i["length"] < 16; a += 1) i["unshift"](0);
 
-          case "1":
-            i = i["join"]("");
-            continue;
-
-          case "2":
-            var o = [];
-            continue;
-
-          case "3":
-            for (var a = 0; i["length"] < 16; a += 1) i["unshift"](0);
-
-            continue;
-
-          case "4":
-            return o;
-
-          case "5":
-            o["push"](parseInt(i["substring"](0, 8), 2), parseInt(i["substring"](8, 16), 2));
-            continue;
-        }
-
-        break;
-      }
+      i = i["join"]("");
+      o["push"](parseInt(i["substring"](0, 8), 2), parseInt(i["substring"](8, 16), 2));
+      return o;
     },
     pes: function (t) {
       var e = {
@@ -4641,12 +2087,9 @@
   Pr["prototype"] = {
     constructor: Pr,
     addHandler: function (t, r) {
-      var u = {};
       typeof this["handlers"][t] === "undefined" && (this["handlers"][t] = []), this["handlers"][t]["push"](r);
     },
     fire: function (t) {
-      var e = {};
-
       if (!t["target"] && (t["target"] = this), this["handlers"][t["type"]] instanceof Array) {
         var c = this["handlers"][t["type"]];
         var i = 0;
@@ -4664,7 +2107,6 @@
   var Vr;
 
   var Fr = function () {
-    var r = {};
     return typeof Worker !== "undefined";
   }() || typeof postMessage !== "undefined";
 
@@ -4681,62 +2123,23 @@
       return n || "";
     },
     "language": function () {
-      var t = {
-        "DKQFb": "6|4|5|1|2|0|3",
-        "WXkin": function (n, t) {
-          return n === t;
-        },
-        "JvkyM": "string",
-        "pviXi": function (n, t) {
-          return n !== t;
-        },
-        "icsqC": "undefined"
-      };
-      var r = t;
-      var e = r["DKQFb"]["split"]("|");
+      var t = {};
       var u = 0;
-
-      for (void 0;;) {
-        switch (e[u++]) {
-          case "0":
-            if (Array["isArray"](a["languages"])) o["push"](a["languages"]);else if (r["WXkin"](typeof a["languages"], r["JvkyM"])) {
-              var c = a["languages"];
-              c && o["push"](c["split"](","));
-            }
-            continue;
-
-          case "1":
-            var i = a["language"] || a["userLanguage"] || a["browserLanguage"] || a["systemLanguage"];
-            continue;
-
-          case "2":
-            r["pviXi"](i, void 0) && o["push"]([i]);
-            continue;
-
-          case "3":
-            return o[0] ? o[0][0] : "";
-
-          case "4":
-            r["pviXi"](typeof navigator, r["icsqC"]) && (a = navigator);
-            continue;
-
-          case "5":
-            var o = [];
-            continue;
-
-          case "6":
-            var a;
-            continue;
-        }
-
-        break;
+      var a;
+      typeof navigator !== "undefined" && (a = navigator);
+      var o = [];
+      var i = a["language"] || a["userLanguage"] || a["browserLanguage"] || a["systemLanguage"];
+      i !== void 0 && o["push"]([i]);
+      if (Array["isArray"](a["languages"])) o["push"](a["languages"]);else if (typeof a["languages"] === "string") {
+        var c = a["languages"];
+        c && o["push"](c["split"](","));
       }
+      return o[0] ? o[0][0] : "";
     },
     "timezone": function () {
       if (Intl && Intl["DateTimeFormat"]) return new Intl["DateTimeFormat"]()["resolvedOptions"]()["timeZone"];
     },
     "cpuClass": function () {
-      var t = {};
       var e = navigator["cpuClass"];
       return e || "not available";
     },
@@ -4758,8 +2161,6 @@
       return navigator["deviceMemory"];
     },
     "hardwareConcurrency": function () {
-      var t = {};
-
       try {
         var r = parseInt(navigator["hardwareConcurrency"]);
         return isNaN(r) ? 1 : r;
@@ -4768,7 +2169,6 @@
       }
     },
     "timezoneOffset": function () {
-      var t = {};
       var r = new Date()["getFullYear"]();
       return Math["max"](parseFloat(new Date(r, 0, 1)["getTimezoneOffset"]()), parseFloat(new Date(r, 6, 1)["getTimezoneOffset"]()));
     },
@@ -4778,82 +2178,44 @@
   };
 
   function Sr(t) {
-    var e = {
-      PKseu: "3|6|1|5|4|2|0",
-      ctLoA: "webglVendorAndRenderer"
+    var s = Date["now"]();
+    var i = {
+      "canvas": u,
+      "webgl": 0
     };
-    var u = e["PKseu"]["split"]("|");
-    var c = 0;
 
-    for (void 0;;) {
-      switch (u[c++]) {
-        case "0":
-          return new Promise(function (n) {
-            a ? Promise["all"]([V(), R()])["then"](function (r) {
-              var u = {
-                "value": r[0]
-              };
-              var c = {
-                "value": r[1]
-              };
-              f(), n(i);
-            })["catch"](function () {}) : (f(), n(i));
-          });
+    var f = function () {
+      var e = 0;
+      var u = Object["keys"](t);
 
-        case "1":
-          var i = {
-            "canvas": u,
-            "webgl": c
-          };
-          continue;
+      for (void 0; e < u["length"]; e++) {
+        var c = u[e];
+        var a = void 0;
 
-        case "2":
-          if (a) try {
-            t[e["ctLoA"]] = T;
+        if (c !== "canvas" && c !== "webgl") {
+          try {
+            a = {
+              value: t[c]()
+            };
           } catch (n) {}
-          continue;
 
-        case "3":
-          var o = {};
-          continue;
-
-        case "4":
-          var a = F();
-          continue;
-
-        case "5":
-          var f = function () {
-            var e = 0;
-            var u = Object["keys"](t);
-
-            for (void 0; e < u["length"]; e++) {
-              var c = u[e];
-              var a = void 0;
-
-              if (c !== "canvas" && c !== "webgl") {
-                try {
-                  a = {
-                    value: t[c]()
-                  };
-                } catch (n) {}
-
-                var f = Date["now"]();
-                i[c] = Object["assign"]({}, a, {
-                  duration: f - s
-                }), s = f;
-              }
-            }
-          };
-
-          continue;
-
-        case "6":
-          var s = Date["now"]();
-          continue;
+          var f = Date["now"]();
+          i[c] = Object["assign"]({}, a, {
+            duration: f - s
+          }), s = f;
+        }
       }
+    };
 
-      break;
-    }
+    var a = F();
+    if (a) try {
+      t["webglVendorAndRenderer"] = T;
+    } catch (n) {}
+    return new Promise(function (n) {
+      a ? Promise["all"]([V(), R()])["then"](function (r) {
+        f(), n(i);
+      })["catch"](function () {}) : (f(), n(i));
+    });
   }
 
   function Zr(t, r) {
@@ -4875,65 +2237,34 @@
   var Hr;
   var Gr = false;
   if (Fr) onmessage = function (t) {
-    var u = {
-      ljSmo: "1|4|0|2|5|3",
-      Ugmsl: "collect_done"
-    };
-    var c = u["ljSmo"]["split"]("|");
-    var i = 0;
+    var v = t["data"];
+    var l = v["type"];
+    if (l === mr["MESSAGE_TYPE"]["ENCRYPTION"]) try {
+      var o = r(v["data"], 2);
+      var a = o[0];
+      var f = o[1];
+      var s = [];
+      f["forEach"](function (n) {
+        s = s["concat"](Tr.es(n));
+      }), postMessage([a, void 0, s]);
+    } catch (n) {}
 
-    for (void 0;;) {
-      switch (c[i++]) {
-        case "0":
-          if (l === mr["MESSAGE_TYPE"]["ENCRYPTION"]) try {
-            var o = r(v["data"], 2);
-            var a = o[0];
-            var f = o[1];
-            var s = [];
-            f["forEach"](function (n) {
-              s = s["concat"](Tr.es(n));
-            }), postMessage([a, void 0, s]);
-          } catch (n) {}
-          continue;
-
-        case "1":
-          var v = t["data"];
-          continue;
-
-        case "2":
-          if (l === mr["MESSAGE_TYPE"]["COLLECT_DONE_RECEIVE"]) {
-            var h = r(v["data"], 1)[0];
-            h === 10 && (clearTimeout(Hr), postMessage([u["Ugmsl"]]));
-          }
-
-          continue;
-
-        case "3":
-          l === mr["MESSAGE_TYPE"]["HAS_INTERVAL"] && (Gr = true);
-          continue;
-
-        case "4":
-          var l = v["type"];
-          continue;
-
-        case "5":
-          if (l === mr["MESSAGE_TYPE"]["PAKO_RECEIVE"]) try {
-            var w = v["data"];
-            var d = Tr["pako"](w);
-            var k = {
-              "type": mr["MESSAGE_TYPE"]["PAKO"],
-              "data": d
-            };
-            postMessage(k);
-          } catch (n) {}
-          continue;
-      }
-
-      break;
+    if (l === mr["MESSAGE_TYPE"]["COLLECT_DONE_RECEIVE"]) {
+      var h = r(v["data"], 1)[0];
+      h === 10 && (clearTimeout(Hr), postMessage(["collect_done"]));
     }
-  };else {
-    var qr = 0;
 
+    if (l === mr["MESSAGE_TYPE"]["PAKO_RECEIVE"]) try {
+      var w = v["data"];
+      var d = Tr["pako"](w);
+      var k = {
+        "type": mr["MESSAGE_TYPE"]["PAKO"],
+        "data": d
+      };
+      postMessage(k);
+    } catch (n) {}
+    l === mr["MESSAGE_TYPE"]["HAS_INTERVAL"] && (Gr = true);
+  };else {
     var Jr = function (t) {
       try {
         var u = {
@@ -4960,7 +2291,6 @@
     } catch (n) {}
 
     var Cr = function (t) {
-      var u = {};
       var c = r(t["data"], 1)[0];
 
       if (c === 10) {
@@ -5024,10 +2354,8 @@
 
     Br[t(1340)](Zr, [void 0, r], mr[t(192) + "PE"][t(2239)]);
   })[Br[jr(1912)]](function () {}), Hr = Fr ? setTimeout(function () {
-    var r = {};
     clearTimeout(Hr), postMessage(["overtime"]);
   }, 2e4) : setTimeout(function () {
-    var r = {};
     clearTimeout(Hr);
 
     try {
@@ -5038,7 +2366,6 @@
       Vr["fire"](e);
     } catch (n) {}
   }, 2e4), setInterval(function () {
-    var r = {};
     if (Fr) Gr && (postMessage(["hasInterval_done"]), Gr = false);else if (Gr) try {
       var e = {
         "type": mr["MESSAGE_TYPE"]["HASINTERVAL_DONE"],

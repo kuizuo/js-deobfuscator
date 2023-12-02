@@ -34,27 +34,23 @@ class MyDeOb extends Deob { }
   // 注入解密函数并指明解密函数
   deob.evalCode(evalCode)
 
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 1; i <= 5; i++) {
     deob.splitMultipleDeclarations()
 
     deob.designDecryptFn('qt')
 
-    await deob.record(fileName, ++index)
-
-    for (let i = 1; i <= 4; i++) {
+    for (let j = 1; j <= 2; j++) {
       deob.saveAllObject()
       deob.objectMemberReplace()
       deob.switchFlat()
+      deob.calcBinary()
     }
 
-    deob.calcBinary()
     await deob.record(fileName, ++index)
   }
 
-  // // 最后通用处理
-
+  // 最后通用处理
   deob.replaceConstant()
-  deob.reParse()
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()

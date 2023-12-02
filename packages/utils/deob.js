@@ -5,7 +5,7 @@ import traverse1 from '@babel/traverse'
 import generator1 from '@babel/generator'
 import { codeFrameColumns } from '@babel/code-frame'
 import * as t from '@babel/types'
-import { cloneDeep, isEmpty } from 'lodash-es'
+import { isEmpty } from 'lodash-es'
 
 /** @type generator1 */
 const generator = generator1?.default || generator1
@@ -34,7 +34,6 @@ function handleError(error, rawCode) {
     })
 
     console.error(codeFrame)
-    return codeFrame
   }
 }
 
@@ -84,7 +83,7 @@ export class Deob {
     catch (error) {
       console.error('代码初始化解析有误!')
 
-      const codeFrame = handleError(error, rawCode)
+      handleError(error, rawCode)
       throw new Error(`代码初始化解析有误! ${error}`)
     }
   }
@@ -119,7 +118,7 @@ export class Deob {
         this.log(`生成的错误代码请到 ${this.dir}/errorCode.js 查看`)
       }
 
-      const codeFrame = handleError(error, jscode)
+      handleError(error, jscode)
       throw new Error(`代码替换有误,解析失败! 请到控制台中查看 ${error}`)
     }
   }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
+import { generator, parser } from '@deob/utils'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { MonacoEditor } from '#build/components'
@@ -49,8 +50,14 @@ function handleFileChange(event: Event) {
   reader.readAsText(file)
 }
 
-async function copyLink(e: MouseEvent) {
-  await navigator.clipboard.writeText(window.location.href)
+async function beautify() {
+  const formatted = generator(parser.parse(code.value!), {
+    minified: false,
+    jsescOption: { minimal: true },
+    compact: false,
+    comments: true,
+  }).code
+  code.value = formatted
 }
 
 function clean() {
@@ -83,8 +90,8 @@ onMounted(() => {
         </div>
 
         <OuputOptions />
-        <button title="Copy sharable URL">
-          <div i-ri:share-line @click="copyLink" />
+        <button title="Beautify code">
+          <div i-ri:brush-3-line @click="beautify" />
         </button>
         <button title="Upload file">
           <label for="fileInput" cursor-pointer> <div i-ri:upload-line /></label>

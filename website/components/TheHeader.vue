@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+async function copyLink(e: MouseEvent) {
+  await navigator.clipboard.writeText(window.location.href)
+  window.alert('copy')
+}
+</script>
 
 <template>
   <div flex="~ wrap" items-center justify-between p2>
@@ -12,6 +17,9 @@
     </div>
 
     <div flex="~ gap-3">
+      <button title="Copy sharable URL">
+        <div i-ri:share-line @click="copyLink" />
+      </button>
       <button @click="toggleDark">
         <div i-ri:sun-line dark:i-ri:moon-line />
       </button>

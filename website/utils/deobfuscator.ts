@@ -18,29 +18,37 @@ self.addEventListener(
       },
     })
 
+    if (options.evalCode)
+      deob.evalCode(options.evalCode)
+
+    if (options.designDecryptFn)
+      deob.designDecryptFn(options.designDecryptFn)
+
     const process = (deob: Deob) => {
       deob.splitMultipleDeclarations()
+      deob.decryptReplace()
+      deob.nestedFnReplace()
 
-      if (options.isDecryptFnEnabled) {
-        deob.nestedFnReplace()
+      if (options.isDecryptFnEnabled && options.decryptFnCallCount)
         deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
-      }
 
       for (let i = 1; i <= options.execCount; i++) {
         deob.saveAllObject()
         deob.objectMemberReplace()
         deob.switchFlat()
+        deob.calcBinary()
       }
 
       // 最后通用处理
-      if (options.isCalcBinaryEnable)
-        deob.calcBinary()
-
       if (options.isReplaceConstantEnable)
         deob.replaceConstant()
 
+      if (options.isCalcBinaryEnable)
+        deob.calcBinary()
+
       if (options.isRemoveUnusedBlock)
         deob.removeUnusedBlock()
+
       if (options.isRemoveUnusedVariables)
         deob.removeUnusedVariables()
 
@@ -53,9 +61,9 @@ self.addEventListener(
         deob.markComment(options.keywords)
     }
 
-    process(deob)
+    const runCount = options.isStrongRemove ? 5 : 1
 
-    if (options.isStrongRemove)
+    for (let i = 1; i <= runCount; i++)
       process(deob)
 
     const output = deob.getCode()

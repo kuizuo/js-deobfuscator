@@ -41,7 +41,7 @@ watchEffect(() => {
       </div>
       <hr>
 
-      <div p-4 w-30vw>
+      <div p-4 w-40vw>
         <div flex="~ col gap-2" text-base w-full>
           <label class="inline-flex items-center gap-2">
             <span class="flex-1">强力清除(会对解混淆后的代码再次执行,慎用)</span>
@@ -53,14 +53,27 @@ watchEffect(() => {
             <input
               v-model="options.decryptFnCallCount"
               class="pl-0.5 border border-gray-300 bg-white shadow-sm focus:(outline-none ring) dark:(bg-gray-700 disabled-bg-gray-900) disabled:bg-gray-100"
-              type="number" w-16 min="1" step="1" :disabled="!options.isDecryptFnEnabled"
+              type="number" w-16 min="1" step="1" :disabled="!options.isDecryptFnEnabled || Boolean(options.designDecryptFn)"
             >
-            <input v-model="options.isDecryptFnEnabled" type="checkbox">
+            <input v-model="options.isDecryptFnEnabled" type="checkbox" :disabled="Boolean(options.designDecryptFn)">
           </label>
           <label class="inline-flex items-center gap-2">
             <span class="flex-1">是否移除解密函数(后续用不到)</span>
             <input v-model="options.isRemoveDecryptFn" type="checkbox">
           </label>
+          <label class="inline-flex items-center gap-2">
+            <span class="flex-1">指定解密函数(需要注入代码)</span>
+            <input
+              v-model="options.designDecryptFn" class="pl-0.5 border border-gray-300 bg-white shadow-sm focus:(outline-none ring) dark:(bg-gray-700 disabled-bg-gray-900) disabled:bg-gray-100"
+              type="input"
+            >
+          </label>
+          <CodeEditor
+            v-if="options.designDecryptFn"
+            v-model="options.evalCode"
+            class="!h-40"
+            language="javascript"
+          />
 
           <label class="inline-flex items-center gap-2">
             <span class="flex-1">混淆花指令还原执行次数</span>
@@ -121,8 +134,6 @@ watchEffect(() => {
           </label>
         </div>
       </div>
-
-      <!-- 输入 解密函数 代码 -->
     </dialog>
   </div>
 </template>

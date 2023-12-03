@@ -16,6 +16,11 @@ export interface Options {
   /** 是否移除解密函数 */
   isRemoveDecryptFn: boolean
 
+  /** 执行代码函数 */
+  evalCode: string
+  /** 指明解密函数 */
+  designDecryptFn: string[] | string | undefined
+
   /** 循环执行次数 */
   execCount: number
 
@@ -48,6 +53,8 @@ const defaultOptions: Options = {
   decryptFnCallCount: 150,
   isDecryptFnEnabled: true,
   isRemoveDecryptFn: true,
+  evalCode: '',
+  designDecryptFn: undefined,
 
   execCount: 2,
 

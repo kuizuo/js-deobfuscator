@@ -32,6 +32,8 @@ onMounted(() => {
       theme: isDark ? 'vs-dark' : 'vs',
       fontSize: 14,
       tabSize: 2,
+      lineNumbers: 'off',
+      lineDecorationsWidth: 0,
       minimap: {
         enabled: false,
       },

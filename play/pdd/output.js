@@ -510,8 +510,8 @@
 
     if (!A(s, v)) {
       var h = {
-        "winding": false,
-        "data": ""
+        "data": "",
+        "winding": false
       };
       return h;
     }
@@ -2161,7 +2161,10 @@
     } catch (n) {}
     return new Promise(function (n) {
       a ? Promise["all"]([V(), R()])["then"](function (r) {
-        f(), n(i);
+        var u = {};
+        u["value"] = r[0];
+        var c = {};
+        c["value"] = r[1], f(), n(i);
       })["catch"](function () {}) : (f(), n(i));
     });
   }
@@ -2206,10 +2209,9 @@
       var w = v["data"];
       var d = Tr["pako"](w);
       var k = {
-        "type": mr["MESSAGE_TYPE"]["PAKO"],
         "data": d
       };
-      postMessage(k);
+      k["type"] = mr["MESSAGE_TYPE"]["PAKO"], postMessage(k);
     } catch (n) {}
     l === mr["MESSAGE_TYPE"]["HAS_INTERVAL"] && (Gr = true);
   };else {
@@ -2226,11 +2228,8 @@
         i["forEach"](function (n) {
           o = o["concat"](Tr.es(n));
         });
-        var a = {
-          "type": mr["MESSAGE_TYPE"]["SCRIPT_PROMISE_BIND"],
-          "data": [c, void 0, o]
-        };
-        Vr["fire"](a);
+        var a = {};
+        a["type"] = mr["MESSAGE_TYPE"]["SCRIPT_PROMISE_BIND"], a["data"] = [c, void 0, o], Vr["fire"](a);
       } catch (n) {}
     };
 
@@ -2243,11 +2242,8 @@
 
       if (c === 10) {
         clearTimeout(Hr);
-        var i = {
-          "type": mr["MESSAGE_TYPE"]["COLLECT_DONE"],
-          "data": ["collect_done"]
-        };
-        Vr["fire"](i);
+        var i = {};
+        i["type"] = mr["MESSAGE_TYPE"]["COLLECT_DONE"], i["data"] = ["collect_done"], Vr["fire"](i);
       }
     };
 
@@ -2259,10 +2255,9 @@
       try {
         var e = Tr["pako"](t["data"]);
         var u = {
-          "type": mr["MESSAGE_TYPE"]["PAKO"],
           "data": e
         };
-        Vr["fire"](u);
+        u["type"] = mr["MESSAGE_TYPE"]["PAKO"], Vr["fire"](u);
       } catch (n) {}
     };
 
@@ -2309,20 +2304,14 @@
     clearTimeout(Hr);
 
     try {
-      var e = {
-        "type": mr["MESSAGE_TYPE"]["OVERTIME"],
-        "data": ["overtime"]
-      };
-      Vr["fire"](e);
+      var e = {};
+      e["type"] = mr["MESSAGE_TYPE"]["OVERTIME"], e["data"] = ["overtime"], Vr["fire"](e);
     } catch (n) {}
   }, 20000), // TOLOOK
   setInterval(function () {
     if (Fr) Gr && (postMessage(["hasInterval_done"]), Gr = false);else if (Gr) try {
-      var e = {
-        "type": mr["MESSAGE_TYPE"]["HASINTERVAL_DONE"],
-        "data": ["hasInterval_done"]
-      };
-      Vr["fire"](e), Gr = false;
+      var e = {};
+      e["type"] = mr["MESSAGE_TYPE"]["HASINTERVAL_DONE"], e["data"] = ["hasInterval_done"], Vr["fire"](e), Gr = false;
     } catch (n) {}
   }, 3000);
 }

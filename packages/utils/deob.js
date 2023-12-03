@@ -177,6 +177,7 @@ export class Deob {
 
   /**
    * 移除自调用函数
+   * @deprecated
    * @example !(fucntion) {
    *  // xxx
    * }();
@@ -281,7 +282,8 @@ export class Deob {
     })
 
     this.reParse()
-    this.log('解密结果:', map)
+    if (map.size > 0)
+      this.log('解密结果:', map)
   }
 
   /**
@@ -570,7 +572,13 @@ export class Deob {
 
           if (!t.isLiteral(left.property)) return
 
-          if (right.type !== 'FunctionExpression' || !t.isLiteral(right)) return
+          if (!(
+            t.isFunctionExpression(right)
+            || t.isLiteral(right)
+            || t.isIdentifier(right)
+            || t.isBinaryExpression(right)
+            || t.isObjectExpression(right)
+          )) return
 
           const objectName = left.object.name
 
@@ -582,8 +590,9 @@ export class Deob {
           if (!binding.constant && binding.constantViolations.length === 0) return
 
           // 同时判断对象初始化的成员长度(避免不必要的替换),一般为空 {}
-          if (binding.path.node.init.properties.length !== 0)
-            return
+          // !!! 但是 后续填充的时候会更改原对象长度,这里可能需要做个缓存
+          // if (binding.path.node.init.properties.length !== 0)
+          //   return
 
           scopes.push({
             parentPath: path.getStatementParent()?.parentPath,
@@ -771,8 +780,6 @@ export class Deob {
                 const firstStatement = orgFn.body.body?.[0]
                 if (firstStatement?.type !== 'ReturnStatement') return
 
-                usedMap.set(`${objectName}.${propertyName}`, generator(orgFn).code)
-
                 // 返回参数
                 const returnArgument = firstStatement.argument
 
@@ -834,6 +841,8 @@ export class Deob {
                 }
 
                 if (isReplace) {
+                  usedMap.set(`${objectName}.${propertyName}`, generator(orgFn).code)
+
                   usedObjects[objectName] = usedObjects[objectName] || new Set()
                   usedObjects[objectName].add(propertyName)
                 }

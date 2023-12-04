@@ -399,113 +399,109 @@ export class Deob {
   }
 
   /**
-   * 嵌套函数花指令替换 需要优先执行,通常与解密函数配合
+   * 嵌套函数花指令替换 需要优先执行 通常内嵌解密函数
+   * @param {number} 嵌套深度 针对多次嵌套,默认为 2
    * @example
-   *  _0x4698 为解密函数
-   *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
-            return _0x4698(_0x13ee81 - -674, _0x3dfa50);
-      };
-      _0x49afe4(-57, 1080, 828, 1138, 469)
-      ⬇️
-      _0x49afe4(-57, 1080, 828, 1138, 469) ---> _0x4698(_0x13ee81 - -674, _0x3dfa50)
-      _0x4698('469' - -674, '828') ---> 调用解密函数得到原字符串
+   *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
+   *      return _0x4698(_0x13ee81 - -674, _0x3dfa50);
+   *  };
+   *  _0x49afe4(-57, 1080, 828, 469)
+   *  ⬇️
+   *  _0x4698(469 - -674, 828)
    */
-  nestedFnReplace() {
-    traverse(this.ast, {
-      CallExpression(path) {
-        const { callee, arguments: args } = path.node
+  nestedFnReplace(depth = 2) {
+    /** @type {import('@babel/traverse').Visitor} */
+    const visit = {
+      FunctionDeclaration(path) {
+        const fnName = path.node.id.name
 
-        // 排除解密函数
-        if (globalState.decryptFnList.includes(callee.name))
+        if (globalState.decryptFnList.includes(fnName))
           return
-
-        if (callee.type !== 'Identifier')
-          return
-
-        // 所有参数都是字面量 视情况分析
-        // if (!args.every(a => t.isLiteral(a) || a.type === 'UnaryExpression'))
-        //   return
-
-        // 判断函数体的返回表达式是否为函数 且是解密函数
-        const binding = path.scope.getBinding(callee.name)
-
-        if (!binding)
-          return
-
-        const isVariableDeclarator = binding.path.node.type === 'VariableDeclarator'
-        const orgFn = isVariableDeclarator
-          ? binding.path.node.init
-          : binding.path.node
-
-        if (!orgFn) return
 
         // 在原代码中，函数体就一行 return 语句 并且 参数还是函数表达式
-        const firstStatement = orgFn.body?.body?.[0]
+        const firstStatement = path.node.body?.body?.[0]
 
         if (!firstStatement) return
         if (firstStatement.type !== 'ReturnStatement') return
         if (firstStatement.argument?.type !== 'CallExpression') return
 
-        const returnCallFn = isVariableDeclarator
-          ? binding.path.get('init').get('body').get('body')[0].get('argument')
-          : binding.path.get('body').get('body')[0].get('argument')
+        // 包裹函数(混淆函数)
+        const wrapFn = path
+        // 真实调用函数(解密函数)
+        const realFn = path.get('body').get('body')[0].get('argument')
 
-        if (!returnCallFn?.node)
-          return
+        if (!realFn?.node) return
 
-        const newArgument = []
+        const binding = path.scope.getBinding(fnName)
+        if (!binding) return
 
-        // 遍历返回的函数的所有变量,将变量替换成字面量
-        returnCallFn.traverse({
-          Identifier: {
-            exit(p) {
-              // 从形参定位再从实参替换
-              const paramIndex = orgFn.params.findIndex(param => param.name === p.node.name)
-              if (paramIndex === -1)
-                return
+        // 遍历 _0x49afe4(-57, 1080, 828, 469)
+        binding.referencePaths.forEach((r) => {
+          // 通过引用找到调用混淆函数的,需要拿到实际传入的参数
+          if (r.parentKey === 'callee' && r.parentPath.type === 'CallExpression') {
+            // 调用传入参数 -57, 1080, 828, 469
+            const callFn_args = r.parentPath.node.arguments
 
-              // 最关键的代码
-              for (const a of returnCallFn.node.arguments) {
-                if (a.type === 'Identifier' && a.name === p.node.name) {
-                  newArgument.push(args[paramIndex])
-                  break
-                }
-                else if (a.type === 'BinaryExpression') {
-                  let newLeft = a.left
-                  let newRight = a.right
+            // 实际用到的参数 _0x13ee81 - -674, _0x3dfa50
+            const realFn_args = realFn.node.arguments
 
-                  if (a.left.type === 'Identifier' && a.left.name === p.node.name)
-                    newLeft = args[paramIndex]
+            // 要替换的模版
+            let templateCode = generator(realFn.node).code
 
-                  if (a.right.type === 'Identifier' && a.right.name === p.node.name)
-                    newRight = args[paramIndex]
+            // 记录后续模版中要替换的标识符
+            const replaceIdentifiers = {}
 
-                  // 如果都没有变化的话
-                  if (!(newLeft === a.left && newRight === a.right)) {
-                    const newBinary = t.binaryExpression(a.operator, newLeft, newRight)
-                    newArgument.push(newBinary)
-                    break
-                  }
-                }
+            // 遍历 (_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81)
+            wrapFn.node.params.forEach((param, i) => {
+              // 如果模版中不存在标识符则没有用到
+              if (templateCode.includes(param.name)) {
+                templateCode = templateCode.replace(new RegExp(`${param.name}`, 'g'), `%%${param.name}%%`)
+
+                // 拿到传入参数 如 第四个参数 _0x13ee81 对应 469
+                const arg = callFn_args[i]
+                replaceIdentifiers[param.name] = arg
               }
-            },
-          },
+            })
+
+            /** @type {t.CallExpression} */
+            let newCallExpression = null
+            try {
+              const buildRequire = template(templateCode)
+
+              const ast = buildRequire(replaceIdentifiers)
+              newCallExpression = ast.expression
+            }
+            catch (error) {
+              if (this?.throwWithEval) throw new Error(`模版构建失败 ${error.message}`)
+            }
+
+            // console.log(templateCode, generator(newCallExpression).code)
+
+            const callFnName = realFn.node?.callee.name
+            if (callFnName && newCallExpression)
+              r.parentPath.replaceWith(newCallExpression)
+          }
         })
 
-        const callFnName = returnCallFn.node?.callee.name
-        if (callFnName) {
-          // 构造出要替换的表达式
-          const newCallExpression = t.callExpression(
-            t.identifier(callFnName),
-            newArgument,
-          )
+        path.skip()
+      }
+    }
 
-          path.replaceWith(newCallExpression)
-        }
+    /** @type {import('@babel/traverse').Visitor} */
+    const visit = {
+      FunctionDeclaration(path) {
+        return processFunction(path)
       },
-    })
+      FunctionExpression(path) {
+        if (path.parentKey === 'init' && path.parentPath.type === 'VariableDeclarator')
+          processFunction(path)
+      },
+    }
 
-    this.reParse()
+    for (let i = 0; i < depth; i++) {
+      traverse(this.ast, visit)
+      this.reParse()
+    }
   }
 
   /**

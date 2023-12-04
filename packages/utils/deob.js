@@ -154,6 +154,10 @@ export class Deob {
     await fs.writeFile(path.join(this.dir, 'pretty.js'), newCode)
   }
 
+  get decryptFnList() {
+    return globalState.decryptFnList
+  }
+
   /**
    * 分离多个 var 赋值
    * @example var a = 1, b = 2;  --->  var a = 1; var b = 2;
@@ -208,17 +212,16 @@ export class Deob {
   }
 
   /**
-   * 执行解密替换
+   * 执行解密替换 传递解密代码将会注入执行
    * @example _0x4698(_0x13ee81, _0x3dfa50) ---> 原始字符串
    * @param {*} ast
    * @param {*} decryptFnCode
    */
   decryptReplace(decryptFnCode = null) {
-    if (globalState.decryptFnList.length === 0)
-      return
+    if (globalState.decryptFnList.length === 0) return
 
     if (decryptFnCode) {
-    // 执行解密函数的代码，这样就可以在 nodejs 中运行解密函数来还原数据
+      // 执行解密函数的代码，这样就可以在全局作用域中运行解密函数来还原数据
       try {
         this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
         // this.log(`解密函数代码为: ${decryptFnCode}`)
@@ -233,50 +236,34 @@ export class Deob {
     }
 
     const map = new Map()
-    /**
-     * 执行数组乱序与解密函数代码并将混淆字符串数值还原
-     */
+
     traverse(this.ast, {
-      // 解密函数可能是 var _0x3e22 = function(){ } 或 function _0x3e22(){}
-      'VariableDeclarator|FunctionDeclaration': function (path) {
-        if (globalState.decryptFnList.includes(path.node.id.name)) {
-          // 有可能存在多个解密函数，所以需要多次遍历
-          const decryptFn = globalState.decryptFnList.find(f => f === path.node.id.name)
-          if (!decryptFn)
-            return
+      CallExpression(path) {
+        const callee = path.node.callee
 
-          const binding = path.scope.getBinding(decryptFn)
+        if (!globalState.decryptFnList.includes(callee.name)) return
 
-          // 通过作用域来定位
-          binding?.referencePaths.forEach((p) => {
-            if (!p.parentPath.isCallExpression())
-              return
+        if (!(callee.type === 'Identifier')) return
 
-            try {
-              // 如果调用解密函数中有变量参数则不替换
-              const hasIdentifier = p.parentPath.node.arguments.some(a =>
-                t.isIdentifier(a),
-              )
-              if (hasIdentifier)
-                return
+        try {
+          // 如果调用解密函数中有变量参数则不替换
+          const hasIdentifier = path.node.arguments.some(a => t.isIdentifier(a))
+          if (hasIdentifier) return
 
-              // 执行 _0x4698(_0x13ee81, _0x3dfa50) 代码, 并替换原始位置
-              const callCode = p.parentPath.toString()
+          const callCode = path.toString()
 
-              const decStr = eval(callCode)
-              map.set(callCode, decStr)
+          const decStr = eval(callCode)
+          map.set(callCode, decStr)
 
-              p.parentPath.replaceWith(t.stringLiteral(decStr))
-            }
-            catch (error) {
-              // 解密失败 则添加注释 失败原因可能是该函数未调用
-              p.addComment('leading', `解密失败 ${error.message}`, true)
+          path.replaceWith(t.stringLiteral(decStr))
+        }
+        catch (error) {
+          // 解密失败 则添加注释
+          path.addComment('leading', `解密失败: ${error.message}`, true)
 
-              // 解密失败后是否停止解密
-              if (this.throwWithEval)
-                throw new Error(`解密失败 ${error.message}`)
-            }
-          })
+          // 解密失败后是否停止解密
+          if (this?.throwWithEval)
+            throw new Error(`解密失败 ${error.message}`)
         }
       },
     })
@@ -349,10 +336,10 @@ export class Deob {
     // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
     const decryptFnCode = generator(descryptAst, { compact: true }).code
 
-    this.decryptReplace(decryptFnCode)
-
     if (isRemove)
       this.ast.program.body = this.ast.program.body.slice(index)
+
+    return decryptFnCode
   }
 
   /**
@@ -410,22 +397,19 @@ export class Deob {
    *  _0x4698(469 - -674, 828)
    */
   nestedFnReplace(depth = 2) {
-    /** @type {import('@babel/traverse').Visitor} */
-    const visit = {
-      FunctionDeclaration(path) {
-        const fnName = path.node.id.name
+    /**
+     * @param {babel.NodePath<babel.types.FunctionDeclaration | babel.types.FunctionExpression>} path
+     */
+    const processFunction = (path) => {
+      const fnName = path.node.id?.name || path.parentPath.node.id?.name
 
-        if (globalState.decryptFnList.includes(fnName))
-          return
+      if (globalState.decryptFnList.includes(fnName)) return
 
-        // 在原代码中，函数体就一行 return 语句 并且 参数还是函数表达式
-        const firstStatement = path.node.body?.body?.[0]
+      /** @type {t.ReturnStatement} */
+      const firstStatement = path.node.body?.body?.[0]
 
-        if (!firstStatement) return
-        if (firstStatement.type !== 'ReturnStatement') return
-        if (firstStatement.argument?.type !== 'CallExpression') return
-
-        // 包裹函数(混淆函数)
+      // 在原代码中，函数体就一行 return 语句 并且 参数还是函数表达式
+      if (firstStatement && firstStatement.type === 'ReturnStatement' && firstStatement.argument?.type === 'CallExpression') {
         const wrapFn = path
         // 真实调用函数(解密函数)
         const realFn = path.get('body').get('body')[0].get('argument')

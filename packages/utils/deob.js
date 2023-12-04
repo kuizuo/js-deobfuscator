@@ -4,13 +4,16 @@ import * as parser from '@babel/parser'
 import traverse1 from '@babel/traverse'
 import generator1 from '@babel/generator'
 import { codeFrameColumns } from '@babel/code-frame'
+import template1 from '@babel/template'
 import * as t from '@babel/types'
 import { isEmpty } from 'lodash-es'
 
-/** @type generator1 */
+/** @type {generator1} */
 const generator = generator1?.default || generator1
-/** @type traverse1 */
+/** @type {traverse1} */
 const traverse = traverse1?.default || traverse1
+/** @type {template1} */
+const template = template1?.default || template1
 
 if (typeof window !== 'undefined')
   // eslint-disable-next-line no-global-assign
@@ -343,7 +346,84 @@ export class Deob {
   }
 
   /**
-   * 指明解密函数 (需要配合代码注入实现)
+   * 根据大数组引用代码以及寻找到解密函数 并执行解密操作
+   * @param {number} count 数组成员数
+   * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
+   */
+  findDecryptFnByBigArr(count = 100, isRemove = false) {
+    const descryptAst = parser.parse('')
+
+    traverse(this.ast, {
+      ArrayExpression(path) {
+        const { node } = path
+
+        if (node.elements.length > count) {
+          const parentPath = path.findParent(p => p.isVariableDeclaration() || p.isExpressionStatement())
+
+          if (!parentPath)
+            return
+
+          let bigArrName = ''
+          if (t.isVariableDeclaration(parentPath.node))
+            bigArrName = parentPath.node.declarations[0].id.name
+          else
+            bigArrName = parentPath.node.expression.left.name
+
+          const binding = path.scope.getBinding(bigArrName)
+
+          // 如果大数组引用很少,大概率是被函数包裹起来的
+          if (binding.referencePaths.length < 10) {
+            // 不断向上找,找到 program 下 的代码块
+            const parent = path.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
+
+            if (parent.type === 'FunctionDeclaration') {
+              const fnName = parent.node.id.name
+
+              // 重新找大数组变量名
+              const binding = path.scope.getBinding(fnName)
+
+              // 通过引用 找到 数组乱序代码 与 解密函数代码
+              binding.referencePaths.forEach((r) => {
+                if (r.parentKey === 'callee') {
+                  // 找到大数组所调用位置,继续向上找,大概率就是解密函数
+                  const parent = r.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
+                  if (parent) {
+                    const decryptFnName = parent.node.id?.name
+                    if (decryptFnName && decryptFnName !== fnName)
+                      globalState.decryptFnList.push(decryptFnName)
+
+                    descryptAst.program.body.push(parent.node)
+
+                    isRemove && parent.remove()
+                  }
+                  return
+                }
+
+                if (r.parentKey === 'arguments') {
+                  const parent = r.findParent(p => p.isExpressionStatement())
+                  if (parent) {
+                    descryptAst.program.body.push(parent.node)
+
+                    isRemove && parent.remove()
+                  }
+                }
+              })
+            }
+          }
+
+          path.skip()
+        }
+      },
+    })
+
+    // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
+    const decryptFnCode = generator(descryptAst, { compact: true }).code
+
+    return decryptFnCode
+  }
+
+  /**
+   * 指明解密函数
    * 当指明后,所有引用该变量赋值的代码都将替换成解密函数
    * @param {string | string[]} decryptFnList
    * @example
@@ -1318,9 +1398,9 @@ export class Deob {
       IfStatement(path) {
         if (t.isBooleanLiteral(path.node.test)) {
           if (path.node.test.value)
-            path.replaceInline(path.node.consequent.body)
+            path.node.consequent.body && path.replaceInline(path.node.consequent.body)
           else
-            path.replaceInline(path.node.alternate.body)
+            path.node.alternate.body && path.replaceInline(path.node.alternate.body)
         }
       },
     })

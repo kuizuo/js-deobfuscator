@@ -1145,6 +1145,11 @@ export class Deob {
 
   /**
    * 还原逗号表达式
+   * @example
+   * _0x6cbcff(), console.log('foo')
+   * ⬇️
+   * _0x6cbcff();
+   * console.log('foo');
    */
   restoreSequence() {
     traverse(this.ast, {
@@ -1154,13 +1159,15 @@ export class Deob {
           const finalExpression = exporessions[exporessions.length - 1]
           const statement = path.getStatementParent()
 
-          this.expression.forEach((e) => {
-            statemente.insertBefore(t.ExpressionStatement(e))
+          exporessions.slice(0, -1).forEach((e) => {
+            statement.insertBefore(t.ExpressionStatement(e))
           })
           path.replaceInline(finalExpression)
         },
       },
     })
+
+    this.reParse()
   }
 
   /**

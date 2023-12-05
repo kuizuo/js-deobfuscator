@@ -52,6 +52,8 @@ self.addEventListener(
       if (options.isRemoveUnusedVariables)
         deob.removeUnusedVariables()
 
+      deob.splitMultipleDeclarations()
+      deob.restoreSequence()
       deob.selfCallFnReplace()
 
       if (options.deleteExtraEnable)

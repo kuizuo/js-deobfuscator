@@ -305,4 +305,19 @@ _0x4547db();
 a + b;`.trim(),
     )
   })
+
+  it('restoreSequence', () => {
+    const rawCode = `_0x6cbcff(), console.log('foo')`
+    const deob = new Deob(rawCode)
+
+    deob.restoreSequence()
+    const code = deob.getCode()
+
+    expect(code).toBe(
+      `
+_0x6cbcff();
+
+console.log('foo');`.trim(),
+    )
+  })
 })

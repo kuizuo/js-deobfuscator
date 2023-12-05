@@ -56,6 +56,9 @@ class MyDeOb extends Deob { }
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
+
+  deob.splitMultipleDeclarations()
+  deob.restoreSequence()
   deob.selfCallFnReplace()
 
   deob.deleteExtra()

@@ -223,12 +223,11 @@ export class Deob {
   decryptReplace(decryptFnCode = null) {
     if (globalState.decryptFnList.length === 0) return
 
+    this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
+    // this.log(`解密函数代码为: ${decryptFnCode}`)
     if (decryptFnCode) {
       // 执行解密函数的代码，这样就可以在全局作用域中运行解密函数来还原数据
       try {
-        this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
-        // this.log(`解密函数代码为: ${decryptFnCode}`)
-
         const result = global.eval(decryptFnCode)
         this.log('解密函数执行结果:', result)
       }
@@ -277,66 +276,65 @@ export class Deob {
   }
 
   /**
+   *
    * 根据函数调用次数寻找到解密函数 并执行解密操作
    * @param {number} count 解密函数调用次数
    * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
+   * @returns {string} decryptFnCode
    */
   findDecryptFnByCallCount(count = 100, isRemove = false) {
-    // 如果多次调用则无需继续
-    if (globalState.decryptFnList.length > 0)
-      return
+    if (globalState.decryptFnList.length > 0) return
 
     let index = 0 // 定义解密函数所在语句下标
 
-    // 先遍历所有函数(作用域在Program)，并根据引用次数来判断是否为解密函数
+    /**
+     * @param {babel.NodePath<babel.types.FunctionDeclaration | babel.types.FunctionExpression>} path
+     */
+    const processFunction = (path) => {
+      const fnName = path.node.id?.name || path.parentPath.node.id?.name
+
+      const binding = path.scope.getBinding(fnName)
+
+      if (!binding) return
+
+      if (binding.referencePaths.length > count) {
+        globalState.decryptFnList.push(fnName)
+
+        // 根据最后一个解密函数来定义解密函数所在语句下标
+        const binding = path.scope.getBinding(fnName)
+        if (!binding) return
+
+        const parent = binding.path.find(p => p.isFunctionDeclaration() || p.isVariableDeclaration())
+        if (!parent) return
+
+        const body = parent.scope.block.body
+        for (let i = 0; i < body.length; i++) {
+          const node = body[i]
+          if (node.start === parent.node.start)
+            index = i + 1
+        }
+        // 遍历完当前节点,就不再往子节点遍历
+        path.skip()
+      }
+    }
+
     traverse(this.ast, {
-      Program(p) {
-        p.traverse({
-          'FunctionDeclaration|VariableDeclarator': function (path) {
-            if (
-              !(
-                t.isFunctionDeclaration(path.node)
-                || t.isFunctionExpression(path.node.init)
-              )
-            )
-              return
-
-            const name = path.node.id.name
-            const binding = path.scope.getBinding(name)
-            if (!binding)
-              return
-
-            if (binding.referencePaths.length > count) {
-              globalState.decryptFnList.push(name)
-
-              // 根据最后一个解密函数来定义解密函数所在语句下标
-              const binding = p.scope.getBinding(name)
-              if (!binding)
-                return
-
-              const parent = binding.path.find(
-                p => p.isFunctionDeclaration() || p.isVariableDeclaration(),
-              )
-              if (!parent)
-                return
-              const body = p.scope.block.body
-              for (let i = 0; i < body.length; i++) {
-                const node = body[i]
-                if (node.start === parent.node.start)
-                  index = i + 1
-              }
-              // 遍历完当前节点,就不再往子节点遍历
-              path.skip()
-            }
-          },
-        })
+      FunctionDeclaration(path) {
+        if (path.parentPath.isProgram())
+          processFunction(path)
+      },
+      FunctionExpression(path) {
+        if (path.parentKey === 'init' && path.parentPath.type === 'VariableDeclarator') {
+          const variableDeclarationPath = path.findParent(p => p.isVariableDeclaration())
+          if (variableDeclarationPath && variableDeclarationPath.parentPath.isProgram())
+            processFunction(path)
+        }
       },
     })
 
     const descryptAst = parser.parse('')
     // 插入解密函数前的几条语句
     descryptAst.program.body = this.ast.program.body.slice(0, index)
-    // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
     const decryptFnCode = generator(descryptAst, { compact: true }).code
 
     if (isRemove)
@@ -351,6 +349,8 @@ export class Deob {
    * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
    */
   findDecryptFnByBigArr(count = 100, isRemove = false) {
+    if (globalState.decryptFnList.length > 0) return
+
     const descryptAst = parser.parse('')
 
     traverse(this.ast, {
@@ -416,7 +416,6 @@ export class Deob {
       },
     })
 
-    // 把这部分的代码转为字符串，由于可能存在格式化检测，需要指定选项，来压缩代码
     const decryptFnCode = generator(descryptAst, { compact: true }).code
 
     return decryptFnCode

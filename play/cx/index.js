@@ -28,7 +28,9 @@ class MyDeOb extends Deob {
 
   deob.splitMultipleDeclarations()
 
-  deob.findDecryptFnByCallCount(100, true)
+  const decryptFnCode = deob.findDecryptFnByCallCount(100, true)
+  deob.designDecryptFn(deob.decryptFnList)
+  deob.decryptReplace(decryptFnCode)
 
   for (let i = 1; i <= 2; i++) {
     for (let j = 1; j <= 2; j++) {
@@ -46,6 +48,7 @@ class MyDeOb extends Deob {
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
+  deob.restoreSequence()
   deob.selfCallFnReplace()
 
   deob.deleteExtra()

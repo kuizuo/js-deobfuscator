@@ -168,7 +168,7 @@ let d = false;`.trim(),
     expect(code).toBe(`console.log("debugger");`)
   })
 
-  it('switchFlat', () => {
+  it('controlFlowFlat', () => {
     const rawCode = `
     function a() {
       var _0x263cfa = "1|3|2|0"["split"]("|"),
@@ -203,7 +203,7 @@ let d = false;`.trim(),
 
     const deob = new Deob(rawCode)
 
-    deob.switchFlat()
+    deob.controlFlowFlat()
     const code = deob.getCode()
 
     expect(code).toBe(

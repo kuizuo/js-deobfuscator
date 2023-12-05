@@ -30,7 +30,7 @@ const __dirname = dirname(__filename)
     for (let j = 1; j <= 2; j++) {
       deob.saveAllObject()
       deob.objectMemberReplace()
-      deob.switchFlat()
+      deob.controlFlowFlat()
       deob.calcBinary()
     }
     await deob.record(fileName, ++index)

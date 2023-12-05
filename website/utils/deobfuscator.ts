@@ -35,7 +35,7 @@ self.addEventListener(
       for (let i = 1; i <= options.execCount; i++) {
         deob.saveAllObject()
         deob.objectMemberReplace()
-        deob.switchFlat()
+        deob.controlFlowFlat()
         deob.calcBinary()
       }
 

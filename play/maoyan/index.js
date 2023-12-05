@@ -31,7 +31,7 @@ class MyDeOb extends Deob { }
   for (let j = 1; j <= 3; j++) {
     deob.saveAllObject()
     deob.objectMemberReplace()
-    deob.switchFlat()
+    deob.controlFlowFlat()
     deob.calcBinary()
   }
   await deob.record(fileName, ++index)

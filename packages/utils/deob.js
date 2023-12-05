@@ -1012,7 +1012,7 @@ export class Deob {
   }
 
   /**
-   * switch 混淆扁平化
+   * 控制流扁平化
    * @example
    * function a() {
    *   var _0x263cfa = "1|3|2|0"["split"]("|"),
@@ -1050,7 +1050,7 @@ export class Deob {
    *   return _0x4b70fb;
    * }
    */
-  switchFlat() {
+  controlFlowFlat() {
     this.transformForLoop()
 
     traverse(this.ast, {

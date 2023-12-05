@@ -47,8 +47,8 @@ export class Deob {
    * @param {string} rawCode - 原始代码
    * @param {object} [options] -  选项
    * @param {string} [options.dir] - 输出目录
-   * @param {boolean} [options.isWriteFile]
-   * @param {object} [options.opts] - 是否写入文件
+   * @param {boolean} [options.isWriteFile] - 是否写入文件
+   * @param {import('@babel/generator').GeneratorOptions} [options.opts]
    * @param {boolean} [options.isLog] - 是否输出日志
    * @throws {Error} 请载入js代码
    */
@@ -57,12 +57,10 @@ export class Deob {
       throw new Error('请载入js代码')
     console.clear()
 
-    /**
-     * The raw JavaScript code.
-     * @type {string}
-     */
+    /** @type {string} */
     this.rawCode = rawCode
 
+    /** @type {import('@babel/generator').GeneratorOptions} */
     this.opts = options.opts || {
       minified: false,
       jsescOption: { minimal: true },
@@ -106,7 +104,7 @@ export class Deob {
   }
 
   /**
-   * 当执行替换(replace,rename 等)操作时,需要执行一次更新新的 ast
+   * 当执行替换(replace,rename等)操作时,需要执行一次更新以获取最新状态 ast
    */
   reParse() {
     const jscode = generator(this.ast, this.opts).code
@@ -133,14 +131,11 @@ export class Deob {
    */
   async record(fileName, i) {
     if (this.isWriteFile) {
-      try {
-        await fs.writeFile(
-          path.join(this.dir, `${fileName}_${i}.js`),
-          this.code,
-        )
-        console.log(`${fileName}_${i}.js 写入成功`)
-      }
-      catch (error) { }
+      await fs.writeFile(
+        path.join(this.dir, `${fileName}_${i}.js`),
+        this.code,
+      )
+      console.log(`${fileName}_${i}.js 写入成功`)
     }
   }
 
@@ -163,7 +158,11 @@ export class Deob {
 
   /**
    * 分离多个 var 赋值
-   * @example var a = 1, b = 2;  --->  var a = 1; var b = 2;
+   * @example
+   * var a = 1, b = 2;
+   *
+   * var a = 1;
+   * var b = 2;
    */
   splitMultipleDeclarations() {
     traverse(this.ast, {
@@ -183,297 +182,15 @@ export class Deob {
   }
 
   /**
-   * 移除自调用函数
-   * @deprecated
-   * @example !(fucntion) {
-   *  // xxx
-   * }();
-   *  ⬇️
-   * // xxx
-   */
-  removeSelfCallFn() {
-    traverse(this.ast, {
-      Program(p) {
-        p.traverse({
-          ExpressionStatement(path) {
-            const expression = path.node.expression
-            if (
-              expression.type === 'UnaryExpression'
-                  && expression.argument.type === 'CallExpression'
-                  && expression.argument.callee.type === 'FunctionExpression'
-                  && expression.argument.arguments.length === 0
-            ) {
-              path.replaceWith(expression.argument.callee.body)
-              path.skip()
-            }
-          },
-        })
-      },
-    })
-
-    this.reParse()
-  }
-
-  /**
-   * 执行解密替换 传递解密代码将会注入执行
-   * @example _0x4698(_0x13ee81, _0x3dfa50) ---> 原始字符串
-   * @param {*} ast
-   * @param {*} decryptFnCode
-   */
-  decryptReplace(decryptFnCode = null) {
-    if (globalState.decryptFnList.length === 0) return
-
-    this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
-    // this.log(`解密函数代码为: ${decryptFnCode}`)
-    if (decryptFnCode) {
-      // 执行解密函数的代码，这样就可以在全局作用域中运行解密函数来还原数据
-      try {
-        const result = global.eval(decryptFnCode)
-        this.log('解密函数执行结果:', result)
-      }
-      catch (e) {
-        this.log(`解密函数代码为: ${decryptFnCode}`)
-        throw new Error('解密函数无法 eval 运行, 请在控制台中查看解密函数是否定位正确')
-      }
-    }
-
-    const map = new Map()
-
-    traverse(this.ast, {
-      CallExpression(path) {
-        const callee = path.node.callee
-
-        if (!globalState.decryptFnList.includes(callee.name)) return
-
-        if (!(callee.type === 'Identifier')) return
-
-        try {
-          // 如果调用解密函数中有变量参数则不替换
-          const hasIdentifier = path.node.arguments.some(a => t.isIdentifier(a))
-          if (hasIdentifier) return
-
-          const callCode = path.toString()
-
-          const decStr = eval(callCode)
-          map.set(callCode, decStr)
-
-          path.replaceWith(t.stringLiteral(decStr))
-        }
-        catch (error) {
-          // 解密失败 则添加注释
-          path.addComment('leading', `解密失败: ${error.message}`, true)
-
-          // 解密失败后是否停止解密
-          if (this?.throwWithEval)
-            throw new Error(`解密失败 ${error.message}`)
-        }
-      },
-    })
-
-    this.reParse()
-    if (map.size > 0)
-      this.log('解密结果:', map)
-  }
-
-  /**
-   *
-   * 根据函数调用次数寻找到解密函数 并执行解密操作
-   * @param {number} count 解密函数调用次数
-   * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
-   * @returns {string} decryptFnCode
-   */
-  findDecryptFnByCallCount(count = 100, isRemove = false) {
-    if (globalState.decryptFnList.length > 0) return
-
-    let index = 0 // 定义解密函数所在语句下标
-
-    /**
-     * @param {babel.NodePath<babel.types.FunctionDeclaration | babel.types.FunctionExpression>} path
-     */
-    const processFunction = (path) => {
-      const fnName = path.node.id?.name || path.parentPath.node.id?.name
-
-      const binding = path.scope.getBinding(fnName)
-
-      if (!binding) return
-
-      if (binding.referencePaths.length > count) {
-        globalState.decryptFnList.push(fnName)
-
-        // 根据最后一个解密函数来定义解密函数所在语句下标
-        const binding = path.scope.getBinding(fnName)
-        if (!binding) return
-
-        const parent = binding.path.find(p => p.isFunctionDeclaration() || p.isVariableDeclaration())
-        if (!parent) return
-
-        const body = parent.scope.block.body
-        for (let i = 0; i < body.length; i++) {
-          const node = body[i]
-          if (node.start === parent.node.start)
-            index = i + 1
-        }
-        // 遍历完当前节点,就不再往子节点遍历
-        path.skip()
-      }
-    }
-
-    traverse(this.ast, {
-      FunctionDeclaration(path) {
-        if (path.parentPath.isProgram())
-          processFunction(path)
-      },
-      FunctionExpression(path) {
-        if (path.parentKey === 'init' && path.parentPath.type === 'VariableDeclarator') {
-          const variableDeclarationPath = path.findParent(p => p.isVariableDeclaration())
-          if (variableDeclarationPath && variableDeclarationPath.parentPath.isProgram())
-            processFunction(path)
-        }
-      },
-    })
-
-    const descryptAst = parser.parse('')
-    // 插入解密函数前的几条语句
-    descryptAst.program.body = this.ast.program.body.slice(0, index)
-    const decryptFnCode = generator(descryptAst, { compact: true }).code
-
-    if (isRemove)
-      this.ast.program.body = this.ast.program.body.slice(index)
-
-    return decryptFnCode
-  }
-
-  /**
-   * 根据大数组引用代码以及寻找到解密函数 并执行解密操作
-   * @param {number} count 数组成员数
-   * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
-   */
-  findDecryptFnByBigArr(count = 100, isRemove = false) {
-    if (globalState.decryptFnList.length > 0) return
-
-    const descryptAst = parser.parse('')
-
-    traverse(this.ast, {
-      ArrayExpression(path) {
-        const { node } = path
-
-        if (node.elements.length > count) {
-          const parentPath = path.findParent(p => p.isVariableDeclaration() || p.isExpressionStatement())
-
-          if (!parentPath)
-            return
-
-          let bigArrName = ''
-          if (t.isVariableDeclaration(parentPath.node))
-            bigArrName = parentPath.node.declarations[0].id.name
-          else
-            bigArrName = parentPath.node.expression.left.name
-
-          const binding = path.scope.getBinding(bigArrName)
-
-          // 如果大数组引用很少,大概率是被函数包裹起来的
-          if (binding.referencePaths.length < 10) {
-            // 不断向上找,找到 program 下 的代码块
-            const parent = path.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
-
-            if (parent.type === 'FunctionDeclaration') {
-              const fnName = parent.node.id.name
-
-              // 重新找大数组变量名
-              const binding = path.scope.getBinding(fnName)
-
-              // 通过引用 找到 数组乱序代码 与 解密函数代码
-              binding.referencePaths.forEach((r) => {
-                if (r.parentKey === 'callee') {
-                  // 找到大数组所调用位置,继续向上找,大概率就是解密函数
-                  const parent = r.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
-                  if (parent) {
-                    const decryptFnName = parent.node.id?.name
-                    if (decryptFnName && decryptFnName !== fnName)
-                      globalState.decryptFnList.push(decryptFnName)
-
-                    descryptAst.program.body.push(parent.node)
-
-                    isRemove && parent.remove()
-                  }
-                  return
-                }
-
-                if (r.parentKey === 'arguments') {
-                  const parent = r.findParent(p => p.isExpressionStatement())
-                  if (parent) {
-                    descryptAst.program.body.push(parent.node)
-
-                    isRemove && parent.remove()
-                  }
-                }
-              })
-            }
-          }
-
-          path.skip()
-        }
-      },
-    })
-
-    const decryptFnCode = generator(descryptAst, { compact: true }).code
-
-    return decryptFnCode
-  }
-
-  /**
-   * 指明解密函数
-   * 当指明后,所有引用该变量赋值的代码都将替换成解密函数
-   * @param {string | string[]} decryptFnList
-   * @example
-   * function xxx(){} // xxx 为解密函数
-   *
-   * var a = xxx ---> var xxx = xxx --->  移除 var xxx = xxx
-   */
-  designDecryptFn(decryptFnList) {
-    if (!Array.isArray(decryptFnList))
-      globalState.decryptFnList = [decryptFnList]
-    else
-      globalState.decryptFnList = decryptFnList
-
-    // 将所有引用解密函数的变量都重命名变为解密函数, 同时移除自身
-    traverse(this.ast, {
-      VariableDeclarator(path) {
-        const { id, init } = path.node
-
-        if (init && init.type === 'Identifier') {
-          const decryptFn = globalState.decryptFnList.find(n => n === init.name)
-
-          if (decryptFn) {
-            path.scope.rename(id.name, decryptFn)
-            path.remove()
-          }
-        }
-      },
-    })
-
-    this.reParse()
-  }
-
-  /**
-   * 注入代码 eval 执行
-   */
-  evalCode(code) {
-    const result = global.eval(code)
-
-    this.log('注入代码执行结果', result)
-  }
-
-  /**
    * 嵌套函数花指令替换 需要优先执行 通常内嵌解密函数
    * @param {number} 嵌套深度 针对多次嵌套,默认为 2
    * @example
-   *  var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
-   *      return _0x4698(_0x13ee81 - -674, _0x3dfa50);
-   *  };
-   *  _0x49afe4(-57, 1080, 828, 469)
-   *  ⬇️
-   *  _0x4698(469 - -674, 828)
+   * var _0x49afe4 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
+   *   eturn _0x4698(_0x13ee81 - -674, _0x3dfa50);
+   * };
+   * _0x49afe4(-57, 1080, 828, 469)
+   *
+   * _0x4698(469 - -674, 828)
    */
   nestedFnReplace(depth = 2) {
     /**
@@ -568,16 +285,282 @@ export class Deob {
   }
 
   /**
-   * 保存所有对象 用于后续替换
+   * 执行解密替换 传递解密代码将会注入执行
+   * @param {*} decryptFnCode
    * @example
-   * var _0x52627b = {
-   *  'QqaUY': "attribute",
-   *  'SDgrw': function (_0x45e680) {
-   *    return _0x45e680();
-   *  },
-   *  'GOEUR': function (_0xeaa58e, _0x247ba7) {
-   *    return _0xeaa58e + _0x247ba7;
-   *  }
+   * _0x4698(_0x13ee81, _0x3dfa50)
+   *
+   * 原始字符串
+   */
+  decryptReplace(decryptFnCode = null) {
+    if (globalState.decryptFnList.length === 0) return
+
+    this.log(`解密函数为: ${globalState.decryptFnList.join(',')}`)
+    // this.log(`解密函数代码为: ${decryptFnCode}`)
+    if (decryptFnCode) {
+      // 执行解密函数的代码，这样就可以在全局作用域中运行解密函数来还原数据
+      try {
+        const result = global.eval(decryptFnCode)
+        this.log('解密函数执行结果:', result)
+      }
+      catch (e) {
+        this.log(`解密函数代码为: ${decryptFnCode}`)
+        throw new Error('解密函数无法 eval 运行, 请在控制台中查看解密函数是否定位正确')
+      }
+    }
+
+    const map = new Map()
+
+    traverse(this.ast, {
+      CallExpression(path) {
+        const callee = path.node.callee
+
+        if (!globalState.decryptFnList.includes(callee.name)) return
+
+        if (!(callee.type === 'Identifier')) return
+
+        try {
+          // 如果调用解密函数中有变量参数则不替换
+          const hasIdentifier = path.node.arguments.some(a => t.isIdentifier(a))
+          if (hasIdentifier) return
+
+          const callCode = path.toString()
+
+          const decStr = eval(callCode)
+          map.set(callCode, decStr)
+
+          path.replaceWith(t.stringLiteral(decStr))
+        }
+        catch (error) {
+          // 解密失败 则添加注释
+          path.addComment('leading', `解密失败: ${error.message}`, true)
+
+          // 解密失败后是否停止解密
+          if (this?.throwWithEval)
+            throw new Error(`解密失败 ${error.message}`)
+        }
+      },
+    })
+
+    this.reParse()
+    if (map.size > 0)
+      this.log('解密结果:', map)
+  }
+
+  /**
+   * 根据函数调用次数寻找到解密函数(执行代码)
+   * @param {number} count 解密函数调用次数
+   * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
+   * @returns {string} decryptFnCode
+   */
+  findDecryptFnByCallCount(count = 100, isRemove = false) {
+    if (globalState.decryptFnList.length > 0) return
+
+    let index = 0 // 定义解密函数所在语句下标
+
+    /**
+     * @param {babel.NodePath<babel.types.FunctionDeclaration | babel.types.FunctionExpression>} path
+     */
+    const processFunction = (path) => {
+      const fnName = path.node.id?.name || path.parentPath.node.id?.name
+
+      const binding = path.scope.getBinding(fnName)
+
+      if (!binding) return
+
+      if (binding.referencePaths.length > count) {
+        globalState.decryptFnList.push(fnName)
+
+        // 根据最后一个解密函数来定义解密函数所在语句下标
+        const binding = path.scope.getBinding(fnName)
+        if (!binding) return
+
+        const parent = binding.path.find(p => p.isFunctionDeclaration() || p.isVariableDeclaration())
+        if (!parent) return
+
+        const body = parent.scope.block.body
+        for (let i = 0; i < body.length; i++) {
+          const node = body[i]
+          if (node.start === parent.node.start)
+            index = i + 1
+        }
+        // 遍历完当前节点,就不再往子节点遍历
+        path.skip()
+      }
+    }
+
+    traverse(this.ast, {
+      FunctionDeclaration(path) {
+        if (path.parentPath.isProgram())
+          processFunction(path)
+      },
+      FunctionExpression(path) {
+        if (path.parentKey === 'init' && path.parentPath.type === 'VariableDeclarator') {
+          const variableDeclarationPath = path.findParent(p => p.isVariableDeclaration())
+          if (variableDeclarationPath && variableDeclarationPath.parentPath.isProgram())
+            processFunction(path)
+        }
+      },
+    })
+
+    const descryptAst = parser.parse('')
+    // 插入解密函数前的几条语句
+    descryptAst.program.body = this.ast.program.body.slice(0, index)
+    const decryptFnCode = generator(descryptAst, { compact: true }).code
+
+    if (isRemove)
+      this.ast.program.body = this.ast.program.body.slice(index)
+
+    return decryptFnCode
+  }
+
+  /**
+   * 根据大数组定位代码以及寻找到解密函数(执行代码)
+   * @param {number} count 数组成员数
+   * @param {boolean} [isRemove] 是否移除解密函数(后续用不到)
+   * @returns {string} decryptFnCode
+   */
+  findDecryptFnByBigArr(count = 100, isRemove = false) {
+    if (globalState.decryptFnList.length > 0) return
+
+    const descryptAst = parser.parse('')
+
+    traverse(this.ast, {
+      ArrayExpression(path) {
+        const { node } = path
+
+        if (node.elements.length > count) {
+          const parentPath = path.findParent(p => p.isVariableDeclaration() || p.isExpressionStatement())
+
+          if (!parentPath)
+            return
+
+          let bigArrName = ''
+          if (t.isVariableDeclaration(parentPath.node))
+            bigArrName = parentPath.node.declarations[0].id.name
+          else
+            bigArrName = parentPath.node.expression.left.name
+
+          const binding = path.scope.getBinding(bigArrName)
+
+          // 如果大数组引用很少,大概率是被函数包裹起来的
+          if (binding.referencePaths.length < 10) {
+            // 不断向上找,找到 program 下 的代码块
+            const parent = path.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
+
+            if (parent.type === 'FunctionDeclaration') {
+              const fnName = parent.node.id.name
+
+              // 重新找大数组变量名
+              const binding = path.scope.getBinding(fnName)
+
+              // 通过引用 找到 数组乱序代码 与 解密函数代码
+              binding.referencePaths.forEach((r) => {
+                if (r.parentKey === 'callee') {
+                  // 找到大数组所调用位置,继续向上找,大概率就是解密函数
+                  const parent = r.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
+                  if (parent) {
+                    const decryptFnName = parent.node.id?.name
+                    if (decryptFnName && decryptFnName !== fnName)
+                      globalState.decryptFnList.push(decryptFnName)
+
+                    descryptAst.program.body.push(parent.node)
+
+                    isRemove && parent.remove()
+                  }
+                  return
+                }
+
+                if (r.parentKey === 'arguments') {
+                  const parent = r.findParent(p => p.isExpressionStatement())
+                  if (parent) {
+                    descryptAst.program.body.push(parent.node)
+
+                    isRemove && parent.remove()
+                  }
+                }
+              })
+            }
+          }
+
+          path.skip()
+        }
+      },
+    })
+
+    const decryptFnCode = generator(descryptAst, { compact: true }).code
+
+    return decryptFnCode
+  }
+
+  /**
+   * 指明解密函数 当指明后,所有引用该变量赋值的代码都将替换成解密函数
+   * @param {string | string[]} decryptFnList
+   * @example
+   * function _0x3028(_0x2308a4){ ... } // _0x3028 为解密函数
+   * var a = _0x3028; // 将被移除
+   * a('0x1')
+   *
+   * _0x3028('0x1')
+   */
+  designDecryptFn(decryptFnList) {
+    if (!Array.isArray(decryptFnList))
+      globalState.decryptFnList = [decryptFnList]
+    else
+      globalState.decryptFnList = decryptFnList
+
+    // 将所有引用解密函数的变量都重命名变为解密函数, 同时移除自身
+    traverse(this.ast, {
+      VariableDeclarator(path) {
+        const { id, init } = path.node
+
+        if (init && init.type === 'Identifier') {
+          const decryptFn = globalState.decryptFnList.find(n => n === init.name)
+
+          if (decryptFn) {
+            path.scope.rename(id.name, decryptFn)
+            path.remove()
+          }
+        }
+      },
+    })
+
+    this.reParse()
+  }
+
+  /**
+   * 注入代码 eval 执行
+   */
+  evalCode(code) {
+    const result = global.eval(code)
+
+    this.log('注入代码执行结果', result)
+  }
+
+  /**
+   * 保存代码中所有对象用于后续替换
+   *
+   * @example
+   * var r = {
+   *   "PzXHf": "0|2|4|3|1",
+   *   "LeQrV": function (n, t) {
+   *     return n(t);
+   *   }
+   * }
+   * r["wPpOS"]: "webgl"
+   *
+   * var r = {
+   *   "PzXHf": "0|2|4|3|1",
+   *   "LeQrV": function (n, t) {
+   *     return n(t);
+   *   }
+   *   "wPpOS": "webgl"
+   * }
+   *
+   * //  全局变量状态会保存 r 对象
+   * globalState.objectVariables = {
+   *   r = { ... }
+   * }
    */
   saveAllObject() {
     globalState.objectVariables = {}
@@ -618,7 +601,7 @@ export class Deob {
      * 合并对象  如果有相同 key 则覆盖
      * var a = {}
      * a["b"] = 123
-     * ⬇️
+     *
      * var a = {
      *  "b": 123
      * }
@@ -717,19 +700,18 @@ export class Deob {
   /**
    * 花指令 对象属性替换 需要先执行 saveAllObjectect 用于保存所有变量
    * @example
-   * var _0x52627b = {
-   *  'QqaUY': "attribute",
-   *  'SDgrw': function (_0x45e680) {
-   *     return _0x45e680();
-   *   },
-   *   'GOEUR': function (_0xeaa58e, _0x247ba7) {
-   *     return _0xeaa58e + _0x247ba7;
+   * var r = {
+   *   "PzXHf": "0|2|4|3|1",
+   *   "LeQrV": function (n, t) {
+   *     return n(t);
    *   }
    * }
-   * 🔽
-   * _0x52627b["QqaUY"] ---> "attribute"
-   * _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
-   * _0x52627b["GOEUR"](a, b) ---> a + b
+   *
+   * var u = r["PzXHf"]["split"]("|");
+   * r["LeQrV"](_0x3028, "foo");
+   *
+   * var u = "0|2|4|3|1"["split"]("|");
+   * _0x3028("foo")
    */
   objectMemberReplace() {
     // 记录被替换的对象, 如何对象没被修改过则删除
@@ -963,17 +945,17 @@ export class Deob {
   /**
    * 将 for 初始化赋值前置
    * @example
-     for (a = 1, w = "2|1|2|3"["split"]("|"), void 0;;) {
-       var a;
-       var w;
-       break;
-     }
-     🔽
-     var a = 1;
-     var w = "2|1|2|3"["split"]("|")
-     for (void 0;;) {
-        break;
-     }
+   * for (a = 1, w = "2|1|2|3"["split"]("|"), void 0;;) {
+   *   var a;
+   *   var w;
+   *   break;
+   * }
+   * 🔽
+   * var a = 1;
+   * var w = "2|1|2|3"["split"]("|")
+   * for (void 0;;) {
+   *    break;
+   * }
    */
   transformForLoop() {
     traverse(this.ast, {
@@ -1033,43 +1015,40 @@ export class Deob {
    * switch 混淆扁平化
    * @example
    * function a() {
-   *     var _0x263cfa = "1|3|2|0"["split"]("|"),
-   *       _0x105b9b = 0;
+   *   var _0x263cfa = "1|3|2|0"["split"]("|"),
+   *   _0x105b9b = 0;
    *
-   *     while (true) {
-   *       switch (_0x263cfa[_0x105b9b++]) {
-   *         case "0":
-   *           return _0x4b70fb;
+   *   while (true) {
+   *      switch (_0x263cfa[_0x105b9b++]) {
+   *        case "0":
+   *          return _0x4b70fb;
    *
-   *         case "1":
-   *           if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
-   *             return;
-   *           }
+   *        case "1":
+   *          if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
+   *            return;
+   *          }
+   *          continue;
    *
-   *           continue;
+   *        case "2":
+   *          _0x4b70fb["charset"] = "utf-8";
+   *          continue;
    *
-   *         case "2":
-   *           _0x4b70fb["charset"] = "utf-8";
-   *           continue;
-   *
-   *         case "3":
-   *           var _0x4b70fb = document["createElement"](_0x3d66ff);
-   *
-   *           continue;
-   *       }
-   *
-   *       break;
-   *     }
+   *        case "3":
+   *          var _0x4b70fb = document["createElement"](_0x3d66ff);
+   *          continue;
+   *    }
+   *    break;
    *   }
-   *   ⬇️
-   *   function a(){
-   *      if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
-   *        return;
-   *      }
-   *      var _0x4b70fb = document["createElement"](_0x3d66ff);
-   *      _0x4b70fb["charset"] = "utf-8";
-   *      return _0x4b70fb;
+   * }
+   *
+   * function a(){
+   *   if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
+   *     return;
    *   }
+   *   var _0x4b70fb = document["createElement"](_0x3d66ff);
+   *   _0x4b70fb["charset"] = "utf-8";
+   *   return _0x4b70fb;
+   * }
    */
   switchFlat() {
     this.transformForLoop()
@@ -1146,7 +1125,7 @@ export class Deob {
    * 还原逗号表达式
    * @example
    * _0x6cbcff(), console.log('foo')
-   * ⬇️
+   *
    * _0x6cbcff();
    * console.log('foo');
    */
@@ -1171,6 +1150,7 @@ export class Deob {
 
   /**
    * 将对象['属性'] 改为对象.属性
+   * @deprecated 用处不大
    */
   changeObjectAccessMode() {
     traverse(this.ast, {
@@ -1185,15 +1165,48 @@ export class Deob {
   }
 
   /**
-   * 自调用函数执行并替换 (慎用!)
+   * 移除自调用函数
+   * @deprecated
+   * @example
+   * !(fucntion) {
+   *  a()
+   * }();
+   *
+   * a()
+   */
+  removeSelfCallFn() {
+    traverse(this.ast, {
+      Program(p) {
+        p.traverse({
+          ExpressionStatement(path) {
+            const expression = path.node.expression
+            if (
+              expression.type === 'UnaryExpression'
+                    && expression.argument.type === 'CallExpression'
+                    && expression.argument.callee.type === 'FunctionExpression'
+                    && expression.argument.arguments.length === 0
+            ) {
+              path.replaceWith(expression.argument.callee.body)
+              path.skip()
+            }
+          },
+        })
+      },
+    })
+
+    this.reParse()
+  }
+
+  /**
+   * 自调用函数执行并替换
    * @example
    * ;(function (_0x4f0d08) {
-       return function (_0x4f0d08) {
-         return Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
-       }(_0x4f0d08);
-     })("bugger")("de");
-     🔽
-     Function("Function(arguments[0]+\"" + "bugger" + "\")()")("de")
+   *   return function (_0x4f0d08) {
+   *     return Function("Function(arguments[0]+\"" + _0x4f0d08 + "\")()");
+   *   }(_0x4f0d08);
+   * })("bugger")("de");
+   * 🔽
+   * Function("Function(arguments[0]+\"" + "bugger" + "\")()")("de")
    */
   selfCallFnReplace() {
     traverse(this.ast, {
@@ -1256,7 +1269,12 @@ export class Deob {
   }
 
   /**
-   * 将字符串和数值 **常量** 直接替换对应的变量引用地方
+   * 将字符串和数值 常量 直接替换对应的变量引用地方
+   * @example
+   * let a = "debugger";
+   * console.log(a)
+   *
+   * console.log("debugger")
    */
   replaceConstant() {
     traverse(this.ast, {
@@ -1295,7 +1313,7 @@ export class Deob {
    * 计算二项式字面量 计算布尔值
    * @example
    * 1 + 2   "debu" + "gger"
-   * ⬇️
+   *
    * 3       "debugger"
    */
   calcBinary() {
@@ -1362,6 +1380,10 @@ export class Deob {
 
   /**
    * 清理无用变量与函数
+   * @example
+   * let a = 1;
+   *
+   *
    */
   removeUnusedVariables(variableNames = null, excludeProgram = true) {
     traverse(this.ast, {
@@ -1397,7 +1419,14 @@ export class Deob {
 
   /**
    * 剔除始终不会执行的代码块
-   * @example if(false){ }
+   * @example
+   * if(false){
+   *  // aaa
+   * }else{
+   *  // bbb
+   * }
+   *
+   * // bbb
    */
   removeUnusedBlock() {
     traverse(this.ast, {
@@ -1415,7 +1444,10 @@ export class Deob {
 
   /**
    * 清理十六进制编码
-   * @example '\x49\x63\x4b\x72\x77\x70\x2f\x44\x6c\x67\x3d\x3d' ---> "IcKrwp/Dlg=="
+   * @example
+   * "\x49\x63\x4b\x72\x77\x70\x2f\x44\x6c\x67\x3d\x3d"
+   *
+   * "IcKrwp/Dlg=="
    */
   deleteExtra() {
     traverse(this.ast, {
@@ -1430,7 +1462,11 @@ export class Deob {
 
   /**
    * 给关键函数、标识符 设置注释
-   * @example // TOLOOK
+   * @example
+   * debugger;
+   * ⬇️
+   * // TOLOOK
+   * debugger;
    */
   markComment(keywords = [], label = ' TOLOOK') {
     const defaultKeywords = ['debugger']
@@ -1486,11 +1522,21 @@ export class Deob {
   }
 
   /**
+   * @todo
+   */
+  disableDebugger() {
+    // xxx
+  }
+
+  /**
    * 优化变量名
-   * @example catch (_0x292610) {} ---> 如 catch (error) {}   _0x52627b ---> _0xaaaaaa
+   * @example
+   * catch (_0x292610) {}
+   * ⬇️
+   * catch (error) {}
    * @deprecated
    */
-  renameIdentifier() {
+  optimizeIdentifierName() {
     const code = this.code
     const newAst = parser.parse(code)
     traverse(newAst, {

@@ -122,6 +122,7 @@ for (void 0;;) {
   it('removeUnusedVariables', () => {
     const rawCode = `
       let a = 1;
+      function b(){}
     `
 
     const deob = new Deob(rawCode)
@@ -221,6 +222,25 @@ function a() {
   return _0x4b70fb;
 }`.trim(),
     )
+  })
+
+  it('removeSelfCallFn', () => {
+    const rawCode = `
+    !function() {
+     a()
+    }();
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.removeSelfCallFn()
+    const code = deob.getCode()
+
+    expect(code).toBe(`
+{
+  a();
+}
+    `.trim())
   })
 
   it('selfCallFnReplace', () => {

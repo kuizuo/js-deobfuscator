@@ -160,7 +160,7 @@ export class Deob {
    * 分离多个 var 赋值
    * @example
    * var a = 1, b = 2;
-   *
+   * ⬇️
    * var a = 1;
    * var b = 2;
    */
@@ -189,7 +189,7 @@ export class Deob {
    *   eturn _0x4698(_0x13ee81 - -674, _0x3dfa50);
    * };
    * _0x49afe4(-57, 1080, 828, 469)
-   *
+   * ⬇️
    * _0x4698(469 - -674, 828)
    */
   nestedFnReplace(depth = 2) {
@@ -289,7 +289,7 @@ export class Deob {
    * @param {*} decryptFnCode
    * @example
    * _0x4698(_0x13ee81, _0x3dfa50)
-   *
+   * ⬇️
    * 原始字符串
    */
   decryptReplace(decryptFnCode = null) {
@@ -500,7 +500,7 @@ export class Deob {
    * function _0x3028(_0x2308a4){ ... } // _0x3028 为解密函数
    * var a = _0x3028; // 将被移除
    * a('0x1')
-   *
+   * ⬇️
    * _0x3028('0x1')
    */
   designDecryptFn(decryptFnList) {
@@ -539,7 +539,6 @@ export class Deob {
 
   /**
    * 保存代码中所有对象用于后续替换
-   *
    * @example
    * var r = {
    *   "PzXHf": "0|2|4|3|1",
@@ -548,7 +547,7 @@ export class Deob {
    *   }
    * }
    * r["wPpOS"]: "webgl"
-   *
+   * ⬇️
    * var r = {
    *   "PzXHf": "0|2|4|3|1",
    *   "LeQrV": function (n, t) {
@@ -601,7 +600,7 @@ export class Deob {
      * 合并对象  如果有相同 key 则覆盖
      * var a = {}
      * a["b"] = 123
-     *
+     * ⬇️
      * var a = {
      *  "b": 123
      * }
@@ -709,7 +708,7 @@ export class Deob {
    *
    * var u = r["PzXHf"]["split"]("|");
    * r["LeQrV"](_0x3028, "foo");
-   *
+   * ⬇️
    * var u = "0|2|4|3|1"["split"]("|");
    * _0x3028("foo")
    */
@@ -719,22 +718,19 @@ export class Deob {
     let usedObjects = {}
 
     /**
-     * 先执行 字面量花指令还原
-     * _0x52627b["QqaUY"] ---> "attribute"
+     * 字面量花指令还原
+     * r["PzXHf"] ---> "0|2|4|3|1"
      */
     traverse(this.ast, {
       MemberExpression(path) {
-        // // 父级表达式不能是赋值语句
+        // 父级表达式不能是赋值语句
         const asignment = path.parentPath
         if (!asignment || asignment?.type === 'AssignmentExpression')
           return
 
-        if (
-          path.node.object.type === 'Identifier'
-          && (path.node.property.type === 'StringLiteral'
-            || path.node.property.type === 'Identifier')
-        ) {
-          const objectName = path.node.object.name
+        const { object, property } = path.node
+        if (object.type === 'Identifier' && (property.type === 'StringLiteral' || property.type === 'Identifier')) {
+          const objectName = object.name
 
           // 找到 objectName 的定义位置
           const binding = path.scope.getBinding(objectName)
@@ -743,8 +739,8 @@ export class Deob {
 
           const start = binding.identifier.start
 
-          //    xxx            obj['xxx']                  obj.xxx
-          const propertyName = path.node.property.value || path.node.property.name
+          //    xxx            obj['xxx']        obj.xxx
+          const propertyName = property.value || property.name
 
           if (globalState.objectVariables[`${start}_${objectName}`]) {
             const objectInit = globalState.objectVariables[`${start}_${objectName}`]
@@ -761,7 +757,7 @@ export class Deob {
                 // 还需要判断 objectName[propertyName] 是否被修改过
                 const binding = path.scope.getBinding(objectName)
                 if (binding && binding.constant && binding.constantViolations.length === 0) {
-                  // 针对一些特殊代码处理 如 _0x52627b["QqaUY"]++
+                  // 针对一些特殊代码不进行处理 如 _0x52627b["QqaUY"]++
                   if (path.parent.type === 'UpdateExpression')
                     return
 
@@ -780,16 +776,15 @@ export class Deob {
     })
 
     /**
-     * 再执行 函数花指令还原
-     * _0x52627b["GOEUR"](a, b) ---> a + b
-     * _0x52627b["SDgrw"](_0x4547db) ---> _0x4547db()
+     * 函数花指令还原
+     * r["LeQrV"](_0x3028, "foo");  --->  _0x3028("foo");
      */
     traverse(this.ast, {
       CallExpression(path) {
-        if (path.node.callee.type === 'MemberExpression' && path.node.callee.object.type === 'Identifier') {
-          const objectName = path.node.callee.object.name
-          const propertyName
-            = path.node.callee.property.value || path.node.callee.property.name
+        const { callee } = path.node
+        if (callee.type === 'MemberExpression' && callee.object.type === 'Identifier') {
+          const objectName = callee.object.name
+          const propertyName = callee.property.value || callee.property.name
 
           // 找到 objectName 的定义位置
           const binding = path.scope.getBinding(objectName)
@@ -1040,7 +1035,7 @@ export class Deob {
    *    break;
    *   }
    * }
-   *
+   * ⬇️
    * function a(){
    *   if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
    *     return;
@@ -1058,35 +1053,30 @@ export class Deob {
         // 判断父节点是否为循环节点
         const forOrWhileStatementPath = path.findParent(p => p.isForStatement() || p.isWhileStatement())
 
-        if (!forOrWhileStatementPath)
-          return
+        if (!forOrWhileStatementPath) return
 
         // 拿到函数的块语句
-        const fnBlockStatementPath = forOrWhileStatementPath.findParent(p =>
-          p.isBlockStatement(),
-        )
+        const fnBlockStatementPath = forOrWhileStatementPath.findParent(p => p.isBlockStatement())
 
         let shufferArr = []
 
         // 从整个函数的 BlockStatement 中遍历寻找 "1|3|2|0"["split"]
         fnBlockStatementPath.traverse({
           MemberExpression(path) {
-            const propertyName
-              = path.node.property.value || path.node.property.name
+            const { object, property } = path.node
+            const propertyName = property.value || property.name
             if (
-              (t.isStringLiteral(path.node.property)
-                || t.isIdentifier(path.node.property))
+              (t.isStringLiteral(property)
+              || t.isIdentifier(property))
               && propertyName === 'split'
             ) {
-              if (t.isStringLiteral(path.node.object)) {
-                // path.node.object.value 为 "1|3|2|0"
-                const shufferString = path.node.object.value
+              if (t.isStringLiteral(object)) {
+                const shufferString = object.value // "1|3|2|0"
                 shufferArr = shufferString.split('|')
 
                 // 顺带移除 var _0x263cfa = "1|3|2|0"["split"]("|"),
-                const VariableDeclarator = path.findParent(p =>
-                  p.isVariableDeclarator(),
-                )
+                const VariableDeclarator = path.findParent(p => p.isVariableDeclarator())
+
                 if (VariableDeclarator)
                   VariableDeclarator.remove()
 
@@ -1109,11 +1099,8 @@ export class Deob {
 
         fnBlockStatementPath.node.body.push(...sequences)
 
-        // 将整个 while 循环体都移除
-        if (
-          path.parentPath.parentPath.type === 'WhileStatement'
-          || path.parentPath.parentPath.type === 'ForStatement'
-        )
+        // 将整个循环体都移除
+        if (['WhileStatement', 'ForStatement'].includes(path.parentPath.parentPath.type))
           path.parentPath.parentPath.remove()
 
         path.skip()
@@ -1125,7 +1112,7 @@ export class Deob {
    * 还原逗号表达式
    * @example
    * _0x6cbcff(), console.log('foo')
-   *
+   * ⬇️
    * _0x6cbcff();
    * console.log('foo');
    */
@@ -1149,48 +1136,29 @@ export class Deob {
   }
 
   /**
-   * 将对象['属性'] 改为对象.属性
-   * @deprecated 用处不大
-   */
-  changeObjectAccessMode() {
-    traverse(this.ast, {
-      MemberExpression(path) {
-        if (t.isStringLiteral(path.node.property)) {
-          const name = path.node.property.value
-          path.node.property = t.identifier(name)
-          path.node.computed = false
-        }
-      },
-    })
-  }
-
-  /**
    * 移除自调用函数
-   * @deprecated
    * @example
-   * !(fucntion) {
+   * !function() {
    *  a()
    * }();
-   *
-   * a()
+   * ⬇️
+   * {
+   *   a()
+   * }
    */
   removeSelfCallFn() {
     traverse(this.ast, {
-      Program(p) {
-        p.traverse({
-          ExpressionStatement(path) {
-            const expression = path.node.expression
-            if (
-              expression.type === 'UnaryExpression'
-                    && expression.argument.type === 'CallExpression'
-                    && expression.argument.callee.type === 'FunctionExpression'
-                    && expression.argument.arguments.length === 0
-            ) {
-              path.replaceWith(expression.argument.callee.body)
-              path.skip()
-            }
-          },
-        })
+      ExpressionStatement(path) {
+        const expression = path.node.expression
+        if (
+          expression.type === 'UnaryExpression'
+          && expression.argument.type === 'CallExpression'
+          && expression.argument.callee.type === 'FunctionExpression'
+          && expression.argument.arguments.length === 0
+        ) {
+          path.replaceWith(expression.argument.callee.body)
+          path.skip()
+        }
       },
     })
 
@@ -1247,10 +1215,7 @@ export class Deob {
               })
           })
 
-          if (
-            t.isCallExpression(innerFunction)
-              && innerFunction.arguments.length === 1
-          ) {
+          if (t.isCallExpression(innerFunction) && innerFunction.arguments.length === 1) {
             const firstStatement = innerFunction.callee.body?.body?.[0]
             if (!(firstStatement?.type === 'ReturnStatement'))
               return
@@ -1273,36 +1238,37 @@ export class Deob {
    * @example
    * let a = "debugger";
    * console.log(a)
-   *
+   * ⬇️
    * console.log("debugger")
    */
   replaceConstant() {
+    /**
+     * @param {babel.NodePath} path
+     * @param {babel.types.Node} value
+     */
+    function replaceConstantVariable(path, value) {
+      const name = path.node.id ? path.node.id.name : path.node.left.name
+      const binding = path.scope.getBinding(name)
+
+      if (binding && binding.constant && binding.constantViolations.length === 0) {
+        binding.referencePaths.forEach((r) => {
+          r.replaceWith(value)
+        })
+
+        path.remove()
+      }
+    }
+
     traverse(this.ast, {
-      'AssignmentExpression|VariableDeclarator': function (path) {
-        let name, initValue
-        if (path.isAssignmentExpression()) {
-          name = path.node.left.name
-          initValue = path.node.right
-        }
-        else {
-          name = path.node.id.name
-          initValue = path.node.init
-        }
-
-        if (t.isStringLiteral(initValue) || t.isNumericLiteral(initValue)) {
-          const binding = path.scope.getBinding(name)
-
-          if (
-            binding
-            && binding.constant
-            && binding.constantViolations.length === 0
-          ) {
-            for (let i = 0; i < binding.referencePaths.length; i++)
-              binding.referencePaths[i].replaceWith(initValue)
-
-            path.remove()
-          }
-        }
+      AssignmentExpression(path) {
+        const value = path.node.right
+        if (t.isStringLiteral(value) || t.isNumericLiteral(value))
+          replaceConstantVariable(path, value)
+      },
+      VariableDeclarator(path) {
+        const value = path.node.init
+        if (t.isStringLiteral(value) || t.isNumericLiteral(value))
+          replaceConstantVariable(path, value)
       },
     })
 
@@ -1313,7 +1279,7 @@ export class Deob {
    * 计算二项式字面量 计算布尔值
    * @example
    * 1 + 2   "debu" + "gger"
-   *
+   * ⬇️
    * 3       "debugger"
    */
   calcBinary() {
@@ -1382,37 +1348,42 @@ export class Deob {
    * 清理无用变量与函数
    * @example
    * let a = 1;
-   *
+   * ⬇️
    *
    */
   removeUnusedVariables(variableNames = null, excludeProgram = true) {
+    function processDeclaration(path, name) {
+      // 如果有指定变量排除的话
+      if (variableNames && !variableNames.includes(name)) {
+        path.skip()
+        return
+      }
+
+      const binding = path.scope.getBinding(name)
+
+      if (!binding || binding.constantViolations.length > 0) return
+
+      if (binding.referencePaths.length > 0) return
+
+      if (excludeProgram && binding.scope?.block?.type === 'Program') return
+
+      path.remove()
+    }
+
+    // 遍历所有赋值变量
     traverse(this.ast, {
-      'VariableDeclarator|FunctionDeclaration': function (path) {
+      VariableDeclarator(path) {
         const { id, init } = path.node
+
         if (!(t.isLiteral(init) || t.isObjectExpression(init) || t.isFunctionExpression(init)))
           return
 
         const name = id.name
-
-        // 如果指定变量名的话
-        if (variableNames) {
-          if (!variableNames.includes(name)) {
-            path.skip()
-            return
-          }
-        }
-
-        const binding = path.scope.getBinding(name)
-        if (!binding || binding.constantViolations.length > 0)
-          return
-
-        // 排除 Program 下的变量
-        if (excludeProgram && binding.scope?.block?.type === 'Program')
-          return
-
-        if (binding.referencePaths.length > 0)
-          return
-        path.remove()
+        processDeclaration(path, name)
+      },
+      FunctionDeclaration(path) {
+        const name = path.node.id.name
+        processDeclaration(path, name)
       },
     })
   }
@@ -1425,17 +1396,18 @@ export class Deob {
    * }else{
    *  // bbb
    * }
-   *
+   * ⬇️
    * // bbb
    */
   removeUnusedBlock() {
     traverse(this.ast, {
       IfStatement(path) {
-        if (t.isBooleanLiteral(path.node.test)) {
-          if (path.node.test.value)
-            path.node.consequent.body && path.replaceInline(path.node.consequent.body)
+        const { test, consequent, alternate } = path.node
+        if (t.isBooleanLiteral(test)) {
+          if (test.value)
+            consequent.body && path.replaceInline(consequent.body)
           else
-            path.node.alternate.body && path.replaceInline(path.node.alternate.body)
+            alternate.body && path.replaceInline(alternate.body)
         }
       },
     })
@@ -1446,7 +1418,7 @@ export class Deob {
    * 清理十六进制编码
    * @example
    * "\x49\x63\x4b\x72\x77\x70\x2f\x44\x6c\x67\x3d\x3d"
-   *
+   * ⬇️
    * "IcKrwp/Dlg=="
    */
   deleteExtra() {

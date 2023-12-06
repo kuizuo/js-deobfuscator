@@ -110,7 +110,7 @@ watch([code, options], () => {
     o: options.value,
   })
   location.value.hash = utoa(serialized)
-})
+}, { deep: true })
 
 export const parserContextMap: Record<string, unknown> = shallowReactive(
   Object.create(null),

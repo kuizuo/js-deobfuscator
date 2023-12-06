@@ -544,10 +544,12 @@ export class Deob {
    * _0x3028('0x1')
    */
   designDecryptFn(decryptFnList) {
-    if (!Array.isArray(decryptFnList))
-      globalState.decryptFnList = [decryptFnList]
-    else
-      globalState.decryptFnList = decryptFnList
+    if (decryptFnList) {
+      if (!Array.isArray(decryptFnList))
+        globalState.decryptFnList = [decryptFnList]
+      else
+        globalState.decryptFnList = decryptFnList
+    }
 
     // 将所有引用解密函数的变量都重命名变为解密函数, 同时移除自身
     traverse(this.ast, {
@@ -1448,9 +1450,9 @@ export class Deob {
         const { test, consequent, alternate } = path.node
         if (t.isBooleanLiteral(test)) {
           if (test.value)
-            consequent.body && path.replaceInline(consequent.body)
+            path.replaceWith(consequent?.body || consequent)
           else
-            alternate.body && path.replaceInline(alternate.body)
+            path.replaceWith(alternate?.body || alternate)
         }
       },
     })

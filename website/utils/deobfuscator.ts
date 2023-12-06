@@ -18,21 +18,32 @@ self.addEventListener(
       },
     })
 
-    if (options.evalCode)
-      deob.evalCode(options.evalCode)
-
-    if (options.designDecryptFn)
-      deob.designDecryptFn(options.designDecryptFn)
-
     const process = (deob: Deob) => {
       deob.splitMultipleDeclarations()
-      deob.decryptReplace()
-      deob.nestedFnReplace()
+      deob.nestedFnReplace(options.nestedFnDepth)
 
-      if (options.isDecryptFnEnabled && options.decryptFnCallCount)
-        deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
+      if (options.isDecryptFnEnabled) {
+        if (options.decryptFnLocationMethod === 'callCount') {
+          const decryptFnCode = deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
+          deob.designDecryptFn(deob.decryptFnList)
+          deob.decryptReplace(decryptFnCode)
+        }
+
+        if (options.decryptFnLocationMethod === 'bigArrLength') {
+          const decryptFnCode = deob.findDecryptFnByBigArr(options.bigArrlength, options.isRemoveDecryptFn)
+          deob.designDecryptFn(deob.decryptFnList)
+          deob.decryptReplace(decryptFnCode)
+        }
+
+        if (options.decryptFnLocationMethod === 'evalCode' && options.evalCode && options.designDecryptFn) {
+          deob.evalCode(options.evalCode)
+
+          deob.designDecryptFn(options.designDecryptFn)
+        }
+      }
 
       for (let i = 1; i <= options.execCount; i++) {
+        deob.decryptReplace()
         deob.saveAllObject()
         deob.objectMemberReplace()
         deob.controlFlowFlat()
@@ -40,20 +51,22 @@ self.addEventListener(
       }
 
       // 最后通用处理
-      if (options.isReplaceConstantEnable)
-        deob.replaceConstant()
-
-      if (options.isCalcBinaryEnable)
-        deob.calcBinary()
-
       if (options.isRemoveUnusedBlock)
         deob.removeUnusedBlock()
 
       if (options.isRemoveUnusedVariables)
         deob.removeUnusedVariables()
 
+      if (options.isReplaceConstantEnable)
+        deob.replaceConstant()
+
+      if (options.isCalcBinaryEnable)
+        deob.calcBinary()
+
+      if (options.isRestoreSequence)
+        deob.restoreSequence()
+
       deob.splitMultipleDeclarations()
-      deob.restoreSequence()
       deob.selfCallFnReplace()
 
       if (options.deleteExtraEnable)

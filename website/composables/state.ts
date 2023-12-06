@@ -9,17 +9,23 @@ export const parseTime = ref(0)
 export interface Options {
   /** 是否强力清除 */
   isStrongRemove: boolean
-  /** 解密函数调用次数 */
-  decryptFnCallCount: number
+
+  /** 嵌套函数深度 */
+  nestedFnDepth: number
   /** 是否执行解密操作 */
   isDecryptFnEnabled: boolean
   /** 是否移除解密函数 */
   isRemoveDecryptFn: boolean
-
+  /** 解密函数定位方式 */
+  decryptFnLocationMethod: 'callCount' | 'bigArrLength' | 'evalCode'
+  /** 解密函数调用次数 */
+  decryptFnCallCount: number
+  /** 大数组长度 */
+  bigArrlength: number
   /** 执行代码函数 */
   evalCode: string
   /** 指明解密函数 */
-  designDecryptFn: string[] | string | undefined
+  designDecryptFn: string[] | string
 
   /** 循环执行次数 */
   execCount: number
@@ -33,6 +39,8 @@ export interface Options {
   isRemoveUnusedBlock: boolean
   /** 是否移除无用变量 */
   isRemoveUnusedVariables: boolean
+  /** 是否还原逗号表达式 */
+  isRestoreSequence: boolean
 
   /** 还原 utf8 字符 */
   deleteExtraEnable: boolean
@@ -50,11 +58,15 @@ export interface Options {
 
 const defaultOptions: Options = {
   isStrongRemove: false,
-  decryptFnCallCount: 150,
+
+  nestedFnDepth: 2,
   isDecryptFnEnabled: true,
-  isRemoveDecryptFn: true,
+  decryptFnLocationMethod: 'callCount',
+  decryptFnCallCount: 150,
+  bigArrlength: 150,
   evalCode: '',
-  designDecryptFn: undefined,
+  designDecryptFn: '',
+  isRemoveDecryptFn: true,
 
   execCount: 2,
 
@@ -63,6 +75,8 @@ const defaultOptions: Options = {
 
   isRemoveUnusedBlock: true,
   isRemoveUnusedVariables: true,
+  isRestoreSequence: true,
+
   deleteExtraEnable: true,
   isMarkEnable: true,
   keywords: ['debugger'],

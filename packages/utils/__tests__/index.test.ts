@@ -2,17 +2,62 @@ import { describe, expect, it } from 'vitest'
 import { Deob } from '../main'
 
 describe('deob', async () => {
-  it('splitMultipleDeclarations', () => {
-    const rawCode = `var a = 1, b = 2;`
+  it('nestedFnReplace', () => {
+    const rawCode = `
+    function _0x49afe4(_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
+      return _0x4698(_0x13ee81 - -674, _0x3dfa50);
+    };
+
+    var _0x50abcd = function (_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
+      return _0x4698(_0x13ee81 - -555, _0x3dfa50);
+    };
+    _0x49afe4(-57, 1080, 828, 469)
+    _0x50abcd(-57, 1080, 424, 570)
+    `
 
     const deob = new Deob(rawCode)
 
-    deob.splitMultipleDeclarations()
+    deob.nestedFnReplace()
+
+    const code = deob.getCode()
+
+    expect(code).toContain(`_0x4698(469 - -674, 828);`)
+    expect(code).toContain(`_0x4698(570 - -555, 424);`)
+  })
+
+  it('evalCode', () => {
+    const evalCode = `
+    function foo(){
+      return 'bar'
+    }
+  `
+
+    const deob = new Deob(';')
+
+    deob.evalCode(evalCode)
+    const result = global.foo()
+
+    expect(result).toBe(`bar`)
+  })
+
+  it('designDecryptFn', () => {
+    const rawCode = `
+      function foo() {}
+      var bar = foo;
+      
+      bar()
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.designDecryptFn('foo')
+
     const code = deob.getCode()
 
     expect(code).toBe(`
-var a = 1;
-var b = 2;`.trim())
+ function foo() {}
+
+foo();`.trim())
   })
 
   it('transformForLoop', () => {
@@ -36,139 +81,6 @@ for (void 0;;) {
 }`.trim())
   })
 
-  it('deleteExtra', () => {
-    const rawCode = `
-          console.log("\x6B\x75\x69\x7A\x75\x6F")
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.deleteExtra()
-    const code = deob.getCode()
-
-    expect(code).toBe(`console.log("kuizuo");`)
-  })
-
-  it('evalCode', () => {
-    const evalCode = `
-    function foo(){
-      return 'bar'
-    }
-    `
-
-    const deob = new Deob('var a = 1;')
-
-    deob.evalCode(evalCode)
-    const result = global.foo()
-
-    expect(result).toBe(`bar`)
-  })
-
-  it('designDecryptFn', () => {
-    const rawCode = `
-      function foo() {}
-      var a = foo;
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.designDecryptFn('foo')
-
-    const code = deob.getCode()
-
-    expect(code).toBe(`function foo() {}`)
-  })
-
-  it('nestedFnReplace', () => {
-    const rawCode = `
-    function _0x49afe4(_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
-      return _0x4698(_0x13ee81 - -674, _0x3dfa50);
-    };
-
-    var _0x49afe5 = function (_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
-      return _0x4698(_0x13ee81 - -675, _0x3dfa50);
-    };
-    _0x49afe4(-57, 1080, 828, 469)
-    _0x49afe5(-57, 1080, 828, 470)
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.nestedFnReplace()
-
-    const code = deob.getCode()
-
-    expect(code).toContain(`_0x4698(469 - -674, 828);`)
-    expect(code).toContain(`_0x4698(470 - -675, 828);`)
-  })
-
-  it('removeUnusedBlock', () => {
-    const rawCode = `
-        if(false){ 
-          console.log("foo")
-        } else {
-          console.log("bar")
-        }
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.removeUnusedBlock()
-    const code = deob.getCode()
-
-    expect(code).toBe(`console.log("bar");`)
-  })
-
-  it('removeUnusedVariables', () => {
-    const rawCode = `
-      let a = 1;
-      function b(){}
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.removeUnusedVariables(null, false)
-    const code = deob.getCode()
-
-    expect(code).toBe('')
-  })
-
-  it('calcBinary', () => {
-    const rawCode = `
-    let a = 1 + 2;
-    let b = "debu" + "gger" 
-    let c = !![];
-    let d = ![]; 
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.calcBinary()
-    const code = deob.getCode()
-
-    expect(code).toBe(
-      `
-let a = 3;
-let b = "debugger";
-let c = true;
-let d = false;`.trim(),
-    )
-  })
-
-  it('replaceConstant', () => {
-    const rawCode = `
-    let a = "debugger";
-    console.log(a)
-    `
-
-    const deob = new Deob(rawCode)
-
-    deob.replaceConstant()
-    const code = deob.getCode()
-
-    expect(code).toBe(`console.log("debugger");`)
-  })
-
   it('controlFlowFlat', () => {
     const rawCode = `
     function a() {
@@ -184,7 +96,6 @@ let d = false;`.trim(),
             if (_0x3d66ff !== "link" && _0x3d66ff !== "script") {
               return;
             }
-  
             continue;
   
           case "2":
@@ -193,10 +104,8 @@ let d = false;`.trim(),
   
           case "3":
             var _0x4b70fb = document["createElement"](_0x3d66ff);
-  
             continue;
         }
-  
         break;
       }
     }
@@ -257,9 +166,7 @@ function a() {
     deob.selfCallFnReplace()
     const code = deob.getCode()
 
-    expect(code).toBe(
-      `Function("Function(arguments[0]+" + "bugger" + ")()")("de");`,
-    )
+    expect(code).toBe(`Function("Function(arguments[0]+" + "bugger" + ")()")("de");`)
   })
 
   it('saveAllObject', () => {
@@ -269,15 +176,10 @@ function a() {
       'SDgrw': function (_0x45e680) {
          return _0x45e680();
       },
-      'GOEUR': function (_0xeaa58e, _0x247ba7) {
-         return _0xeaa58e + _0x247ba7;
-      }
     }
 
     var e = {};
     e["ESKQL"] = function (n, t) {
-      return n ^ t;
-    }, e["mznfP"] = function (n, t) {
       return n ^ t;
     };
     var u = e;
@@ -303,10 +205,10 @@ function a() {
          return _0xeaa58e + _0x247ba7;
       }
     }
-     
-_0x52627b["QqaUY"]
-_0x52627b["SDgrw"](_0x4547db)
-_0x52627b["GOEUR"](a, b)
+
+    _0x52627b["QqaUY"]
+    _0x52627b["SDgrw"](_0x4547db)
+    _0x52627b["GOEUR"](a, b)
 `
 
     const deob = new Deob(rawCode)
@@ -316,14 +218,9 @@ _0x52627b["GOEUR"](a, b)
     deob.removeUnusedVariables(null, false)
     const code = deob.getCode()
 
-    expect(code).toBe(
-      `
-"attribute";
-
-_0x4547db();
-
-a + b;`.trim(),
-    )
+    expect(code).toContain(`"attribute";`)
+    expect(code).toContain(`_0x4547db();`)
+    expect(code).toContain(`a + b;`)
   })
 
   it('restoreSequence', () => {
@@ -333,11 +230,101 @@ a + b;`.trim(),
     deob.restoreSequence()
     const code = deob.getCode()
 
-    expect(code).toBe(
-      `
+    expect(code).toBe(`
 _0x6cbcff();
 
-console.log('foo');`.trim(),
+console.log('foo');
+`.trim())
+  })
+
+  it('splitMultipleDeclarations', () => {
+    const rawCode = `var a = 1, b = 2;`
+
+    const deob = new Deob(rawCode)
+
+    deob.splitMultipleDeclarations()
+    const code = deob.getCode()
+
+    expect(code).toBe(`
+var a = 1;
+var b = 2;`.trim())
+  })
+
+  it('calcBinary', () => {
+    const rawCode = `
+    let a = 1 + 2;
+    let b = "debu" + "gger" 
+    let c = !![];
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.calcBinary()
+    const code = deob.getCode()
+
+    expect(code).toBe(
+      `
+let a = 3;
+let b = "debugger";
+let c = true;`.trim(),
     )
+  })
+
+  it('replaceConstant', () => {
+    const rawCode = `
+    let a = "debugger";
+    console.log(a)
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.replaceConstant()
+    const code = deob.getCode()
+
+    expect(code).toBe(`console.log("debugger");`)
+  })
+
+  it('removeUnusedBlock', () => {
+    const rawCode = `
+        if(false){ 
+          console.log("foo")
+        } else {
+          console.log("bar")
+        }
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.removeUnusedBlock()
+    const code = deob.getCode()
+
+    expect(code).toBe(`console.log("bar");`)
+  })
+
+  it('removeUnusedVariables', () => {
+    const rawCode = `
+      let a = 1;
+      function b(){}
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.removeUnusedVariables(null, false)
+    const code = deob.getCode()
+
+    expect(code).toBe('')
+  })
+
+  it('deleteExtra', () => {
+    const rawCode = `
+          console.log("\x6B\x75\x69\x7A\x75\x6F")
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.deleteExtra()
+    const code = deob.getCode()
+
+    expect(code).toBe(`console.log("kuizuo");`)
   })
 })

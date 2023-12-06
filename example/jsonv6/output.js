@@ -123,14 +123,15 @@ var _0x53d5b1 = _0x4b1190(this, function () {
 
   if (!_0x360bf5["console"]) {
     _0x360bf5["console"] = function (_0x352363) {
-      var _0x10e813 = {};
-      _0x10e813["log"] = _0x352363;
-      _0x10e813["warn"] = _0x352363;
-      _0x10e813["debug"] = _0x352363;
-      _0x10e813["info"] = _0x352363;
-      _0x10e813["error"] = _0x352363;
-      _0x10e813["exception"] = _0x352363;
-      _0x10e813["trace"] = _0x352363;
+      var _0x10e813 = {
+        "error": _0x352363,
+        "warn": _0x352363,
+        "trace": _0x352363,
+        "log": _0x352363,
+        "debug": _0x352363,
+        "exception": _0x352363,
+        "info": _0x352363
+      };
       return _0x10e813;
     }(_0x352363);
   } else {
@@ -249,7 +250,10 @@ function _0x1048a7(_0xac1cd0, _0x26d8ca) {
 
   var _0x28acb1 = new XMLHttpRequest();
 
-  _0x28acb1["open"]("GET", _0xac1cd0, true), _0x28acb1["setRequestHeader"]("cache-control", "no-cache");
+  _0x28acb1["open"]("GET", _0xac1cd0, true);
+
+  _0x28acb1["setRequestHeader"]("cache-control", "no-cache");
+
   _0x28acb1["onreadystatechange"] = function () {
     if (4 == _0x28acb1["readyState"]) if (200 == _0x28acb1["status"]) {
       var _0x42c839 = _0x28acb1["responseText"];
@@ -258,7 +262,9 @@ function _0x1048a7(_0xac1cd0, _0x26d8ca) {
     } else {
       _0x26d8ca(null, "无法获取数据");
     }
-  }, _0x28acb1["send"]();
+  };
+
+  _0x28acb1["send"]();
 }
 
 function _0x3cc5b6(_0x4b3a78, _0x4e6709) {
@@ -288,7 +294,9 @@ function _0x79ad03(_0x554fd5, _0x406b3c) {
     "xEbSW": "json",
     "gTwBV": "get"
   };
-  _0x554fd5["dataType"] || (_0x554fd5["dataType"] = _0x5dc5c5["xEbSW"]), _0x554fd5["method"] || (_0x554fd5["method"] = _0x5dc5c5["gTwBV"]), _0x554fd5["header"] || (_0x554fd5["header"] = {});
+  _0x554fd5["dataType"] || (_0x554fd5["dataType"] = _0x5dc5c5["xEbSW"]);
+  _0x554fd5["method"] || (_0x554fd5["method"] = _0x5dc5c5["gTwBV"]);
+  _0x554fd5["header"] || (_0x554fd5["header"] = {});
 
   var _0x2a82db = new XMLHttpRequest();
 
@@ -304,15 +312,19 @@ function _0x79ad03(_0x554fd5, _0x406b3c) {
 
   _0x2a82db["onreadystatechange"] = function () {
     if (4 == _0x2a82db["readyState"]) if (200 == _0x2a82db["status"]) {
-      var _0x318ae4 = {};
-      _0x318ae4["success"] = true, _0x318ae4["result"] = _0x2a82db["responseText"];
+      var _0x318ae4 = {
+        "success": false
+      };
+      _0x318ae4["result"] = _0x2a82db["responseText"];
       _0x406b3c && _0x406b3c(_0x318ae4);
     } else {
       var _0x318ae4 = {};
-      _0x318ae4["success"] = false, _0x318ae4["result"] = _0x5dc5c5["tZWai"];
+      _0x318ae4["result"] = _0x5dc5c5["tZWai"];
       _0x406b3c && _0x406b3c(_0x318ae4);
     }
-  }, _0x2a82db["send"]();
+  };
+
+  _0x2a82db["send"]();
 }
 
 function _0x31498e(_0xd56c25, _0x38b470) {
@@ -332,7 +344,9 @@ function _0x242275(_0x1221da, _0x1d71d0) {
   var _0x1416a1 = {
     "ndbmv": "html"
   };
-  _0x1221da["dataType"] || (_0x1221da["dataType"] = _0x1416a1["ndbmv"]), _0x1221da["method"] || (_0x1221da["method"] = _0x1416a1["SNUNU"]), _0x1221da["header"] || (_0x1221da["header"] = {});
+  _0x1221da["dataType"] || (_0x1221da["dataType"] = _0x1416a1["ndbmv"]);
+  _0x1221da["method"] || (_0x1221da["method"] = _0x1416a1["SNUNU"]);
+  _0x1221da["header"] || (_0x1221da["header"] = {});
 
   var _0x52cfed = _0x204465 => {
     var _0x105bf6 = new FormData();
@@ -368,13 +382,13 @@ function _0x242275(_0x1221da, _0x1d71d0) {
 
     xhr["onreadystatechange"] = function () {
       if (xhr["readyState"] == 4) {
-        var _0x3b5d7f = {};
+        var _0x3b5d7f = {
+          "success": true
+        };
 
         try {
           _0x3b5d7f["result"] = xhr["responseText"];
-        } catch (_0x110f4d) {
-          _0x3b5d7f["success"] = true;
-        }
+        } catch (_0x110f4d) {}
 
         _0x1d71d0(_0x3b5d7f);
       }
@@ -402,7 +416,10 @@ function _0x4994bb(_0x6bc91, _0x250a66) {
     "MTPxA": "json",
     "hpcFp": "GET"
   };
-  _0x6bc91["dataType"] || (_0x6bc91["dataType"] = _0x3ce8de["MTPxA"]), _0x6bc91["method"] || (_0x6bc91["method"] = _0x3ce8de["hpcFp"]), _0x6bc91["header"] || (_0x6bc91["header"] = {}), $["ajax"]({
+  _0x6bc91["dataType"] || (_0x6bc91["dataType"] = _0x3ce8de["MTPxA"]);
+  _0x6bc91["method"] || (_0x6bc91["method"] = _0x3ce8de["hpcFp"]);
+  _0x6bc91["header"] || (_0x6bc91["header"] = {});
+  $["ajax"]({
     "url": _0x6bc91["url"],
     "type": _0x6bc91["method"],
     "dataType": _0x6bc91["dataType"],
@@ -424,8 +441,12 @@ function _0x4994bb(_0x6bc91, _0x250a66) {
       if (_0x29c433) _0x4d1f13["setRequestHeader"]("x-requested-with", "XMLHttpRequest");
     },
     "success": function (_0x6bc91) {
-      var _0x3961c5 = {};
-      _0x3961c5["success"] = true, _0x3961c5["result"] = _0x6bc91, _0x250a66(_0x3961c5);
+      var _0x3961c5 = {
+        "result": _0x6bc91,
+        "success": true
+      };
+
+      _0x250a66(_0x3961c5);
     },
     "error": function (_0x6bc91) {
       var _0x98b0c1 = "";
@@ -434,8 +455,11 @@ function _0x4994bb(_0x6bc91, _0x250a66) {
         _0x98b0c1 = _0x6bc91["responseText"];
       } catch (_0x1a4198) {}
 
-      var _0x5c33d1 = {};
-      _0x5c33d1["success"] = false, _0x5c33d1["result"] = _0x98b0c1, _0x5c33d1["response"] = _0x6bc91;
+      var _0x5c33d1 = {
+        "result": _0x98b0c1,
+        "response": _0x6bc91,
+        "success": false
+      };
 
       _0x250a66(_0x5c33d1);
     }

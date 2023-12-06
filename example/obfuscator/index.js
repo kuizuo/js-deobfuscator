@@ -31,9 +31,9 @@ class MyDeOb extends Deob { }
   await deob.record(fileName, ++index)
 
   const decryptFnCode = deob.findDecryptFnByBigArr(60, true)
-
   deob.designDecryptFn(deob.decryptFnList)
   deob.decryptReplace(decryptFnCode)
+
   await deob.record(fileName, ++index)
 
   for (let i = 1; i <= 1; i++) {

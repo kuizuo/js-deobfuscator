@@ -200,15 +200,16 @@ var _0x2ba768 = _0x511f60(this, function () {
 
   if (!_0x7b7697["console"]) {
     _0x7b7697["console"] = function (_0x390ded) {
-      var _0x3fa712 = {};
-      _0x3fa712["log"] = _0x390ded;
-      _0x3fa712["warn"] = _0x390ded;
-      _0x3fa712["debug"] = _0x390ded;
-      _0x3fa712["info"] = _0x390ded;
-      _0x3fa712["error"] = _0x390ded;
-      _0x3fa712["exception"] = _0x390ded;
-      _0x3fa712["table"] = _0x390ded;
-      _0x3fa712["trace"] = _0x390ded;
+      var _0x3fa712 = {
+        "log": _0x390ded,
+        "warn": _0x390ded,
+        "debug": _0x390ded,
+        "info": _0x390ded,
+        "error": _0x390ded,
+        "exception": _0x390ded,
+        "table": _0x390ded,
+        "trace": _0x390ded
+      };
       return _0x3fa712;
     }(_0x3d8ba6);
   } else {
@@ -557,14 +558,14 @@ var i_yYwPle = {
 };
 
 function i_TEthue() {
-  i_yYwPle["GameType"] = "fc", i_yYwPle["GameID"] = parseInt(gid), i_yYwPle["u"] = new Date(), window["addEventListener"]("unload", i_nSNmfe);
+  i_yYwPle["GameID"] = parseInt(gid), i_yYwPle["u"] = new Date(), window["addEventListener"]("unload", i_nSNmfe);
 }
 
 function i_nSNmfe() {
-  i_yYwPle["_"] = new Date(), i_yYwPle["v"] = 0;
+  i_yYwPle["_"] = new Date();
   var _0x12e92e = "link";
   0 == i_iDpHde ? _0x12e92e = "local" : i_njFT_l && (_0x12e92e = "look"), i_TQeTre({
-    GameType: "",
+    GameType: "fc",
     GameID: 0,
     Version: "v1.0",
     StrData: [_0x12e92e, i_wesTbe + "_" + i_ZmCwpe, 0, 0, "0"],
@@ -1748,24 +1749,40 @@ function i_jypkDt() {
 }
 
 var i_kJKK$t = {
-  sv1: 0,
-  sv2: 0,
-  sv3: 0,
-  sv4: 0,
+  "sv1": 1,
+  "sv2": 1,
+  "sv3": 1,
+  "sv4": 1,
   st1: null,
   st2: null,
   st3: null,
-  st4: null
+  st4: null,
+  "W": 1,
+  "ee": 1,
+  "ae": 1,
+  "ce": 1
 },
     i_cQmQBt = {
-  d1: 0,
-  d2: 0,
-  d3: 0,
-  d4: 0
+  "d1": 1,
+  "d1i": "/fc/lsvimg?sid=1&game=" + gid,
+  "d2": 1,
+  "d2i": "/fc/lsvimg?sid=2&game=" + gid,
+  "d3": 1,
+  "d3i": "/fc/lsvimg?sid=3&game=" + gid,
+  "d4": 1,
+  "d4i": "/fc/lsvimg?sid=4&game=" + gid,
+  "Z": "/fc/lsvimg?sid=5&game=" + gid,
+  "te": "/fc/lsvimg?sid=6&game=" + gid,
+  "oe": "/fc/lsvimg?sid=7&game=" + gid,
+  "le": "/fc/lsvimg?sid=8&game=" + gid,
+  "Mn": 1,
+  "Pn": 1,
+  "En": 1,
+  "An": 1
 };
 
 function i_pSswFt() {
-  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), true && (i_cQmQBt["d1i"] = "/fc/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), true && (i_cQmQBt["d2i"] = "/fc/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), true && (i_cQmQBt["d3i"] = "/fc/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), true && (i_cQmQBt["d4i"] = "/fc/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/fc/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/fc/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/fc/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/fc/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
+  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), null == i_cQmQBt["d1i"] && (i_cQmQBt["d1i"] = "/fc/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), null == i_cQmQBt["d2i"] && (i_cQmQBt["d2i"] = "/fc/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), null == i_cQmQBt["d3i"] && (i_cQmQBt["d3i"] = "/fc/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), null == i_cQmQBt["d4i"] && (i_cQmQBt["d4i"] = "/fc/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/fc/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/fc/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/fc/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/fc/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
 }
 
 function i_TkwGLt() {
@@ -1958,24 +1975,10 @@ function i_hGaila(_0x110ba3) {
 
 var i_ankaua = {
   path: null,
-  _e: {
-    ve: "",
-    de: 1400,
-    pe: 720,
-    me: 100,
-    ge: 100,
-    he: false,
-    be: 1440,
-    ye: 900,
-    we: 100,
-    ke: 100,
-    Te: true
-  },
+  "_e": _0x2cd389,
   g: function () {
-    return true === window["IGWorld"] && true && (i_ankaua["IGWorld"] = true, i_ankaua["fe"] = eval("require('electron')['ipcRenderer'];"), i_ankaua["path"] = eval("if ('kbOPg' !== _0x3628('0x3e7')) {\n    var _0x3ef490 = i_sxfci_(_0x3628('0x23b')), _0x18295c = i_sxfci_('Broomownerflag');\n    0 == i_Ebjce ? (_0x3ef490['style'][_0x3628('0x282')] = _0x3628('0x1cd'), _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x22e'), _0x18295c['style'][_0x3628('0x270')] = _0x3628('0x3e3')) : 1 == i_Ebjce ? (_0x3ef490['style']['left'] = _0x3628('0x1cd'), _0x3ef490['style'][_0x3628('0x270')] = _0x3628('0x1f6'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xc8')) : 2 == i_Ebjce ? (_0x3ef490['style']['left'] = '128px', _0x3ef490[_0x3628('0x3e')]['top'] = _0x3628('0x54'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x1f')) : 3 == i_Ebjce && (_0x3ef490['style'][_0x3628('0x282')] = '128px', _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xe5'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x4a6'));\n} else {\n    require(_0x3628('0x82'));\n}"), null["on"]("syncconfig", function (_0x282905, _0x2cd389) {
-      i_ankaua["_e"] = _0x2cd389;
-    }), i_ankaua["_e"] = null["sendSync"]("loadconfig")), // TOLOOK
-    setTimeout(this["xe"], 2000), window["addEventListener"]("focus", this["xe"]), window["addEventListener"]("beforeunload", this["Me"]), false;
+    return true === window["IGWorld"] && true && (i_ankaua["fe"] = eval("require('electron')['ipcRenderer'];"), i_ankaua["path"] = eval("if ('kbOPg' !== _0x3628('0x3e7')) {\n    var _0x3ef490 = i_sxfci_(_0x3628('0x23b')), _0x18295c = i_sxfci_('Broomownerflag');\n    0 == i_Ebjce ? (_0x3ef490['style'][_0x3628('0x282')] = _0x3628('0x1cd'), _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x22e'), _0x18295c['style'][_0x3628('0x270')] = _0x3628('0x3e3')) : 1 == i_Ebjce ? (_0x3ef490['style']['left'] = _0x3628('0x1cd'), _0x3ef490['style'][_0x3628('0x270')] = _0x3628('0x1f6'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xc8')) : 2 == i_Ebjce ? (_0x3ef490['style']['left'] = '128px', _0x3ef490[_0x3628('0x3e')]['top'] = _0x3628('0x54'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x1f')) : 3 == i_Ebjce && (_0x3ef490['style'][_0x3628('0x282')] = '128px', _0x3ef490[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0xe5'), _0x18295c[_0x3628('0x3e')][_0x3628('0x270')] = _0x3628('0x4a6'));\n} else {\n    require(_0x3628('0x82'));\n}"), null["on"]("syncconfig", function (_0x282905, _0x2cd389) {}), i_ankaua["_e"] = null["sendSync"]("loadconfig")), // TOLOOK
+    setTimeout(this["xe"], 2000), window["addEventListener"]("focus", this["xe"]), window["addEventListener"]("beforeunload", this["Me"]), true;
   },
   Pe: function (_0x60d1f4) {
     0 < navigator["userAgent"]["indexOf"]("igwmobgame") && "function" == typeof window["IGWGameCore"] && (null == i_ankaua["Ee"] && (i_ankaua["Ee"] = new window["IGWGameCore"]()), null != i_ankaua["Ee"] && i_ankaua["Ee"]["call"]("{\"type\":\"screen\", \"style\":" + _0x60d1f4 + "}"));
@@ -4258,7 +4261,7 @@ function i_XENaLr() {
 }
 
 function i_NcxYqr() {
-  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), true && (i_cQmQBt["d1i"] = "/fc/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), true && (i_cQmQBt["d2i"] = "/fc/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), true && (i_cQmQBt["d3i"] = "/fc/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), true && (i_cQmQBt["d4i"] = "/fc/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/fc/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/fc/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/fc/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/fc/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
+  1 == i_kJKK$t["sv1"] ? ($("#sv1time")["html"](i_kJKK$t["st1"]), null == i_cQmQBt["d1i"] && (i_cQmQBt["d1i"] = "/fc/lsvimg?sid=1&game=" + gid), i_sxfci_("sv1img")["src"] = i_cQmQBt["d1i"]) : ($("#sv1time")["html"](""), i_sxfci_("sv1img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv2"] ? ($("#sv2time")["html"](i_kJKK$t["st2"]), null == i_cQmQBt["d2i"] && (i_cQmQBt["d2i"] = "/fc/lsvimg?sid=2&game=" + gid), i_sxfci_("sv2img")["src"] = i_cQmQBt["d2i"]) : ($("#sv2time")["html"](""), i_sxfci_("sv2img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv3"] ? ($("#sv3time")["html"](i_kJKK$t["st3"]), null == i_cQmQBt["d3i"] && (i_cQmQBt["d3i"] = "/fc/lsvimg?sid=3&game=" + gid), i_sxfci_("sv3img")["src"] = i_cQmQBt["d3i"]) : ($("#sv3time")["html"](""), i_sxfci_("sv3img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["sv4"] ? ($("#sv4time")["html"](i_kJKK$t["st4"]), null == i_cQmQBt["d4i"] && (i_cQmQBt["d4i"] = "/fc/lsvimg?sid=4&game=" + gid), i_sxfci_("sv4img")["src"] = i_cQmQBt["d4i"]) : ($("#sv4time")["html"](""), i_sxfci_("sv4img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["W"] ? ($("#sv5time")["html"](i_kJKK$t["J"]), null == i_cQmQBt["Z"] && (i_cQmQBt["Z"] = "/fc/lsvimg?sid=5&game=" + gid), i_sxfci_("sv5img")["src"] = i_cQmQBt["Z"]) : ($("#sv5time")["html"](""), i_sxfci_("sv5img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ee"] ? ($("#sv6time")["html"](i_kJKK$t["ne"]), null == i_cQmQBt["te"] && (i_cQmQBt["te"] = "/fc/lsvimg?sid=6&game=" + gid), i_sxfci_("sv6img")["src"] = i_cQmQBt["te"]) : ($("#sv6time")["html"](""), i_sxfci_("sv6img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ae"] ? ($("#sv7time")["html"](i_kJKK$t["ie"]), null == i_cQmQBt["oe"] && (i_cQmQBt["oe"] = "/fc/lsvimg?sid=7&game=" + gid), i_sxfci_("sv7img")["src"] = i_cQmQBt["oe"]) : ($("#sv7time")["html"](""), i_sxfci_("sv7img")["src"] = "https://static.wo1wan.com/game/empsv.png"), 1 == i_kJKK$t["ce"] ? ($("#sv8time")["html"](i_kJKK$t["re"]), null == i_cQmQBt["le"] && (i_cQmQBt["le"] = "/fc/lsvimg?sid=8&game=" + gid), i_sxfci_("sv8img")["src"] = i_cQmQBt["le"]) : ($("#sv8time")["html"](""), i_sxfci_("sv8img")["src"] = "https://static.wo1wan.com/game/empsv.png");
 }
 
 function i_PNGrVr() {
@@ -4552,12 +4555,22 @@ function i_HBySEl() {
 }
 
 var i_iZEzAl = {
-  yn: false
+  "yn": true,
+  "s": function () {
+    i_bAiBbu(0);
+  },
+  "l": function () {
+    i_bAiBbu(1);
+  },
+  "wn": function (_0x62f39e) {
+    i_bkNDhu(_0x62f39e);
+  },
+  "kn": function (_0x1e5203) {
+    i_piEjku(_0x1e5203);
+  }
 };
 
-function i_CzBHSl() {
-  i_iZEzAl["yn"] = true;
-}
+function i_CzBHSl() {}
 
 function i_HxJwCl() {
   if (i_snTDve) {
@@ -4597,16 +4610,6 @@ function i_DPmFKl(_0x3f8808) {
   } else i_KKCaXl(_0x3f8808["data"]);
 }
 
-i_iZEzAl["s"] = function () {
-  i_bAiBbu(0);
-}, i_iZEzAl["l"] = function () {
-  i_bAiBbu(1);
-}, i_iZEzAl["wn"] = function (_0x62f39e) {
-  i_bkNDhu(_0x62f39e);
-}, i_iZEzAl["kn"] = function (_0x1e5203) {
-  i_piEjku(_0x1e5203);
-};
-
 function i_KKCaXl(_0x184d40) {
   var _0xf1e26d = _0x184d40[0];
   if (_0xf1e26d == 26) i_TBswui();else if (_0xf1e26d == 7) {
@@ -4623,35 +4626,35 @@ function i_KKCaXl(_0x184d40) {
 
           switch (_0xf5bb29) {
             case 1:
-              i_kJKK$t["sv1"] = 1, i_kJKK$t["st1"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["d1"] = 1, i_cQmQBt["d1i"] = _0x4fcf94;
+              i_kJKK$t["st1"] = _0x52f4e1["toLocaleString"]();
               break;
 
             case 2:
-              i_kJKK$t["sv2"] = 1, i_kJKK$t["st2"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["d2"] = 1, i_cQmQBt["d2i"] = _0x4fcf94;
+              i_kJKK$t["st2"] = _0x52f4e1["toLocaleString"]();
               break;
 
             case 3:
-              i_kJKK$t["sv3"] = 1, i_kJKK$t["st3"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["d3"] = 1, i_cQmQBt["d3i"] = _0x4fcf94;
+              i_kJKK$t["st3"] = _0x52f4e1["toLocaleString"]();
               break;
 
             case 4:
-              i_kJKK$t["sv4"] = 1, i_kJKK$t["st4"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["d4"] = 1, i_cQmQBt["d4i"] = _0x4fcf94;
+              i_kJKK$t["st4"] = _0x52f4e1["toLocaleString"]();
               break;
 
             case 5:
-              i_kJKK$t["W"] = 1, i_kJKK$t["J"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["Mn"] = 1, i_cQmQBt["Z"] = _0x4fcf94;
+              i_kJKK$t["J"] = _0x52f4e1["toLocaleString"]();
               break;
 
             case 6:
-              i_kJKK$t["ee"] = 1, i_kJKK$t["ne"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["Pn"] = 1, i_cQmQBt["te"] = _0x4fcf94;
+              i_kJKK$t["ne"] = _0x52f4e1["toLocaleString"]();
               break;
 
             case 7:
-              i_kJKK$t["ae"] = 1, i_kJKK$t["ie"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["En"] = 1, i_cQmQBt["oe"] = _0x4fcf94;
+              i_kJKK$t["ie"] = _0x52f4e1["toLocaleString"]();
               break;
 
             case 8:
-              i_kJKK$t["ce"] = 1, i_kJKK$t["re"] = _0x52f4e1["toLocaleString"](), i_cQmQBt["An"] = 1, i_cQmQBt["le"] = _0x4fcf94;
+              i_kJKK$t["re"] = _0x52f4e1["toLocaleString"]();
           }
 
           i_TkwGLt(), i_iDQBme && i_smExYt(_0xf5bb29);
@@ -4843,86 +4846,37 @@ var i_XejQKu = false,
   gCtlSound: false,
   gCtlOpt: 50,
   gScreen: 5,
-  gSuperSpeed: 5,
+  "gSuperSpeed": 1,
   gSkipFrame: 1,
   gExtX1: false,
   gExtX2: false,
-  gExtX3: false,
-  gExtX4: false,
-  gExtX5: false,
-  gExtX6: false,
+  "gExtX3": false,
+  "gExtX4": false,
+  "gExtX5": false,
+  "gExtX6": false,
   gExtX1Key: 3,
   gExtX2Key: 0,
-  gExtX3Key: 0,
-  gExtX4Key: 0,
-  gExtX5Key: 0,
-  gExtX6Key: 0,
-  gGesSpeed: 5,
-  gGes1: "4 8 2 A ",
-  gGes2: "4 3 A ",
-  gGes3: "",
-  gGes4: "",
+  "gExtX3Key": 0,
+  "gExtX4Key": 0,
+  "gExtX5Key": 0,
+  "gExtX6Key": 0,
+  "gGesSpeed": 4,
+  "gGes1": "4 8 2 A ",
+  "gGes2": "4 3 A ",
+  "gGes3": "",
+  "gGes4": "",
   gGes5: "",
   gGes6: "",
   gGes7: "",
   gGes8: "",
-  PCSet: {
-    KeyUp: "KeyW",
-    KeyDown: "KeyS",
-    KeyLeft: "KeyA",
-    KeyRight: "KeyD",
-    KeyFire1: "KeyK",
-    KeyFire2: "KeyJ",
-    KeyFire3: "KeyU",
-    KeyFire4: "KeyI",
-    KeyFire5: "KeyO",
-    KeyFire6: "KeyP",
-    KeyStart: "Digit1",
-    KeyCoin: "Digit5",
-    KeyX1: "KeyL",
-    KeyX2: "KeyY",
-    KeyX3: "KeyU",
-    KeyX4: "KeyF",
-    KeyX5: "KeyG",
-    KeyX6: "KeyH",
-    KeyS1: "KeyV",
-    KeyS2: "KeyB",
-    KeyS3: "KeyN",
-    KeyS4: "KeyM"
-  },
-  GPSetx: {
-    KeyJoy: 1,
-    KeyUp: 1,
-    KeyDown: 1,
-    KeyLeft: 0,
-    KeyRight: 0,
-    KeyFire1: 0,
-    KeyFire2: 1,
-    KeyFire3: 2,
-    KeyFire4: 3,
-    KeyFire5: 6,
-    KeyFire6: 7,
-    KeyStart: 5,
-    KeyCoin: 4,
-    KeyX1: -1,
-    KeyX2: -1,
-    KeyX3: -1,
-    KeyX4: -1,
-    KeyX5: -1,
-    KeyX6: -1,
-    KeyS1: -1,
-    KeyS2: -1,
-    KeyS3: -1,
-    KeyS4: -1,
-    gKeyRev: false,
-    gKeyRevLR: false
-  },
-  sHQX: true,
-  gSoundVol: 80,
-  lockScr: false,
-  gDisHoldLR: false,
-  gJoyLagFix: 4,
-  gScrType: 1,
+  "PCSet": i_jwnmXu,
+  "GPSetx": i_mACQRu,
+  "sHQX": _0x3958d3,
+  "gSoundVol": 70,
+  "lockScr": false,
+  "gDisHoldLR": false,
+  "gJoyLagFix": 4,
+  "gScrType": 0,
   Qn: false,
   Mobset: null,
   MobBase: {
@@ -5068,7 +5022,7 @@ function i_TAQtGu() {
   _0x37e704["open"]("GET", "/loadset?type=fc&gid=" + gid, true), _0x37e704["responseType"] = "json", _0x37e704["onreadystatechange"] = function () {
     if (_0x37e704["readyState"] == XMLHttpRequest["DONE"] && 200 == _0x37e704["status"]) {
       var _0x12709c = _0x37e704["response"];
-      null == _0x12709c["PCSet"] || null == _0x12709c["GPSetx"] ? i_JcAsUu() : i_WmyDOu = _0x12709c, null == i_WmyDOu["gExtX5"] && (i_WmyDOu["gExtX5"] = false, i_WmyDOu["gExtX5Key"] = 0, i_WmyDOu["gExtX6"] = false, i_WmyDOu["gExtX6Key"] = 0, i_WmyDOu["PCSet"]["KeyX5"] = "NO", i_WmyDOu["PCSet"]["KeyX6"] = "NO", i_WmyDOu["GPSetx"]["KeyX5"] = -1, i_WmyDOu["GPSetx"]["KeyX6"] = -1), null == i_WmyDOu["gExtX3"] && (i_WmyDOu["gExtX3"] = false, i_WmyDOu["gExtX3Key"] = 0, i_WmyDOu["gGes1"] = "4 8 2 A ", i_WmyDOu["gGes2"] = "4 3 A ", i_WmyDOu["gGes3"] = "", i_WmyDOu["gGes4"] = ""), null == i_WmyDOu["gExtX4"] && (i_WmyDOu["gExtX4"] = false, i_WmyDOu["gExtX4Key"] = 0), null == i_WmyDOu["gGesSpeed"] && (i_WmyDOu["gGesSpeed"] = 4), null == i_WmyDOu["PCSet"] && (i_WmyDOu["PCSet"] = i_jwnmXu), null == i_WmyDOu["GPSetx"] && (i_WmyDOu["GPSetx"] = i_mACQRu), null == i_WmyDOu["sHQX"] && (i_WmyDOu["sHQX"] = true), null == i_WmyDOu["gSoundVol"] && (i_WmyDOu["gSoundVol"] = 70), null == i_WmyDOu["lockScr"] && (i_WmyDOu["lockScr"] = false), null == i_WmyDOu["gDisHoldLR"] && (i_WmyDOu["gDisHoldLR"] = false), null == i_WmyDOu["gJoyLagFix"] && (i_WmyDOu["gJoyLagFix"] = 4), null == i_WmyDOu["GPSetx"]["gKeyRev"] && (i_WmyDOu["GPSetx"]["gKeyRev"] = false), null == i_WmyDOu["GPSetx"]["gKeyRevLR"] && (i_WmyDOu["GPSetx"]["gKeyRevLR"] = false), i_NRRXBu(), i_AQsA$u(), i_XejQKu = true;
+      null == _0x12709c["PCSet"] || null == _0x12709c["GPSetx"] ? i_JcAsUu() : i_WmyDOu = _0x12709c, null == i_WmyDOu["gExtX5"] && (i_WmyDOu["PCSet"]["KeyX5"] = "NO", i_WmyDOu["PCSet"]["KeyX6"] = "NO", i_WmyDOu["GPSetx"]["KeyX5"] = -1, i_WmyDOu["GPSetx"]["KeyX6"] = -1), null == i_WmyDOu["gExtX3"] && (i_WmyDOu["gExtX3"] = false), null == i_WmyDOu["gExtX4"] && (i_WmyDOu["gExtX4"] = false), null == i_WmyDOu["gGesSpeed"] && (i_WmyDOu["gGesSpeed"] = 4), null == i_WmyDOu["PCSet"] && (i_WmyDOu["PCSet"] = i_jwnmXu), null == i_WmyDOu["GPSetx"] && (i_WmyDOu["GPSetx"] = i_mACQRu), null == i_WmyDOu["sHQX"] && (i_WmyDOu["sHQX"] = true), null == i_WmyDOu["gSoundVol"] && (i_WmyDOu["gSoundVol"] = 70), null == i_WmyDOu["lockScr"] && (i_WmyDOu["lockScr"] = false), null == i_WmyDOu["gDisHoldLR"] && (i_WmyDOu["gDisHoldLR"] = false), null == i_WmyDOu["gJoyLagFix"] && (i_WmyDOu["gJoyLagFix"] = 4), null == i_WmyDOu["GPSetx"]["gKeyRev"] && (i_WmyDOu["GPSetx"]["gKeyRev"] = false), null == i_WmyDOu["GPSetx"]["gKeyRevLR"] && (i_WmyDOu["GPSetx"]["gKeyRevLR"] = false), i_NRRXBu(), i_AQsA$u(), i_XejQKu = true;
     }
   }, _0x37e704["send"](), i_NRRXBu(), i_iDQBme ? i_axfcof() : i_TXHhWu();
 }
@@ -5115,7 +5069,7 @@ function i_TXHhWu() {
 }
 
 function i_GezfJu(_0x2d1b5b) {
-  _0x2d1b5b ? (i_WmyDOu["gScrType"] = 1, $("#whathis")["css"]("image-rendering", "pixelated")) : (i_WmyDOu["gScrType"] = 0, $("#whathis")["css"]("image-rendering", "auto"));
+  _0x2d1b5b ? $("#whathis")["css"]("image-rendering", "pixelated") : $("#whathis")["css"]("image-rendering", "auto");
 }
 
 function i_PafEQu(_0x3958d3) {
@@ -5131,7 +5085,7 @@ function i_sJXWef(_0x568d2a) {
 }
 
 function i_TfQXnf(_0xd3323d) {
-  if (i_WmyDOu["lockScr"] = _0xd3323d, i_WmyDOu["lockScr"]) {
+  if (i_WmyDOu["lockScr"]) {
     var _0x4d81a6 = i_sxfci_("gamedisplay"),
         _0x487312 = i_sxfci_("gamescr"),
         _0x3412bf = i_sxfci_("whathis"),
@@ -5334,7 +5288,7 @@ function i_mMmFe_(_0x57fb13, _0x1f803c, _0x111c74) {
 }
 
 var i_aaCBn_ = {
-  nt: "",
+  "nt": _0x287652,
   addEventListener: function () {}
 };
 
@@ -5358,7 +5312,7 @@ function i_tdBda_(_0x2a3092) {
 var i_sxfci_ = function (_0x287652) {
   var _0xe98678 = document["getElementById"](_0x287652);
 
-  return null == _0xe98678 ? (i_aaCBn_["nt"] = _0x287652, _0xe98678 = i_aaCBn_, null) : _0xe98678;
+  return null == _0xe98678 ? (_0xe98678 = i_aaCBn_, null) : _0xe98678;
 };
 
 function i_Brhwo_(_0x97b515) {

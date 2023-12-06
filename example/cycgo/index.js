@@ -30,7 +30,9 @@ class MyDeOb extends Deob { }
 
   await deob.prettierCode()
 
-  deob.findDecryptFnByCallCount(1000, true)
+  const decryptFnCode = deob.findDecryptFnByCallCount(1000, true)
+  deob.designDecryptFn(deob.decryptFnList)
+  deob.decryptReplace(decryptFnCode)
   await deob.record(fileName, ++index)
 
   for (let j = 1; j <= 2; j++) {
@@ -47,6 +49,7 @@ class MyDeOb extends Deob { }
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
+  deob.restoreSequence()
 
   deob.deleteExtra()
   deob.markComment()

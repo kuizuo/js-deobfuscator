@@ -37,7 +37,7 @@ class MyDeOb extends Deob { }
   deob.splitMultipleDeclarations()
   await deob.record(fileName, ++index)
 
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 3; i++) {
     deob.decryptReplace()
 
     for (let j = 1; j <= 2; j++) {
@@ -56,6 +56,7 @@ class MyDeOb extends Deob { }
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
+  deob.restoreSequence()
   deob.selfCallFnReplace()
 
   deob.deleteExtra()

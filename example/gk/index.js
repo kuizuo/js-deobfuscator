@@ -21,9 +21,12 @@ const __dirname = dirname(__filename)
   let index = 0
   await deob.prettierCode()
 
-  deob.nestedFnReplace()
+  deob.nestedFnReplace(2)
 
-  deob.findDecryptFnByCallCount(800, true)
+  const decryptFnCode = deob.findDecryptFnByCallCount(1000, true)
+  deob.designDecryptFn(deob.decryptFnList)
+  deob.decryptReplace(decryptFnCode)
+
   await deob.record(fileName, ++index)
 
   for (let i = 1; i <= 2; i++) {
@@ -42,6 +45,7 @@ const __dirname = dirname(__filename)
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
+  deob.restoreSequence()
   deob.selfCallFnReplace()
 
   deob.deleteExtra()

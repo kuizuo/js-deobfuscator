@@ -1160,6 +1160,9 @@ export class Deob {
     traverse(this.ast, {
       SequenceExpression: {
         exit(path) {
+          // 排除
+          if (['test', 'left', 'right'].includes(path.parentKey)) return
+
           const exporessions = path.node.expressions
           const finalExpression = exporessions[exporessions.length - 1]
           const statement = path.getStatementParent()

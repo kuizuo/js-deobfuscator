@@ -329,11 +329,14 @@ let c = true;`.trim(),
 
   it('removeUnusedBlock', () => {
     const rawCode = `
-        if(false){ 
-          console.log("foo")
+        let a = "foo"
+        if(true){ 
+          let a = "bar"
         } else {
-          console.log("bar")
+          // xxx
         }
+
+        var result = false ? 'true' : 'false';
     `
 
     const deob = new Deob(rawCode)
@@ -341,7 +344,8 @@ let c = true;`.trim(),
     deob.removeUnusedBlock()
     const code = deob.getCode()
 
-    expect(code).toBe(`console.log("bar");`)
+    expect(code).toContain(`let a = "foo"`)
+    expect(code).toContain(`var result = 'false'`)
   })
 
   it('removeUnusedVariables', () => {

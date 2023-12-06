@@ -1,8 +1,8 @@
 import { promises as fs, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import * as parser from '@babel/parser'
-import traverse1 from '@babel/traverse'
-import generator1 from '@babel/generator'
+import traverse1, { Binding, NodePath, Scope, Visitor } from '@babel/traverse'
+import generator1, { GeneratorOptions } from '@babel/generator'
 import { codeFrameColumns } from '@babel/code-frame'
 import template1 from '@babel/template'
 import * as t from '@babel/types'
@@ -48,7 +48,7 @@ export class Deob {
    * @param {object} [options] -  选项
    * @param {string} [options.dir] - 输出目录
    * @param {boolean} [options.isWriteFile] - 是否写入文件
-   * @param {import('@babel/generator').GeneratorOptions} [options.opts]
+   * @param {GeneratorOptions} [options.opts]
    * @param {boolean} [options.isLog] - 是否输出日志
    * @throws {Error} 请载入js代码
    */
@@ -60,7 +60,7 @@ export class Deob {
     /** @type {string} */
     this.rawCode = rawCode
 
-    /** @type {import('@babel/generator').GeneratorOptions} */
+    /** @type {GeneratorOptions} */
     this.opts = options.opts || {
       minified: false,
       jsescOption: { minimal: true },
@@ -194,7 +194,7 @@ export class Deob {
    */
   nestedFnReplace(depth = 2) {
     /**
-     * @param {babel.NodePath<babel.types.FunctionDeclaration | babel.types.FunctionExpression>} path
+     * @param {NodePath<t.FunctionDeclaration | t.FunctionExpression>} path
      */
     const processFunction = (path) => {
       const fnName = path.node.id?.name || path.parentPath.node.id?.name
@@ -267,8 +267,8 @@ export class Deob {
       }
     }
 
-    /** @type {import('@babel/traverse').Visitor} */
-    const visit = {
+    /** @type {Visitor} */
+    const visitor = {
       FunctionDeclaration(path) {
         return processFunction(path)
       },
@@ -279,7 +279,7 @@ export class Deob {
     }
 
     for (let i = 0; i < depth; i++) {
-      traverse(this.ast, visit)
+      traverse(this.ast, visitor)
       this.reParse()
     }
   }
@@ -359,7 +359,7 @@ export class Deob {
     let index = 0 // 定义解密函数所在语句下标
 
     /**
-     * @param {babel.NodePath<t.FunctionDeclaration | t.FunctionExpression>} path
+     * @param {NodePath<t.FunctionDeclaration | t.FunctionExpression>} path
      */
     const processFunction = (path) => {
       const fnName = path.node.id?.name || path.parentPath.node.id?.name
@@ -376,7 +376,7 @@ export class Deob {
         if (!binding) return
 
         /**
-         * @type {import('@babel/traverse').NodePath<t.FunctionDeclaration | t.VariableDeclaration>} path
+         * @type {NodePath<t.FunctionDeclaration | t.VariableDeclaration>} path
          */
         const parent = binding.path.find(p => p.isFunctionDeclaration() || p.isVariableDeclaration())
         if (!parent) return
@@ -1288,8 +1288,8 @@ export class Deob {
    */
   replaceConstant() {
     /**
-     * @param {babel.NodePath} path
-     * @param {babel.types.Node} value
+     * @param {NodePath} path
+     * @param {t.Node} value
      */
     function replaceConstantVariable(path, value) {
       const name = path.node.id ? path.node.id.name : path.node.left.name
@@ -1434,7 +1434,7 @@ export class Deob {
   }
 
   /**
-   * 剔除始终不会执行的代码块
+   * 移除始终不会执行的代码块
    * @example
    * if(false){
    *  // aaa
@@ -1445,16 +1445,59 @@ export class Deob {
    * // bbb
    */
   removeUnusedBlock() {
-    traverse(this.ast, {
-      IfStatement(path) {
-        const { test, consequent, alternate } = path.node
-        if (t.isBooleanLiteral(test)) {
-          if (test.value)
-            path.replaceWith(consequent?.body || consequent)
-          else
-            path.replaceWith(alternate?.body || alternate)
+    /**
+     * @param {NodePath} path
+     * @param {t.Node} path
+     */
+    function replace(path, node) {
+      if (t.isBlockStatement(node))
+        path.replaceWithMultiple(node.body)
+      else
+        path.replaceWith(node)
+    }
+
+    /**
+     * @param {NodePath<t.IfStatement | t.ConditionalExpression>} path
+     */
+    const process = function (path) {
+      const { consequent, alternate } = path.node
+      const { scope } = path
+
+      /**
+       * 由于块范围与父范围合并，我们需要重命名这些，避免重复声明的变量。
+       * @param {Scope} localScope
+       */
+      function rename(localScope) {
+        if (localScope === scope) return
+
+        for (const name in localScope.bindings) {
+          if (scope.hasBinding(name)) {
+            const newName = scope.generateUid(name)
+            localScope.bindings[name].referencePaths.forEach((ref) => {
+              // 避免与其他同名绑定发生冲突
+              if (ref.scope.hasBinding(newName))
+                ref.scope.rename(newName)
+            })
+
+            localScope.bindings[name].identifier.name = newName
+          }
         }
-      },
+      }
+
+      if (path.get('test').evaluateTruthy()) {
+        rename(path.get('consequent').scope)
+        replace(path, consequent)
+      }
+      else if (path.node.alternate) {
+        rename(path.get('alternate').scope)
+        replace(path, alternate)
+      }
+      else { path.remove() }
+    }
+
+    traverse(this.ast, {
+      IfStatement: { exit(path) { process(path) } },
+      ConditionalExpression: { exit(path) { process(path) } },
     })
     this.reParse()
   }
@@ -1539,6 +1582,7 @@ export class Deob {
   }
 
   /**
+   * 禁用 debugger
    * @todo
    */
   disableDebugger() {

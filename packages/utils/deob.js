@@ -359,7 +359,7 @@ export class Deob {
     let index = 0 // 定义解密函数所在语句下标
 
     /**
-     * @param {babel.NodePath<babel.types.FunctionDeclaration | babel.types.FunctionExpression>} path
+     * @param {babel.NodePath<t.FunctionDeclaration | t.FunctionExpression>} path
      */
     const processFunction = (path) => {
       const fnName = path.node.id?.name || path.parentPath.node.id?.name
@@ -368,17 +368,21 @@ export class Deob {
 
       if (!binding) return
 
-      if (binding.referencePaths.length > count) {
+      if (binding.referencePaths.length >= count) {
         globalState.decryptFnList.push(fnName)
 
         // 根据最后一个解密函数来定义解密函数所在语句下标
         const binding = path.scope.getBinding(fnName)
         if (!binding) return
 
+        /**
+         * @type {import('@babel/traverse').NodePath<t.FunctionDeclaration | t.VariableDeclaration>} path
+         */
         const parent = binding.path.find(p => p.isFunctionDeclaration() || p.isVariableDeclaration())
         if (!parent) return
 
-        const body = parent.scope.block.body
+        const body = parent.parentPath.scope.block.body
+
         for (let i = 0; i < body.length; i++) {
           const node = body[i]
           if (node.start === parent.node.start)
@@ -429,7 +433,7 @@ export class Deob {
       ArrayExpression(path) {
         const { node } = path
 
-        if (node.elements.length > count) {
+        if (node.elements.length >= count) {
           const parentPath = path.findParent(p => p.isVariableDeclaration() || p.isExpressionStatement())
 
           if (!parentPath)
@@ -443,25 +447,21 @@ export class Deob {
 
           const binding = path.scope.getBinding(bigArrName)
 
-          // 如果大数组引用很少,大概率是被函数包裹起来的
           if (binding.referencePaths.length < 10) {
-            // 不断向上找,找到 program 下 的代码块
-            const parent = path.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
+            const variableDeclaration = path.findParent(p => p.isVariableDeclaration())
 
-            if (parent.type === 'FunctionDeclaration') {
-              const fnName = parent.node.id.name
-
-              // 重新找大数组变量名
-              const binding = path.scope.getBinding(fnName)
+            // 如果大数组就在 program 下
+            if (variableDeclaration.parent.type === 'Program') {
+              descryptAst.program.body.push(variableDeclaration.node)
 
               // 通过引用 找到 数组乱序代码 与 解密函数代码
               binding.referencePaths.forEach((r) => {
-                if (r.parentKey === 'callee') {
+                if (r.parentKey === 'object') {
                   // 找到大数组所调用位置,继续向上找,大概率就是解密函数
                   const parent = r.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
                   if (parent) {
                     const decryptFnName = parent.node.id?.name
-                    if (decryptFnName && decryptFnName !== fnName)
+                    if (decryptFnName)
                       globalState.decryptFnList.push(decryptFnName)
 
                     descryptAst.program.body.push(parent.node)
@@ -480,6 +480,46 @@ export class Deob {
                   }
                 }
               })
+
+              isRemove && variableDeclaration.remove()
+            }
+            else {
+            // 不断向上找,找到 program 下 的代码块
+              const parent = path.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
+
+              if (parent.type === 'FunctionDeclaration') {
+                const fnName = parent.node.id.name
+
+                // 重新找大数组变量名
+                const binding = path.scope.getBinding(fnName)
+
+                // 通过引用 找到 数组乱序代码 与 解密函数代码
+                binding.referencePaths.forEach((r) => {
+                  if (r.parentKey === 'callee') {
+                  // 找到大数组所调用位置,继续向上找,大概率就是解密函数
+                    const parent = r.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
+                    if (parent) {
+                      const decryptFnName = parent.node.id?.name
+                      if (decryptFnName && decryptFnName !== fnName)
+                        globalState.decryptFnList.push(decryptFnName)
+
+                      descryptAst.program.body.push(parent.node)
+
+                      isRemove && parent.remove()
+                    }
+                    return
+                  }
+
+                  if (r.parentKey === 'arguments') {
+                    const parent = r.findParent(p => p.isExpressionStatement())
+                    if (parent) {
+                      descryptAst.program.body.push(parent.node)
+
+                      isRemove && parent.remove()
+                    }
+                  }
+                })
+              }
             }
           }
 

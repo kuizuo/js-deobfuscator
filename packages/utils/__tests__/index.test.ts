@@ -25,6 +25,49 @@ describe('deob', async () => {
     expect(code).toContain(`_0x4698(570 - -555, 424);`)
   })
 
+  it('findDecryptFnByCallCount', () => {
+    const rawCode = `
+    function _0x4698(_0x254ae1){
+      return atob(_0x254ae1)
+    }
+
+    _0x4698("SGVsbG8sIHdvcmxk")
+    _0x4698("ZGVidWdnZXI=")
+    `
+
+    const deob = new Deob(rawCode)
+
+    const decryptFnCode = deob.findDecryptFnByCallCount(2, true)
+    deob.decryptReplace(decryptFnCode)
+
+    const code = deob.getCode()
+    expect(code).toContain(`Hello, world`)
+    expect(code).toContain(`debugger`)
+  })
+
+  it('findDecryptFnByBigArr', () => {
+    const rawCode = `
+    var arr = ["hello,world", "debugger"]
+    function _0x4698(i){
+      return arr[i]
+    }
+
+    _0x4698(0)
+    _0x4698(1)
+    `
+
+    const deob = new Deob(rawCode)
+
+    const decryptFnCode = deob.findDecryptFnByBigArr (2, true)
+    deob.decryptReplace(decryptFnCode)
+
+    const code = deob.getCode()
+    expect(code).toBe(`
+"hello,world";
+"debugger";
+    `.trim())
+  })
+
   it('evalCode', () => {
     const evalCode = `
     function foo(){

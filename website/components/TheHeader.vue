@@ -1,6 +1,7 @@
 <script setup lang="ts">
 async function copyLink(e: MouseEvent) {
   await navigator.clipboard.writeText(window.location.href)
+  // eslint-disable-next-line no-alert
   window.alert('copy')
 }
 </script>

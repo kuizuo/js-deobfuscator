@@ -6,18 +6,15 @@
 
 ### 网页
 
-[js-de-obfuscator.vercel.app](https://js-de-obfuscator.vercel.app/) 或 [js-de-obfuscator.kuizuo.cn](https://js-de-obfuscator.kuizuo.cn/) 在线体验
+[js-deobfuscator.vercel.app](https://js-deobfuscator.vercel.app/) 或 [js-deobfuscator.kuizuo.cn](https://js-deobfuscator.kuizuo.cn/) 在线体验
 
 ![image-1](./images/1.png)
 
-在执行还原前，请设置相关反混淆配置
-
-![image-2](./images/2.png)
+在执行还原前，请根据实际代码设置反混淆配置
 
 控制台可查看相关处理日志
 
 ![image-3](./images/3.png)
-
 
 ### 本地
 
@@ -47,6 +44,9 @@ pnpm i
 
 node index.js 即可开始还原代码
 
+## 使用文档
+
+TODO...
 
 ## 致谢
 

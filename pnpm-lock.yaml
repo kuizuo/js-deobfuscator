@@ -27,6 +27,12 @@ importers:
         specifier: ^0.18.0
         version: 0.18.1
 
+  example:
+    devDependencies:
+      '@deob/utils':
+        specifier: workspace:*
+        version: link:../packages/utils
+
   packages/utils:
     dependencies:
       '@babel/core':
@@ -60,12 +66,6 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
-
-  play:
-    devDependencies:
-      '@deob/utils':
-        specifier: workspace:*
-        version: link:../packages/utils
 
   website:
     dependencies:

@@ -1,5 +1,5 @@
 {
-  "name": "play",
+  "name": "example",
   "type": "module",
   "private": true,
   "devDependencies": {

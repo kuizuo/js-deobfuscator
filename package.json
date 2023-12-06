@@ -15,7 +15,7 @@
   },
   "workspaces": [
     "website",
-    "play",
+    "example",
     "packages/*"
   ],
   "devDependencies": {

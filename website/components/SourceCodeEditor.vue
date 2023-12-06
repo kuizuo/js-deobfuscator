@@ -10,10 +10,10 @@ interface Example {
   value: () => Promise<string>
 }
 
-const files = import.meta.glob('../../play/**/code.js', { as: 'raw' })
+const files = import.meta.glob('../../example/**/code.js', { as: 'raw' })
 
 const examples: Example[] = Object.entries(files).map(([key, value]) => ({
-  name: key.replace('../../play/', ''),
+  name: key.replace('../../example/', ''),
   value,
 }))
 

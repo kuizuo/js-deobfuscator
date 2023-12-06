@@ -22,10 +22,9 @@ class MyDeOb extends Deob { }
 
   await deob.prettierCode()
 
-  deob.removeSelfCallFn()
-
   let index = 0
 
+  deob.removeSelfCallFn()
   deob.nestedFnReplace()
 
   deob.splitMultipleDeclarations()

@@ -42,6 +42,7 @@ class MyDeOb extends Deob { }
 
   deob.removeUnusedBlock()
   deob.removeUnusedVariables()
+  deob.restoreSequence()
 
   deob.deleteExtra()
   deob.markComment()

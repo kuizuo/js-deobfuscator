@@ -1,12 +1,25 @@
 import { promises as fs, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import * as parser from '@babel/parser'
-import traverse1, { Binding, NodePath, Scope, Visitor } from '@babel/traverse'
-import generator1, { GeneratorOptions } from '@babel/generator'
+
+// import { Binding, NodePath, Scope, Visitor } from '@babel/traverse'
+// import type { NodePath } from '@babel/traverse'
+import traverse1 from '@babel/traverse'
+import generator1 from '@babel/generator'
 import { codeFrameColumns } from '@babel/code-frame'
 import template1 from '@babel/template'
+import * as m from '@codemod/matchers'
 import * as t from '@babel/types'
 import { isEmpty } from 'lodash-es'
+
+import {
+  constMemberExpression,
+  emptyIife,
+  falseMatcher,
+  findParent,
+  matchIife,
+  trueMatcher,
+} from './utils/matcher'
 
 /** @type {generator1} */
 const generator = generator1?.default || generator1
@@ -484,7 +497,7 @@ export class Deob {
               isRemove && variableDeclaration.remove()
             }
             else {
-            // 不断向上找,找到 program 下 的代码块
+              // 不断向上找,找到 program 下 的代码块
               const parent = path.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
 
               if (parent.type === 'FunctionDeclaration') {
@@ -496,7 +509,7 @@ export class Deob {
                 // 通过引用 找到 数组乱序代码 与 解密函数代码
                 binding.referencePaths.forEach((r) => {
                   if (r.parentKey === 'callee') {
-                  // 找到大数组所调用位置,继续向上找,大概率就是解密函数
+                    // 找到大数组所调用位置,继续向上找,大概率就是解密函数
                     const parent = r.findParent(p => p.isFunctionDeclaration() || p.isFunctionExpression())
                     if (parent) {
                       const decryptFnName = parent.node.id?.name
@@ -792,7 +805,7 @@ export class Deob {
               const keyName = prop.key.value || prop.key.name
               if (
                 (prop.key.type === 'StringLiteral'
-                || prop.key.type === 'Identifier')
+                  || prop.key.type === 'Identifier')
                 && keyName === propertyName
                 && t.isLiteral(prop.value)
               ) {
@@ -847,7 +860,7 @@ export class Deob {
               const keyName = prop.key.value || prop.key.name
               if (
                 (prop.key.type === 'StringLiteral'
-                || prop.key.type === 'Identifier')
+                  || prop.key.type === 'Identifier')
                 && prop.value.type === 'FunctionExpression'
                 && keyName === propertyName
               ) {
@@ -1109,7 +1122,7 @@ export class Deob {
             const propertyName = property.value || property.name
             if (
               (t.isStringLiteral(property)
-              || t.isIdentifier(property))
+                || t.isIdentifier(property))
               && propertyName === 'split'
             ) {
               if (t.isStringLiteral(object)) {
@@ -1253,7 +1266,7 @@ export class Deob {
                 Identifier(p) {
                   if (
                     p.parentKey !== 'params'
-                      && p.node.name === argument.name
+                    && p.node.name === argument.name
                   )
                     p.replaceWith(outerArguments[index])
                 },
@@ -1587,6 +1600,184 @@ export class Deob {
    */
   disableDebugger() {
     // xxx
+  }
+
+  /**
+   * 移除环境检测 (自卫代码,debugger 保护, 控制台输出)
+   *
+   */
+  removeEnvDetection() {
+
+  }
+
+  /**
+   * 移除自卫代码
+   * @example
+   * @see {@link https://github.com/j4k0xb/webcrack/blob/master/src/deobfuscator/selfDefending.ts}
+   */
+  removeSelfDefendingCode() {
+    // 匹配与之代码相似的代码
+    /* var _0x318428 = function () {
+      var _0x17ed27 = true;
+      return function (_0x5a26f9, _0x2a79cb) {
+        var _0x175044 = _0x17ed27 ? function () {
+          if (_0x2a79cb) {
+            var _0x421594 = _0x2a79cb["apply"](_0x5a26f9, arguments);
+
+            _0x2a79cb = null;
+            return _0x421594;
+          }
+        } : function () {};
+
+        _0x17ed27 = false;
+        return _0x175044;
+      };
+    }(); */
+
+    const callController = m.capture(m.anyString())
+    const firstCall = m.capture(m.identifier())
+    const rfn = m.capture(m.identifier())
+    const context = m.capture(m.identifier())
+    const res = m.capture(m.identifier())
+    const fn = m.capture(m.identifier())
+
+    const trueMatcher = m.or(
+      m.booleanLiteral(true),
+      m.unaryExpression('!', m.numericLiteral(0)),
+      m.unaryExpression('!', m.unaryExpression('!', m.numericLiteral(1))),
+      m.unaryExpression('!', m.unaryExpression('!', m.arrayExpression([]))),
+    )
+
+    // const callControllerFunctionName = (function() { ... })();
+    const matcher = m.variableDeclarator(
+      m.identifier(callController),
+      matchIife([
+        // let firstCall = true;
+        m.variableDeclaration(undefined, [
+          m.variableDeclarator(firstCall, trueMatcher),
+        ]),
+        // return function (context, fn) {
+        m.returnStatement(
+          m.functionExpression(
+            null,
+            [context, fn],
+            m.blockStatement([
+              m.variableDeclaration(undefined, [
+                // const rfn = firstCall ? function() {
+                m.variableDeclarator(
+                  rfn,
+                  m.conditionalExpression(
+                    m.fromCapture(firstCall),
+                    m.functionExpression(
+                      null,
+                      [],
+                      m.blockStatement([
+                        // if (fn) {
+                        m.ifStatement(
+                          m.fromCapture(fn),
+                          m.blockStatement([
+                            // const res = fn.apply(context, arguments);
+                            m.variableDeclaration(undefined, [
+                              m.variableDeclarator(
+                                res,
+                                m.callExpression(
+                                  constMemberExpression(
+                                    m.fromCapture(fn),
+                                    'apply',
+                                  ),
+                                  [
+                                    m.fromCapture(context),
+                                    m.identifier('arguments'),
+                                  ],
+                                ),
+                              ),
+                            ]),
+                            // fn = null;
+                            m.expressionStatement(
+                              m.assignmentExpression(
+                                '=',
+                                m.fromCapture(fn),
+                                m.nullLiteral(),
+                              ),
+                            ),
+                            // return res;
+                            m.returnStatement(m.fromCapture(res)),
+                          ]),
+                        ),
+                      ]),
+                    ),
+                    // : function() {}
+                    m.functionExpression(null, [], m.blockStatement([])),
+                  ),
+                ),
+              ]),
+              // firstCall = false;
+              m.expressionStatement(
+                m.assignmentExpression(
+                  '=',
+                  m.fromCapture(firstCall),
+                  falseMatcher,
+                ),
+              ),
+              // return rfn;
+              m.returnStatement(m.fromCapture(rfn)),
+            ]),
+          ),
+        ),
+      ]),
+    )
+
+    function removeSelfDefendingRefs(path) {
+      const varName = m.capture(m.anyString())
+      const varMatcher = m.variableDeclarator(
+        m.identifier(varName),
+        m.callExpression(m.identifier(path.node.name)),
+      )
+      const callMatcher = m.expressionStatement(
+        m.callExpression(m.identifier(m.fromCapture(varName)), []),
+      )
+      const varDecl = findParent(path, varMatcher)
+
+      if (varDecl) {
+        const binding = varDecl.scope.getBinding(varName.current)
+
+        binding?.referencePaths.forEach((ref) => {
+          if (callMatcher.match(ref.parentPath?.parent))
+            ref.parentPath?.parentPath?.remove()
+        })
+        varDecl.remove()
+      }
+    }
+
+    traverse(this.ast, {
+      VariableDeclarator(path) {
+        if (!matcher.match(path.node)) return
+        const binding = path.scope.getBinding(callController.current)
+        // const callControllerFunctionName = (function() { ... })();
+        //       ^ path/binding
+
+        binding.referencePaths
+          .filter(ref => ref.parent.type === 'CallExpression')
+          .forEach((ref) => {
+            if (ref.parentPath?.parent.type === 'CallExpression') {
+              // callControllerFunctionName(this, function () { ... })();
+              // ^ ref
+              ref.parentPath.parentPath?.remove()
+            }
+            else {
+              // const selfDefendingFunctionName = callControllerFunctionName(this, function () {
+              // selfDefendingFunctionName();      ^ ref
+              removeSelfDefendingRefs(ref)
+            }
+
+            // leftover (function () {})() from debug protection function call
+            findParent(ref, emptyIife)?.remove()
+          })
+
+        path.remove()
+      },
+      // noScope: true,
+    })
   }
 
   /**

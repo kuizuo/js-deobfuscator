@@ -374,4 +374,38 @@ let c = true;`.trim(),
 
     expect(code).toBe(`console.log("kuizuo");`)
   })
+
+  it('removeSelfDefendingCode', () => {
+    const rawCode = `
+    var _0x318428 = function () {
+      var _0x17ed27 = true;
+      return function (_0x5a26f9, _0x2a79cb) {
+        var _0x175044 = _0x17ed27 ? function () {
+          if (_0x2a79cb) {
+            var _0x421594 = _0x2a79cb["apply"](_0x5a26f9, arguments);
+  
+            _0x2a79cb = null;
+            return _0x421594;
+          }
+        } : function () {};
+  
+        _0x17ed27 = false;
+        return _0x175044;
+      };
+    }();  
+  
+    var _0x336d51 = _0x318428(this, function () {
+      return _0x336d51["toString"]()["search"]("(((.+)+)+)+$")["toString"]()["constructor"](_0x336d51)["search"]("(((.+)+)+)+$");
+    });
+  
+    _0x336d51();
+    `
+
+    const deob = new Deob(rawCode)
+
+    deob.removeSelfDefendingCode()
+    const code = deob.getCode()
+
+    expect(code).toBe('')
+  })
 })

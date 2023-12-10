@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Deob } from '../main'
+import { Deob } from '../src'
 
 describe('handleError', async () => {
   it('syntax error', () => {

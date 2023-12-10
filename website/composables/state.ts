@@ -36,9 +36,9 @@ export interface Options {
   isReplaceConstantEnable: boolean
 
   /** 是否移除无用代码块 */
-  isRemoveUnusedBlock: boolean
+  isremoveDeadCode: boolean
   /** 是否移除无用变量 */
-  isRemoveUnusedVariables: boolean
+  isdeleteUnusedVar: boolean
   /** 是否还原逗号表达式 */
   isRestoreSequence: boolean
 
@@ -73,8 +73,8 @@ const defaultOptions: Options = {
   isCalcBinaryEnable: true,
   isReplaceConstantEnable: true,
 
-  isRemoveUnusedBlock: true,
-  isRemoveUnusedVariables: true,
+  isremoveDeadCode: true,
+  isdeleteUnusedVar: true,
   isRestoreSequence: true,
 
   deleteExtraEnable: true,

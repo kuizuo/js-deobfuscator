@@ -1,4 +1,4 @@
-import { Deob } from '@deob/utils'
+import { Deob } from '@deob/tool'
 
 self.addEventListener(
   'message',
@@ -24,7 +24,7 @@ self.addEventListener(
 
       if (options.isDecryptFnEnabled) {
         if (options.decryptFnLocationMethod === 'callCount') {
-          const decryptFnCode = deob.findDecryptFnByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
+          const decryptFnCode = deob.findDecoderByCallCount(options.decryptFnCallCount, options.isRemoveDecryptFn)
           deob.designDecryptFn(deob.decryptFnList)
           deob.decryptReplace(decryptFnCode)
         }
@@ -46,16 +46,16 @@ self.addEventListener(
         deob.decryptReplace()
         deob.saveAllObject()
         deob.objectMemberReplace()
-        deob.controlFlowFlat()
+        deob.controlFlowSwitch()
         deob.calcBinary()
       }
 
       // 最后通用处理
-      if (options.isRemoveUnusedBlock)
-        deob.removeUnusedBlock()
+      if (options.isremoveDeadCode)
+        deob.removeDeadCode()
 
-      if (options.isRemoveUnusedVariables)
-        deob.removeUnusedVariables()
+      if (options.isdeleteUnusedVar)
+        deob.deleteUnusedVar()
 
       if (options.isReplaceConstantEnable)
         deob.replaceConstant()
@@ -67,7 +67,7 @@ self.addEventListener(
         deob.restoreSequence()
 
       deob.splitMultipleDeclarations()
-      deob.selfCallFnReplace()
+      deob.replaceSelfCallFn()
 
       if (options.deleteExtraEnable)
         deob.deleteExtra()

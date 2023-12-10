@@ -1,14 +1,10 @@
 import fs from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Deob } from '@deob/utils'
+import { Deob, prettierCode, record } from '@deob/tool'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-
-class MyDeOb extends Deob {
-  // 编写自定义 traverse
-}
 
 ; (async function () {
   const fileName = 'code'
@@ -17,43 +13,30 @@ class MyDeOb extends Deob {
     encoding: 'utf-8',
   })
 
-  const deob = new MyDeOb(rawCode, {
-    dir: __dirname,
-    isWriteFile: true,
-  })
+  const deob = new Deob(rawCode)
 
-  let index = 0
+  const index = 0
 
-  await deob.prettierCode()
+  await prettierCode(deob.ast, `${__dirname}/pretty.js`)
 
-  deob.splitMultipleDeclarations()
+  deob.prepare()
 
-  const decryptFnCode = deob.findDecryptFnByCallCount(100, true)
-  deob.designDecryptFn(deob.decryptFnList)
-  deob.decryptReplace(decryptFnCode)
+  const decryptFnCode = deob.findDecoderByCallCount(100, true)
+  deob.evalCode(decryptFnCode)
+  deob.replaceDecoder(deob.decoders)
+  deob.decodeStrings(deob.decoders)
 
-  for (let i = 1; i <= 2; i++) {
-    for (let j = 1; j <= 2; j++) {
-      deob.saveAllObject()
-      deob.objectMemberReplace()
-      deob.controlFlowFlat()
-      deob.calcBinary()
-    }
-    await deob.record(fileName, ++index)
+  for (let j = 1; j <= 2; j++) {
+    deob.saveAllObject()
+    deob.controlFlowSwitch()
+    deob.calcBinary()
   }
+  await record(`${fileName}`, deob.code)
 
-  // 通用处理
-  deob.replaceConstant()
-  deob.calcBinary()
+  deob.unminify()
 
-  deob.removeUnusedBlock()
-  deob.removeUnusedVariables()
-  deob.restoreSequence()
-  deob.selfCallFnReplace()
-
-  deob.deleteExtra()
   deob.markComment()
 
-  const code = deob.getCode()
+  const code = deob.code
   fs.writeFile(`${__dirname}/output.js`, code)
 })()

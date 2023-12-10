@@ -2,6 +2,20 @@ import type { Binding, NodePath } from '@babel/traverse'
 import type * as t from '@babel/types'
 import * as m from '@codemod/matchers'
 
+export const trueMatcher = m.or(
+  m.booleanLiteral(true),
+  m.unaryExpression('!', m.numericLiteral(0)),
+  m.unaryExpression('!', m.unaryExpression('!', m.numericLiteral(1))),
+  m.unaryExpression('!', m.unaryExpression('!', m.arrayExpression([]))),
+)
+
+export const falseMatcher = m.or(
+  m.booleanLiteral(false),
+  m.unaryExpression('!', m.arrayExpression([])),
+)
+
+export const truthyMatcher = m.or(trueMatcher, m.arrayExpression([]))
+
 export function infiniteLoop(
   body?: m.Matcher<t.Statement>,
 ): m.Matcher<t.ForStatement | t.WhileStatement> {
@@ -52,20 +66,6 @@ export function constMemberExpression(
     m.memberExpression(object, m.stringLiteral(property), true),
   )
 }
-
-export const trueMatcher = m.or(
-  m.booleanLiteral(true),
-  m.unaryExpression('!', m.numericLiteral(0)),
-  m.unaryExpression('!', m.unaryExpression('!', m.numericLiteral(1))),
-  m.unaryExpression('!', m.unaryExpression('!', m.arrayExpression([]))),
-)
-
-export const falseMatcher = m.or(
-  m.booleanLiteral(false),
-  m.unaryExpression('!', m.arrayExpression([])),
-)
-
-export const truthyMatcher = m.or(trueMatcher, m.arrayExpression([]))
 
 /**
  * Starting at the parent path of the current `NodePath` and going up the

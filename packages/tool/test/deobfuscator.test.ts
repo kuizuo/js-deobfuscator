@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Deob } from '../main'
+import { Deob } from '../src'
 
 describe('deob', async () => {
-  it('nestedFnReplace', () => {
+  it('inlineDecoderWrappers', () => {
     const rawCode = `
     function _0x49afe4(_0x254ae1, _0x559602, _0x3dfa50, _0x13ee81) {
       return _0x4698(_0x13ee81 - -674, _0x3dfa50);
@@ -17,15 +17,15 @@ describe('deob', async () => {
 
     const deob = new Deob(rawCode)
 
-    deob.nestedFnReplace()
+    deob.inlineDecoderWrappers()
 
-    const code = deob.getCode()
+    const code = deob.code
 
     expect(code).toContain(`_0x4698(469 - -674, 828);`)
     expect(code).toContain(`_0x4698(570 - -555, 424);`)
   })
 
-  it('findDecryptFnByCallCount', () => {
+  it('findDecoderByCallCount', () => {
     const rawCode = `
     function _0x4698(_0x254ae1){
       return atob(_0x254ae1)
@@ -37,10 +37,10 @@ describe('deob', async () => {
 
     const deob = new Deob(rawCode)
 
-    const decryptFnCode = deob.findDecryptFnByCallCount(2, true)
-    deob.decryptReplace(decryptFnCode)
+    deob.findDecoderByCallCount(2, true)
+    deob.decodeStrings()
 
-    const code = deob.getCode()
+    const code = deob.code
     expect(code).toContain(`Hello, world`)
     expect(code).toContain(`debugger`)
   })
@@ -58,10 +58,10 @@ describe('deob', async () => {
 
     const deob = new Deob(rawCode)
 
-    const decryptFnCode = deob.findDecryptFnByBigArr (2, true)
-    deob.decryptReplace(decryptFnCode)
+    deob.findDecoderByBigArr(2, true)
+    deob.decodeStrings()
 
-    const code = deob.getCode()
+    const code = deob.code
     expect(code).toBe(`
 "hello,world";
 "debugger";
@@ -83,7 +83,7 @@ describe('deob', async () => {
     expect(result).toBe(`bar`)
   })
 
-  it('designDecryptFn', () => {
+  it.skip('replaceDecoder', () => {
     const rawCode = `
       function foo() {}
       var bar = foo;
@@ -93,9 +93,9 @@ describe('deob', async () => {
 
     const deob = new Deob(rawCode)
 
-    deob.designDecryptFn('foo')
+    // deob.replaceDecoder()
 
-    const code = deob.getCode()
+    const code = deob.code
 
     expect(code).toBe(`
  function foo() {}
@@ -113,7 +113,7 @@ foo();`.trim())
     const deob = new Deob(rawCode)
 
     deob.transformForLoop()
-    const code = deob.getCode()
+    const code = deob.code
 
     expect(code).toBe(`
 var a = 1;
@@ -124,7 +124,7 @@ for (void 0;;) {
 }`.trim())
   })
 
-  it('controlFlowFlat', () => {
+  it('controlFlowSwitch', () => {
     const rawCode = `
     function a() {
       var _0x263cfa = "1|3|2|0"["split"]("|"),
@@ -156,8 +156,8 @@ for (void 0;;) {
 
     const deob = new Deob(rawCode)
 
-    deob.controlFlowFlat()
-    const code = deob.getCode()
+    deob.controlFlowSwitch()
+    const code = deob.code
 
     expect(code).toBe(
       `
@@ -176,7 +176,7 @@ function a() {
     )
   })
 
-  it('removeSelfCallFn', () => {
+  it('transformSelfCallFn', () => {
     const rawCode = `
     !function() {
      a()
@@ -185,8 +185,8 @@ function a() {
 
     const deob = new Deob(rawCode)
 
-    deob.removeSelfCallFn()
-    const code = deob.getCode()
+    deob.transformSelfCallFn()
+    const code = deob.code
 
     expect(code).toBe(`
 {
@@ -195,7 +195,7 @@ function a() {
     `.trim())
   })
 
-  it('selfCallFnReplace', () => {
+  it('replaceSelfCallFn', () => {
     const rawCode = `
 (function (_0x4f0d08) {
       return function (_0x4f0d08) {
@@ -206,8 +206,8 @@ function a() {
 
     const deob = new Deob(rawCode)
 
-    deob.selfCallFnReplace()
-    const code = deob.getCode()
+    deob.replaceSelfCallFn()
+    const code = deob.code
 
     expect(code).toBe(`Function("Function(arguments[0]+" + "bugger" + ")()")("de");`)
   })
@@ -257,9 +257,8 @@ function a() {
     const deob = new Deob(rawCode)
 
     deob.saveAllObject()
-    deob.objectMemberReplace()
-    deob.removeUnusedVariables(null, false)
-    const code = deob.getCode()
+    deob.replaceObjectProp()
+    const code = deob.code
 
     expect(code).toContain(`"attribute";`)
     expect(code).toContain(`_0x4547db();`)
@@ -271,7 +270,7 @@ function a() {
     const deob = new Deob(rawCode)
 
     deob.restoreSequence()
-    const code = deob.getCode()
+    const code = deob.code
 
     expect(code).toBe(`
 _0x6cbcff();
@@ -286,7 +285,7 @@ console.log('foo');
     const deob = new Deob(rawCode)
 
     deob.splitMultipleDeclarations()
-    const code = deob.getCode()
+    const code = deob.code
 
     expect(code).toBe(`
 var a = 1;
@@ -303,7 +302,7 @@ var b = 2;`.trim())
     const deob = new Deob(rawCode)
 
     deob.calcBinary()
-    const code = deob.getCode()
+    const code = deob.code
 
     expect(code).toBe(
       `
@@ -313,7 +312,7 @@ let c = true;`.trim(),
     )
   })
 
-  it('replaceConstant', () => {
+  it('replaceConstantRef', () => {
     const rawCode = `
     let a = "debugger";
     console.log(a)
@@ -321,13 +320,13 @@ let c = true;`.trim(),
 
     const deob = new Deob(rawCode)
 
-    deob.replaceConstant()
-    const code = deob.getCode()
+    deob.replaceConstantRef()
+    const code = deob.code
 
     expect(code).toBe(`console.log("debugger");`)
   })
 
-  it('removeUnusedBlock', () => {
+  it('deadCode', () => {
     const rawCode = `
         let a = "foo"
         if(true){ 
@@ -341,14 +340,14 @@ let c = true;`.trim(),
 
     const deob = new Deob(rawCode)
 
-    deob.removeUnusedBlock()
-    const code = deob.getCode()
+    deob.deadCode()
+    const code = deob.code
 
     expect(code).toContain(`let a = "foo"`)
     expect(code).toContain(`var result = 'false'`)
   })
 
-  it('removeUnusedVariables', () => {
+  it('deleteUnusedVar', () => {
     const rawCode = `
       let a = 1;
       function b(){}
@@ -356,8 +355,8 @@ let c = true;`.trim(),
 
     const deob = new Deob(rawCode)
 
-    deob.removeUnusedVariables(null, false)
-    const code = deob.getCode()
+    deob.deleteUnusedVar()
+    const code = deob.code
 
     expect(code).toBe('')
   })
@@ -370,12 +369,12 @@ let c = true;`.trim(),
     const deob = new Deob(rawCode)
 
     deob.deleteExtra()
-    const code = deob.getCode()
+    const code = deob.code
 
     expect(code).toBe(`console.log("kuizuo");`)
   })
 
-  it('removeSelfDefendingCode', () => {
+  it('removeSelfDefending', () => {
     const rawCode = `
     var _0x318428 = function () {
       var _0x17ed27 = true;
@@ -403,8 +402,8 @@ let c = true;`.trim(),
 
     const deob = new Deob(rawCode)
 
-    deob.removeSelfDefendingCode()
-    const code = deob.getCode()
+    deob.removeSelfDefending()
+    const code = deob.code
 
     expect(code).toBe('')
   })

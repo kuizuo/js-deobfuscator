@@ -133,11 +133,11 @@ watchEffect(() => {
           </label>
           <label class="inline-flex items-center gap-2">
             <span class="flex-1">是否移除无用代码块</span>
-            <input v-model="options.isRemoveUnusedBlock" type="checkbox">
+            <input v-model="options.isremoveDeadCode" type="checkbox">
           </label>
           <label class="inline-flex items-center gap-2">
             <span class="flex-1">是否移除无用变量</span>
-            <input v-model="options.isRemoveUnusedVariables" type="checkbox">
+            <input v-model="options.isdeleteUnusedVar" type="checkbox">
           </label>
           <label class="inline-flex items-center gap-2">
             <span class="flex-1">是否还原逗号表达式</span>

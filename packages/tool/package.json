@@ -1,0 +1,44 @@
+{
+  "name": "@deob/tool",
+  "type": "module",
+  "version": "0.2.2",
+  "private": true,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "browser": "dist/browser.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node esbuild.config.js",
+    "postbuild": "tsc -p tsconfig.build.json",
+    "watch": "node esbuild.config.js --watch",
+    "lint": "eslint --ext .ts .",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@babel/code-frame": "^7.22.13",
+    "@babel/generator": "^7.23.5",
+    "@babel/helper-validator-identifier": "^7.22.20",
+    "@babel/template": "^7.22.15",
+    "@babel/traverse": "^7.23.5",
+    "@babel/types": "^7.23.5",
+    "@codemod/matchers": "^1.7.0",
+    "crypto-js": "^4.1.1",
+    "debug": "^4.3.4",
+    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/babel__code-frame": "^7.0.6",
+    "@types/babel__generator": "^7.6.7",
+    "@types/babel__template": "^7.4.4",
+    "@types/babel__traverse": "^7.20.1",
+    "@types/crypto-js": "^4.1.1",
+    "@types/lodash": "^4.14.182",
+    "esbuild": "^0.19.8",
+    "typescript": "^5.2.2",
+    "vitest": "^0.18.0"
+  }
+}

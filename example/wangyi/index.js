@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Deob } from '@deob/utils'
+import { Deob } from '@deob/tool'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -25,13 +25,13 @@ class MyDeOb extends Deob { }
   await deob.prettierCode()
 
   deob.splitMultipleDeclarations()
-  deob.findDecryptFnByCallCount(100, true)
+  deob.findDecoderByCallCount(100, true)
   await deob.record(fileName, ++index)
 
   for (let j = 1; j <= 3; j++) {
     deob.saveAllObject()
     deob.objectMemberReplace()
-    deob.controlFlowFlat()
+    deob.controlFlowSwitch()
     deob.calcBinary()
   }
   await deob.record(fileName, ++index)
@@ -40,8 +40,8 @@ class MyDeOb extends Deob { }
   deob.replaceConstant()
   deob.calcBinary()
 
-  deob.removeUnusedBlock()
-  deob.removeUnusedVariables()
+  deob.removeDeadCode()
+  deob.deleteUnusedVar()
 
   deob.deleteExtra()
   deob.markComment()

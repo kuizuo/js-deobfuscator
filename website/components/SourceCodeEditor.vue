@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
-import { generator, parser } from '@deob/utils'
+import { generator, parser } from '@deob/tool'
 
 // eslint-disable-next-line ts/consistent-type-imports
 import type { MonacoEditor } from '#build/components'

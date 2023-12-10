@@ -51,5 +51,6 @@ TODO...
 ## 致谢
 
 - [反爬虫 AST 原理与还原混淆实战](https://book.douban.com/subject/35575838/)
+- [j4k0xb/webcrack](https://github.com/j4k0xb/webcrack)
 - [sxzz/ast-explorer](https://github.com/sxzz/ast-explorer)
 

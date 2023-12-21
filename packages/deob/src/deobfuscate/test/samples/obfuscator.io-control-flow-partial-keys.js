@@ -1,0 +1,77 @@
+(function (_0x58f0bf, _0x449fa3) {
+  const _0x5b9b8d = _0x1f65
+  const _0xb0cb83 = _0x58f0bf()
+  while ([]) {
+    try {
+      const _0x38a2f0
+        = (-Number.parseInt(_0x5b9b8d(0x1A8)) / 0x1)
+          * (-Number.parseInt(_0x5b9b8d(0x1A5)) / 0x2)
+        + (Number.parseInt(_0x5b9b8d(0x1AA)) / 0x3)
+          * (Number.parseInt(_0x5b9b8d(0x19E)) / 0x4)
+        + Number.parseInt(_0x5b9b8d(0x1A1)) / 0x5
+        + (Number.parseInt(_0x5b9b8d(0x1A0)) / 0x6)
+          * (-Number.parseInt(_0x5b9b8d(0x1AC)) / 0x7)
+        + -Number.parseInt(_0x5b9b8d(0x19F)) / 0x8
+        + (Number.parseInt(_0x5b9b8d(0x1A4)) / 0x9)
+          * (-Number.parseInt(_0x5b9b8d(0x1A9)) / 0xA)
+        + (Number.parseInt(_0x5b9b8d(0x1A3)) / 0xB) * (Number.parseInt(_0x5b9b8d(0x1AD)) / 0xC)
+      if (_0x38a2f0 === _0x449fa3) {
+        break
+      }
+      else {
+        _0xb0cb83.push(_0xb0cb83.shift())
+      }
+    }
+    catch (_0x4d8b7f) {
+      _0xb0cb83.push(_0xb0cb83.shift())
+    }
+  }
+})(_0x1b75, 0x90CFC)
+function hi() {
+  const _0xbdaae1 = _0x1f65
+  const _0x4421b9 = {
+    [_0xbdaae1(0x1A6)](_0x48317b, _0x3eb9bf) {
+      return _0x48317b < _0x3eb9bf
+    },
+  }
+  _0x4421b9[_0xbdaae1(0x1A2)] = _0xbdaae1(0x1AB)
+  const _0x2d22bf = _0x4421b9
+  const _0x46643e = 0x1
+  const _0x4d295f = 0x2
+  if (_0x2d22bf[_0xbdaae1(0x1A6)](_0x46643e, _0x4d295f))
+    console[_0xbdaae1(0x1A7)](_0x2d22bf[_0xbdaae1(0x1A2)])
+}
+function _0x1f65(_0x5cd6e4, _0x590f6f) {
+  const _0x1b75ea = _0x1b75()
+  _0x1f65 = function (_0x1f6544, _0x43222d) {
+    _0x1f6544 = _0x1f6544 - 0x19E
+    const _0x15544e = _0x1b75ea[_0x1f6544]
+    return _0x15544e
+  }
+  return _0x1f65(_0x5cd6e4, _0x590f6f)
+}
+hi()
+function _0x1b75() {
+  const _0x108455 = [
+    '1701GbYXRJ',
+    '552luNNhF',
+    '997208TlAUWj',
+    '8869840SjjMps',
+    '6006rJfVYl',
+    '2285250dZqjSM',
+    'RLGat',
+    '235169ZbwBFT',
+    '279Azbvfn',
+    '1553386QHtAGa',
+    'pOUyw',
+    'log',
+    '1ZglIoW',
+    '248600LAYnNv',
+    '6vhnWfl',
+    'Hello\x20World!',
+  ]
+  _0x1b75 = function () {
+    return _0x108455
+  }
+  return _0x1b75()
+}

@@ -36,7 +36,7 @@ pnpm i
 │   ├── code_2.js                 # 记录反混淆过程代码 2
 │   ├── pretty.js                 # 可选, 用作美化对比
 │   ├── output.js                 # 最终处理完成的结果
-│   ├── evalCode.js               # 代注入执行代码
+│   ├── setupCode.js              # 注入执行代码
 │   ├── errorCode.js              # 当替换代码导致语法错误, 则将错误代码输出到该文件
 ```
 

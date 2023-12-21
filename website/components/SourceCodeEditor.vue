@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
-import { generator, parser } from '@deob/tool'
 
-// eslint-disable-next-line ts/consistent-type-imports
+// import { codePrettier, parser } from 'deob'
+
 import type { MonacoEditor } from '#build/components'
 
 interface Example {
@@ -10,7 +10,7 @@ interface Example {
   value: () => Promise<string>
 }
 
-const files = import.meta.glob('../../example/**/code.js', { as: 'raw' })
+const files = import.meta.glob('../../example/**/input.js', { as: 'raw' })
 
 const examples: Example[] = Object.entries(files).map(([key, value]) => ({
   name: key.replace('../../example/', ''),
@@ -51,13 +51,8 @@ function handleFileChange(event: Event) {
 }
 
 async function beautify() {
-  const formatted = generator(parser.parse(code.value!), {
-    minified: false,
-    jsescOption: { minimal: true },
-    compact: false,
-    comments: true,
-  }).code
-  code.value = formatted
+  // const formatted = codePrettier(parser.parse(code.value!))
+  // code.value = formatted
 }
 
 function clean() {

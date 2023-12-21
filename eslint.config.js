@@ -1,14 +1,29 @@
 import { antfu } from '@antfu/eslint-config'
 
 export default antfu({
-  ignores: ['**/code.js', '**/code copy.js', '**/code_*.js', '**/output.js', '**/pretty.js', '**/errorCode.js', '**/evalCode.js'],
+  ignores: [
+    '**/input.js',
+    '**/output.js',
+    '**/history_*.js',
+    '**/pretty.js',
+    '**/setupCode.js',
+    '**/errorCode.js',
+    'tmp/**/*',
+    '**/*.js',
+  ],
 }, {
   rules: {
     'no-console': 'off',
     'no-eval': 'off',
     'no-restricted-globals': 'off',
+    'node/prefer-global/process': 'off',
 
+    'curly': 'off',
     'unused-imports/no-unused-vars': 'warn',
+
+    'ts/consistent-type-imports': 'off',
+    'ts/no-use-before-define': 'off',
+    'no-unused-expressions': 'off',
 
     'antfu/if-newline': 'off',
   },

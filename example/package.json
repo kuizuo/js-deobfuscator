@@ -1,8 +1,7 @@
 {
   "name": "example",
-  "type": "module",
   "private": true,
   "devDependencies": {
-    "@deob/tool": "workspace:*"
+    "deob": "workspace:*"
   }
 }

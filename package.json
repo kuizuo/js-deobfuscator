@@ -4,7 +4,6 @@
   "version": "0.2.2",
   "license": "MIT",
   "scripts": {
-    "postinstall": "pnpm run -F @deob/tool build",
     "website:dev": "pnpm run -F website dev",
     "website:build": "pnpm run -F website build",
     "website:generate": "pnpm run -F website generate",
@@ -23,8 +22,10 @@
     "@antfu/eslint-config": "^1.1.2",
     "bumpp": "^9.2.0",
     "eslint": "^8.53.0",
+    "esm": "^3.2.25",
     "prettier": "^3.0.3",
+    "tsx": "^4.6.2",
     "typescript": "^5.2.2",
-    "vitest": "^0.18.0"
+    "vitest": "^1.0.0"
   }
 }

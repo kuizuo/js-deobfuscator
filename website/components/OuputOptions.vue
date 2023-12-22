@@ -117,10 +117,6 @@ watchEffect(() => {
             <span class="flex-1">强力清除(会对处理后的代码再次执行)</span>
             <input v-model="options.isStrongRemove" type="checkbox">
           </label>
-          <label class="inline-flex items-center gap-2">
-            <span class="flex-1">调试模式(日志输出)</span>
-            <input v-model="options.isDebug" type="checkbox">
-          </label>
 
           <div class="border-b border-gray-200 text-lg mt-2">
             输出配置

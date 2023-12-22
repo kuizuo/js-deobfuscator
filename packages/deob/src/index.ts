@@ -60,7 +60,7 @@ function handleError(error: any, rawCode: string) {
   }
 }
 
-const logger = debug('deob:transforms')
+const logger = debug('Deob')
 
 export class Deob {
   public ast: parser.ParseResult<t.File>
@@ -71,7 +71,7 @@ export class Deob {
     this.options = options
 
     // debug.enable('webcrack:*')
-    debug.enable('deob:*')
+    debug.enable('Deob')
 
     if (!rawCode)
       throw new Error('请载入js代码')
@@ -137,28 +137,30 @@ export class Deob {
         let stringArray: StringArray | undefined
         let decoders: Decoder[] = []
         let rotators: ArrayRotator[] = []
+        let setupCode: string = ''
 
         if (options.decoderLocationMethod === 'stringArray') {
-          const { decoders: d, rotators: r, stringArray: s, setupCode } = this.findDecoderByArray(options.stringArraylength)
+          const { decoders: ds, rotators: r, stringArray: s, setupCode: scode } = findDecoderByArray(this.ast, options.stringArraylength)
 
           stringArray = s as any
           rotators = r
-          decoders = d
-
-          this.designDecoder(decoders.map(d => d.name))
-          this.eval(setupCode)
+          decoders = designDecoder(this.ast, ds.map(d => d.name))
+          setupCode = scode
         }
         else if (options.decoderLocationMethod === 'callCount') {
-          const { decoders: d, setupCode } = this.findDecoderByCallCount(options.decoderCallCount)
-          decoders = d
-
-          this.designDecoder(decoders.map(d => d.name))
-          this.eval(setupCode)
+          const { decoders: ds, setupCode: scode } = findDecoderByCallCount(this.ast, options.decoderCallCount)
+          decoders = designDecoder(this.ast, ds.map(d => d.name))
+          setupCode = scode
         }
         else if (options.decoderLocationMethod === 'evalCode') {
           this.eval(options.setupCode!)
-          decoders = this.designDecoder(options.designDecoderName!)
+          decoders = designDecoder(this.ast, options.designDecoderName!)
         }
+
+        logger(`${stringArray ? `字符串数组: ${stringArray?.name} 数组长度:${stringArray?.length}` : '没找到字符串数组'}`)
+        logger(`${decoders.length ? `解密器: ${decoders.map(d => d.name)}` : '没找到解密器'}`)
+
+        this.eval(setupCode)
 
         for (let i = 0; i < options.inlineWrappersDepth; i++) {
           for (const decoder of decoders) {
@@ -177,10 +179,10 @@ export class Deob {
         if (options.isRemoveDecoder && !options.isStrongRemove) {
           stringArray?.path.remove()
           rotators.forEach(r => r.remove())
-          decoders.forEach(d => d.path.remove())
+          decoders.forEach(d => d.path?.remove())
         }
       },
-      /** 对象花指令处理 */
+      /** 对象引用替换 */
       () => applyTransform(this.ast, inlineObjectProps),
       /** 控制流平坦化 */
       () => {
@@ -258,26 +260,13 @@ export class Deob {
     }
   }
 
-  designDecoder(decoderName: string | string[]) {
-    const decoders = designDecoder(this.ast, decoderName)
-
-    return decoders
-  }
-
-  findDecoderByArray(count = 100) {
-    return findDecoderByArray(this.ast, count)
-  }
-
-  findDecoderByCallCount(count = 100) {
-    return findDecoderByCallCount(this.ast, count)
-  }
-
   eval(code: string) {
     try {
       const result = global.eval(code)
-      console.log('注入代码执行结果', result)
+      logger('注入代码执行结果', result)
     }
     catch (error) {
+      logger(`code to be eval:\n${code}`)
       throw new Error('evalCode 无法运行, 请在控制台中查看错误信息')
     }
   }

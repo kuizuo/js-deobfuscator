@@ -21,7 +21,7 @@ export function findDecoderByArray(ast: t.Node, count?: number) {
 
   traverse(ast, {
     ArrayExpression(path) {
-      if (path.node.elements.length >= (count || 50)) {
+      if (path.node.elements.length >= count) {
         const stringArrayDeclaration = path.findParent(p => p.isVariableDeclarator() || p.isFunctionDeclaration() || p.isExpressionStatement())
 
         if (!stringArrayDeclaration)
@@ -63,33 +63,52 @@ export function findDecoderByArray(ast: t.Node, count?: number) {
         stringArray = {
           path: stringArrayPath!,
           references: binding.referencePaths,
-          name: '__STRING_ARRAY__',
+          name: stringArrayName,
           length: path.node.elements.length,
         }
 
         // 通过引用 找到 数组乱序代码 与 解密函数代码
         binding.referencePaths.forEach((r) => {
           if (r.parentKey === 'callee') {
-            // 找到大数组所调用位置,继续向上找,大概率就是解密函数
             const parent = r.find(p => p.isFunctionDeclaration())
-            if (parent && parent.isFunctionDeclaration() && parent.node.id!.name !== stringArrayName)
+            if (parent?.isFunctionDeclaration() && parent.node.id!.name !== stringArrayName) {
+              // function decoder(x){
+              //   return array(x)
+              // }
               decoders.push(new Decoder(parent.node.id!.name, parent))
-            return
+            }
           }
 
           if (r.parentKey === 'object') {
-            // 找到大数组所调用位置,继续向上找,大概率就是解密函数
             const parent = r.find(p => p.isFunctionDeclaration())
-            if (parent && parent.isFunctionDeclaration())
+            if (parent?.isFunctionDeclaration()) {
+              // function decoder(x){
+              //   return array[x]
+              // }
               decoders.push(new Decoder(parent.node.id!.name, parent))
-            return
+            }
           }
 
-          // 以参数传入,大概率乱序函数
           if (r.parentKey === 'arguments') {
-            const parent = r.findParent(p => p.isExpressionStatement())
-            if (parent && parent.isExpressionStatement())
+            const parent = r.parentPath.parentPath
+            const parent_expression = parent.findParent(p => p.isExpressionStatement())
+            if (parent_expression?.isExpressionStatement()) {
+              // (function (h) {
+              //     // ...
+              // })(array)
               rotators.push(parent)
+              return
+            }
+
+            if (parent?.isVariableDeclarator()) {
+              // function decoder() {
+              //  var a = xxx(array)
+              // }
+              const funcDeclaration = parent.findParent(p => p.isFunctionDeclaration())
+              if (funcDeclaration?.isFunctionDeclaration()) {
+                decoders.push(new Decoder(funcDeclaration.node.id!.name, funcDeclaration))
+              }
+            }
           }
         })
       }

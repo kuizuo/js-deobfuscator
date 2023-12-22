@@ -143,7 +143,7 @@ export class Deob {
     const stages = [
       /** 格式预处理 */
       () => this.prepare(),
-      /** 执行解密器 */
+      /** 定位解密器 */
       () => {
         let stringArray: StringArray | undefined
         let decoders: Decoder[] = []

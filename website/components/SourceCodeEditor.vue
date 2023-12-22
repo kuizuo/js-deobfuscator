@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
 
-// import { codePrettier, parser } from 'deob'
+import { codePrettier, parser } from 'deob'
 
 import type { MonacoEditor } from '#build/components'
 
@@ -51,8 +51,8 @@ function handleFileChange(event: Event) {
 }
 
 async function beautify() {
-  // const formatted = codePrettier(parser.parse(code.value!))
-  // code.value = formatted
+  const formatted = codePrettier(parser.parse(code.value!))
+  code.value = formatted
 }
 
 function clean() {

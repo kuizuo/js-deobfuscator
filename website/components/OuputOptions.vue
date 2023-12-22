@@ -53,9 +53,9 @@ watchEffect(() => {
                 v-model="options.decoderLocationMethod"
                 class="pl-0.5 border border-gray-300 bg-white shadow-sm focus:(outline-none ring) dark:bg-gray-700"
               >
-                <option value="callCount">调用次数</option>
                 <option value="stringArray">字符串数组长度</option>
-                <option value="evalCode">执行解密代码</option>
+                <option value="callCount">解密器调用次数</option>
+                <option value="evalCode">注入解密代码</option>
               </select>
             </div>
 

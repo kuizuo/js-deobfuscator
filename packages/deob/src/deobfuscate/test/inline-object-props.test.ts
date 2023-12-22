@@ -1,15 +1,16 @@
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import inlineObjectProps from '../inline-object-props'
 
 const expectJS = testTransform(inlineObjectProps)
 
-it('inline property', () =>
+test('inline property', () =>
   expectJS(`
       const a = { x: 1 };
       console.log(a.x);
     `).toMatchInlineSnapshot('console.log(1);'))
 
-it('ignore non-existent properties', () =>
+test('ignore non-existent properties', () =>
   expectJS(`
     const a = { x: 1 };
     console.log(a.__defineGetter__);
@@ -20,7 +21,7 @@ it('ignore non-existent properties', () =>
     console.log(a.__defineGetter__);
   `))
 
-it('ignore shared variable references', () =>
+test('ignore shared variable references', () =>
   expectJS(`
     const a = { x: 1 };
     fn(a);
@@ -33,7 +34,7 @@ it('ignore shared variable references', () =>
     console.log(a.x);
   `))
 
-it('ignore variable assignment', () =>
+test('ignore variable assignment', () =>
   expectJS(`
     let a = { x: 1 };
     a = { x: 2 };
@@ -48,7 +49,7 @@ it('ignore variable assignment', () =>
     console.log(a.x);
   `))
 
-it('ignore property assignment', () =>
+test('ignore property assignment', () =>
   expectJS(`
     const a = { x: 1 };
     a.x = 2;
@@ -61,7 +62,7 @@ it('ignore property assignment', () =>
     console.log(a.x);
   `))
 
-it('ignore property assignment with array pattern', () =>
+test('ignore property assignment with array pattern', () =>
   expectJS(`
     let a = { x: 1 };
     [a.x] = [2];
@@ -74,7 +75,7 @@ it('ignore property assignment with array pattern', () =>
     console.log(a.x);
   `))
 
-it('ignore property assignment with object pattern', () =>
+test('ignore property assignment with object pattern', () =>
   expectJS(`
     let a = { x: 1 };
     ({ x: a.x } = { x: 2 });
@@ -91,7 +92,7 @@ it('ignore property assignment with object pattern', () =>
     console.log(a.x);
   `))
 
-it('ignore delete', () =>
+test('ignore delete', () =>
   expectJS(`
     const a = { x: 1 };
     delete a.x;
@@ -104,7 +105,7 @@ it('ignore delete', () =>
     console.log(a.x);
   `))
 
-it('ignore update expression', () =>
+test('ignore update expression', () =>
   expectJS(`
     const a = { x: 1 };
     a.x++;

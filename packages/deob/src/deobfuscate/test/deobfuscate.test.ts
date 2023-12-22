@@ -1,6 +1,6 @@
 import { parse } from '@babel/parser'
 import traverse from '@babel/traverse'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import {
   generate,
   inlineFunctionAliases,
@@ -8,7 +8,7 @@ import {
 } from '../../ast-utils'
 
 describe('inline decoder', () => {
-  it('inline variable', () => {
+  test('inline variable', () => {
     const ast = parse(`
       function decoder() {}
       decoder(1);
@@ -35,7 +35,7 @@ describe('inline decoder', () => {
     expect(generate(ast)).toMatchSnapshot()
   })
 
-  it('inline function', () => {
+  test('inline function', () => {
     const ast = parse(`
       function decoder() {}
       decoder(1);

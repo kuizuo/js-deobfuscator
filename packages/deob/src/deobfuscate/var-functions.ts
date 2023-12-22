@@ -1,6 +1,6 @@
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import type { Transform } from '../ast-utils'
+import { Transform } from '../ast-utils'
 
 // Unsafe because variables may be used before they are declared, but functions are hoisted
 // Example: `console.log(a); var a = function() {}` logs `undefined`
@@ -18,7 +18,7 @@ export default {
     return {
       VariableDeclaration: {
         exit(path) {
-          if (matcher.match(path.node)) {
+          if (matcher.match(path.node) && path.key !== 'init') {
             path.replaceWith(
               t.functionDeclaration(
                 name.current,

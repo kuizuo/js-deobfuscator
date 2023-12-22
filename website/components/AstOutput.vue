@@ -3,7 +3,6 @@ import json5 from 'json5'
 import type * as Monaco from 'monaco-editor'
 import { autoFocus, hideEmptyKeys, hideLocationData, loading } from '#imports'
 
-// eslint-disable-next-line ts/consistent-type-imports
 import type { MonacoEditor } from '#build/components'
 
 const container = shallowRef<InstanceType<typeof MonacoEditor>>()

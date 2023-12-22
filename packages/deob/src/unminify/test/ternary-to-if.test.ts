@@ -1,9 +1,10 @@
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import { ternaryToIf } from '../transforms'
 
 const expectJS = testTransform(ternaryToIf)
 
-it('statement', () =>
+test('statement', () =>
   expectJS(`
     a ? b() : c();
   `).toMatchInlineSnapshot(`
@@ -14,7 +15,7 @@ it('statement', () =>
     }
   `))
 
-it('returned', () =>
+test('returned', () =>
   expectJS(`
     return a ? b() : c();
   `).toMatchInlineSnapshot(`
@@ -25,7 +26,7 @@ it('returned', () =>
     }
   `))
 
-it('ignore expression', () =>
+test('ignore expression', () =>
   expectJS(`
     const x = a ? b() : c();
   `).toMatchInlineSnapshot('const x = a ? b() : c();'))

@@ -1,16 +1,16 @@
-import { it } from 'vitest'
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import { computedProperties } from '../transforms'
 
 const expectJS = testTransform(computedProperties)
 
-it('member expression', () => {
+test('member expression', () => {
   expectJS(`
     require("foo")["default"]?.["_"];
   `).toMatchInlineSnapshot('require("foo").default?._;')
 })
 
-it('object', () => {
+test('object', () => {
   expectJS(`
     const x = { ["foo"](){}, ["bar"]: 1 };
   `).toMatchInlineSnapshot(`
@@ -21,7 +21,7 @@ it('object', () => {
   `)
 })
 
-it('class', () => {
+test('class', () => {
   expectJS(`
     class Foo {
       ["foo"](){}
@@ -35,12 +35,12 @@ it('class', () => {
   `)
 })
 
-it('ignore invalid identifier', () =>
+test('ignore invalid identifier', () =>
   expectJS(`
     console["1"]("hello");
   `).toMatchInlineSnapshot('console["1"]("hello");'))
 
-it('ignore __proto__ property', () =>
+test('ignore __proto__ property', () =>
   expectJS(`
     const x = { ["__proto__"]: 1 };
   `).toMatchInlineSnapshot(`
@@ -49,7 +49,7 @@ it('ignore __proto__ property', () =>
     };
   `))
 
-it('ignore constructor method', () =>
+test('ignore constructor method', () =>
   expectJS(`
     class Foo {
       ["constructor"](){}

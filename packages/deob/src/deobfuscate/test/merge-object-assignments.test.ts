@@ -1,9 +1,10 @@
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import mergeObjectAssignments from '../merge-object-assignments'
 
 const expectJS = testTransform(mergeObjectAssignments)
 
-it('inline properties without inlining object', () =>
+test('inline properties without inlining object', () =>
   expectJS(`
     const obj = {};
     obj.foo = foo;
@@ -19,7 +20,7 @@ it('inline properties without inlining object', () =>
     return obj;
   `))
 
-it('inline properties and object', () =>
+test('inline properties and object', () =>
   expectJS(`
     const obj = {};
     obj.foo = 'foo';
@@ -30,7 +31,7 @@ it('inline properties and object', () =>
     };
   `))
 
-it('computed properties', () =>
+test('computed properties', () =>
   expectJS(`
     const obj = {};
     obj["a b c"] = 1;
@@ -43,7 +44,7 @@ it('computed properties', () =>
     };
   `))
 
-it('ignore circular reference', () =>
+test('ignore circular reference', () =>
   expectJS(`
     const obj = {};
     obj.foo = obj;
@@ -52,7 +53,7 @@ it('ignore circular reference', () =>
     obj.foo = obj;
   `))
 
-it('ignore call with possible circular reference', () =>
+test('ignore call with possible circular reference', () =>
   expectJS(`
     const obj = {};
     obj.foo = fn();

@@ -1,15 +1,16 @@
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import { unaryExpressions } from '../transforms'
 
 const expectJS = testTransform(unaryExpressions)
 
-it('void', () => expectJS('void foo();').toMatchInlineSnapshot('foo();'))
+test('void', () => expectJS('void foo();').toMatchInlineSnapshot('foo();'))
 
-it('typeof', () => expectJS('typeof foo();').toMatchInlineSnapshot('foo();'))
+test('typeof', () => expectJS('typeof foo();').toMatchInlineSnapshot('foo();'))
 
-it('logical not', () => expectJS('!foo();').toMatchInlineSnapshot('foo();'))
+test('logical not', () => expectJS('!foo();').toMatchInlineSnapshot('foo();'))
 
-it('return void', () =>
+test('return void', () =>
   expectJS('return void foo();').toMatchInlineSnapshot(`
     foo();
     return;

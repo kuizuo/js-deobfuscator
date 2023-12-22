@@ -24,7 +24,8 @@ export default antfu({
     'ts/consistent-type-imports': 'off',
     'ts/no-use-before-define': 'off',
     'no-unused-expressions': 'off',
-
+    'test/consistent-test-it': 'off',
+    
     'antfu/if-newline': 'off',
   },
 })

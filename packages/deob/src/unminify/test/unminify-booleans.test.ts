@@ -1,16 +1,16 @@
-import { it } from 'vitest'
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import { unminifyBooleans } from '../transforms'
 
 const expectJS = testTransform(unminifyBooleans)
 
-it('true', () => {
+test('true', () => {
   expectJS('!0').toMatchInlineSnapshot('true;')
   expectJS('!!1').toMatchInlineSnapshot('true;')
   expectJS('!![]').toMatchInlineSnapshot('true;')
 })
 
-it('false', () => {
+test('false', () => {
   expectJS('!1').toMatchInlineSnapshot('false;')
   expectJS('![]').toMatchInlineSnapshot('false;')
 })

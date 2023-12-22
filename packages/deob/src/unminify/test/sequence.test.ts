@@ -1,10 +1,10 @@
-import { it } from 'vitest'
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import { sequence } from '../transforms'
 
 const expectJS = testTransform(sequence)
 
-it('to statements', () =>
+test('to statements', () =>
   expectJS(`
     if (a) b(), c();
   `).toMatchInlineSnapshot(`
@@ -14,7 +14,7 @@ it('to statements', () =>
     }
   `))
 
-it('rearrange from return', () =>
+test('rearrange from return', () =>
   expectJS(`
     function f() {
       return a(), b(), c();
@@ -27,7 +27,7 @@ it('rearrange from return', () =>
     }
   `))
 
-it('rearrange from if', () =>
+test('rearrange from if', () =>
   expectJS(`
     if (a(), b()) c();
   `).toMatchInlineSnapshot(`
@@ -35,7 +35,7 @@ it('rearrange from if', () =>
     if (b()) c();
   `))
 
-it('rearrange from switch', () =>
+test('rearrange from switch', () =>
   expectJS(`
     switch (a(), b()) {}
   `).toMatchInlineSnapshot(`
@@ -43,7 +43,7 @@ it('rearrange from switch', () =>
     switch (b()) {}
   `))
 
-it('throw', () =>
+test('throw', () =>
   expectJS(`
     throw a(), b();
   `).toMatchInlineSnapshot(`
@@ -51,7 +51,7 @@ it('throw', () =>
     throw b();
   `))
 
-it('rearrange from for-in', () =>
+test('rearrange from for-in', () =>
   expectJS(`
     for (let key in a = 1, object) {}
   `).toMatchInlineSnapshot(`
@@ -59,7 +59,7 @@ it('rearrange from for-in', () =>
     for (let key in object) {}
   `))
 
-it('rearrange from for loop init', () =>
+test('rearrange from for loop init', () =>
   expectJS(`
     for((a(), b());;);
   `).toMatchInlineSnapshot(`
@@ -68,7 +68,7 @@ it('rearrange from for loop init', () =>
     for (;;);
   `))
 
-it('rearrange from for loop update', () =>
+test('rearrange from for loop update', () =>
   expectJS(`
     for(; i < 10; a(), b(), i++);
   `).toMatchInlineSnapshot(`
@@ -78,7 +78,7 @@ it('rearrange from for loop update', () =>
     }
   `))
 
-it('rearrange variable declarator', () =>
+test('rearrange variable declarator', () =>
   expectJS(`
    var t = (o = null, o);
   `).toMatchInlineSnapshot(`
@@ -86,7 +86,7 @@ it('rearrange variable declarator', () =>
     var t = o;
   `))
 
-it('rearrange assignment', () => {
+test('rearrange assignment', () => {
   expectJS(`
     t = (o = null, o);
   `).toMatchInlineSnapshot(`
@@ -104,7 +104,7 @@ it('rearrange assignment', () => {
   `)
 })
 
-it('dont rearrange variable declarator in for loop', () =>
+test('dont rearrange variable declarator in for loop', () =>
   expectJS(`
     for(let a = (b, c);;) {}
   `).toMatchInlineSnapshot(`

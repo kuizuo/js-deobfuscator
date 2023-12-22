@@ -1,9 +1,10 @@
+import { test } from 'vitest'
 import { testTransform } from '../../../test'
 import { splitVariableDeclarations } from '../transforms'
 
 const expectJS = testTransform(splitVariableDeclarations)
 
-it('split variable declarations', () =>
+test('split variable declarations', () =>
   expectJS(`
     const a = 1, b = 2, c = 3;
   `).toMatchInlineSnapshot(`
@@ -12,7 +13,7 @@ it('split variable declarations', () =>
     const c = 3;
   `))
 
-it('split exported variable declarations', () =>
+test('split exported variable declarations', () =>
   expectJS(`
     export const a = 1, b = 2, c = 3;
   `).toMatchInlineSnapshot(`
@@ -21,7 +22,7 @@ it('split exported variable declarations', () =>
     export const c = 3;
   `))
 
-it('dont split in for loop', () =>
+test('dont split in for loop', () =>
   expectJS(`
     for (let i = 0, j = 1; i < 10; i++, j++) var a, b;
   `).toMatchInlineSnapshot(`

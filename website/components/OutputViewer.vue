@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { AstOutput, DeObOutput } from '#components'
+import { AstOutput, DeObfuscatorOutput } from '#components'
 import { ref } from '#imports'
 
 const currentTab = ref('deob')
 
 const tabs = {
-  deob: DeObOutput,
+  deob: DeObfuscatorOutput,
   ast: AstOutput,
 }
 </script>

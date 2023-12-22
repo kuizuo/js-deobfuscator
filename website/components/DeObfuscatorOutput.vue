@@ -4,7 +4,7 @@ import { code, error, loading, options, parseTime } from '#imports'
 
 import type { MonacoEditor } from '#build/components'
 
-import DeobfuscatorWorker from '~/utils/deobfuscator.ts?worker'
+import DeobfuscatorWorker from '~/utils/deobfuscate.worker.ts?worker'
 
 const worker = new DeobfuscatorWorker()
 

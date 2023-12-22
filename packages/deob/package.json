@@ -1,7 +1,7 @@
 {
   "name": "deob",
   "type": "module",
-  "version": "2.2.0",
+  "version": "0.3.0",
   "description": "javascript deobfuscate",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

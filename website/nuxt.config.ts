@@ -52,6 +52,7 @@ export default defineNuxtConfig({
         // by replacing it with a dummy module we can reduce the bundle size by 360kb
         '@babel/core': `${__dirname}/_empty.ts`,
         'isolated-vm': `${__dirname}/_empty.ts`,
+        'deob': `${__dirname}../packages/deob/src`,
       },
     },
     plugins: [

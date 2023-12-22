@@ -122,7 +122,7 @@ export class Deob {
     this.reParse()
   }
 
-  async run(): Promise<DeobResult> {
+  run(): DeobResult {
     let outputCode = ''
 
     const historys: parser.ParseResult<t.File>[] = []
@@ -219,7 +219,7 @@ export class Deob {
     ].filter(Boolean) as (() => unknown)[]
 
     for (let i = 0; i < stages.length; i++) {
-      await stages[i]()
+      stages[i]()
 
       if (options.isDebug) {
         const jscode = generate(this.ast, {
@@ -243,7 +243,7 @@ export class Deob {
       options.isStrongRemove = false
       options.isRemoveDecoder = true
       this.reParse()
-      return await this.run()
+      return this.run()
     }
 
     return {
@@ -278,7 +278,7 @@ export class Deob {
       console.log('注入代码执行结果', result)
     }
     catch (error) {
-      throw new Error('代码无法运行, 请在控制台中查看错误信息')
+      throw new Error('evalCode 无法运行, 请在控制台中查看错误信息')
     }
   }
 

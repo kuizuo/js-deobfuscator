@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync } from 'node:fs'
-import { readFile, rm } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import * as url from 'node:url'
 import debug from 'debug'
@@ -13,12 +13,10 @@ const { version, description } = JSON.parse(
   readFileSync(join(__dirname, '..', 'package.json'), 'utf8'),
 ) as { version: string; description: string }
 
-debug.enable('webcrack:*')
+debug.enable('deob:*')
 
 interface Options {
-  force: boolean
   output?: string
-  mangle?: boolean
 }
 
 async function readStdin() {
@@ -32,21 +30,10 @@ program
   .version(version)
   .description(description)
   .option('-o, --output <path>', 'output directory for bundled files')
-  .option('-f, --force', 'overwrite output directory')
-  .option('-m, --mangle', 'mangle variable names')
   .argument('[file]', 'input file, defaults to stdin')
   .action(async (input: string | undefined) => {
-    const { output, force, mangle } = program.opts<Options>()
+    const { output } = program.opts<Options>()
     const code = await (input ? readFile(input, 'utf8') : readStdin())
-
-    if (output) {
-      if (force || !existsSync(output)) {
-        await rm(output, { recursive: true, force: true })
-      }
-      else {
-        program.error('output directory already exists')
-      }
-    }
 
     const deob = new Deob(code)
     const result = await deob.run()

@@ -6,7 +6,7 @@ import { generate } from '../ast-utils'
 import { Decoder } from '../deobfuscate/decoder'
 import type { ArrayRotator } from '../deobfuscate/array-rotator'
 
-export function findDecoderByArray(ast: t.Node, count?: number) {
+export function findDecoderByArray(ast: t.Node, count: number = 100) {
   // 大数组 有可能是以函数形式包裹的
   let stringArray: {
     path: NodePath<t.Node>
@@ -90,13 +90,13 @@ export function findDecoderByArray(ast: t.Node, count?: number) {
           }
 
           if (r.parentKey === 'arguments') {
-            const parent = r.parentPath.parentPath
-            const parent_expression = parent.findParent(p => p.isExpressionStatement())
+            const parent = r.parentPath?.parentPath
+            const parent_expression = parent?.findParent(p => p.isExpressionStatement())
             if (parent_expression?.isExpressionStatement()) {
               // (function (h) {
               //     // ...
               // })(array)
-              rotators.push(parent)
+              rotators.push(parent_expression)
               return
             }
 

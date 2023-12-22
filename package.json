@@ -8,6 +8,7 @@
     "website:build": "pnpm run -F website build",
     "website:generate": "pnpm run -F website generate",
     "website:serve": "pnpm run -F website serve",
+    "tmp": "npx deob tmp/input.js -o tmp",
     "lint": "eslint './{packages,website,scripts,meta}/**/*.{js,ts,tsx,vue,md,json}'",
     "lint:fix": "nr lint --fix",
     "release": "bumpp -r",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^1.1.2",
     "bumpp": "^9.2.0",
+    "deob": "workspace:*",
     "eslint": "^8.53.0",
     "esm": "^3.2.25",
     "prettier": "^3.0.3",

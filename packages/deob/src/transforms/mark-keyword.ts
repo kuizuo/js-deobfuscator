@@ -1,6 +1,5 @@
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import type { Transform } from '../ast-utils'
 
 export interface Options {
   keywords: string[]
@@ -15,19 +14,13 @@ export interface Options {
  * // TOLOOK
  * debugger;
  */
-export default {
-  name: '标记标识符',
-  tags: ['safe'],
-  run(ast, state, options) {
-    let { keywords, label } = options || { keywords: ['debugger'], label: ' TOLOOK' }
+export function markKeyword(ast: t.Node, keywords = ['debugger'], label = ' TOLOOK') {
+  const defaultKeywords = ['debugger', 'setTimeout', 'setInterval']
+  keywords = [...new Set([...keywords.map(k => k.toLowerCase()), ...defaultKeywords])]
 
-    const defaultKeywords = ['debugger']
-    keywords = [
-      ...new Set([...keywords.map(k => k.toLowerCase()), ...defaultKeywords]),
-    ]
-
-    traverse(ast, {
-      DebuggerStatement(path) {
+  traverse(ast, {
+    DebuggerStatement: {
+      exit(path) {
         // 如果已注释,则跳过
         const hasComment = path.node.leadingComments?.find(
           c => (c.value = label),
@@ -37,25 +30,18 @@ export default {
 
         path.addComment('leading', label, true)
       },
-      CallExpression(path) {
-        if (t.isMemberExpression(path.node.callee)) {
-          // if (
-          //   !['setTimeout', 'setInterval'].includes(
-          //     getPropName(path.node.callee.property),
-          //   )
-          // )
-          //   return
-          path.addComment('leading', label, true)
-          return
-        }
-
+    },
+    CallExpression: {
+      exit(path) {
         if (t.isIdentifier(path.node.callee)) {
-          if (!['setTimeout', 'setInterval'].includes(path.node.callee.name))
+          if (!keywords.includes(path.node.callee.name))
             return
           path.addComment('leading', label, true)
         }
       },
-      StringLiteral(path) {
+    },
+    StringLiteral: {
+      exit(path) {
         if (keywords.includes(path.node.value.toLowerCase())) {
           const statementPath = path.findParent(p => p.isStatement())
           if (statementPath)
@@ -63,7 +49,9 @@ export default {
           else path.addComment('leading', label, true)
         }
       },
-      Identifier(path) {
+    },
+    Identifier: {
+      exit(path) {
         const name = path.node.name
         if (keywords.includes(name.toLowerCase())) {
           const statementPath = path.findParent(p => p.isStatement())
@@ -72,6 +60,6 @@ export default {
           else path.addComment('leading', label, true)
         }
       },
-    })
-  },
-} satisfies Transform<Options>
+    },
+  })
+}

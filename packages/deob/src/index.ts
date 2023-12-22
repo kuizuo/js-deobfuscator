@@ -27,7 +27,7 @@ import { findDecoderByArray } from './transforms/find-decoder-by-array'
 import { findDecoderByCallCount } from './transforms/find-decoder-by-call-count'
 import { designDecoder } from './transforms/design-decoder'
 import { decodeStrings } from './transforms/decode-strings'
-import markComment from './transforms/mark-comment'
+import { markKeyword } from './transforms/mark-keyword'
 import mangle from './transforms/mangle'
 
 export {
@@ -120,6 +120,17 @@ export class Deob {
   unminify() {
     applyTransform(this.ast, unminify)
     this.reParse()
+  }
+
+  eval(code: string) {
+    try {
+      const result = global.eval(code)
+      logger('注入代码执行结果', result)
+    }
+    catch (error) {
+      logger(`code to be eval:\n${code}`)
+      throw new Error('evalCode 无法运行, 请在控制台中查看错误信息')
+    }
   }
 
   run(): DeobResult {
@@ -217,6 +228,9 @@ export class Deob {
           ].flat(),
         )
       },
+      /** 标记关键字 */
+      options.isMarkEnable && (() => markKeyword(this.ast, options.keywords)),
+      /** 输出代码 */
       () => (outputCode = generate(this.ast)),
     ].filter(Boolean) as (() => unknown)[]
 
@@ -258,20 +272,5 @@ export class Deob {
         await writeFile(join(path, 'output.js'), outputCode, 'utf8')
       },
     }
-  }
-
-  eval(code: string) {
-    try {
-      const result = global.eval(code)
-      logger('注入代码执行结果', result)
-    }
-    catch (error) {
-      logger(`code to be eval:\n${code}`)
-      throw new Error('evalCode 无法运行, 请在控制台中查看错误信息')
-    }
-  }
-
-  markComment({ keywords, label }: { keywords: string[]; label: string }) {
-    applyTransform(this.ast, markComment, { keywords, label })
   }
 }

@@ -25,7 +25,7 @@ async function copyLink(e: MouseEvent) {
         <div i-ri:sun-line dark:i-ri:moon-line />
       </button>
       <a
-        href="https://github.com/sxzz/ast-explorer"
+        href="https://github.com/kuizuo/js-deobfuscator"
         target="_blank"
         flex
         items-center

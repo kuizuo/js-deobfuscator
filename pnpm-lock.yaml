@@ -108,7 +108,7 @@ importers:
   website:
     dependencies:
       deob:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../packages/deob
       fflate:
         specifier: ^0.8.1

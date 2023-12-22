@@ -94,10 +94,6 @@ watchEffect(() => {
           />
 
           <label class="inline-flex items-center gap-2">
-            <span class="flex-1">是否移除解密器(后续用不到)</span>
-            <input v-model="options. isRemoveDecoder" type="checkbox">
-          </label>
-          <label class="inline-flex items-center gap-2">
             <span class="flex-1">解密器嵌套函数深度</span>
             <input
               v-model="options.inlineWrappersDepth"
@@ -114,11 +110,15 @@ watchEffect(() => {
             >
           </label>
           <label class="inline-flex items-center gap-2">
-            <span class="flex-1">强力清除(会对解混淆后的代码再次执行)</span>
+            <span class="flex-1">是否移除解密器(后续用不到)</span>
+            <input v-model="options. isRemoveDecoder" type="checkbox">
+          </label>
+          <label class="inline-flex items-center gap-2">
+            <span class="flex-1">强力清除(会对处理后的代码再次执行)</span>
             <input v-model="options.isStrongRemove" type="checkbox">
           </label>
           <label class="inline-flex items-center gap-2">
-            <span class="flex-1">调试模式</span>
+            <span class="flex-1">调试模式(日志输出)</span>
             <input v-model="options.isDebug" type="checkbox">
           </label>
 

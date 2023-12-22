@@ -1,5 +1,28 @@
 import type { Options } from 'deob'
-import { defaultOptions } from 'deob'
+
+// import { defaultOptions } from 'deob'
+
+// FIXME: Uncaught ReferenceError: Cannot access 'defaultOptions' before initialization
+export const defaultOptions: Required<Options> = {
+  isStrongRemove: false,
+
+  inlineWrappersDepth: 2,
+  decoderLocationMethod: 'stringArray',
+  decoderCallCount: 150,
+  stringArraylength: 150,
+  setupCode: '',
+  designDecoderName: '',
+  isRemoveDecoder: true,
+
+  execCount: 2,
+
+  isMarkEnable: true,
+  keywords: ['debugger'],
+
+  isDebug: false,
+  mangle: false,
+  isMinifiedEnable: false,
+}
 
 const PREFIX = 'js-deobfuscator:'
 

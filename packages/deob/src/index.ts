@@ -62,6 +62,16 @@ function handleError(error: any, rawCode: string) {
 
 const logger = debug('Deob')
 
+export function evalCode(code: string) {
+  try {
+    const result = global.eval(code)
+  }
+  catch (error) {
+    logger(`eval code:\n${code}`)
+    throw new Error('evalCode 无法运行, 请在控制台中查看错误信息')
+  }
+}
+
 export class Deob {
   public ast: parser.ParseResult<t.File>
   private options: Required<Options>
@@ -122,17 +132,6 @@ export class Deob {
     this.reParse()
   }
 
-  eval(code: string) {
-    try {
-      const result = global.eval(code)
-      logger('注入代码执行结果', result)
-    }
-    catch (error) {
-      logger(`code to be eval:\n${code}`)
-      throw new Error('evalCode 无法运行, 请在控制台中查看错误信息')
-    }
-  }
-
   run(): DeobResult {
     let outputCode = ''
 
@@ -164,14 +163,14 @@ export class Deob {
           setupCode = scode
         }
         else if (options.decoderLocationMethod === 'evalCode') {
-          this.eval(options.setupCode!)
+          evalCode(options.setupCode!)
           decoders = designDecoder(this.ast, options.designDecoderName!)
         }
 
         logger(`${stringArray ? `字符串数组: ${stringArray?.name} 数组长度:${stringArray?.length}` : '没找到字符串数组'}`)
         logger(`${decoders.length ? `解密器: ${decoders.map(d => d.name)}` : '没找到解密器'}`)
 
-        this.eval(setupCode)
+        evalCode(setupCode)
 
         for (let i = 0; i < options.inlineWrappersDepth; i++) {
           for (const decoder of decoders) {

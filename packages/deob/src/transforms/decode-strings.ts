@@ -21,16 +21,16 @@ export function decodeStrings(decoders: Decoder[]) {
           const hasIdentifier = callExpression.node.arguments.some(a => t.isIdentifier(a))
           if (hasIdentifier) return
 
-          const callCode = callExpression.toString()
+          const call = callExpression.toString()
 
-          const decStr = eval(callCode)
-          map.set(callCode, decStr)
+          const value = global.eval(call)
+          map.set(call, value)
 
-          callExpression.replaceWith(t.valueToNode(decStr))
+          callExpression.replaceWith(t.valueToNode(value))
         }
         catch (error) {
           // 解密失败 则添加注释
-          callExpression.addComment('leading', `解密失败: ${(error as any).message}`, true)
+          callExpression.addComment('leading', `decode_error: ${(error as any).message}`, true)
         }
       }
     })

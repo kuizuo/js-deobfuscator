@@ -3,8 +3,6 @@ import { parse } from '@babel/parser'
 import { findDecoderByCallCount } from '../find-decoder-by-call-count'
 import { findDecoderByArray } from '../find-decoder-by-array'
 import { evalCode, generate } from '../..'
-import { VMDecoder, VMSetupCode, createNodeSandbox } from '../../deobfuscate/vm'
-import { designDecoder } from '../design-decoder'
 import { decodeStrings } from '../decode-strings'
 
 describe('decoder', async () => {

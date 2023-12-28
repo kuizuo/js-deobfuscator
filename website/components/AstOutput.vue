@@ -154,7 +154,7 @@ watch(highlightRange, () => highlight(), {
           automaticLayout: true,
           theme: isDark ? 'vs-dark' : 'vs',
           readOnly: true,
-          fontSize: 14,
+          fontSize: 12,
           tabSize: 2,
           minimap: {
             enabled: false,

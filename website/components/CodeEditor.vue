@@ -29,7 +29,7 @@ onMounted(() => {
     :options="{
       automaticLayout: true,
       theme: isDark ? 'vs-dark' : 'vs',
-      fontSize: 14,
+      fontSize: 12,
       tabSize: 2,
       lineNumbers: 'off',
       lineDecorationsWidth: 0,

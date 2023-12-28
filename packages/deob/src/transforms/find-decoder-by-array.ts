@@ -90,7 +90,7 @@ export function findDecoderByArray(ast: t.Node, count: number = 100) {
           }
 
           if (r.parentKey === 'arguments') {
-            const parent = r.parentPath?.parentPath
+            const parent = r.parentPath
             const parent_expression = parent?.findParent(p => p.isExpressionStatement())
             if (parent_expression?.isExpressionStatement()) {
               // (function (h) {
@@ -100,11 +100,11 @@ export function findDecoderByArray(ast: t.Node, count: number = 100) {
               return
             }
 
-            if (parent?.isVariableDeclarator()) {
+            if (parent?.parentPath?.isVariableDeclarator()) {
               // function decoder() {
               //  var a = xxx(array)
               // }
-              const funcDeclaration = parent.findParent(p => p.isFunctionDeclaration())
+              const funcDeclaration = parent?.parentPath.findParent(p => p.isFunctionDeclaration())
               if (funcDeclaration?.isFunctionDeclaration()) {
                 decoders.push(new Decoder(funcDeclaration.node.id!.name, funcDeclaration))
               }

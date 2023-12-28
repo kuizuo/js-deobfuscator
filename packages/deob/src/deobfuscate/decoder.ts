@@ -1,9 +1,14 @@
 import { expression } from '@babel/template'
-import type { NodePath } from '@babel/traverse'
-import type * as t from '@babel/types'
+import { NodePath } from '@babel/traverse'
+import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import { findParent, renameFast } from '../ast-utils'
-import type { StringArray } from './string-array'
+import {
+  anyLiteral,
+  findParent,
+  inlineVariable,
+  renameFast,
+} from '../ast-utils'
+import { StringArray } from './string-array'
 
 /**
  * A function that is called with >= 1 numeric/string arguments
@@ -22,23 +27,27 @@ export class Decoder {
   collectCalls(): NodePath<t.CallExpression>[] {
     const calls: NodePath<t.CallExpression>[] = []
 
-    const argumentMatcher: m.Matcher<t.Expression> = m.or(
+    const literalArgument: m.Matcher<t.Expression> = m.or(
       m.binaryExpression(
         m.anything(),
-        m.matcher(node => argumentMatcher.match(node)),
-        m.matcher(node => argumentMatcher.match(node)),
+        m.matcher(node => literalArgument.match(node)),
+        m.matcher(node => literalArgument.match(node)),
       ),
       m.unaryExpression(
         '-',
-        m.matcher(node => argumentMatcher.match(node)),
+        m.matcher(node => literalArgument.match(node)),
       ),
       m.numericLiteral(),
       m.stringLiteral(),
     )
 
-    const call = m.callExpression(
+    const literalCall = m.callExpression(
       m.identifier(this.name),
-      m.arrayOf(argumentMatcher),
+      m.arrayOf(literalArgument),
+    )
+    const expressionCall = m.callExpression(
+      m.identifier(this.name),
+      m.arrayOf(m.anyExpression()),
     )
 
     const conditional = m.capture(m.conditionalExpression())
@@ -63,8 +72,21 @@ export class Decoder {
         // some of the scope information is somehow lost after replacing
         replacement.scope.crawl()
       }
-      else if (call.match(ref.parent)) {
+      else if (literalCall.match(ref.parent)) {
         calls.push(ref.parentPath as NodePath<t.CallExpression>)
+      }
+      else if (expressionCall.match(ref.parent)) {
+        // var n = 1; decode(n); -> decode(1);
+        ref.parentPath!.traverse({
+          ReferencedIdentifier(path) {
+            const varBinding = path.scope.getBinding(path.node.name)!
+            if (!varBinding || !varBinding.constant) return
+            inlineVariable(varBinding, anyLiteral)
+          },
+        })
+        if (literalCall.match(ref.parent)) {
+          calls.push(ref.parentPath as NodePath<t.CallExpression>)
+        }
       }
     }
 

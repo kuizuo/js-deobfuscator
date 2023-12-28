@@ -1,9 +1,7 @@
-import type { NodePath } from '@babel/traverse'
-import type * as t from '@babel/types'
-import type {
-  Transform,
-} from '../ast-utils'
+import { NodePath } from '@babel/traverse'
+import * as t from '@babel/types'
 import {
+  Transform,
   inlineFunctionAliases,
   inlineVariableAliases,
 } from '../ast-utils'

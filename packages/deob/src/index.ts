@@ -18,7 +18,6 @@ import mergeObjectAssignments from './deobfuscate/merge-object-assignments'
 import varFunctions from './deobfuscate/var-functions'
 import debugProtection from './deobfuscate/debug-protection'
 import selfDefending from './deobfuscate/self-defending'
-import forLoopHoist from './deobfuscate/for-loop-hoist'
 
 import { blockStatements, mergeStrings, rawLiterals, sequence, splitVariableDeclarations } from './unminify/transforms'
 import { unminify } from './unminify'
@@ -197,9 +196,6 @@ export class Deob {
       /** 控制流平坦化 */
       () => {
         for (let i = 0; i < options.execCount; i++) {
-          applyTransform(this.ast, forLoopHoist)
-          applyTransform(this.ast, splitVariableDeclarations)
-
           applyTransforms(
             this.ast,
             [

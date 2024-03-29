@@ -14,6 +14,7 @@
     "watch": "node esbuild.config.js --watch",
     "start": "node dist/cli.js",
     "tmp": "node esbuild.config.js && node --enable-source-maps dist/cli.js tmp/input.js -f -o tmp/out",
+    "postinstall": "npm run build",
     "lint": "eslint src test",
     "lint:fix": "eslint src test --fix",
     "test": "vitest --pool=vmThreads"

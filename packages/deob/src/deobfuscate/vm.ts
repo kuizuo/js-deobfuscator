@@ -3,7 +3,7 @@ import type { CallExpression } from '@babel/types'
 import { generate } from '../ast-utils'
 import type { ArrayRotator } from './array-rotator'
 
-import { Decoder } from './decoder'
+import type { Decoder } from './decoder'
 import type { StringArray } from './string-array'
 
 export type Sandbox = (code: string) => Promise<unknown>

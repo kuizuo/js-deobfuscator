@@ -1,4 +1,5 @@
-import traverse, { Binding, NodePath } from '@babel/traverse'
+import type { Binding, NodePath } from '@babel/traverse'
+import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
 import { findParent } from './matcher'
@@ -93,15 +94,15 @@ export function inlineFunction(
   fn: t.FunctionExpression | t.FunctionDeclaration,
   caller: NodePath<t.CallExpression>,
 ): void {
-  if (t.isRestElement(fn.params[1])) {
-    caller.replaceWith(
-      t.callExpression(
-        caller.node.arguments[0] as t.Identifier,
-        caller.node.arguments.slice(1),
-      ),
-    )
-    return
-  }
+  // if (t.isRestElement(fn.params[1])) {
+  //   caller.replaceWith(
+  //     t.callExpression(
+  //       caller.node.arguments[0] as t.Identifier,
+  //       caller.node.arguments.slice(1),
+  //     ),
+  //   )
+  //   return
+  // }
 
   const returnedValue = (fn.body.body[0] as t.ReturnStatement).argument!
   const clone = t.cloneNode(returnedValue, true)

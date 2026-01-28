@@ -6,6 +6,7 @@ import type {
 import {
   inlineFunctionAliases,
   inlineVariableAliases,
+  deobLogger as logger,
 } from '../ast-utils'
 
 /**
@@ -21,8 +22,11 @@ export default {
     const decoderName = decoder.node.id.name
     const decoderBinding = decoder.parentPath.scope.getBinding(decoderName)
     if (decoderBinding) {
-      state.changes += inlineVariableAliases(decoderBinding).changes
-      state.changes += inlineFunctionAliases(decoderBinding).changes
+      const varState = inlineVariableAliases(decoderBinding).changes
+      const fnState = inlineFunctionAliases(decoderBinding).changes
+      state.changes += varState
+      state.changes += fnState
+      logger(`解密函数包装内联: ${decoderName} | 变量别名 ${varState} 处, 函数别名 ${fnState} 处`)
     }
   },
 } satisfies Transform<NodePath<t.FunctionDeclaration>>

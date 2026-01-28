@@ -5,7 +5,9 @@ import type {
   Transform,
 } from '../ast-utils'
 import {
+  codePreview,
   constMemberExpression,
+  deobLogger as logger,
   emptyIife,
   falseMatcher,
   findParent,
@@ -26,6 +28,15 @@ export default {
   tags: ['safe'],
   scope: true,
   visitor() {
+    const removedSnippets: string[] = []
+    const MAX_SNIPPETS = 5
+
+    const recordRemoval = (node: t.Node, reason: string) => {
+      if (removedSnippets.length >= MAX_SNIPPETS)
+        return
+      removedSnippets.push(`${reason}: ${codePreview(node)}`)
+    }
+
     const callController = m.capture(m.anyString())
     const firstCall = m.capture(m.identifier())
     const rfn = m.capture(m.identifier())
@@ -126,18 +137,29 @@ export default {
               // callControllerFunctionName(this, function () { ... })();
               // ^ ref
               ref.parentPath.parentPath?.remove()
+              recordRemoval(ref.parentPath.parentPath?.node!, '移除自卫入口调用')
             }
             else {
               // const selfDefendingFunctionName = callControllerFunctionName(this, function () {
               // selfDefendingFunctionName();      ^ ref
-              removeSelfDefendingRefs(ref as NodePath<t.Identifier>)
+              removeSelfDefendingRefs(ref as NodePath<t.Identifier>, recordRemoval)
             }
 
             // leftover (function () {})() from debug protection function call
-            findParent(ref, emptyIife)?.remove()
+            const leftover = findParent(ref, emptyIife)
+            if (leftover) {
+              recordRemoval(leftover.node, '移除多余 IIFE')
+              leftover.remove()
+            }
 
             this.changes++
           })
+
+        logger([
+          '移除自卫代码片段预览:',
+          ...removedSnippets,
+          removedSnippets.length >= MAX_SNIPPETS ? '... 更多片段已省略' : '',
+        ].filter(Boolean).join('\n'))
 
         path.remove()
         this.changes++
@@ -146,7 +168,7 @@ export default {
   },
 } satisfies Transform
 
-function removeSelfDefendingRefs(path: NodePath<t.Identifier>) {
+function removeSelfDefendingRefs(path: NodePath<t.Identifier>, recordRemoval: (node: t.Node, reason: string) => void) {
   const varName = m.capture(m.anyString())
   const varMatcher = m.variableDeclarator(
     m.identifier(varName),
@@ -161,9 +183,12 @@ function removeSelfDefendingRefs(path: NodePath<t.Identifier>) {
     const binding = varDecl.scope.getBinding(varName.current!)
 
     binding?.referencePaths.forEach((ref) => {
-      if (callMatcher.match(ref.parentPath?.parent))
+      if (callMatcher.match(ref.parentPath?.parent)) {
+        recordRemoval(ref.parentPath?.parentPath?.node!, '移除自卫函数调用')
         ref.parentPath?.parentPath?.remove()
+      }
     })
+    recordRemoval(varDecl.node, '移除自卫函数声明')
     varDecl.remove()
   }
 }

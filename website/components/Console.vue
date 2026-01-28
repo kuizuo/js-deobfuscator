@@ -6,27 +6,51 @@ const props = withDefaults(defineProps<{
   logs: ConsoleLogEntry[]
   size: number
   collapsed: boolean
+  canExpand?: boolean
 }>(), {
   logs: () => [],
   size: 24,
   collapsed: false,
+  canExpand: false,
 })
 
 const emit = defineEmits<{
   (e: 'toggle'): void
   (e: 'clear'): void
+  (e: 'expand'): void
 }>()
 
 const logContainer = shallowRef<HTMLDivElement>()
-const timeFormatter = new Intl.DateTimeFormat('zh-CN', {
-  hour12: false,
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-})
-
 function formatTime(value: number) {
-  return timeFormatter.format(new Date(value))
+  const d = new Date(value)
+  const h = d.getHours().toString().padStart(2, '0')
+  const m = d.getMinutes().toString().padStart(2, '0')
+  const s = d.getSeconds().toString().padStart(2, '0')
+  const ms = d.getMilliseconds().toString().padStart(3, '0')
+  return `${h}:${m}:${s}.${ms}`
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+function formatMessage(message: string) {
+  // escape first to avoid injection
+  let html = escapeHtml(message)
+  // handle red ANSI code
+  html = html.replace(/\x1B\[31m([\s\S]*?)\x1B\[0m/g, '<span class="text-red-400">$1</span>')
+  // highlight namespace
+  html = html.replace(/\bDeob\b/g, '<span class="text-amber-400 font-semibold">Deob</span>')
+  // softer timing color
+  html = html.replace(/\+\d+ms\b/g, '<span class="text-zinc-400">$&</span>')
+  // failures/errors
+  html = html.replace(/(解密失败[^<]*|decode_error[^<]*|错误[:：][^<]*)/gi, '<span class="text-red-400">$1</span>')
+  // line breaks
+  html = html.replace(/\n/g, '<br>')
+  return html
 }
 
 watch(
@@ -74,6 +98,15 @@ watch(
         </div>
         <div class="flex items-center gap-2">
           <button
+            v-if="canExpand"
+            class="inline-flex items-center gap-1 rounded-md border border-amber-200/70 bg-amber-50/80 px-2 py-1 text-[11px] font-medium text-amber-800 shadow-sm transition hover:(border-amber-400 bg-amber-100) dark:(border-amber-500/40 bg-amber-500/10 text-amber-100)"
+            title="展开完整解密结果"
+            @click="emit('expand')"
+          >
+            <div class="i-ri:arrow-down-double-line text-sm" />
+            <span>展开解密结果</span>
+          </button>
+          <button
             v-if="logs.length"
             class="inline-flex items-center gap-1 rounded-md border border-zinc-200/70 bg-white/90 px-2 py-1 text-[11px] font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
             title="清空日志"
@@ -106,7 +139,10 @@ watch(
             <div class="text-[10px] uppercase tracking-wide text-emerald-400/80">
               {{ formatTime(entry.timestamp) }}
             </div>
-            <pre class="mt-1 whitespace-pre-wrap break-words">{{ entry.message }}</pre>
+            <pre
+              class="mt-1 whitespace-pre-wrap break-words"
+              v-html="formatMessage(entry.message)"
+            />
           </div>
         </template>
         <div

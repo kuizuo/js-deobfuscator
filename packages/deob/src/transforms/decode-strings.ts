@@ -1,5 +1,6 @@
 import * as t from '@babel/types'
 import type { Decoder } from '../deobfuscate/decoder'
+import { deobLogger as logger } from '../ast-utils'
 
 /**
  * 执行解密器 (使用 eval 执行)
@@ -11,6 +12,7 @@ import type { Decoder } from '../deobfuscate/decoder'
  */
 export function decodeStrings(decoders: Decoder[]) {
   const map = new Map<string, string>() // 记录解密结果
+  let failures = 0
 
   for (const decoder of decoders) {
     decoder?.path.scope.getBinding(decoder.name)?.referencePaths.forEach((ref) => {
@@ -29,12 +31,16 @@ export function decodeStrings(decoders: Decoder[]) {
           callExpression.replaceWith(t.valueToNode(value))
         }
         catch (error) {
+          failures++
           // 解密失败 则添加注释
           callExpression.addComment('leading', `decode_error: ${(error as any).message}`, true)
         }
       }
     })
   }
+
+  if (failures)
+    logger(`\x1B[31m解密失败 ${failures} 处，已在代码中标记 decode_error\x1B[0m`)
 
   return map
 }

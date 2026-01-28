@@ -2,7 +2,7 @@ export interface Options {
   /** 是否强力清除 */
   isStrongRemove?: boolean
 
-  /** 解密器嵌套深度 */
+  /** 解密函数包装深度 */
   inlineWrappersDepth?: number
   /** 解密器定位方式 */
   decoderLocationMethod?: 'obfuscate' | 'callCount' | 'stringArray' | 'evalCode'

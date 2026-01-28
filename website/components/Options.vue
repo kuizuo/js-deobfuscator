@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { options } from '#imports'
+import { defaultOptions, options } from '#imports'
 
 const dialog = ref<HTMLDialogElement>()
 
@@ -35,6 +35,13 @@ function open() {
 function close() {
   dialog.value?.close()
 }
+function resetOptions() {
+  const confirmed = window.confirm('确定要恢复默认配置吗？已修改的设置将被重置。')
+  if (!confirmed)
+    return
+  const { setupCode: _discard, ...rest } = defaultOptions
+  options.value = { ...rest, setupCode: '' }
+}
 function handleDialogClick(evt: MouseEvent) {
   if (evt.target === evt.currentTarget)
     close()
@@ -58,7 +65,17 @@ defineExpose({ open })
           保持轻量，只暴露核心选项。
         </p>
       </div>
-      <button class="i-ri:close-line text-lg text-zinc-500 hover:text-zinc-800 dark:text-zinc-300" @click="close" />
+      <div class="flex items-center gap-2">
+        <button
+          class="inline-flex items-center gap-1 rounded-lg border border-amber-200/80 bg-amber-50/80 px-3 py-1 text-xs font-semibold text-amber-800 shadow-sm transition hover:(border-amber-400 bg-amber-100) dark:(border-amber-500/40 bg-amber-500/10 text-amber-100)"
+          title="恢复默认配置"
+          @click="resetOptions"
+        >
+          <div class="i-ri:refresh-line" />
+          重置
+        </button>
+        <button class="i-ri:close-line text-lg text-zinc-500 hover:text-zinc-800 dark:text-zinc-300" @click="close" />
+      </div>
     </div>
     <hr class="border-zinc-200 dark:border-zinc-800">
     <div class="space-y-4 px-5 py-4 text-sm text-zinc-800 dark:text-zinc-100">

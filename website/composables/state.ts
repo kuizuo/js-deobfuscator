@@ -1,8 +1,6 @@
 import type { Options } from 'deob'
 
-// import { defaultOptions } from 'deob'
-
-// FIXME: Uncaught ReferenceError: Cannot access 'defaultOptions' before initialization
+// Keep a local copy to avoid circular init issues on client
 export const defaultOptions: Required<Options> = {
   isStrongRemove: false,
 
@@ -29,34 +27,32 @@ export const defaultOptions: Required<Options> = {
 const PREFIX = 'js-deobfuscator:'
 
 export const loading = ref<'parse' | false>(false)
-export const code = ref('')
+export const code = useLocalStorage<string>(`${PREFIX}code`, '')
 export const error = shallowRef<unknown>()
 export const parseTime = ref(0)
 
-export const options = useLocalStorage<Options>(`${PREFIX}options`, defaultOptions)
-
-const location = useBrowserLocation()
-
-const rawUrlState = location.value.hash ? atou(location.value.hash!.slice(1)) : ''
-if (rawUrlState) {
-  try {
-    const urlState = JSON.parse(rawUrlState)
-    code.value = urlState.c ?? ''
-    const mergedOptions = { ...defaultOptions, ...(urlState.o || {}) }
-    if (!mergedOptions.mangleMode && typeof mergedOptions.mangle === 'boolean')
-      mergedOptions.mangleMode = mergedOptions.mangle ? 'all' : 'off'
-
-    options.value = mergedOptions
-  }
-  catch (err) {
-    console.error(err)
-  }
+const persistedOptions = useLocalStorage<Required<Options>>(
+  `${PREFIX}options`,
+  defaultOptions,
+)
+const mergedOptions = {
+  ...defaultOptions,
+  ...(persistedOptions.value || {}),
 }
 
-watch([code, options], () => {
-  const serialized = JSON.stringify({
-    c: code.value,
-    o: options.value,
-  })
-  location.value.hash = utoa(serialized)
-}, { deep: true })
+if (
+  !mergedOptions.mangleMode
+  && typeof (persistedOptions.value as any)?.mangle === 'boolean'
+)
+  mergedOptions.mangleMode = (persistedOptions.value as any).mangle ? 'all' : 'off'
+
+export const options = ref<Required<Options>>(mergedOptions)
+
+watch(
+  options,
+  (val) => {
+    const { setupCode: _ignore, ...rest } = val
+    persistedOptions.value = { ...defaultOptions, ...rest, setupCode: '' }
+  },
+  { deep: true },
+)

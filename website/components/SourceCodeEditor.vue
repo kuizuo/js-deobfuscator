@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
-
 import { codePrettier, parser } from 'deob'
 
 // eslint-disable-next-line ts/consistent-type-imports
@@ -13,7 +12,6 @@ interface Example {
 }
 
 const files = import.meta.glob('../../example/**/input.js', { as: 'raw' })
-
 const examples: Example[] = Object.entries(files).map(([key, value]) => ({
   name: key.replace('../../example/', ''),
   value,
@@ -26,7 +24,7 @@ const editorOptions = computed<monaco.editor.IStandaloneEditorConstructionOption
   theme: editorTheme.value,
   fontSize: 13,
   tabSize: 2,
-  wordWrap: editorWordWrap.value ? ('on' as const) : ('off' as const),
+  wordWrap: editorWordWrap.value ? 'on' : 'off',
   stickyScroll: {
     enabled: editorStickyScroll.value,
   },
@@ -106,7 +104,7 @@ async function beautify() {
         <span class="text-[11px] text-zinc-500 dark:text-zinc-400">粘贴混淆代码，或直接加载示例/上传文件。</span>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <label class="flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1 text-[11px] font-medium shadow-sm transition hover:border-amber-300 dark:(border-zinc-700 bg-zinc-900/80)">
+        <label class="flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1 text-10px] font-medium shadow-sm transition hover:border-amber-300 dark:(border-zinc-700 bg-zinc-900/80)">
           <span>示例</span>
           <select
             name="example-select"

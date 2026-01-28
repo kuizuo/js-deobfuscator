@@ -67,7 +67,7 @@ export function evalCode(code: string) {
   }
   catch (error) {
     logger(`eval code:\n${code}`)
-    throw new Error('evalCode 无法运行, 请在控制台中查看错误信息')
+    throw new Error(`evalCode 无法运行, 请在控制台中查看错误信息: ${(error as any).message}`)
   }
 }
 
@@ -90,10 +90,8 @@ export class Deob {
       this.ast = parser.parse(rawCode, { sourceType: 'unambiguous', allowReturnOutsideFunction: true })
     }
     catch (error) {
-      console.error('代码初始化解析有误!')
-
       handleError(error, rawCode)
-      throw new Error(`代码初始化解析有误! ${error}`)
+      throw error
     }
   }
 
@@ -284,6 +282,5 @@ function getMangleMatcher(options: Options): ((id: string) => boolean) | undefin
 
       }
     }
-    default:
   }
 }

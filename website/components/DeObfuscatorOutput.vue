@@ -15,7 +15,7 @@ const editorOptions = computed<monaco.editor.IStandaloneEditorConstructionOption
   readOnly: true,
   fontSize: 13,
   tabSize: 2,
-  wordWrap: editorWordWrap.value ? ('on' as const) : ('off' as const),
+  wordWrap: editorWordWrap.value ? 'on' : 'off',
   stickyScroll: {
     enabled: editorStickyScroll.value,
   },
@@ -126,9 +126,17 @@ function openOptions() {
       </div>
       <div
         v-else-if="error"
-        class="w-full overflow-auto p-3 text-sm text-red-600 dark:text-red-400"
+        class="w-full overflow-auto p-4 text-sm"
       >
-        <pre class="whitespace-pre-wrap" v-text="String(error)" />
+        <div class="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50/90 p-3 text-red-800 shadow-sm dark:(border-red-900/60 bg-red-900/30 text-red-100)">
+          <div class="i-ri:error-warning-line mt-0.5 text-lg" />
+          <div class="space-y-2">
+            <div class="text-xs uppercase tracking-wide text-red-500 dark:text-red-200">
+              解析失败
+            </div>
+            <pre class="max-h-60 whitespace-pre-wrap break-all font-mono text-xs leading-5" v-text="String(error)" />
+          </div>
+        </div>
       </div>
       <div
         v-else-if="!output"

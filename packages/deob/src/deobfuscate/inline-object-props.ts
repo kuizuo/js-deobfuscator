@@ -5,6 +5,7 @@ import type {
 import {
   constKey,
   constMemberExpression,
+  deobLogger as logger,
   inlineObjectProperties,
   isReadonlyObject,
 } from '../ast-utils'
@@ -70,6 +71,7 @@ export default {
             m.or(m.stringLiteral(), m.numericLiteral()),
           ),
         )
+        logger(`对象属性内联: ${varId.current!.name} -> ${objectProperties.current!.length} 个字面量属性`)
       },
     }
   },

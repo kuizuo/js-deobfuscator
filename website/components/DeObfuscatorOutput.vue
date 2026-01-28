@@ -100,7 +100,6 @@ async function run() {
   parseTime.value = 0
   loading.value = 'parse'
   clearLogs()
-  pushLog('开始解混淆...')
 
   worker.postMessage({
     code: code.value,

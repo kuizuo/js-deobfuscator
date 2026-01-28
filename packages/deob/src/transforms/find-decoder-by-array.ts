@@ -2,7 +2,7 @@ import type * as t from '@babel/types'
 import type { NodePath } from '@babel/traverse'
 import traverse from '@babel/traverse'
 
-import { generate } from '../ast-utils'
+import { generate, deobLogger as logger } from '../ast-utils'
 import { Decoder } from '../deobfuscate/decoder'
 import type { ArrayRotator } from '../deobfuscate/array-rotator'
 
@@ -106,6 +106,7 @@ export function findDecoderByArray(ast: t.Node, count: number = 100) {
               // }
               const funcDeclaration = parent?.parentPath.findParent(p => p.isFunctionDeclaration())
               if (funcDeclaration?.isFunctionDeclaration()) {
+                logger(`发现解密器 (变量派生): ${funcDeclaration.node.id!.name}`)
                 decoders.push(new Decoder(funcDeclaration.node.id!.name, funcDeclaration))
               }
             }
@@ -130,6 +131,15 @@ export function findDecoderByArray(ast: t.Node, count: number = 100) {
     .join(';\n')
 
   const setupCode = [stringArrayCode, rotatorCode, decoderCode].join(';\n')
+
+  if (!stringArray)
+    logger('未找到满足长度要求的字符串数组')
+  if (rotators.length) {
+    const rotatorNames = rotators
+      .map(r => r.isFunctionDeclaration() ? (r as any).node.id?.name : r.node?.expression && (r.node.expression as any)?.callee?.name)
+      .filter(Boolean)
+    logger(`乱序函数数量: ${rotators.length}${rotatorNames.length ? ` -> ${rotatorNames.join(', ')}` : ''}`)
+  }
 
   return {
     stringArray,

@@ -29,15 +29,17 @@ const PREFIX = 'js-deobfuscator:'
 export const loading = ref<'parse' | false>(false)
 const codeStorageKey = `${PREFIX}code`
 const localCode = useLocalStorage<string>(codeStorageKey, '')
+const codeValue = ref<string>(localCode.value)
+const encoder = typeof TextEncoder !== 'undefined' ? new TextEncoder() : undefined
+const MAX_BYTES = 1024 * 1024
+
 export const code = computed<string>({
-  get: () => localCode.value,
+  get: () => codeValue.value,
   set: (val) => {
-    const lines = val.split('\n').length
-    if (lines > 2000) {
-      localCode.value = ''
-      return
-    }
-    localCode.value = val
+    codeValue.value = val
+    const size = encoder ? encoder.encode(val).length : val.length
+    if (size <= MAX_BYTES)
+      localCode.value = val
   },
 })
 export const error = shallowRef<unknown>()

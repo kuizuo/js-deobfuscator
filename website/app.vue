@@ -4,6 +4,20 @@ import { code } from '#imports'
 import 'splitpanes/dist/splitpanes.css'
 
 const paneSize = ref(54)
+const shouldWarnOnLeave = computed(() => code.value?.trim().length > 0)
+
+function beforeUnloadHandler(event: BeforeUnloadEvent) {
+  if (!shouldWarnOnLeave.value)
+    return
+  event.preventDefault()
+  event.returnValue = '重新加载站点? 你所做的更改可能未保存。'
+  return event.returnValue
+}
+
+onMounted(() => window.addEventListener('beforeunload', beforeUnloadHandler))
+onBeforeUnmount(() =>
+  window.removeEventListener('beforeunload', beforeUnloadHandler),
+)
 </script>
 
 <template>

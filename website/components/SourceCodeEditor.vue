@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import type * as monaco from 'monaco-editor'
+
 import { codePrettier, parser } from 'deob'
+// eslint-disable-next-line ts/consistent-type-imports
+import type { MonacoEditor } from '#build/components'
 
 interface Example {
   name: string
@@ -14,17 +18,44 @@ const examples: Example[] = Object.entries(files).map(([key, value]) => ({
 }))
 
 const code = defineModel<string>()
+const container = shallowRef<InstanceType<typeof MonacoEditor>>()
+
+function getEditor(): monaco.editor.IStandaloneCodeEditor | undefined {
+  const instance = container.value?.$editor as monaco.editor.IStandaloneCodeEditor | undefined
+  return instance ? toRaw(instance) : undefined
+}
+
+function applyText(next: string, source = 'edit') {
+  const editor = getEditor()
+  if (!editor) {
+    code.value = next
+    return
+  }
+  const model = editor.getModel()
+  if (!model)
+    return
+
+  const fullRange = model.getFullModelRange()
+  editor.pushUndoStop()
+  editor.executeEdits(source, [
+    {
+      range: fullRange,
+      text: next,
+    },
+  ])
+  editor.pushUndoStop()
+}
 
 async function handleExampleChange(event: Event) {
   const selectedValue = (event.target as HTMLSelectElement).value
 
   if (!selectedValue) {
-    code.value = ''
+    applyText('', 'ExampleClear')
     return
   }
 
   const result = await examples.find(e => e.name === selectedValue)!.value()
-  code.value = result
+  applyText(result, 'ExampleLoad')
 }
 
 function handleFileChange(event: Event) {
@@ -39,7 +70,7 @@ function handleFileChange(event: Event) {
 
   const reader = new FileReader()
   reader.onload = () => {
-    code.value = reader.result as string
+    applyText(reader.result as string, 'Upload')
   }
   reader.readAsText(file)
 }
@@ -47,11 +78,11 @@ function handleFileChange(event: Event) {
 async function beautify() {
   if (!code.value)
     return
-  code.value = codePrettier(parser.parse(code.value))
+  applyText(codePrettier(parser.parse(code.value)), 'Beautify')
 }
 
 function clean() {
-  code.value = ''
+  applyText('', 'Clean')
 }
 </script>
 
@@ -107,6 +138,7 @@ function clean() {
     </div>
     <div class="mt-3 flex min-h-0 flex-1 rounded-lg border border-zinc-200/70 bg-white/90 shadow-sm dark:(border-zinc-800/80 bg-zinc-950/60)">
       <MonacoEditor
+        ref="container"
         v-model="code"
         class="h-full flex-1"
         lang="javascript"

@@ -61,6 +61,28 @@ function handleError(error: any, rawCode: string) {
 
 const logger = debug('Deob')
 
+function shorten(value: string, max = 120) {
+  const clean = value.replace(/\s+/g, ' ').trim()
+  if (clean.length <= max)
+    return clean
+  return `${clean.slice(0, max)}...`
+}
+
+function buildDecryptionSummaryLog(map: Map<string, string>) {
+  const lines = []
+
+  lines.push(`- 解密条目: ${map.size} 个`)
+  if (map.size) {
+    const preview = Array.from(map.entries()).slice(0, 5)
+    preview.forEach(([key, value]) => {
+      lines.push(`  • ${key} -> ${shorten(String(value))}`)
+    })
+  }
+
+  lines.push('====================')
+  return lines.join('\n')
+}
+
 export function evalCode(code: string) {
   try {
     const result = global.eval(code)
@@ -165,8 +187,7 @@ export class Deob {
           decoders = designDecoder(this.ast, options.designDecoderName!)
         }
 
-        logger(`${stringArray ? `字符串数组: ${stringArray?.name} 数组长度:${stringArray?.length}` : '没找到字符串数组'}`)
-        logger(`${decoders.length ? `解密器: ${decoders.map(d => d.name)}` : '没找到解密器'}`)
+        logger(`${stringArray ? `字符串数组: ${stringArray?.name}` : '没找到字符串数组'} | ${decoders.length ? `解密器函数: ${decoders.map(d => d.name)}` : '没找到解密器函数'}`)
 
         evalCode(setupCode)
 
@@ -182,7 +203,7 @@ export class Deob {
 
         const map = decodeStrings(decoders)
 
-        logger('解密结果:', map)
+        logger(buildDecryptionSummaryLog(map))
 
         if (options.isRemoveDecoder && !options.isStrongRemove) {
           stringArray?.path.remove()

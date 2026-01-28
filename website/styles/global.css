@@ -22,21 +22,31 @@ html.dark {
   height: 100%;
 }
 
-/* Color Mode transition */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
+.splitpanes.splitpanes--horizontal > .splitpanes__splitter {
+  height: .5rem;
+  width: 100%;
+  background: none;
+  position: relative;
+  cursor: row-resize;
 }
-::view-transition-old(root) {
-  z-index: 1;
+.splitpanes.splitpanes--horizontal > .splitpanes__splitter::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 28px;
+  height: 5px;
+  background: #e5e7eb; 
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  transform: translate(-50%, -50%);
+  transition: background 0.2s;
 }
-::view-transition-new(root) {
-  z-index: 2147483646;
+html.dark .splitpanes.splitpanes--horizontal > .splitpanes__splitter::after {
+  background: #3a3a3a;
 }
-.dark::view-transition-old(root) {
-  z-index: 2147483646;
-}
-.dark::view-transition-new(root) {
-  z-index: 1;
+.splitpanes.splitpanes--horizontal > .splitpanes__splitter:hover::after,
+html.dark .splitpanes.splitpanes--horizontal > .splitpanes__splitter:hover::after {
+  background: #999999;
 }

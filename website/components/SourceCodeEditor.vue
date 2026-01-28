@@ -95,10 +95,6 @@ async function beautify() {
     return
   applyText(codePrettier(parser.parse(code.value)), 'Beautify')
 }
-
-function clean() {
-  applyText('', 'Clean')
-}
 </script>
 
 <template>
@@ -150,14 +146,6 @@ function clean() {
           <span>上传</span>
         </label>
         <input id="fileInput" type="file" class="hidden" @change="handleFileChange">
-        <button
-          class="inline-flex items-center gap-2 rounded-md border border-transparent bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-zinc-800 dark:bg-amber-500 dark:hover:bg-amber-400"
-          title="Clean source code"
-          @click="clean"
-        >
-          <div class="i-ri:delete-bin-line" />
-          <span>清空</span>
-        </button>
       </div>
     </div>
     <div class="mt-3 flex min-h-0 flex-1 rounded-lg border border-zinc-200/70 bg-white/90 shadow-sm dark:(border-zinc-800/80 bg-zinc-950/60)">

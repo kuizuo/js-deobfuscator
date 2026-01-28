@@ -23,7 +23,7 @@
         <div class="i-ri:sun-line text-base dark:i-ri:moon-line" />
       </button>
       <a
-        class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-400 to-orange-600 px-3 py-1.5 text-xs font-semibold text-white shadow-md transition hover:from-amber-500 hover:to-orange-600"
+        class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-zinc-900 via-zinc-800 to-black px-3 py-1.5 text-xs font-semibold text-white shadow-md transition hover:from-black hover:via-zinc-900 hover:to-zinc-800"
         href="https://github.com/kuizuo/js-deobfuscator"
         target="_blank"
       >

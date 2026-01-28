@@ -16,12 +16,12 @@ export default antfu({
     'no-console': 'off',
     'no-eval': 'off',
     'no-restricted-globals': 'off',
+    'no-alert': 'off',
     'node/prefer-global/process': 'off',
 
     'curly': 'off',
     'unused-imports/no-unused-vars': 'warn',
 
-    'ts/consistent-type-imports': 'off',
     'ts/no-use-before-define': 'off',
     'no-unused-expressions': 'off',
     'test/consistent-test-it': 'off',

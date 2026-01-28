@@ -87,7 +87,7 @@ export class Deob {
     console.clear()
 
     try {
-      this.ast = parser.parse(rawCode, { sourceType: 'script' })
+      this.ast = parser.parse(rawCode, { sourceType: 'unambiguous', allowReturnOutsideFunction: true })
     }
     catch (error) {
       console.error('代码初始化解析有误!')
@@ -114,7 +114,7 @@ export class Deob {
     })
 
     try {
-      this.ast = parser.parse(jscode)
+      this.ast = parser.parse(jscode, { sourceType: 'unambiguous', allowReturnOutsideFunction: true })
     }
     catch (error) {
       handleError(error, jscode)
@@ -128,7 +128,6 @@ export class Deob {
 
   unminify() {
     applyTransform(this.ast, unminify)
-    this.reParse()
   }
 
   run(): DeobResult {
@@ -141,6 +140,8 @@ export class Deob {
     const stages = [
       /** 格式预处理 */
       () => this.prepare(),
+      /** 对象引用替换 */
+      () => applyTransform(this.ast, inlineObjectProps),
       /** 定位解密器 */
       () => {
         let stringArray: StringArray | undefined
@@ -205,7 +206,6 @@ export class Deob {
               controlFlowSwitch,
             ],
           )
-          this.reParse()
         }
       },
       /** 合并对象 */
@@ -231,23 +231,6 @@ export class Deob {
 
     for (let i = 0; i < stages.length; i++) {
       stages[i]()
-
-      if (options.isDebug) {
-        const jscode = generate(this.ast, {
-          minified: false,
-          jsescOption: { minimal: true },
-          compact: false,
-          comments: true,
-        })
-
-        try {
-          historys.push(parser.parse(jscode))
-        }
-        catch (error) {
-          handleError(error, jscode)
-          throw new Error(`代码替换有误,解析失败! 请到控制台中查看 ${error}`)
-        }
-      }
     }
 
     if (options.isStrongRemove) {

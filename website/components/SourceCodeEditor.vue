@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type * as monaco from 'monaco-editor'
-
 import { codePrettier, parser } from 'deob'
-
-import type { MonacoEditor } from '#build/components'
 
 interface Example {
   name: string
@@ -18,27 +14,25 @@ const examples: Example[] = Object.entries(files).map(([key, value]) => ({
 }))
 
 const code = defineModel<string>()
-const container = shallowRef<InstanceType<typeof MonacoEditor>>()
 
 async function handleExampleChange(event: Event) {
   const selectedValue = (event.target as HTMLSelectElement).value
 
-  if (selectedValue === '') {
+  if (!selectedValue) {
     code.value = ''
+    return
   }
-  else {
-    const result = await examples.find(e => e.name === selectedValue)!.value()
 
-    code.value = result
-  }
+  const result = await examples.find(e => e.name === selectedValue)!.value()
+  code.value = result
 }
 
 function handleFileChange(event: Event) {
-  const file = (event.target as HTMLInputElement).files![0]
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (!file)
+    return
 
-  // 检查文件后缀名是否为 .js
-  if (file && !file.name.endsWith('.js')) {
-    // eslint-disable-next-line no-alert
+  if (!file.name.endsWith('.js')) {
     window.alert('请选择 js 文件')
     return
   }
@@ -51,71 +45,86 @@ function handleFileChange(event: Event) {
 }
 
 async function beautify() {
-  const formatted = codePrettier(parser.parse(code.value!))
-  code.value = formatted
+  if (!code.value)
+    return
+  code.value = codePrettier(parser.parse(code.value))
 }
 
 function clean() {
   code.value = ''
 }
-
-onMounted(() => {
-  const editor = toRaw(
-    container.value!.$editor as monaco.editor.IStandaloneCodeEditor,
-  )
-  editor.onDidChangeCursorPosition((e) => {
-    editorCursor.value = editor.getModel()!.getOffsetAt(e.position)
-  })
-})
 </script>
 
 <template>
-  <div flex="~ col gap-2 1" min-w-0 h-full>
-    <div flex="~ gap-3 wrap items-center" mx-2>
-      <label> <span text-sm font-mono>Source Code</span> </label>
-      <div flex="~ gap-3 1" justify-end>
-        <div class="inline-flex items-center gap-2">
-          <label for="example-select" class="text-sm font-medium">Example: </label>
-          <select id="example-select" name="example-select" class="p-0.5 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:(ring border-blue-300) dark:bg-gray-700" @change="handleExampleChange">
-            <option value="" />
+  <div class="flex h-full flex-col rounded-r-xl bg-white/70 p-3 dark:bg-zinc-900/60">
+    <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed border-amber-200/80 bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:(border-amber-500/60 bg-amber-500/10 text-amber-100)">
+      <div class="flex items-center gap-2">
+        <div class="i-ri:input-method-line text-lg" />
+        <span class="font-semibold text-zinc-800 dark:text-zinc-100">源代码</span>
+        <span class="text-[11px] text-zinc-500 dark:text-zinc-400">粘贴混淆代码，或直接加载示例/上传文件。</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1 text-[11px] font-medium shadow-sm transition hover:border-amber-300 dark:(border-zinc-700 bg-zinc-900/80)">
+          <span>示例</span>
+          <select
+            name="example-select"
+            class="min-w-36 bg-transparent text-xs focus:outline-none"
+            @change="handleExampleChange"
+          >
+            <option value="">
+              选择一个示例
+            </option>
             <option v-for="e in examples" :key="e.name" :value="e.name">
               {{ e.name }}
             </option>
           </select>
-        </div>
-
-        <OuputOptions />
-        <button title="Beautify code">
-          <div i-ri:brush-3-line @click="beautify" />
+        </label>
+        <button
+          class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+          title="Beautify code"
+          @click="beautify"
+        >
+          <div class="i-ri:brush-3-line" />
+          <span>美化</span>
         </button>
-        <button title="Upload file">
-          <label for="fileInput" cursor-pointer> <div i-ri:upload-line /></label>
-          <input id="fileInput" type="file" style="display: none" @change="handleFileChange">
-        </button>
-        <button title="Clean source code">
-          <div i-ri:delete-bin-line @click="clean" />
+        <label
+          for="fileInput"
+          class="inline-flex cursor-pointer items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+        >
+          <div class="i-ri:upload-cloud-line" />
+          <span>上传</span>
+        </label>
+        <input id="fileInput" type="file" class="hidden" @change="handleFileChange">
+        <button
+          class="inline-flex items-center gap-2 rounded-md border border-transparent bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-zinc-800 dark:bg-amber-500 dark:hover:bg-amber-400"
+          title="Clean source code"
+          @click="clean"
+        >
+          <div class="i-ri:delete-bin-line" />
+          <span>清空</span>
         </button>
       </div>
     </div>
-    <MonacoEditor
-      ref="container"
-      v-model="code"
-      h-full
-      lang="javascript"
-      :options="{
-        automaticLayout: true,
-        theme: isDark ? 'vs-dark' : 'vs',
-        fontSize: 12,
-        tabSize: 2,
-        minimap: {
-          enabled: false,
-        },
-      }"
-    >
-      <div flex="~ col gap-2" h-full w-full items-center justify-center>
-        <div i-ri:loader-2-line animate-spin text-4xl />
-        <span text-lg>Loading...</span>
-      </div>
-    </MonacoEditor>
+    <div class="mt-3 flex min-h-0 flex-1 rounded-lg border border-zinc-200/70 bg-white/90 shadow-sm dark:(border-zinc-800/80 bg-zinc-950/60)">
+      <MonacoEditor
+        v-model="code"
+        class="h-full flex-1"
+        lang="javascript"
+        :options="{
+          automaticLayout: true,
+          theme: isDark ? 'vs-dark' : 'vs',
+          fontSize: 13,
+          tabSize: 2,
+          minimap: {
+            enabled: false,
+          },
+        }"
+      >
+        <div class="flex h-full w-full flex-col items-center justify-center gap-2">
+          <div class="i-ri:loader-2-line text-4xl animate-spin" />
+          <span class="text-sm">Loading...</span>
+        </div>
+      </MonacoEditor>
+    </div>
   </div>
 </template>

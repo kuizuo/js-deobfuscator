@@ -5,9 +5,9 @@ import type {
 import {
   constKey,
   constMemberExpression,
-  deobLogger as logger,
   inlineObjectProperties,
   isReadonlyObject,
+  deobLogger as logger,
 } from '../ast-utils'
 
 // TODO: move do decoder.ts collectCalls to avoid traversing the whole AST

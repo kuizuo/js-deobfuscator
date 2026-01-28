@@ -1,7 +1,7 @@
 import * as parser from '@babel/parser'
 import type * as t from '@babel/types'
 import traverse from '@babel/traverse'
-import { deobLogger as logger, generate } from '../ast-utils'
+import { generate, deobLogger as logger } from '../ast-utils'
 import { Decoder } from '../deobfuscate/decoder'
 
 /**
@@ -63,9 +63,6 @@ export function findDecoderByCallCount(ast: t.File, count = 100) {
     logger(`未找到调用次数 >= ${count} 的解密器`)
   else
     logger(`解密器列表: ${decoders.map(d => d.name).join(', ')}`)
-
-  // TODO:
-  // stringArray rotators
 
   return {
     setupCode,

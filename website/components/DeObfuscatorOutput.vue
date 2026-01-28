@@ -1,12 +1,28 @@
 <script setup lang="ts">
+import type * as monaco from 'monaco-editor'
 import Options from './Options.vue'
-import { code, error, loading, options, parseTime } from '#imports'
+import { code, editorStickyScroll, editorWordWrap, error, loading, options, parseTime } from '#imports'
 
 import DeobfuscatorWorker from '~/utils/deobfuscate.worker.ts?worker'
 
 const worker = new DeobfuscatorWorker()
 const output = ref('')
 const optionsModal = shallowRef<InstanceType<typeof Options>>()
+
+const editorOptions = computed<monaco.editor.IStandaloneEditorConstructionOptions>(() => ({
+  automaticLayout: true,
+  theme: editorTheme.value,
+  readOnly: true,
+  fontSize: 13,
+  tabSize: 2,
+  wordWrap: editorWordWrap.value ? ('on' as const) : ('off' as const),
+  stickyScroll: {
+    enabled: editorStickyScroll.value,
+  },
+  minimap: {
+    enabled: false,
+  },
+}))
 
 const { copy, copied } = useClipboard({ source: output })
 
@@ -125,16 +141,7 @@ function openOptions() {
         v-model="output"
         class="h-full min-w-0 flex-1"
         lang="javascript"
-        :options="{
-          automaticLayout: true,
-          theme: isDark ? 'vs-dark' : 'vs',
-          readOnly: true,
-          fontSize: 13,
-          tabSize: 2,
-          minimap: {
-            enabled: false,
-          },
-        }"
+        :options="editorOptions"
       />
     </div>
     <Options ref="optionsModal" />

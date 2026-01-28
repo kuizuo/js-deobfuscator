@@ -2,8 +2,10 @@
 import type * as monaco from 'monaco-editor'
 
 import { codePrettier, parser } from 'deob'
+
 // eslint-disable-next-line ts/consistent-type-imports
 import type { MonacoEditor } from '#build/components'
+import { editorStickyScroll, editorTheme, editorWordWrap } from '#imports'
 
 interface Example {
   name: string
@@ -19,6 +21,19 @@ const examples: Example[] = Object.entries(files).map(([key, value]) => ({
 
 const code = defineModel<string>()
 const container = shallowRef<InstanceType<typeof MonacoEditor>>()
+const editorOptions = computed<monaco.editor.IStandaloneEditorConstructionOptions>(() => ({
+  automaticLayout: true,
+  theme: editorTheme.value,
+  fontSize: 13,
+  tabSize: 2,
+  wordWrap: editorWordWrap.value ? ('on' as const) : ('off' as const),
+  stickyScroll: {
+    enabled: editorStickyScroll.value,
+  },
+  minimap: {
+    enabled: false,
+  },
+}))
 
 function getEditor(): monaco.editor.IStandaloneCodeEditor | undefined {
   const instance = container.value?.$editor as monaco.editor.IStandaloneCodeEditor | undefined
@@ -103,7 +118,7 @@ function clean() {
             @change="handleExampleChange"
           >
             <option value="">
-              选择一个示例
+              选择一个
             </option>
             <option v-for="e in examples" :key="e.name" :value="e.name">
               {{ e.name }}
@@ -117,6 +132,15 @@ function clean() {
         >
           <div class="i-ri:brush-3-line" />
           <span>美化</span>
+        </button>
+        <button
+          class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+          :class="editorWordWrap ? 'border-amber-300 text-amber-700 dark:text-amber-100' : ''"
+          title="切换自动换行"
+          @click="editorWordWrap = !editorWordWrap"
+        >
+          <div class="i-ri:text-wrap" />
+          <span> {{ editorWordWrap ? '不' : '' }}换行</span>
         </button>
         <label
           for="fileInput"
@@ -142,15 +166,7 @@ function clean() {
         v-model="code"
         class="h-full flex-1"
         lang="javascript"
-        :options="{
-          automaticLayout: true,
-          theme: isDark ? 'vs-dark' : 'vs',
-          fontSize: 13,
-          tabSize: 2,
-          minimap: {
-            enabled: false,
-          },
-        }"
+        :options="editorOptions"
       >
         <div class="flex h-full w-full flex-col items-center justify-center gap-2">
           <div class="i-ri:loader-2-line text-4xl animate-spin" />

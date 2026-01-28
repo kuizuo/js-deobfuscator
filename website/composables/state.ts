@@ -27,7 +27,19 @@ export const defaultOptions: Required<Options> = {
 const PREFIX = 'js-deobfuscator:'
 
 export const loading = ref<'parse' | false>(false)
-export const code = useLocalStorage<string>(`${PREFIX}code`, '')
+const codeStorageKey = `${PREFIX}code`
+const localCode = useLocalStorage<string>(codeStorageKey, '')
+export const code = computed<string>({
+  get: () => localCode.value,
+  set: (val) => {
+    const lines = val.split('\n').length
+    if (lines > 2000) {
+      localCode.value = ''
+      return
+    }
+    localCode.value = val
+  },
+})
 export const error = shallowRef<unknown>()
 export const parseTime = ref(0)
 

@@ -11,7 +11,7 @@
     "website:serve": "pnpm run -F website serve",
     "tmp": "npx deob tmp/input.js -o tmp",
     "lint": "eslint './{packages,website,scripts,meta}/**/*.{js,ts,tsx,vue,md,json}'",
-    "lint:fix": "nr lint --fix",
+    "lint:fix": "pnpm lint --fix",
     "release": "bumpp -r",
     "test": "vitest"
   },

@@ -1,7 +1,7 @@
 import type { NodePath } from '@babel/traverse'
-import * as t from '@babel/types'
+import type * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import { generateUid, renameFast, type Transform } from '../ast-utils'
+import { type Transform, generateUid, renameFast } from '../ast-utils'
 
 export default {
   name: 'mangle',

@@ -7,10 +7,10 @@ import type {
 import {
   codePreview,
   constMemberExpression,
-  deobLogger as logger,
   emptyIife,
   falseMatcher,
   findParent,
+  deobLogger as logger,
   matchIife,
   trueMatcher,
 } from '../ast-utils'

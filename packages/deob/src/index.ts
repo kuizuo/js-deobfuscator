@@ -213,11 +213,11 @@ export class Deob {
       /** 去 minify */
       () => applyTransform(this.ast, unminify),
       /** 对象命名优化 */
-      (() => {
+      () => {
         const matcher = getMangleMatcher(options)
         if (matcher)
           applyTransform(this.ast, mangle, matcher)
-      }),
+      },
       /** 移除自卫代码 */
       () => {
         return applyTransforms(
@@ -281,10 +281,9 @@ function getMangleMatcher(options: Options): ((id: string) => boolean) | undefin
         return id => re.test(id)
       }
       catch {
-        return
+
       }
     }
     default:
-      return
   }
 }

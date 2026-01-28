@@ -25,8 +25,12 @@ export interface Options {
   keywords?: string[]
   /** 是否调试模式，将会日志输出与文件输出 */
   isDebug?: boolean
-  /** 优化变量名 */
-  mangle?: boolean
+  /** 变量名优化模式 */
+  mangleMode?: 'off' | 'all' | 'hex' | 'short' | 'custom'
+  /** 自定义变量名优化正则 */
+  manglePattern?: string
+  /** 自定义变量名优化正则标志位 */
+  mangleFlags?: string
   // /** 优化对象访问方式 */
   // computedProp?: boolean
   /** 压缩代码 */
@@ -50,7 +54,9 @@ export const defaultOptions: Required<Options> = {
   keywords: ['debugger'],
 
   isDebug: false,
-  mangle: false,
+  mangleMode: 'off',
+  manglePattern: '',
+  mangleFlags: '',
   // computedProp: false,
   isMinifiedEnable: false,
 }
@@ -59,6 +65,10 @@ export function mergeOptions(options: Options): asserts options is Required<Opti
   const mergedOptions: Required<Options> = {
     ...defaultOptions,
     ...options,
+  }
+  // backward compatibility: boolean mangle -> mode
+  if (!options.mangleMode && typeof (options as any).mangle === 'boolean') {
+    mergedOptions.mangleMode = (options as any).mangle ? 'all' : 'off'
   }
   Object.assign(options, mergedOptions)
 }

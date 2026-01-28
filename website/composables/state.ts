@@ -20,7 +20,9 @@ export const defaultOptions: Required<Options> = {
   keywords: ['debugger'],
 
   isDebug: false,
-  mangle: false,
+  mangleMode: 'off',
+  manglePattern: '',
+  mangleFlags: '',
   isMinifiedEnable: false,
 }
 
@@ -40,7 +42,11 @@ if (rawUrlState) {
   try {
     const urlState = JSON.parse(rawUrlState)
     code.value = urlState.c ?? ''
-    options.value = { ...defaultOptions, ...(urlState.o || {}) }
+    const mergedOptions = { ...defaultOptions, ...(urlState.o || {}) }
+    if (!mergedOptions.mangleMode && typeof mergedOptions.mangle === 'boolean')
+      mergedOptions.mangleMode = mergedOptions.mangle ? 'all' : 'off'
+
+    options.value = mergedOptions
   }
   catch (err) {
     console.error(err)

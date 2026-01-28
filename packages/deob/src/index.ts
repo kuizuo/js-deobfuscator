@@ -213,7 +213,11 @@ export class Deob {
       /** 去 minify */
       () => applyTransform(this.ast, unminify),
       /** 对象命名优化 */
-      options.mangle && (() => applyTransform(this.ast, mangle)),
+      (() => {
+        const matcher = getMangleMatcher(options)
+        if (matcher)
+          applyTransform(this.ast, mangle, matcher)
+      }),
       /** 移除自卫代码 */
       () => {
         return applyTransforms(
@@ -250,5 +254,37 @@ export class Deob {
         await writeFile(join(path, 'output.js'), outputCode, 'utf8')
       },
     }
+  }
+}
+
+function getMangleMatcher(options: Options): ((id: string) => boolean) | undefined {
+  const legacyBoolean = (options as any).mangle
+  const mode
+    = options.mangleMode ?? (typeof legacyBoolean === 'boolean' ? (legacyBoolean ? 'all' : 'off') : 'off')
+
+  switch (mode) {
+    case 'off':
+      return
+    case 'all':
+      return () => true
+    case 'hex': {
+      const re = /_0x[a-f\d]+/i
+      return id => re.test(id)
+    }
+    case 'short':
+      return id => id.length <= 2
+    case 'custom': {
+      const pattern = options.manglePattern ?? ''
+      const flags = options.mangleFlags ?? ''
+      try {
+        const re = new RegExp(pattern, flags)
+        return id => re.test(id)
+      }
+      catch {
+        return
+      }
+    }
+    default:
+      return
   }
 }

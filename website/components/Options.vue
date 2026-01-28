@@ -19,6 +19,16 @@ const isStringArray = computed(
   () => options.value.decoderLocationMethod === 'stringArray',
 )
 
+const mangleModes = [
+  { value: 'off', label: '关闭' },
+  { value: 'hex', label: 'Hex (_0x)' },
+  { value: 'short', label: '短变量名' },
+  { value: 'all', label: '全部变量' },
+  { value: 'custom', label: '自定义正则' },
+] as const
+
+const isCustomMangle = computed(() => options.value.mangleMode === 'custom')
+
 function open() {
   dialog.value?.showModal()
 }
@@ -142,6 +152,38 @@ defineExpose({ open })
           <span>强力清除(二次执行)</span>
           <input v-model="options.isStrongRemove" type="checkbox" class="h-4 w-4 accent-amber-500">
         </label>
+      </div>
+
+      <div class="space-y-2 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-3 shadow-sm dark:(border-zinc-800/70 bg-zinc-900/70)">
+        <div class="flex items-center justify-between gap-3">
+          <span class="text-sm font-medium">变量名优化 (mangle)</span>
+          <select
+            v-model="options.mangleMode"
+            class="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-900)"
+          >
+            <option v-for="mode in mangleModes" :key="mode.value" :value="mode.value">
+              {{ mode.label }}
+            </option>
+          </select>
+        </div>
+        <div v-if="isCustomMangle" class="space-y-2 text-xs text-zinc-600 dark:text-zinc-300">
+          <label class="flex items-center gap-2">
+            <span class="whitespace-nowrap">正则</span>
+            <input
+              v-model="options.manglePattern"
+              class="flex-1 rounded border border-zinc-200 bg-white px-2 py-1 text-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-900)"
+              placeholder="例如: _0x[a-f\\d]+"
+            >
+          </label>
+          <label class="flex items-center gap-2">
+            <span class="whitespace-nowrap">Flags</span>
+            <input
+              v-model="options.mangleFlags"
+              class="flex-1 rounded border border-zinc-200 bg-white px-2 py-1 text-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-900)"
+              placeholder="如: gim"
+            >
+          </label>
+        </div>
       </div>
     </div>
   </dialog>

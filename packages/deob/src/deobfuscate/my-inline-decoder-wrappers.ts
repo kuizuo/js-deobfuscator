@@ -1,9 +1,10 @@
 import type { NodePath } from '@babel/traverse'
 import type * as t from '@babel/types'
-import { expression } from '@babel/template'
-import { type Transform, generate } from '../ast-utils'
-
+import type { Transform } from '../ast-utils'
 import type { Decoder } from './decoder'
+
+import { expression } from '@babel/template'
+import { generate } from '../ast-utils'
 
 /**
  * 嵌套函数花指令替换 需要优先执行 通常内嵌解密函数

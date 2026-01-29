@@ -1,5 +1,5 @@
-import * as t from '@babel/types'
 import type { Decoder } from '../deobfuscate/decoder'
+import * as t from '@babel/types'
 import { deobLogger as logger } from '../ast-utils'
 
 /**

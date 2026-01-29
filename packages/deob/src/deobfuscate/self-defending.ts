@@ -1,9 +1,7 @@
 import type { NodePath } from '@babel/traverse'
 import type * as t from '@babel/types'
+import type { Transform } from '../ast-utils'
 import * as m from '@codemod/matchers'
-import type {
-  Transform,
-} from '../ast-utils'
 import {
   codePreview,
   constMemberExpression,
@@ -32,8 +30,12 @@ export default {
     const MAX_SNIPPETS = 5
 
     const recordRemoval = (node: t.Node, reason: string) => {
-      if (removedSnippets.length >= MAX_SNIPPETS)
+      if (removedSnippets.length >= MAX_SNIPPETS) {
         return
+      }
+      if (!node) {
+        return
+      }
       removedSnippets.push(`${reason}: ${codePreview(node)}`)
     }
 
@@ -137,12 +139,18 @@ export default {
               // callControllerFunctionName(this, function () { ... })();
               // ^ ref
               ref.parentPath.parentPath?.remove()
-              recordRemoval(ref.parentPath.parentPath?.node!, '移除自卫入口调用')
+              recordRemoval(
+                ref.parentPath.parentPath!.node,
+                '移除自卫入口调用',
+              )
             }
             else {
               // const selfDefendingFunctionName = callControllerFunctionName(this, function () {
               // selfDefendingFunctionName();      ^ ref
-              removeSelfDefendingRefs(ref as NodePath<t.Identifier>, recordRemoval)
+              removeSelfDefendingRefs(
+                ref as NodePath<t.Identifier>,
+                recordRemoval,
+              )
             }
 
             // leftover (function () {})() from debug protection function call
@@ -155,11 +163,13 @@ export default {
             this.changes++
           })
 
-        logger([
-          '移除自卫代码片段预览:',
-          ...removedSnippets,
-          removedSnippets.length >= MAX_SNIPPETS ? '... 更多片段已省略' : '',
-        ].filter(Boolean).join('\n'))
+        logger(
+          [
+            '移除自卫代码片段:',
+            ...removedSnippets,
+            removedSnippets.length >= MAX_SNIPPETS ? '...' : '',
+          ].filter(Boolean).join('\n'),
+        )
 
         path.remove()
         this.changes++
@@ -168,7 +178,10 @@ export default {
   },
 } satisfies Transform
 
-function removeSelfDefendingRefs(path: NodePath<t.Identifier>, recordRemoval: (node: t.Node, reason: string) => void) {
+function removeSelfDefendingRefs(
+  path: NodePath<t.Identifier>,
+  recordRemoval: (node: t.Node, reason: string) => void,
+) {
   const varName = m.capture(m.anyString())
   const varMatcher = m.variableDeclarator(
     m.identifier(varName),

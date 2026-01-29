@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
+import type { ConsoleLogEntry } from '~/types/logger'
+import { code, editorStickyScroll, editorWordWrap, error, loading, options, parseTime } from '#imports'
 import { Pane, Splitpanes } from 'splitpanes'
+import DeobfuscatorWorker from '~/utils/deobfuscate.worker.ts?worker'
 import Console from './Console.vue'
 import Options from './Options.vue'
-import { code, editorStickyScroll, editorWordWrap, error, loading, options, parseTime } from '#imports'
-import type { ConsoleLogEntry } from '~/types/logger'
 import 'splitpanes/dist/splitpanes.css'
-import DeobfuscatorWorker from '~/utils/deobfuscate.worker.ts?worker'
 
 const worker = new DeobfuscatorWorker()
 const output = ref('')
@@ -87,7 +87,7 @@ worker.onerror = (event) => {
   loading.value = false
   output.value = ''
   error.value = event.message
-  pushLog(`Worker 错误: ${event.message}`)
+  pushLog(event.message)
 }
 
 async function run() {

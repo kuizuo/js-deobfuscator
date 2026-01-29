@@ -1,7 +1,8 @@
 import type { NodePath } from '@babel/traverse'
 import type * as t from '@babel/types'
+import type { Transform } from '../ast-utils'
 import * as m from '@codemod/matchers'
-import { type Transform, generateUid, renameFast } from '../ast-utils'
+import { generateUid, renameFast } from '../ast-utils'
 
 export default {
   name: 'mangle',
@@ -45,7 +46,7 @@ function inferName(path: NodePath<t.Identifier>): string {
   if (
     path.listKey === 'params'
     || (path.parentPath.isAssignmentPattern({ left: path.node })
-    && path.parentPath.listKey === 'params')
+      && path.parentPath.listKey === 'params')
   ) {
     return generateUid(path.scope, 'p')
   }
@@ -115,5 +116,5 @@ function generateExpressionName(
 function titleCase(str: string) {
   return str
     .replace(/(?:^|\s)([a-z])/g, (_, m) => (m as string).toUpperCase())
-    .replace(/[^a-zA-Z0-9$_]/g, '')
+    .replace(/[^\w$]/g, '')
 }

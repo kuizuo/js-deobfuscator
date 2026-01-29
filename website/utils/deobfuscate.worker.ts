@@ -1,5 +1,6 @@
+import type { Options } from 'deob'
 import debug from 'debug'
-import { Deob, type Options } from 'deob'
+import { Deob } from 'deob'
 
 const originalDebugLog = debug.log
 
@@ -52,7 +53,7 @@ debug.log = (...args: any[]) => {
 
 self.addEventListener(
   'message',
-  ({ data }: { data: { code: string; options: Options } }) => {
+  ({ data }: { data: { code: string, options: Options } }) => {
     const { code, options } = data
 
     if (!code || !options)

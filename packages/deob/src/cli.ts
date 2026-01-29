@@ -4,14 +4,14 @@ import { readFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import * as url from 'node:url'
-import debug from 'debug'
 import { program } from 'commander'
+import debug from 'debug'
 import { Deob } from './index.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 const { version, description } = JSON.parse(
   readFileSync(join(__dirname, '..', 'package.json'), 'utf8'),
-) as { version: string; description: string }
+) as { version: string, description: string }
 
 debug.enable('deob:*')
 

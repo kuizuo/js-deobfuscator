@@ -1,10 +1,10 @@
 import type { NodePath } from '@babel/traverse'
 import type { CallExpression } from '@babel/types'
-import { generate } from '../ast-utils'
 import type { ArrayRotator } from './array-rotator'
-
 import type { Decoder } from './decoder'
+
 import type { StringArray } from './string-array'
+import { generate } from '../ast-utils'
 
 export type Sandbox = (code: string) => Promise<unknown>
 

@@ -1,6 +1,7 @@
-import { expression } from '@babel/template'
 import type { NodePath } from '@babel/traverse'
 import type * as t from '@babel/types'
+import type { StringArray } from './string-array'
+import { expression } from '@babel/template'
 import * as m from '@codemod/matchers'
 import {
   anyLiteral,
@@ -8,7 +9,6 @@ import {
   inlineVariable,
   renameFast,
 } from '../ast-utils'
-import type { StringArray } from './string-array'
 
 /**
  * A function that is called with >= 1 numeric/string arguments

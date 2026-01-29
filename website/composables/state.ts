@@ -57,8 +57,9 @@ const mergedOptions = {
 if (
   !mergedOptions.mangleMode
   && typeof (persistedOptions.value as any)?.mangle === 'boolean'
-)
+) {
   mergedOptions.mangleMode = (persistedOptions.value as any).mangle ? 'all' : 'off'
+}
 
 export const options = ref<Required<Options>>(mergedOptions)
 

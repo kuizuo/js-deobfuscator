@@ -1,6 +1,6 @@
+import type { Transform } from '../../ast-utils'
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import type { Transform } from '../../ast-utils'
 import { constMemberExpression } from '../../ast-utils'
 
 // https://github.com/babel/babel/pull/5791
@@ -12,7 +12,7 @@ function escape(str: string) {
   return str
     .replace(/\\/g, '\\\\')
     .replace(/`/g, '\\`')
-    .replace(/\${/g, '\\${')
+    .replace(/\$\{/g, '\\${')
     .replace(/\t/g, '\\t')
     .replace(/\r/g, '\\r')
 }
@@ -48,7 +48,7 @@ export default {
     return {
       StringLiteral(path) {
         // Heuristic: source code most likely used a template literal if it contains multiple lines
-        if (!/\n.*?\n/.test(path.node.value)) return
+        if (!/\n.*\n/.test(path.node.value)) return
         if (concatMatcher.match(path.parentPath.parent)) return
 
         const raw = escape(path.node.value)

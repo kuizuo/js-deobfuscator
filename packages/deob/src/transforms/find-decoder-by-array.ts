@@ -1,10 +1,10 @@
-import type * as t from '@babel/types'
 import type { NodePath } from '@babel/traverse'
-import traverse from '@babel/traverse'
+import type * as t from '@babel/types'
+import type { ArrayRotator } from '../deobfuscate/array-rotator'
 
+import traverse from '@babel/traverse'
 import { generate, deobLogger as logger } from '../ast-utils'
 import { Decoder } from '../deobfuscate/decoder'
-import type { ArrayRotator } from '../deobfuscate/array-rotator'
 
 export function findDecoderByArray(ast: t.Node, count: number = 100) {
   // 大数组 有可能是以函数形式包裹的

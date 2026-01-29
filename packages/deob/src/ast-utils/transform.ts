@@ -46,7 +46,7 @@ export function applyTransform<TOptions>(
 export function applyTransforms(
   ast: Node,
   transforms: Transform[],
-  options: { noScope?: boolean; name?: string; log?: boolean } = {},
+  options: { noScope?: boolean, name?: string, log?: boolean } = {},
 ): TransformState {
   options.log ??= true
   const state: TransformState = { changes: 0 }

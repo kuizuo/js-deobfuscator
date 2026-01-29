@@ -25,6 +25,7 @@ import { getPropName } from '../ast-utils'
  */
 export default {
   name: '对象属性引用替换',
+  tags: ['safe'],
   run(ast, state, objects) {
     if (!objects) return
 
@@ -141,32 +142,38 @@ export default {
                 let isReplace = false
                 if (t.isBinaryExpression(returnArgument)) {
                   // _0x5a2810 + _0x2b32f4
-                  const binaryExpression = t.binaryExpression(
-                    returnArgument.operator,
-                    argumentList[0],
-                    argumentList[1],
-                  )
-                  path.replaceWith(binaryExpression)
-                  isReplace = true
+                  if (t.isExpression(argumentList[0]) && t.isExpression(argumentList[1])) {
+                    const binaryExpression = t.binaryExpression(
+                      returnArgument.operator,
+                      argumentList[0],
+                      argumentList[1],
+                    )
+                    path.replaceWith(binaryExpression)
+                    isReplace = true
+                  }
                 }
                 else if (t.isLogicalExpression(returnArgument)) {
                   // _0x5a2810 || _0x2b32f4
-                  const logicalExpression = t.logicalExpression(
-                    returnArgument.operator,
-                    argumentList[0],
-                    argumentList[1],
-                  )
-                  path.replaceWith(logicalExpression)
-                  isReplace = true
+                  if (t.isExpression(argumentList[0]) && t.isExpression(argumentList[1])) {
+                    const logicalExpression = t.logicalExpression(
+                      returnArgument.operator,
+                      argumentList[0],
+                      argumentList[1],
+                    )
+                    path.replaceWith(logicalExpression)
+                    isReplace = true
+                  }
                 }
                 else if (t.isUnaryExpression(returnArgument)) {
                   // !_0x5a2810
-                  const unaryExpression = t.unaryExpression(
-                    returnArgument.operator,
-                    argumentList[0],
-                  )
-                  path.replaceWith(unaryExpression)
-                  isReplace = true
+                  if (t.isExpression(argumentList[0])) {
+                    const unaryExpression = t.unaryExpression(
+                      returnArgument.operator,
+                      argumentList[0],
+                    )
+                    path.replaceWith(unaryExpression)
+                    isReplace = true
+                  }
                 }
                 else if (t.isCallExpression(returnArgument)) {
                   // function (_0x1d0a4d, _0x1df411) {
@@ -182,17 +189,19 @@ export default {
 
                   // 找到从传递的多个参数中 定位索引
                   const callIndex = orgFn.params.findIndex(
-                    a => a.name === callFnName,
+                    a => t.isIdentifier(a) && a.name === callFnName,
                   )
 
                   // 再从实际参数(实参)中找到真正函数名
                   const realFnName = argumentList.splice(callIndex, 1)[0]
-                  const callExpression = t.callExpression(
-                    realFnName,
-                    argumentList,
-                  )
-                  path.replaceWith(callExpression)
-                  isReplace = true
+                  if (t.isExpression(realFnName) || t.isV8IntrinsicIdentifier(realFnName)) {
+                    const callExpression = t.callExpression(
+                      realFnName,
+                      argumentList,
+                    )
+                    path.replaceWith(callExpression)
+                    isReplace = true
+                  }
                 }
 
                 if (isReplace) {

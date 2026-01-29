@@ -4,9 +4,9 @@ import { defaultOptions, options } from '#imports'
 const dialog = ref<HTMLDialogElement>()
 
 const decoderMethods = [
-  { value: 'stringArray', label: '字符串数组长度' },
-  { value: 'callCount', label: '解密器调用次数' },
-  { value: 'evalCode', label: '注入解密代码' },
+  { value: 'stringArray', label: '字符串数组长度(适用绝大多数情况)' },
+  { value: 'callCount', label: '解密器调用次数(需判断调用次数是否足够)' },
+  { value: 'evalCode', label: '注入解密代码(（需要自行扣取代码）)' },
 ] as const
 
 const isEvalCode = computed(

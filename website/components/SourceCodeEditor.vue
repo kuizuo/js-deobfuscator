@@ -27,6 +27,9 @@ const editorOptions = computed<monaco.editor.IStandaloneEditorConstructionOption
   stickyScroll: {
     enabled: editorStickyScroll.value,
   },
+  minimap: {
+    enabled: false,
+  },
 }))
 
 function getEditor(): monaco.editor.IStandaloneCodeEditor | undefined {

@@ -2,12 +2,7 @@ import { antfu } from '@antfu/eslint-config'
 
 export default antfu({
   ignores: [
-    '**/input.js',
-    '**/output.js',
-    '**/history_*.js',
-    '**/pretty.js',
-    '**/setupCode.js',
-    '**/errorCode.js',
+    'example/**/*',
     'tmp/**/*',
     '**/*.js',
   ],

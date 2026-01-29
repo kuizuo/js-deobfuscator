@@ -1,44 +1,44 @@
-import { join, normalize } from 'node:path'
-import * as parser from '@babel/parser'
-import { codeFrameColumns } from '@babel/code-frame'
 import type * as t from '@babel/types'
-import { applyTransform, applyTransforms, codePrettier, codePreview, enableLogger, generate, deobLogger as logger } from './ast-utils'
-import type { Options } from './options'
-import { defaultOptions, mergeOptions } from './options'
-import type { StringArray } from './deobfuscate/string-array'
-import type { Decoder } from './deobfuscate/decoder'
 import type { ArrayRotator } from './deobfuscate/array-rotator'
-import inlineDecoderWrappers from './deobfuscate/inline-decoder-wrappers'
-import inlineObjectProps from './deobfuscate/inline-object-props'
-import deadCode from './deobfuscate/dead-code'
+import type { Decoder } from './deobfuscate/decoder'
+import type { StringArray } from './deobfuscate/string-array'
+import type { Options } from './options'
+import { join, normalize } from 'node:path'
+import { codeFrameColumns } from '@babel/code-frame'
+import * as parser from '@babel/parser'
+import { applyTransform, applyTransforms, codePrettier, codePreview, enableLogger, generate, deobLogger as logger } from './ast-utils'
 import controlFlowObject from './deobfuscate/control-flow-object'
 import controlFlowSwitch from './deobfuscate/control-flow-switch'
-import mergeObjectAssignments from './deobfuscate/merge-object-assignments'
-import varFunctions from './deobfuscate/var-functions'
+import deadCode from './deobfuscate/dead-code'
 import debugProtection from './deobfuscate/debug-protection'
+import inlineDecoderWrappers from './deobfuscate/inline-decoder-wrappers'
+import inlineObjectProps from './deobfuscate/inline-object-props'
+import mergeObjectAssignments from './deobfuscate/merge-object-assignments'
 import selfDefending from './deobfuscate/self-defending'
+import varFunctions from './deobfuscate/var-functions'
+import { defaultOptions, mergeOptions } from './options'
 
-import { blockStatements, mergeStrings, rawLiterals, sequence, splitVariableDeclarations } from './unminify/transforms'
-import { unminify } from './unminify'
+import { decodeStrings } from './transforms/decode-strings'
+import { designDecoder } from './transforms/design-decoder'
 
 import { findDecoderByArray } from './transforms/find-decoder-by-array'
 import { findDecoderByCallCount } from './transforms/find-decoder-by-call-count'
-import { designDecoder } from './transforms/design-decoder'
-import { decodeStrings } from './transforms/decode-strings'
-import { markKeyword } from './transforms/mark-keyword'
 import mangle from './transforms/mangle'
+import { markKeyword } from './transforms/mark-keyword'
+import { unminify } from './unminify'
+import { blockStatements, mergeStrings, rawLiterals, sequence, splitVariableDeclarations } from './unminify/transforms'
 
 export {
-  type Options,
-  defaultOptions,
   codePrettier,
-  parser,
+  defaultOptions,
   generate,
+  type Options,
+  parser,
 }
 
 interface DeobResult {
   code: string
-  save(path: string): Promise<void>
+  save: (path: string) => Promise<void>
   historys: parser.ParseResult<t.File>[]
 }
 
@@ -102,7 +102,6 @@ export class Deob {
 
     if (!rawCode)
       throw new Error('请载入js代码')
-    console.clear()
 
     try {
       this.ast = parser.parse(rawCode, { sourceType: 'unambiguous', allowReturnOutsideFunction: true })
@@ -183,7 +182,7 @@ export class Deob {
           decoders = designDecoder(this.ast, options.designDecoderName!)
         }
 
-        logger(`${stringArray ? `字符串数组: ${stringArray?.name} (${stringArray?.length} 个) 引用 ${stringArray?.references.length} 处` : '没找到字符串数组'} | ${decoders.length ? `解密器函数: ${decoders.map(d => d.name)}` : '没找到解密器函数'}`)
+        logger(`${stringArray ? `字符串数组: ${stringArray?.name} (共 ${stringArray?.length} 项) 被引用 ${stringArray?.references.length} 处` : '没找到字符串数组'} | ${decoders.length ? `解密器函数: ${decoders.map(d => d.name)}` : '没找到解密器函数'}`)
         if (rotators.length)
           logger(`字符串数组旋转器: ${rotators.length} 个`)
 

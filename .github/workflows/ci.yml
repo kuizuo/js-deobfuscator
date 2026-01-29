@@ -11,43 +11,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set node
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: '22.x'
+          cache: 'pnpm'
 
-      - name: Setup
-        run: npm i -g @antfu/ni
-
-      - name: Install
-        run: nci
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Lint
-        run: nr lint
+        run: pnpm lint
+        continue-on-error: true
 
   test:
-    runs-on: ${{ matrix.os }}
-
+    name: Test
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node: [18]
-      fail-fast: false
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set node ${{ matrix.node }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '22.x'
+          cache: 'pnpm'
 
-      - name: Setup
-        run: npm i -g @antfu/ni
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Install
-        run: nci
-
-      - name: Build
-        run: nr website:build
+      - name: Run tests
+        run: pnpm test

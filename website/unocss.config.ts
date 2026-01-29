@@ -1,3 +1,4 @@
+import transformerVariantGroup from '@unocss/transformer-variant-group'
 import {
   defineConfig,
   presetAttributify,
@@ -5,7 +6,6 @@ import {
   presetUno,
   transformerDirectives,
 } from 'unocss'
-import transformerVariantGroup from '@unocss/transformer-variant-group'
 
 export default defineConfig({
   shortcuts: {

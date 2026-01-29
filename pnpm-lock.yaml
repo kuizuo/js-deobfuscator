@@ -42,8 +42,6 @@ importers:
         specifier: workspace:*
         version: link:../packages/deob
 
-  packages/config-typescript: {}
-
   packages/deob:
     dependencies:
       '@babel/code-frame':
@@ -98,9 +96,6 @@ importers:
       '@types/node':
         specifier: ^25.1.0
         version: 25.1.0
-      '@webcrack/typescript-config':
-        specifier: workspace:*
-        version: link:../config-typescript
       esbuild:
         specifier: ^0.27.2
         version: 0.27.2

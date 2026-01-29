@@ -1,14 +1,31 @@
 {
-  "extends": "@webcrack/typescript-config/base.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Build",
   "compilerOptions": {
+    "composite": false,
+    "target": "ESNext",
     "rootDir": "./src",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "declaration": true,
+    "declarationMap": true,
     "emitDeclarationOnly": true,
-    "outDir": "./dist"
+    "inlineSources": false,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true
   },
   "include": [
     "src"
   ],
   "exclude": [
-    "**/test"
+    "**/test",
+    "node_modules"
   ]
 }

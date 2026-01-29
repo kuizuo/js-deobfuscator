@@ -1,58 +1,76 @@
-## JS混淆代码还原
+# JS Deobfuscator
 
-让混淆不再成为逆向分析中的绊脚石
+> 让混淆不再成为逆向分析中的绊脚石。基于 Babel AST 的自动化 JS 反混淆工具，提供在线 Playground、命令行与可编程 API。
 
-## 使用
+## 在线体验
 
-### 网页
+![js-deobfuscator](https://img.kuizuo.me/js-deobfuscator.png)
 
-[js-deobfuscator.vercel.app](https://js-deobfuscator.vercel.app/) 在线体验
+- Playground: <https://js-deobfuscator.vercel.app/>
+- 代码在浏览器内执行，可调整参数实时查看反混淆效果。
 
-![image-1](./images/1.png)
+## 功能亮点
 
-在执行还原前，请根据实际代码配置
+- **解密入口定位**：按字符串数组长度、解密器调用次数或手动注入代码/解密器名称进行定位。
+- **字符串解密**：识别字符串数组与旋转器，展开解密器封装并用明文替换调用点。
+- **控制流还原**：展开控制流平坦化、移除死代码/花指令、合并对象属性与赋值。
+- **代码整形**：unminify、美化、变量重命名（hex/short/custom），可选关键字标记。
+- **自卫清理**：移除 self-defending / anti-debug 逻辑，支持多轮执行处理重度混淆。
+- **多形态使用**：CLI、浏览器 Playground、TypeScript API，并附带真实案例集合。
 
-### 本地
+## 快速开始
 
-安装
+### CLI / 本地
 
-```
+```bash
 git clone https://github.com/kuizuo/js-deobfuscator
 cd js-deobfuscator
-pnpm i
+pnpm install
+
+# 处理单个文件并写入目录 (生成 output.js)
+pnpm exec deob path/to/input.js -o ./out
+
+# 也可通过 stdin 使用
+cat path/to/input.js | pnpm exec deob > output.js
 ```
 
-在 tmp/input.js 存放需要反混淆的代码, 执行 `pnpm run tmp` 将会输出 tmp/output.js 反混淆后的代码.
+快速体验：将混淆代码放到 `tmp/input.js`，执行 `pnpm tmp`，结果会输出到 `tmp/output.js`。
 
-在 example 目录下存放了一些我个人遇到混淆代码实例分析以及配置选项，每个子目录的结构如:
+### 编程接口
 
+```ts
+import { readFileSync } from 'node:fs'
+import { defaultOptions, Deob } from 'deob'
+
+const code = readFileSync('input.js', 'utf8')
+const deob = new Deob(code, {
+  ...defaultOptions,
+  decoderLocationMethod: 'callCount',
+  decoderCallCount: 300,
+  inlineWrappersDepth: 3,
+  mangleMode: 'hex',
+})
+
+const { code: cleanCode, save } = deob.run()
+await save('./out') // 写入 out/output.js
 ```
-├── xxx                           # 子目录
-│   ├── index.ts                  # 运行代码
-│   ├── input.js                  # 混淆代码
-│   ├── output.js                 # 还原后代码
-│   ├── pretty.js                 # 用作美化对比
-│   ├── setupCode.js              # 注入执行代码
-│   ├── errorCode.js              # 当替换代码导致语法错误, 则将错误代码输出到该文件
-```
 
-由于项目采用 ts 开发且使用 esmodule，因此建议使用 [tsx](https://github.com/privatenumber/tsx) 来执行 index.ts。
+## 示例与案例
 
-## 使用文档
+`example/` 下收录了多组真实混淆样本，每个子目录包含：
 
-混淆还原有几个关键代码
+- `index.ts`: 配置/驱动脚本（建议使用 [tsx](https://github.com/privatenumber/tsx) 执行）。
+- `input.js` / `output.js` / `pretty.js`: 输入、还原结果与美化对比。
+- `setupCode.js`: 运行前注入的自定义代码。
+- `errorCode.js`: 替换失败时的错误片段输出。
 
-**字符串数组**：一个长度非常长的字符串数组，通常存放所有加密的字符串
+## 项目结构
 
-**乱序函数**：通常是一个自调用函数，参数为字符串数组，目的是对字符串数组进行打乱操作
-
-**解密器**：通过调用解密器(函数)，还原成原始文本。
-
-本项目提供三种方式用于定位解密器：字符串数组长度，解密器调用次数，自行扣代码注入，根据实际混淆代码来进行定位。
+- `packages/deob`: 核心 AST 变换与 CLI (`deob` 二进制)。
+- `website`: Nuxt 3 + Monaco 的在线 Playground。
+- `example`: 真实混淆案例与演示脚本。
+- `tmp`: 简单的本地快速体验目录。
 
 ## 致谢
 
-- [反爬虫 AST 原理与还原混淆实战](https://book.douban.com/subject/35575838/)
-- [j4k0xb/webcrack](https://github.com/j4k0xb/webcrack)
-- [sxzz/ast-explorer](https://github.com/sxzz/ast-explorer)
-
+该项目引用并受到 [j4k0xb/webcrack](https://github.com/j4k0xb/webcrack) 的启发，以及书籍 [反爬虫 AST 原理与还原混淆实战](https://book.douban.com/subject/35575838/)。

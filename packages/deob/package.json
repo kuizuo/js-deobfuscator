@@ -39,7 +39,6 @@
     "@types/babel__traverse": "^7.28.0",
     "@types/debug": "^4.1.12",
     "@types/node": "^25.1.0",
-    "@webcrack/typescript-config": "workspace:*",
     "esbuild": "^0.27.2",
     "typescript": "^5.9.3"
   }

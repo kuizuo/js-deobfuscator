@@ -1,7 +1,7 @@
 {
   "name": "js-de-obfuscator",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "packageManager": "pnpm@10.28.2",
   "license": "MIT",
   "scripts": {

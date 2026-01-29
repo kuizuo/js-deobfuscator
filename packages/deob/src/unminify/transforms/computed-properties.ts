@@ -1,7 +1,7 @@
+import type { Transform } from '../../ast-utils'
 import { isIdentifierName } from '@babel/helper-validator-identifier'
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import type { Transform } from '../../ast-utils'
 
 export default {
   name: 'computed-properties',
@@ -38,8 +38,9 @@ export default {
               && stringMatcher.current!.value === 'constructor')
             || (path.type === 'ObjectProperty'
               && stringMatcher.current!.value === '__proto__')
-          )
+          ) {
             return
+          }
 
           path.node.computed = false
           path.node.key = t.identifier(stringMatcher.current!.value)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Pane } from 'splitpanes'
 import type { ConsoleLogEntry } from '~/types/logger'
+import { Pane } from 'splitpanes'
 
 const props = withDefaults(defineProps<{
   logs: ConsoleLogEntry[]

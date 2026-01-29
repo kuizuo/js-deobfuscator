@@ -1,7 +1,7 @@
 import type { Binding } from '@babel/traverse'
+import type { Transform } from '../ast-utils'
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import type { Transform } from '../ast-utils'
 import { constObjectProperty } from '../ast-utils'
 
 /**
@@ -70,14 +70,15 @@ export default {
             if (
               !assignmentMatcher.match(sibling.node)
               || hasCircularReference(value.current!, binding)
-            )
+            ) {
               return
+            }
 
             // { [1]: value, "foo bar": value } can be simplified to { 1: value, "foo bar": value }
             const isComputed
               = computed.current!
-              && key.current!.type !== 'NumericLiteral'
-              && key.current!.type !== 'StringLiteral'
+                && key.current!.type !== 'NumericLiteral'
+                && key.current!.type !== 'StringLiteral'
 
             // Example: const obj = { x: 1 }; obj.foo = 'bar'; -> const obj = { x: 1, foo: 'bar' };
             object.current!.properties.push(

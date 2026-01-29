@@ -1,6 +1,6 @@
+import type { Transform } from '../../ast-utils'
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import type { Transform } from '../../ast-utils'
 
 export default {
   name: 'unary-expressions',

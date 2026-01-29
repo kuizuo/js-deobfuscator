@@ -1,5 +1,5 @@
-import * as t from '@babel/types'
 import type { Transform } from '../../ast-utils'
+import * as t from '@babel/types'
 
 export default {
   name: 'split-variable-declarations',

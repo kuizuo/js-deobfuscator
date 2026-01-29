@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import type * as monaco from 'monaco-editor'
-import { codePrettier, parser } from 'deob'
-
-// eslint-disable-next-line ts/consistent-type-imports
 import type { MonacoEditor } from '#build/components'
+import type * as monaco from 'monaco-editor'
+
 import { editorStickyScroll, editorTheme, editorWordWrap } from '#imports'
+import { codePrettier, parser } from 'deob'
 
 interface Example {
   name: string
   value: () => Promise<string>
 }
 
-const files = import.meta.glob('../../example/**/input.js', { as: 'raw' })
+const files = import.meta.glob<string>('../../example/**/input.js', { query: '?raw', import: 'default' })
 const examples: Example[] = Object.entries(files).map(([key, value]) => ({
   name: key.replace('../../example/', ''),
   value,
@@ -27,9 +26,6 @@ const editorOptions = computed<monaco.editor.IStandaloneEditorConstructionOption
   wordWrap: editorWordWrap.value ? 'on' : 'off',
   stickyScroll: {
     enabled: editorStickyScroll.value,
-  },
-  minimap: {
-    enabled: false,
   },
 }))
 
@@ -95,9 +91,9 @@ async function beautify() {
 }
 </script>
 
-  <template>
-    <div class="flex h-full flex-col rounded-r-xl bg-white/70 p-3 dark:bg-zinc-900/60">
-      <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed border-amber-200/80 bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:border-amber-500/60 dark:bg-amber-500/10 dark:text-amber-100">
+<template>
+  <div class="flex h-full flex-col rounded-r-xl bg-white/70 p-3 dark:bg-zinc-900/60">
+    <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed border-amber-200/80 bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:border-amber-500/60 dark:bg-amber-500/10 dark:text-amber-100">
       <div class="flex items-center gap-2">
         <div class="i-ri:input-method-line text-lg" />
         <span class="font-semibold text-zinc-800 dark:text-zinc-100">源代码</span>
@@ -146,7 +142,7 @@ async function beautify() {
         <input id="fileInput" type="file" class="hidden" @change="handleFileChange">
       </div>
     </div>
-      <div class="mt-3 flex min-h-0 flex-1 rounded-lg border border-zinc-200/70 bg-white/90 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-950/60">
+    <div class="mt-3 flex min-h-0 flex-1 rounded-lg border border-zinc-200/70 bg-white/90 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-950/60">
       <MonacoEditor
         ref="container"
         v-model="code"

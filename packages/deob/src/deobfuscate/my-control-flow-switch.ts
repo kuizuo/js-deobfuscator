@@ -1,6 +1,6 @@
-import * as t from '@babel/types'
 import type { NodePath } from '@babel/traverse'
 import type { Transform } from '../ast-utils'
+import * as t from '@babel/types'
 import { getPropName } from '../ast-utils'
 
 /**
@@ -66,8 +66,8 @@ export default {
             const propertyName = getPropName(property)
             if (
               (t.isStringLiteral(property)
-                  || t.isIdentifier(property))
-                && propertyName === 'split'
+                || t.isIdentifier(property))
+              && propertyName === 'split'
             ) {
               if (t.isStringLiteral(object)) {
                 const shufferString = object.value // "1|3|2|0"

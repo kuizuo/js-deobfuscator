@@ -1,7 +1,7 @@
-import { parse } from '@babel/parser'
 import type {
   Transform,
 } from '../ast-utils'
+import { parse } from '@babel/parser'
 import {
   applyTransform,
   applyTransforms,

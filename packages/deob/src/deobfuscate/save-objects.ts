@@ -1,6 +1,6 @@
 import type { NodePath } from '@babel/traverse'
-import * as t from '@babel/types'
 import traverse from '@babel/traverse'
+import * as t from '@babel/types'
 import { getPropName } from '../ast-utils'
 
 export type Objects = Record<`${string}_${string}`, t.ObjectExpression>
@@ -82,11 +82,13 @@ export function saveObjects(ast: t.Node) {
 
         if (!(
           t.isFunctionExpression(right)
-              || t.isLiteral(right)
-              || t.isIdentifier(right)
-              || t.isBinaryExpression(right)
-              || t.isObjectExpression(right)
-        )) return
+          || t.isLiteral(right)
+          || t.isIdentifier(right)
+          || t.isBinaryExpression(right)
+          || t.isObjectExpression(right)
+        )) {
+          return
+        }
 
         const objectName = (left.object as t.Identifier).name
 

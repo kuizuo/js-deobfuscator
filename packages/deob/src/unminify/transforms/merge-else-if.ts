@@ -1,5 +1,5 @@
-import * as m from '@codemod/matchers'
 import type { Transform } from '../../ast-utils'
+import * as m from '@codemod/matchers'
 
 export default {
   name: 'merge-else-if',

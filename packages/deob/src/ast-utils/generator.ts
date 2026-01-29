@@ -1,6 +1,6 @@
 import type { GeneratorOptions } from '@babel/generator'
-import babelGenerate from '@babel/generator'
 import type * as t from '@babel/types'
+import babelGenerate from '@babel/generator'
 
 const defaultOptions: GeneratorOptions = { jsescOption: { minimal: true } }
 

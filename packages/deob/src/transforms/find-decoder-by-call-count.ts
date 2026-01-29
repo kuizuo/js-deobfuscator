@@ -1,5 +1,5 @@
-import * as parser from '@babel/parser'
 import type * as t from '@babel/types'
+import * as parser from '@babel/parser'
 import traverse from '@babel/traverse'
 import { generate, deobLogger as logger } from '../ast-utils'
 import { Decoder } from '../deobfuscate/decoder'

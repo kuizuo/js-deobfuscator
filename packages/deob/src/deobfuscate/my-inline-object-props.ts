@@ -1,10 +1,11 @@
-// eslint-disable-next-line ts/ban-ts-comment
+import type { Transform } from '../ast-utils'
+import type { Objects } from './save-objects'
+import generate from '@babel/generator'
+
+import traverse from '@babel/traverse'
 // @ts-nocheck
 import * as t from '@babel/types'
-import traverse from '@babel/traverse'
-import generate from '@babel/generator'
-import { type Transform, getPropName } from '../ast-utils'
-import type { Objects } from './save-objects'
+import { getPropName } from '../ast-utils'
 
 /**
  * 对象属性替换 需要先执行 saveAllObject 用于保存所有变量
@@ -63,9 +64,9 @@ export default {
                 const keyName = getPropName(prop.key)
                 if (
                   (prop.key.type === 'StringLiteral'
-                     || prop.key.type === 'Identifier')
-                   && keyName === propertyName
-                   && t.isLiteral(prop.value)
+                    || prop.key.type === 'Identifier')
+                  && keyName === propertyName
+                  && t.isLiteral(prop.value)
                 ) {
                   // 还需要判断 objectName[propertyName] 是否被修改过
                   const binding = path.scope.getBinding(objectName)
@@ -123,9 +124,9 @@ export default {
 
               if (
                 (prop.key.type === 'StringLiteral'
-                   || prop.key.type === 'Identifier')
-                 && prop.value.type === 'FunctionExpression'
-                 && keyName === propertyName
+                  || prop.key.type === 'Identifier')
+                && prop.value.type === 'FunctionExpression'
+                && keyName === propertyName
               ) {
                 // 拿到定义函数
                 const orgFn = prop.value

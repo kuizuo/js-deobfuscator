@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
   canExpand?: boolean
 }>(), {
   logs: () => [],
-  size: 24,
+  size: 15,
   collapsed: false,
   canExpand: false,
 })
@@ -86,11 +86,11 @@ watch(
     class="min-h-0"
   >
     <div
-      class="flex flex-col rounded-lg border border-zinc-200/80 bg-white/90 shadow-sm dark:(border-zinc-800/80 bg-zinc-950/60)" :class="[
+      class="flex flex-col rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900/50" :class="[
         collapsed ? 'h-auto' : 'h-full',
       ]"
     >
-      <div class="flex items-center justify-between gap-3 border-b border-zinc-200/70 px-3 py-2 text-xs font-medium text-zinc-700 dark:(border-zinc-800/70 text-zinc-200)">
+      <div class="flex items-center justify-between gap-3 border-b border-bg-zinc-200/70 px-3 py-2 text-xs font-medium text-zinc-700 dark:border-zinc-800/70 dark:text-zinc-200">
         <div class="flex items-center gap-2">
           <div class="i-ri:terminal-box-line text-lg text-amber-500" />
           <span class="font-semibold">控制台</span>
@@ -99,7 +99,7 @@ watch(
         <div class="flex items-center gap-2">
           <button
             v-if="canExpand"
-            class="inline-flex items-center gap-1 rounded-md border border-amber-200/70 bg-amber-50/80 px-2 py-1 text-[11px] font-medium text-amber-800 shadow-sm transition hover:(border-amber-400 bg-amber-100) dark:(border-amber-500/40 bg-amber-500/10 text-amber-100)"
+            class="inline-flex items-center gap-1 rounded-md border border-amber-200/70 bg-amber-50/80 px-2 py-1 text-[11px] font-medium text-amber-800 shadow-sm transition hover:border-amber-400 hover:bg-amber-100 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100"
             title="展开完整解密结果"
             @click="emit('expand')"
           >
@@ -108,7 +108,7 @@ watch(
           </button>
           <button
             v-if="logs.length"
-            class="inline-flex items-center gap-1 rounded-md border border-zinc-200/70 bg-white/90 px-2 py-1 text-[11px] font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+            class="inline-flex items-center gap-1 rounded-md border border-zinc-200/70 bg-white/90 px-2 py-1 text-[11px] font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
             title="清空日志"
             @click="emit('clear')"
           >
@@ -116,7 +116,7 @@ watch(
             <span>清空</span>
           </button>
           <button
-            class="inline-flex items-center gap-1 rounded-md border border-zinc-200/70 bg-white/90 px-2 py-1 text-[11px] font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+            class="inline-flex items-center gap-1 rounded-md border border-zinc-200/70 bg-white/90 px-2 py-1 text-[11px] font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
             title="展开或收起"
             @click="emit('toggle')"
           >
@@ -128,13 +128,13 @@ watch(
       <div
         v-if="!collapsed"
         ref="logContainer"
-        class="min-h-0 flex-1 overflow-auto rounded-b-lg bg-gradient-to-b from-zinc-950/70 via-zinc-950/80 to-black px-3 py-2 font-mono text-[12px] leading-6 text-zinc-100 shadow-inner dark:(from-zinc-950/80 via-zinc-900/80 to-black)"
+        class="min-h-0 flex-1 overflow-auto rounded-b-lg px-3 py-2 font-mono text-[12px] leading-6 text-zinc-800 dark:text-zinc-200"
       >
         <template v-if="logs.length">
           <div
             v-for="entry in logs"
             :key="entry.id"
-            class="mb-2 last:mb-0 rounded-md bg-white/5 p-2 shadow-inner ring-1 ring-white/5"
+            class="mb-2 last:mb-0 rounded border border-zinc-200/80 bg-white/80 p-2 dark:border-zinc-600/60 dark:bg-zinc-800/60"
           >
             <div class="text-[10px] uppercase tracking-wide text-emerald-400/80">
               {{ formatTime(entry.timestamp) }}

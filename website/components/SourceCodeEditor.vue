@@ -95,16 +95,16 @@ async function beautify() {
 }
 </script>
 
-<template>
-  <div class="flex h-full flex-col rounded-r-xl bg-white/70 p-3 dark:bg-zinc-900/60">
-    <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed border-amber-200/80 bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:(border-amber-500/60 bg-amber-500/10 text-amber-100)">
+  <template>
+    <div class="flex h-full flex-col rounded-r-xl bg-white/70 p-3 dark:bg-zinc-900/60">
+      <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed border-amber-200/80 bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:border-amber-500/60 dark:bg-amber-500/10 dark:text-amber-100">
       <div class="flex items-center gap-2">
         <div class="i-ri:input-method-line text-lg" />
         <span class="font-semibold text-zinc-800 dark:text-zinc-100">源代码</span>
         <span class="text-[11px] text-zinc-500 dark:text-zinc-400">粘贴混淆代码，或直接加载示例/上传文件。</span>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <label class="flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1 text-10px] font-medium shadow-sm transition hover:border-amber-300 dark:(border-zinc-700 bg-zinc-900/80)">
+        <label class="flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1 text-[10px] font-medium shadow-sm transition hover:border-amber-300 dark:border-zinc-700 dark:bg-zinc-900/80">
           <span>示例</span>
           <select
             name="example-select"
@@ -120,7 +120,7 @@ async function beautify() {
           </select>
         </label>
         <button
-          class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+          class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
           title="Beautify code"
           @click="beautify"
         >
@@ -128,7 +128,7 @@ async function beautify() {
           <span>美化</span>
         </button>
         <button
-          class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+          class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
           :class="editorWordWrap ? 'border-amber-300 text-amber-700 dark:text-amber-100' : ''"
           title="切换自动换行"
           @click="editorWordWrap = !editorWordWrap"
@@ -138,7 +138,7 @@ async function beautify() {
         </button>
         <label
           for="fileInput"
-          class="inline-flex cursor-pointer items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:(border-amber-400 text-amber-700) dark:(border-zinc-700 bg-zinc-900/80 text-zinc-200)"
+          class="inline-flex cursor-pointer items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
         >
           <div class="i-ri:upload-cloud-line" />
           <span>上传</span>
@@ -146,7 +146,7 @@ async function beautify() {
         <input id="fileInput" type="file" class="hidden" @change="handleFileChange">
       </div>
     </div>
-    <div class="mt-3 flex min-h-0 flex-1 rounded-lg border border-zinc-200/70 bg-white/90 shadow-sm dark:(border-zinc-800/80 bg-zinc-950/60)">
+      <div class="mt-3 flex min-h-0 flex-1 rounded-lg border border-zinc-200/70 bg-white/90 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-950/60">
       <MonacoEditor
         ref="container"
         v-model="code"

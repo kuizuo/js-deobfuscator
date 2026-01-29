@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex items-center justify-between gap-3 border-b border-zinc-200/80 bg-white/80 px-4 py-3 backdrop-blur-xl dark:(border-zinc-800/80 bg-zinc-900/70)"
+    class="flex items-center justify-between gap-3 border-b border-zinc-200/80 bg-white/80 px-4 py-3 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-900/70"
   >
     <div class="flex items-center gap-3">
       <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-600 text-white shadow-sm">
@@ -17,7 +17,7 @@
     </div>
     <div class="flex items-center gap-2">
       <button
-        class="inline-flex items-center gap-2 rounded-lg border border-zinc-200/80 bg-white/80 px-1.5 py-1.5 text-xs font-medium transition hover:(border-amber-400 text-amber-600) dark:(border-zinc-700 bg-zinc-900/80)"
+        class="inline-flex items-center gap-2 rounded-lg border border-zinc-200/80 bg-white/80 px-1.5 py-1.5 text-xs font-medium transition hover:border-amber-400 hover:text-amber-600 dark:border-zinc-700 dark:bg-zinc-900/80"
         @click="toggleDark"
       >
         <div class="i-ri:sun-line text-base dark:i-ri:moon-line" />

@@ -53,7 +53,7 @@ defineExpose({ open })
 <template>
   <dialog
     ref="dialog"
-    class="min-w-96 rounded-xl border border-zinc-200/70 bg-white/95 p-0 shadow-xl backdrop:backdrop-blur-sm dark:(border-zinc-800/70 bg-zinc-900/90)"
+    class="min-w-96 rounded-xl border border-zinc-200/70 bg-white/95 p-0 shadow-xl backdrop:backdrop-blur-sm dark:border-zinc-800/70 dark:bg-zinc-900/90"
     @click="handleDialogClick"
   >
     <div class="flex items-center justify-between px-5 py-4">
@@ -67,7 +67,7 @@ defineExpose({ open })
       </div>
       <div class="flex items-center gap-2">
         <button
-          class="inline-flex items-center gap-1 rounded-lg border border-amber-200/80 bg-amber-50/80 px-3 py-1 text-xs font-semibold text-amber-800 shadow-sm transition hover:(border-amber-400 bg-amber-100) dark:(border-amber-500/40 bg-amber-500/10 text-amber-100)"
+          class="inline-flex items-center gap-1 rounded-lg border border-amber-200/80 bg-amber-50/80 px-3 py-1 text-xs font-semibold text-amber-800 shadow-sm transition hover:border-amber-400 hover:bg-amber-100 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100"
           title="恢复默认配置"
           @click="resetOptions"
         >
@@ -84,7 +84,7 @@ defineExpose({ open })
           <span class="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">解密器定位</span>
           <select
             v-model="options.decoderLocationMethod"
-            class="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm shadow-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-900)"
+            class="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-900"
           >
             <option v-for="method in decoderMethods" :key="method.value" :value="method.value">
               {{ method.label }}
@@ -92,34 +92,34 @@ defineExpose({ open })
           </select>
         </label>
 
-        <div v-if="isCallCount" class="flex items-center justify-between gap-3 rounded-lg bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:(bg-amber-500/10 text-amber-100)">
+        <div v-if="isCallCount" class="flex items-center justify-between gap-3 rounded-lg bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:bg-amber-500/10 dark:text-amber-100">
           <span>调用次数</span>
           <input
             v-model.number="options.decoderCallCount"
-            class="w-24 rounded border border-amber-200 bg-white px-2 py-1 text-right focus:(outline-none ring-1 ring-amber-400) dark:(border-amber-500/40 bg-zinc-900)"
+            class="w-24 rounded border border-amber-200 bg-white px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-amber-500/40 dark:bg-zinc-900"
             type="number"
             min="1"
             step="1"
           >
         </div>
 
-        <div v-if="isStringArray" class="flex items-center justify-between gap-3 rounded-lg bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:(bg-amber-500/10 text-amber-100)">
+        <div v-if="isStringArray" class="flex items-center justify-between gap-3 rounded-lg bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:bg-amber-500/10 dark:text-amber-100">
           <span>字符串数组长度</span>
           <input
             v-model.number="options.stringArraylength"
-            class="w-24 rounded border border-amber-200 bg-white px-2 py-1 text-right focus:(outline-none ring-1 ring-amber-400) dark:(border-amber-500/40 bg-zinc-900)"
+            class="w-24 rounded border border-amber-200 bg-white px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-amber-500/40 dark:bg-zinc-900"
             type="number"
             min="1"
             step="1"
           >
         </div>
 
-        <div v-if="isEvalCode" class="space-y-2 rounded-lg bg-amber-50/70 px-3 py-3 text-xs text-amber-800 dark:(bg-amber-500/10 text-amber-100)">
+        <div v-if="isEvalCode" class="space-y-2 rounded-lg bg-amber-50/70 px-3 py-3 text-xs text-amber-800 dark:bg-amber-500/10 dark:text-amber-100">
           <label class="flex items-center justify-between gap-3">
             <span>指定解密器(函数名)</span>
             <input
               v-model="options.designDecoderName"
-              class="w-48 rounded border border-amber-200 bg-white px-2 py-1 text-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-amber-500/40 bg-zinc-900)"
+              class="w-48 rounded border border-amber-200 bg-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-amber-500/40 dark:bg-zinc-900"
               type="text"
               placeholder="例如: _0xabc123"
             >
@@ -128,7 +128,7 @@ defineExpose({ open })
             <span class="text-[11px] text-zinc-600 dark:text-zinc-300">注入执行代码</span>
             <textarea
               v-model="options.setupCode"
-              class="min-h-28 rounded-lg border border-amber-200 bg-white px-3 py-2 text-sm leading-relaxed focus:(outline-none ring-1 ring-amber-400) dark:(border-amber-500/40 bg-zinc-900)"
+              class="min-h-28 rounded-lg border border-amber-200 bg-white px-3 py-2 text-sm leading-relaxed focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-amber-500/40 dark:bg-zinc-900"
               placeholder="// 需要在执行前注入的代码"
             />
           </label>
@@ -136,22 +136,22 @@ defineExpose({ open })
       </div>
 
       <div class="grid gap-3 md:grid-cols-2">
-        <label class="flex flex-col gap-1 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:(border-zinc-800/70 bg-zinc-900/70)">
+        <label class="flex flex-col gap-1 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
           <span class="text-xs font-semibold text-zinc-600 dark:text-zinc-300">解密器嵌套深度</span>
           <input
             v-model.number="options.inlineWrappersDepth"
-            class="rounded border border-zinc-200 bg-white px-2 py-1 text-right focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-950)"
+            class="rounded border border-zinc-200 bg-white px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-950"
             type="number"
             min="1"
             step="1"
           >
         </label>
 
-        <label class="flex flex-col gap-1 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:(border-zinc-800/70 bg-zinc-900/70)">
+        <label class="flex flex-col gap-1 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
           <span class="text-xs font-semibold text-zinc-600 dark:text-zinc-300">执行次数</span>
           <input
             v-model.number="options.execCount"
-            class="rounded border border-zinc-200 bg-white px-2 py-1 text-right focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-950)"
+            class="rounded border border-zinc-200 bg-white px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-950"
             type="number"
             min="1"
             max="5"
@@ -161,22 +161,22 @@ defineExpose({ open })
       </div>
 
       <div class="grid gap-2 text-sm">
-        <label class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:(border-zinc-800/70 bg-zinc-900/70)">
+        <label class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
           <span>移除解密器</span>
           <input v-model="options.isRemoveDecoder" type="checkbox" class="h-4 w-4 accent-amber-500">
         </label>
-        <label class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:(border-zinc-800/70 bg-zinc-900/70)">
+        <label class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
           <span>强力清除(二次执行)</span>
           <input v-model="options.isStrongRemove" type="checkbox" class="h-4 w-4 accent-amber-500">
         </label>
       </div>
 
-      <div class="space-y-2 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-3 shadow-sm dark:(border-zinc-800/70 bg-zinc-900/70)">
+      <div class="space-y-2 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-3 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
         <div class="flex items-center justify-between gap-3">
           <span class="text-sm font-medium">变量名优化 (mangle)</span>
           <select
             v-model="options.mangleMode"
-            class="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-900)"
+            class="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-900"
           >
             <option v-for="mode in mangleModes" :key="mode.value" :value="mode.value">
               {{ mode.label }}
@@ -188,7 +188,7 @@ defineExpose({ open })
             <span class="whitespace-nowrap">正则</span>
             <input
               v-model="options.manglePattern"
-              class="flex-1 rounded border border-zinc-200 bg-white px-2 py-1 text-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-900)"
+              class="flex-1 rounded border border-zinc-200 bg-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="例如: _0x[a-f\\d]+"
             >
           </label>
@@ -196,7 +196,7 @@ defineExpose({ open })
             <span class="whitespace-nowrap">Flags</span>
             <input
               v-model="options.mangleFlags"
-              class="flex-1 rounded border border-zinc-200 bg-white px-2 py-1 text-sm focus:(outline-none ring-1 ring-amber-400) dark:(border-zinc-700 bg-zinc-900)"
+              class="flex-1 rounded border border-zinc-200 bg-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="如: gim"
             >
           </label>

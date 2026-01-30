@@ -11,7 +11,7 @@
           JS Deobfuscator
         </p>
         <p class="text-xs text-zinc-500 dark:text-zinc-400">
-          Paste obfuscated JavaScript on the left, get readable code on the right.
+          Turn obfuscated JavaScript into clean, readable code in seconds.
         </p>
       </div>
     </div>

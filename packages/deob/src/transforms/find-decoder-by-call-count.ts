@@ -30,7 +30,6 @@ export function findDecoderByCallCount(ast: t.File, count = 100) {
 
           const body = (path.parentPath!.scope.block as t.Program).body
 
-          // TODO: 根据解密器来找乱序函数与字符串数组
           for (let i = 0; i < body.length; i++) {
             const statement = body[i]
             if (statement.start === path.node.start) {
@@ -40,14 +39,6 @@ export function findDecoderByCallCount(ast: t.File, count = 100) {
         }
       }
     },
-    // 已执行 var-functions 则无需遍历 FunctionExpression
-    // FunctionExpression(path) {
-    //   if (path.parentKey === 'init' && path.parentPath.type === 'VariableDeclarator') {
-    //     const variableDeclarationPath = path.findParent(p => p.isVariableDeclaration())
-    //     if (variableDeclarationPath && variableDeclarationPath.parentPath?.isProgram())
-    //       processFunction(path)
-    //   }
-    // },
   })
 
   const generateOptions = {

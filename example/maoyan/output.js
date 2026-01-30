@@ -5,10 +5,7 @@ var rohr = function () {
   x = function (x, e) {
     var a = typeof Uint8Array !== "undefined" && typeof Uint16Array !== "undefined" && typeof Int32Array !== "undefined";
     e.assign = function (x) {
-      var e;
-      var a;
-      var w = Array.prototype.slice.call(arguments, 1);
-      for (; w.length;) {
+      for (var e, a, w = Array.prototype.slice.call(arguments, 1); w.length;) {
         var n = w.shift();
         if (n) {
           if (typeof n !== "object") {
@@ -40,8 +37,7 @@ var rohr = function () {
         if (e.subarray && x.subarray) {
           x.set(e.subarray(a, a + w), n);
         } else {
-          var c = 0;
-          for (; c < w; c++) {
+          for (var c = 0; c < w; c++) {
             x[n + c] = e[a + c];
           }
         }
@@ -73,8 +69,7 @@ var rohr = function () {
     };
     var n = {
       arraySet: function (x, e, a, w, n) {
-        var c = 0;
-        for (; c < w; c++) {
+        for (var c = 0; c < w; c++) {
           x[n + c] = e[a + c];
         }
       },
@@ -111,8 +106,7 @@ var rohr = function () {
   var r = 0;
   var t = 1;
   function a(x) {
-    var e = x.length;
-    for (; --e >= 0;) {
+    for (var e = x.length; --e >= 0;) {
       x[e] = 0;
     }
   }
@@ -187,8 +181,7 @@ var rohr = function () {
     B(x, a[e * 2], a[e * 2 + 1]);
   }
   function V(x, e) {
-    var a = 0;
-    for (; a |= x & 1, x >>>= 1, a <<= 1, --e > 0;);
+    for (var a = 0; a |= x & 1, x >>>= 1, a <<= 1, --e > 0;);
     return a >>> 1;
   }
   function R(x) {
@@ -322,9 +315,7 @@ var rohr = function () {
     return x[n] < x[c] || x[n] === x[c] && w[e] <= w[a];
   }
   function z(x, e, a) {
-    var w = x.heap[a];
-    var n = a << 1;
-    for (; n <= x.heap_len && (n < x.heap_len && Y(e, x.heap[n + 1], x.heap[n], x.depth) && n++, !Y(e, w, x.heap[n], x.depth));) {
+    for (var w = x.heap[a], n = a << 1; n <= x.heap_len && (n < x.heap_len && Y(e, x.heap[n + 1], x.heap[n], x.depth) && n++, !Y(e, w, x.heap[n], x.depth));) {
       x.heap[a] = x.heap[n];
       a = n;
       n <<= 1;
@@ -680,10 +671,7 @@ var rohr = function () {
     }
   };
   function cx(x, e, a, w) {
-    var n = x & 65535 | 0;
-    var c = x >>> 16 & 65535 | 0;
-    var r = 0;
-    for (; a !== 0;) {
+    for (var n = x & 65535 | 0, c = x >>> 16 & 65535 | 0, r = 0; a !== 0;) {
       r = a > 2000 ? 2000 : a;
       a -= r;
       for (; n = n + e[w++] | 0, c = c + n | 0, --r;);
@@ -693,13 +681,9 @@ var rohr = function () {
     return n | c << 16 | 0;
   }
   var rx = function () {
-    var x;
-    var e = [];
-    var a = 0;
-    for (; a < 256; a++) {
+    for (var x, e = [], a = 0; a < 256; a++) {
       x = a;
-      var w = 0;
-      for (; w < 8; w++) {
+      for (var w = 0; w < 8; w++) {
         x = x & 1 ? x >>> 1 ^ 3988292384 : x >>> 1;
       }
       e[a] = x;
@@ -711,8 +695,7 @@ var rohr = function () {
     var n = rx;
     var c = w + a;
     x ^= -1;
-    var r = w;
-    for (; r < c; r++) {
+    for (var r = w; r < c; r++) {
       x = x >>> 8 ^ n[(x ^ e[r]) & 255];
     }
     return x ^ -1;
@@ -759,8 +742,7 @@ var rohr = function () {
     return (x << 1) - (x > 4 ? 9 : 0);
   }
   function Ax(x) {
-    var e = x.length;
-    for (; --e >= 0;) {
+    for (var e = x.length; --e >= 0;) {
       x[e] = 0;
     }
   }
@@ -1396,8 +1378,7 @@ var rohr = function () {
       }
       if (x.avail_in !== 0 || w.lookahead !== 0 || e !== ix && w.status !== 666) {
         var C = w.strategy === 2 ? function (x, e) {
-          var a;
-          for (;;) {
+          for (var a;;) {
             if (x.lookahead === 0 && (Lx(x), x.lookahead === 0)) {
               if (e === ix) {
                 return lx;
@@ -1613,9 +1594,7 @@ var rohr = function () {
   } catch (x) {
     $x = false;
   }
-  var xe = new M.Buf8(256);
-  var ee = 0;
-  for (; ee < 256; ee++) {
+  for (var xe = new M.Buf8(256), ee = 0; ee < 256; ee++) {
     xe[ee] = ee >= 252 ? 6 : ee >= 248 ? 5 : ee >= 240 ? 4 : ee >= 224 ? 3 : ee >= 192 ? 2 : 1;
   }
   xe[254] = xe[254] = 1;
@@ -1623,9 +1602,7 @@ var rohr = function () {
     if (e < 65537 && (x.subarray && $x || !x.subarray && Gx)) {
       return String.fromCharCode.apply(null, M.shrinkBuf(x, e));
     }
-    var a = "";
-    var w = 0;
-    for (; w < e; w++) {
+    for (var a = "", w = 0; w < e; w++) {
       a += String.fromCharCode(x[w]);
     }
     return a;
@@ -1682,10 +1659,7 @@ var rohr = function () {
       return ae(x, x.length);
     },
     binstring2buf: function (x) {
-      var e = new M.Buf8(x.length);
-      var a = 0;
-      var w = e.length;
-      for (; a < w; a++) {
+      for (var e = new M.Buf8(x.length), a = 0, w = e.length; a < w; a++) {
         e[a] = x.charCodeAt(a);
       }
       return e;
@@ -1933,9 +1907,7 @@ var rohr = function () {
     if (x.map) {
       return x.map(e);
     }
-    var a = [];
-    var w = 0;
-    for (; w < x.length; w++) {
+    for (var a = [], w = 0; w < x.length; w++) {
       a.push(e(x[w], w));
     }
     return a;
@@ -1966,8 +1938,7 @@ var rohr = function () {
     if (K > 0 && K < o) {
       o = K;
     }
-    var i = 0;
-    for (; i < o; ++i) {
+    for (var i = 0; i < o; ++i) {
       var O;
       var s;
       var u;
@@ -2109,7 +2080,8 @@ var rohr = function () {
   }
   function Ie(c) {
     var t = 0;
-    var o = setInterval(function () {
+    var o = // TOLOOK
+    setInterval(function () {
       var x;
       var e;
       var a = {};
@@ -2121,9 +2093,7 @@ var rohr = function () {
       a.h = Te(window);
       a.l = je(document);
       a.S = me(document);
-      var w = ve.ownKeys(a);
-      var n = 0;
-      for (; n < w.length; n++) {
+      for (var w = ve.ownKeys(a), n = 0; n < w.length; n++) {
         if (a[w[n]] === true) {
           clearInterval(o);
           c("lwc" + w[n]);
@@ -2255,14 +2225,12 @@ var rohr = function () {
     }
     var n = Se && r;
     if (i && x.length > 0 && !Re.call(x, 0)) {
-      var O = 0;
-      for (; O < x.length; ++O) {
+      for (var O = 0; O < x.length; ++O) {
         t.push(String(O));
       }
     }
     if (s && x.length > 0) {
-      var u = 0;
-      for (; u < x.length; ++u) {
+      for (var u = 0; u < x.length; ++u) {
         t.push(String(u));
       }
     } else {
@@ -2273,9 +2241,7 @@ var rohr = function () {
       }
     }
     if (ye) {
-      var o = Ze(x);
-      var _ = 0;
-      for (; _ < Ye.length; ++_) {
+      for (var o = Ze(x), _ = 0; _ < Ye.length; ++_) {
         if (!(o && Ye[_] === "constructor" || !Re.call(x, Ye[_]))) {
           t.push(Ye[_]);
         }
@@ -2338,8 +2304,7 @@ var rohr = function () {
     }
     if (typeof Array.prototype.forEach !== "function") {
       Array.prototype.forEach = function (x, e) {
-        var a = 0;
-        for (; a < this.length; a++) {
+        for (var a = 0; a < this.length; a++) {
           x.apply(e, [this[a], a, this]);
         }
       };
@@ -2467,10 +2432,7 @@ var rohr = function () {
         return a;
       }
       function i() {
-        var x = [];
-        var e = 0;
-        var a = O.length;
-        for (; e < a; e++) {
+        for (var x = [], e = 0, a = O.length; e < a; e++) {
           var w = q();
           w.style.fontFamily = O[e];
           c.appendChild(w);
@@ -2479,14 +2441,8 @@ var rohr = function () {
         return x;
       }
       function D() {
-        var x = {};
-        var e = 0;
-        var a = g.length;
-        for (; e < a; e++) {
-          var w = [];
-          var n = 0;
-          var c = O.length;
-          for (; n < c; n++) {
+        for (var x = {}, e = 0, a = g.length; e < a; e++) {
+          for (var w = [], n = 0, c = O.length; n < c; n++) {
             var r = d(g[e], O[n]);
             M.appendChild(r);
             w.push(r);
@@ -2496,9 +2452,7 @@ var rohr = function () {
         return x;
       }
       function b(x) {
-        var e = false;
-        var a = 0;
-        for (; a < O.length; a++) {
+        for (var e = false, a = 0; a < O.length; a++) {
           if (e = x[a].offsetWidth !== h[O[a]] || x[a].offsetHeight !== r[O[a]]) {
             return e;
           }
@@ -2507,18 +2461,14 @@ var rohr = function () {
       }
       var s = i();
       f.appendChild(c);
-      var w = 0;
-      var n = O.length;
-      for (; w < n; w++) {
+      for (var w = 0, n = O.length; w < n; w++) {
         h[O[w]] = s[w].offsetWidth;
         r[O[w]] = s[w].offsetHeight;
       }
       var C = D();
       f.appendChild(M);
       var v = [];
-      var t = 0;
-      var o = g.length;
-      for (; t < o; t++) {
+      for (var t = 0, o = g.length; t < o; t++) {
         if (b(C[g[t]])) {
           v.push(g[t]);
         }
@@ -2651,6 +2601,7 @@ var rohr = function () {
       }()
     };
     new Promise(function (x, e) {
+      // TOLOOK
       setTimeout(function () {
         x(w());
       }, 20);
@@ -2746,8 +2697,7 @@ var rohr = function () {
             c = e.id = "rohr_" + parseInt(Math.random() * 1000000);
           }
           var r = this.inputs.length;
-          var n = 0;
-          for (; n < r; n++) {
+          for (var n = 0; n < r; n++) {
             if (c === this.inputs[0].inputName) {
               this.inputs.splice(0, 1);
               n = 0;
@@ -2812,8 +2762,7 @@ var rohr = function () {
             i = e.id = "rohr_" + parseInt(Math.random() * 1000000);
           }
           var n = this.buttons.length;
-          var c = 0;
-          for (; c < n; c++) {
+          for (var c = 0; c < n; c++) {
             if (i === this.buttons[c].buttonName) {
               this.buttons.splice(c, 1);
               c = 0;

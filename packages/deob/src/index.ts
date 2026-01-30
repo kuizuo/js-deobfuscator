@@ -165,7 +165,7 @@ export class Deob {
         let setupCode: string = ''
 
         if (options.decoderLocationMethod === 'stringArray') {
-          const { decoders: ds, rotators: r, stringArray: s, setupCode: scode } = findDecoderByArray(this.ast, options.stringArraylength)
+          const { decoders: ds, rotators: r, stringArray: s, setupCode: scode } = findDecoderByArray(this.ast)
 
           stringArray = s as any
           rotators = r

@@ -9,7 +9,6 @@ const __dirname = dirname(__filename)
 ; (async function () {
   const options: Options = {
     decoderLocationMethod: 'stringArray',
-    stringArraylength: 200,
     isDebug: false,
   }
 

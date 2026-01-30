@@ -5,7 +5,6 @@
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
-  "eslint.experimental.useFlatConfig": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "code-runner.executorMap": {
     "javascript": "node",

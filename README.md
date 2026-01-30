@@ -59,7 +59,7 @@ await save('./out') // 写入 out/output.js
 
 `example/` 下收录了多组真实混淆样本，每个子目录包含：
 
-- `index.ts`: 配置/驱动脚本（建议使用 [tsx](https://github.com/privatenumber/tsx) 执行）。
+- `index.ts`: 配置/驱动脚本执行。
 - `input.js` / `output.js` / `pretty.js`: 输入、还原结果与美化对比。
 - `setupCode.js`: 运行前注入的自定义代码。
 - `errorCode.js`: 替换失败时的错误片段输出。

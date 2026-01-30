@@ -103,17 +103,6 @@ defineExpose({ open })
           >
         </div>
 
-        <div v-if="isStringArray" class="flex items-center justify-between gap-3 rounded-lg bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:bg-amber-500/10 dark:text-amber-100">
-          <span>字符串数组长度</span>
-          <input
-            v-model.number="options.stringArraylength"
-            class="w-24 rounded border border-amber-200 bg-white px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-amber-500/40 dark:bg-zinc-900"
-            type="number"
-            min="1"
-            step="1"
-          >
-        </div>
-
         <div v-if="isEvalCode" class="space-y-2 rounded-lg bg-amber-50/70 px-3 py-3 text-xs text-amber-800 dark:bg-amber-500/10 dark:text-amber-100">
           <label class="flex items-center justify-between gap-3">
             <span>指定解密器(函数名)</span>

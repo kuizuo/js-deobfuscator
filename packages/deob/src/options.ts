@@ -8,8 +8,6 @@ export interface Options {
   decoderLocationMethod?: 'obfuscate' | 'callCount' | 'stringArray' | 'evalCode'
   /** 解密器调用次数 */
   decoderCallCount?: number
-  /** 字符串数组长度 */
-  stringArraylength?: number
   /** 执行代码函数 */
   setupCode?: string
   /** 指明解密函数 */
@@ -43,7 +41,6 @@ export const defaultOptions: Required<Options> = {
   inlineWrappersDepth: 2,
   decoderLocationMethod: 'stringArray',
   decoderCallCount: 150,
-  stringArraylength: 150,
   setupCode: '',
   designDecoderName: '',
   isRemoveDecoder: true,

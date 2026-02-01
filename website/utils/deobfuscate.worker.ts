@@ -59,12 +59,19 @@ self.addEventListener(
     if (!code || !options)
       return
 
-    const start = performance.now()
-
-    const { code: output } = await deob(code, options)
-
-    const end = performance.now()
-    self.postMessage({ type: 'result', code: output, parseTime: (end - start).toFixed(0) })
+    try {
+      const start = performance.now()
+      const { code: output } = await deob(code, options)
+      const end = performance.now()
+      self.postMessage({ type: 'result', code: output, parseTime: (end - start).toFixed(0) })
+    }
+    catch (err: any) {
+      self.postMessage({
+        type: 'error',
+        message: err?.message ?? String(err),
+        timestamp: Date.now(),
+      })
+    }
   },
   false,
 )

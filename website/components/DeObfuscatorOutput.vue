@@ -72,15 +72,20 @@ worker.onmessage = ({ data }) => {
     return
   }
 
-  if (data?.type && data.type !== 'result')
+  if (data?.type === 'error') {
+    loading.value = false
+    error.value = data.message
+    pushLog(String(data.message ?? ''), data.timestamp)
     return
+  }
 
-  loading.value = false
-  error.value = null
-
-  output.value = data.code
-  parseTime.value = data.parseTime
-  pushLog(`解混淆完成，用时 ${data.parseTime} ms | 定位方式: ${options.value.decoderLocationMethod}`)
+  if (data?.type === 'result') {
+    loading.value = false
+    error.value = null
+    output.value = data.code
+    parseTime.value = data.parseTime
+    pushLog(`解混淆完成，用时 ${data.parseTime} ms | 定位方式: ${options.value.decoderLocationMethod}`)
+  }
 }
 
 worker.onerror = (event) => {
@@ -141,12 +146,14 @@ function openOptions() {
                 {{ parseTime }} ms
               </span>
               <button
-                class="inline-flex items-center gap-2 rounded-md border border-transparent bg-gradient-to-r from-amber-400 to-orange-600 px-3 py-1.5 text-xs font-semibold text-white shadow-md transition hover:from-amber-500 hover:to-orange-600"
-                title="Deobfuscate"
+                :disabled="loading === 'parse'"
+                class="inline-flex items-center gap-2 rounded-md border border-transparent bg-gradient-to-r from-amber-400 to-orange-600 px-3 py-1.5 text-xs font-semibold text-white shadow-md transition hover:enabled:from-amber-500 hover:enabled:to-orange-600 disabled:cursor-not-allowed disabled:opacity-70 disabled:from-amber-300 disabled:to-orange-400"
+                :title="loading === 'parse' ? '处理中...' : 'Deobfuscate'"
                 @click="run"
               >
-                <div class="i-ri:play-mini-fill" />
-                <span>解混淆</span>
+                <div v-if="loading === 'parse'" class="i-ri:loader-4-line animate-spin" />
+                <div v-else class="i-ri:play-mini-fill" />
+                <span>{{ loading === 'parse' ? '处理中' : '解混淆' }}</span>
               </button>
               <button
                 class="inline-flex items-center gap-2 rounded-md border border-amber-200/70 bg-amber-50/80 px-3 py-1.5 text-xs font-semibold text-amber-800 shadow-sm transition hover:border-amber-400 hover:bg-amber-100 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100"

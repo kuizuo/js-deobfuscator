@@ -35,18 +35,22 @@ describe('decoder', async () => {
       function decoder(i){
         return arr[i]
       }
-  
+      (function(a, b) {
+        // rotator function
+      })(arr, 0x128)
+
       decoder(0)
       decoder(1)
       `)
 
-    const { stringArray, decoders, setupCode } = findDecoderByArray(ast, 2)
+    const { stringArray, decoders, rotators, setupCode } = findDecoderByArray(ast)
 
     evalCode(setupCode)
     decodeStrings(decoders)
 
     stringArray?.path.remove()
     decoders.forEach(d => d.path.remove())
+    rotators.forEach(r => r.remove())
     expect(stringArray!.name).toBe('arr')
     expect(decoders[0].name).toBe('decoder')
 

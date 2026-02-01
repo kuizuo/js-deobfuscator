@@ -2,33 +2,28 @@ import type { NodePath } from '@babel/traverse'
 import type { CallExpression } from '@babel/types'
 import type { ArrayRotator } from './array-rotator'
 import type { Decoder } from './decoder'
-
 import type { StringArray } from './string-array'
+import debug from 'debug'
 import { generate } from '../ast-utils'
 
 export type Sandbox = (code: string) => Promise<unknown>
 
 export function createNodeSandbox(): Sandbox {
-  return () => {
-    // TODO: use sandybox (not available in web workers though)
-    throw new Error('Custom Sandbox implementation required.')
+  return async (code: string) => {
+    const {
+      default: { Isolate },
+    } = await import('isolated-vm')
+    const isolate = new Isolate()
+    const context = await isolate.createContext()
+    const result = (await context.eval(code, {
+      timeout: 10_000,
+      copy: true,
+      filename: 'file:///obfuscated.js',
+    })) as unknown
+    context.release()
+    isolate.dispose()
+    return result
   }
-
-  // return async (code: string) => {
-  //   const {
-  //     default: { Isolate },
-  //   } = await import('isolated-vm')
-  //   const isolate = new Isolate()
-  //   const context = await isolate.createContext()
-  //   const result = (await context.eval(code, {
-  //     timeout: 10_000,
-  //     copy: true,
-  //     filename: 'file:///obfuscated.js',
-  //   })) as unknown
-  //   context.release()
-  //   isolate.dispose()
-  //   return result
-  // }
 }
 
 export function createBrowserSandbox(): Sandbox {
@@ -73,7 +68,21 @@ export class VMDecoder {
       return [${calls.join(',')}]
     })()`
 
-    const result = await this.sandbox(code)
-    return result as unknown[]
+    try {
+      const result = await this.sandbox(code)
+      return result as unknown[]
+    }
+    catch (error) {
+      debug('webcrack:deobfuscate')('vm code:', code)
+    }
+
+    try {
+      const result = await global.eval(code)
+      return result as unknown[]
+    }
+    catch (error) {
+      debug('webcrack:deobfuscate')('global.eval error:', error)
+      throw error
+    }
   }
 }

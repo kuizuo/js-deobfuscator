@@ -1,3 +1,7 @@
+import type { Sandbox } from './deobfuscate/vm'
+import { createBrowserSandbox, createNodeSandbox } from './deobfuscate/vm'
+import { isBrowser } from './utils/platform'
+
 export interface Options {
   /** 是否强力清除 */
   isStrongRemove?: boolean
@@ -5,7 +9,7 @@ export interface Options {
   /** 解密函数包装深度 */
   inlineWrappersDepth?: number
   /** 解密器定位方式 */
-  decoderLocationMethod?: 'obfuscate' | 'callCount' | 'stringArray' | 'evalCode'
+  decoderLocationMethod?: 'callCount' | 'stringArray' | 'evalCode'
   /** 解密器调用次数 */
   decoderCallCount?: number
   /** 执行代码函数 */
@@ -33,6 +37,8 @@ export interface Options {
   // computedProp?: boolean
   /** 压缩代码 */
   isMinifiedEnable?: boolean
+  /** 沙盒 */
+  sandbox?: Sandbox
 }
 
 export const defaultOptions: Required<Options> = {
@@ -56,6 +62,7 @@ export const defaultOptions: Required<Options> = {
   mangleFlags: '',
   // computedProp: false,
   isMinifiedEnable: false,
+  sandbox: isBrowser() ? createBrowserSandbox() : createNodeSandbox(),
 }
 
 export function mergeOptions(options: Options): asserts options is Required<Options> {

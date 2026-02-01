@@ -41,7 +41,8 @@
     "@babel/types": "^7.28.6",
     "@codemod/matchers": "^1.7.1",
     "commander": "^14.0.2",
-    "debug": "^4.4.3"
+    "debug": "^4.4.3",
+    "isolated-vm": "^6.0.2"
   },
   "devDependencies": {
     "@types/babel__code-frame": "^7.27.0",

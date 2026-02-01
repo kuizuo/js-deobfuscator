@@ -62,36 +62,19 @@ function handleError(error: any, rawCode: string) {
   }
 }
 
-function shorten(value: string, max = 120) {
-  const clean = value.replace(/\s+/g, ' ').trim()
-  if (clean.length <= max)
-    return clean
-  return `${clean.slice(0, max)}...`
-}
-
 function buildDecryptionSummaryLog(map: Map<string, string>) {
-  const lines = ['=== 解密结果预览 ===']
-
-  lines.push(`- 解密条目: ${map.size} 个`)
-  if (map.size) {
-    const preview = Array.from(map.entries()).slice(0, 5)
-    preview.forEach(([key, value]) => {
-      lines.push(`  • ${key} -> ${shorten(String(value))}`)
-    })
+  const shorten = (value: string, max = 120) => {
+    const clean = value.replace(/\s+/g, ' ').trim()
+    return clean.length <= max ? clean : `${clean.slice(0, max)}...`
   }
 
-  lines.push('====================')
-  return lines.join('\n')
-}
-
-export function evalCode(code: string) {
-  try {
-    const result = global.eval(code)
-  }
-  catch (error) {
-    logger(`eval code:\n${code}`)
-    throw new Error(`evalCode 无法运行, 请在控制台中查看错误信息: ${(error as any).message}`)
-  }
+  const preview = Array.from(map.entries()).slice(0, 5)
+  return [
+    '=== 解密结果预览 ===',
+    `- 解密条目: ${map.size} 个`,
+    ...preview.map(([k, v]) => `  • ${k} -> ${shorten(String(v))}`),
+    '====================',
+  ].join('\n')
 }
 
 export class Deob {
@@ -141,7 +124,7 @@ export class Deob {
       // 对象引用替换
       () => applyTransform(this.ast, inlineObjectProps),
       // 定位解密器
-      () => {
+      async () => {
         let stringArray: StringArray | undefined
         let decoders: Decoder[] = []
         let rotators: ArrayRotator[] = []
@@ -161,13 +144,13 @@ export class Deob {
           setupCode = scode
         }
         else if (options.decoderLocationMethod === 'evalCode') {
-          evalCode(options.setupCode!)
+          await evalCode(options.sandbox!, options.setupCode!)
           decoders = designDecoder(this.ast, options.designDecoderName!)
         }
 
         logger(`${stringArray ? `字符串数组: ${stringArray?.name} (共 ${stringArray?.length} 项) 被引用 ${stringArray?.references.length} 处` : '没找到字符串数组'} | ${decoders.length ? `解密器函数: ${decoders.map(d => d.name)}` : '没找到解密器函数'}`)
 
-        evalCode(setupCode)
+        await evalCode(options.sandbox!, setupCode)
 
         for (let i = 0; i < options.inlineWrappersDepth; i++) {
           for (const decoder of decoders) {
@@ -179,15 +162,10 @@ export class Deob {
           }
         }
 
-        const map = decodeStrings(decoders)
+        // 执行解密器
+        const map = await decodeStrings(options.sandbox!, decoders as Decoder[])
 
         logger(buildDecryptionSummaryLog(map))
-
-        const removedSnippets: string[] = []
-        const addSnippet = (node: t.Node) => {
-          if (removedSnippets.length < 3)
-            removedSnippets.push(codePreview(node))
-        }
 
         if (decoders.length > 0) {
           if (stringArray?.path) {
@@ -196,8 +174,6 @@ export class Deob {
           rotators.forEach(rotator => rotator.remove())
           decoders.forEach(decoder => decoder.path.remove())
         }
-
-        logger(`已移除解密相关节点${removedSnippets.length ? `，片段:\n${removedSnippets.join('\n')}` : ''}`)
 
         return { changes: (map as any)?.size ?? decoders.length }
       },

@@ -3,8 +3,7 @@ import type { CallExpression } from '@babel/types'
 import type { ArrayRotator } from './array-rotator'
 import type { Decoder } from './decoder'
 import type { StringArray } from './string-array'
-import debug from 'debug'
-import { generate } from '../ast-utils'
+import { deobLogger, generate } from '../ast-utils'
 
 export type Sandbox = (code: string) => Promise<unknown>
 
@@ -73,7 +72,7 @@ export class VMDecoder {
       return result as unknown[]
     }
     catch (error) {
-      debug('webcrack:deobfuscate')('vm code:', code)
+      deobLogger('vm code:', code)
     }
 
     try {
@@ -81,8 +80,23 @@ export class VMDecoder {
       return result as unknown[]
     }
     catch (error) {
-      debug('webcrack:deobfuscate')('global.eval error:', error)
+      deobLogger('global.eval error:', error)
       throw error
+    }
+  }
+}
+
+export async function evalCode(sandbox: Sandbox, code: string) {
+  try {
+    return await sandbox(code) as unknown
+  }
+  catch (sandboxError) {
+    try {
+      return global.eval(code) as unknown
+    }
+    catch (evalError) {
+      deobLogger('evalCode error:', evalError)
+      throw sandboxError
     }
   }
 }

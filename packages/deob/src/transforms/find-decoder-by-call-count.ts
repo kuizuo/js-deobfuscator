@@ -26,7 +26,7 @@ export function findDecoderByCallCount(ast: t.File, count = 100) {
         // 引用次数
         if (binding.referencePaths.length >= count) {
           logger(`根据调用次数命中解密器: ${fnName} (调用 ${binding.referencePaths.length} 次)`)
-          decoders.push(new Decoder(fnName, path))
+          decoders.push(new Decoder(fnName, fnName, path))
 
           const body = (path.parentPath!.scope.block as t.Program).body
 

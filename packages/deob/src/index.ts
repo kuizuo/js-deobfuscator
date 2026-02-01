@@ -115,8 +115,6 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
     },
     // webcrack 反混淆
     () => applyTransformAsync(ast, deobfuscate, opts.sandbox),
-    // 对象引用替换
-    () => applyTransform(ast, inlineObjectProps),
     // 定位解密器
     async () => {
       let stringArray: StringArray | undefined
@@ -157,7 +155,9 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
       // 执行解密器
       const map = await decodeStrings(opts.sandbox!, decoders as Decoder[])
 
-      logger(buildDecryptionSummaryLog(map))
+      if (map.size > 0) {
+        logger(buildDecryptionSummaryLog(map))
+      }
 
       if (decoders.length > 0) {
         if (stringArray?.path) {

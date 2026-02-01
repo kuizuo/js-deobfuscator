@@ -72,7 +72,7 @@ export class VMDecoder {
       return result as unknown[]
     }
     catch (error) {
-      deobLogger('vm code:', code)
+      // ignore
     }
 
     try {

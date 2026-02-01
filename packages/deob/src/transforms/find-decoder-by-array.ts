@@ -169,15 +169,6 @@ export function findDecoderByArray(ast: t.Node) {
 
   const setupCode = [stringArrayCode, rotatorCode, decoderCode].join(';\n')
 
-  if (!stringArray)
-    logger('未找到满足条件的字符串数组')
-  if (rotators.length) {
-    const rotatorNames = rotators
-      .map(r => r.isFunctionDeclaration() ? (r as any).node.id?.name : r.node?.expression && (r.node.expression as any)?.callee?.name)
-      .filter(Boolean)
-    logger(`乱序函数数量: ${rotators.length}${rotatorNames.length ? ` -> ${rotatorNames.join(', ')}` : ''}`)
-  }
-
   return {
     stringArray,
     rotators,

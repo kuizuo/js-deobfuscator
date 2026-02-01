@@ -1,6 +1,6 @@
 import type { Options } from 'deob'
 import debug from 'debug'
-import { Deob } from 'deob'
+import { deob } from 'deob'
 
 const originalDebugLog = debug.log
 
@@ -61,9 +61,7 @@ self.addEventListener(
 
     const start = performance.now()
 
-    const deob = new Deob(code, options)
-
-    const { code: output } = await deob.run()
+    const { code: output } = await deob(code, options)
 
     const end = performance.now()
     self.postMessage({ type: 'result', code: output, parseTime: (end - start).toFixed(0) })

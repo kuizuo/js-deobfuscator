@@ -80,7 +80,7 @@ worker.onmessage = ({ data }) => {
 
   output.value = data.code
   parseTime.value = data.parseTime
-  pushLog(`解混淆完成，用时 ${data.parseTime} ms`)
+  pushLog(`解混淆完成，用时 ${data.parseTime} ms | 定位方式: ${options.value.decoderLocationMethod}`)
 }
 
 worker.onerror = (event) => {

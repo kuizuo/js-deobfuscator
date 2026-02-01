@@ -4,9 +4,9 @@ import { defaultOptions, options } from '#imports'
 const dialog = ref<HTMLDialogElement>()
 
 const decoderMethods = [
-  { value: 'stringArray', label: '字符串数组长度(适用绝大多数情况)' },
-  { value: 'callCount', label: '解密器调用次数(需判断调用次数是否足够)' },
-  { value: 'evalCode', label: '注入解密代码(（需要自行扣取代码）)' },
+  { value: 'stringArray', label: '字符串数组长度（适用于绝大多数场景）' },
+  { value: 'callCount', label: '解密函数调用次数（需确保调用次数足够）' },
+  { value: 'evalCode', label: '注入自定义解密代码（需手动提取代码）' },
 ] as const
 
 const isEvalCode = computed(
@@ -28,6 +28,13 @@ const mangleModes = [
 ] as const
 
 const isCustomMangle = computed(() => options.value.mangleMode === 'custom')
+
+const keywordsStr = computed({
+  get: () => options.value.keywords.join(', '),
+  set: (v: string) => {
+    options.value.keywords = v.split(',').map(s => s.trim()).filter(Boolean)
+  },
+})
 
 function open() {
   dialog.value?.showModal()
@@ -53,7 +60,7 @@ defineExpose({ open })
 <template>
   <dialog
     ref="dialog"
-    class="min-w-96 rounded-xl border border-zinc-200/70 bg-white/95 p-0 shadow-xl backdrop:backdrop-blur-sm dark:border-zinc-800/70 dark:bg-zinc-900/90"
+    class="min-w-96 overflow-visible rounded-xl border border-zinc-200/70 bg-white/95 p-0 shadow-xl backdrop:backdrop-blur-sm dark:border-zinc-800/70 dark:bg-zinc-900/90"
     @click="handleDialogClick"
   >
     <div class="flex items-center justify-between px-5 py-4">
@@ -81,7 +88,9 @@ defineExpose({ open })
     <div class="space-y-4 px-5 py-4 text-sm text-zinc-800 dark:text-zinc-100">
       <div class="space-y-2">
         <label class="flex flex-col gap-1">
-          <span class="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">解密器定位</span>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">解密器定位方式</span>
+          </div>
           <select
             v-model="options.decoderLocationMethod"
             class="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-900"
@@ -124,27 +133,29 @@ defineExpose({ open })
         </div>
       </div>
 
-      <div class="grid gap-3 md:grid-cols-2">
-        <label class="flex flex-col gap-1 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
-          <span class="text-xs font-semibold text-zinc-600 dark:text-zinc-300">解密器嵌套深度</span>
+      <div class="space-y-2 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-3 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
+        <div class="flex items-center gap-2">
+          <label class="flex cursor-pointer items-center gap-2">
+            <input
+              v-model="options.isMarkEnable"
+              type="checkbox"
+              class="h-4 w-4 rounded border-zinc-300 text-amber-500 focus:ring-amber-400 dark:border-zinc-600 dark:bg-zinc-800"
+            >
+            <span class="text-sm font-medium">启用关键字标记</span>
+          </label>
+          <Tooltip text="在反混淆后的代码中高亮标记指定关键字，便于快速定位关键逻辑（如 sign、token 等），用英文逗号分隔">
+            <span class="i-ri:question-line h-4 w-4 cursor-help text-zinc-400" />
+          </Tooltip>
+        </div>
+        <div v-if="options.isMarkEnable" class="space-y-1">
+          <label class="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
+            <span>关键字列表</span>
+          </label>
           <input
-            v-model.number="options.inlineWrappersDepth"
-            class="rounded border border-zinc-200 bg-white px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-950"
-            type="number"
-            min="1"
-            step="1"
-          >
-        </label>
-
-        <label class="flex flex-col gap-1 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
-          <span class="text-xs font-semibold text-zinc-600 dark:text-zinc-300">执行次数</span>
-          <input
-            v-model.number="options.execCount"
-            class="rounded border border-zinc-200 bg-white px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-950"
-            type="number"
-            min="1"
-            max="5"
-            step="1"
+            v-model="keywordsStr"
+            type="text"
+            class="w-full rounded border border-zinc-200 bg-white px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-zinc-700 dark:bg-zinc-900"
+            placeholder="debugger, sign, token"
           >
         </div>
       </div>

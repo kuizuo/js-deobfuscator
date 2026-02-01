@@ -7,23 +7,60 @@ import { findParent } from './matcher'
 
 /**
  * Replace all references of a variable with the initializer.
- * Make sure the binding is immutable before using!
  * Example:
  * `const a = 1; console.log(a);` -> `console.log(1);`
+ *
+ * Example with `unsafeAssignments` being `true`:
+ * `let a; a = 2; console.log(a);` -> `console.log(2);`
+ *
+ * @param unsafeAssignments Also inline assignments to the variable (not guaranteed to be the final value)
  */
 export function inlineVariable(
   binding: Binding,
-  init?: m.Matcher<t.Expression>,
+  value = m.anyExpression(),
+  unsafeAssignments = false,
 ) {
   const varDeclarator = binding.path.node
   const varMatcher = m.variableDeclarator(
     m.identifier(binding.identifier.name),
-    init,
+    value,
   )
-  if (varMatcher.match(varDeclarator)) {
+  const assignmentMatcher = m.assignmentExpression(
+    '=',
+    m.identifier(binding.identifier.name),
+    value,
+  )
+
+  if (binding.constant && varMatcher.match(varDeclarator)) {
     binding.referencePaths.forEach((ref) => {
       ref.replaceWith(varDeclarator.init!)
     })
+    binding.path.remove()
+  }
+  else if (unsafeAssignments && binding.constantViolations.length >= 1) {
+    const assignments = binding.constantViolations
+      .map(path => path.node)
+      .filter(node => assignmentMatcher.match(node))
+    if (!assignments.length) return
+
+    function getNearestAssignment(location: number) {
+      return assignments.findLast(assignment => assignment.start! < location)
+    }
+
+    for (const ref of binding.referencePaths) {
+      const assignment = getNearestAssignment(ref.node.start!)
+      if (assignment) ref.replaceWith(assignment.right)
+    }
+
+    for (const path of binding.constantViolations) {
+      if (path.parentPath?.isExpressionStatement()) {
+        path.remove()
+      }
+      else if (path.isAssignmentExpression()) {
+        path.replaceWith(path.node.right)
+      }
+    }
+
     binding.path.remove()
   }
 }
@@ -43,7 +80,7 @@ export function inlineArrayElements(
     const property = memberPath.node.property as t.NumericLiteral
     const index = property.value
     const replacement = array.elements[index]!
-    memberPath.replaceWith(replacement)
+    memberPath.replaceWith(t.cloneNode(replacement))
   }
 }
 
@@ -91,19 +128,19 @@ export function inlineObjectProperties(
  * ->
  * `a(1)`
  */
-export function inlineFunction(
+export function inlineFunctionCall(
   fn: t.FunctionExpression | t.FunctionDeclaration,
   caller: NodePath<t.CallExpression>,
 ): void {
-  // if (t.isRestElement(fn.params[1])) {
-  //   caller.replaceWith(
-  //     t.callExpression(
-  //       caller.node.arguments[0] as t.Identifier,
-  //       caller.node.arguments.slice(1),
-  //     ),
-  //   )
-  //   return
-  // }
+  if (t.isRestElement(fn.params[1])) {
+    caller.replaceWith(
+      t.callExpression(
+        caller.node.arguments[0] as t.Identifier,
+        caller.node.arguments.slice(1),
+      ),
+    )
+    return
+  }
 
   const returnedValue = (fn.body.body[0] as t.ReturnStatement).argument!
   const clone = t.cloneNode(returnedValue, true)
@@ -115,7 +152,10 @@ export function inlineFunction(
         p => (p as t.Identifier).name === path.node.name,
       )
       if (paramIndex !== -1) {
-        path.replaceWith(caller.node.arguments[paramIndex])
+        path.replaceWith(
+          caller.node.arguments[paramIndex]
+          ?? t.unaryExpression('void', t.numericLiteral(0)),
+        )
         path.skip()
       }
     },
@@ -179,7 +219,7 @@ export function inlineFunctionAliases(binding: Binding): { changes: number } {
         .map(ref => ref.parentPath!) as NodePath<t.CallExpression>[]
 
       for (const callRef of callRefs) {
-        inlineFunction(fn.node, callRef)
+        inlineFunctionCall(fn.node, callRef)
         state.changes++
       }
 
@@ -224,6 +264,8 @@ export function inlineVariableAliases(
       const varScope = ref.scope
       const varBinding = varScope.getBinding(varName.current!)
       if (!varBinding) continue
+      // Avoid infinite loop from `alias = alias;` (caused by dead code injection?)
+      if (ref.isIdentifier({ name: varBinding.identifier.name })) continue
 
       // Check all further aliases (`var alias2 = alias;`)
       state.changes += inlineVariableAliases(varBinding, targetName).changes
@@ -238,7 +280,7 @@ export function inlineVariableAliases(
         }
         else {
           // Replace `(alias = decoder)(1);` with `decoder(1);`
-          ref.parentPath.replaceWith(ref.parentPath.node.right)
+          ref.parentPath.replaceWith(t.identifier(targetName))
         }
       }
       else if (ref.parentPath?.isVariableDeclarator()) {

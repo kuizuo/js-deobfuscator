@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import * as url from 'node:url'
 import { program } from 'commander'
 import debug from 'debug'
-import { Deob } from './index.js'
+import { deob } from './index.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 const { version, description } = JSON.parse(
@@ -35,8 +35,7 @@ program
     const { output } = program.opts<Options>()
     const code = await (input ? readFile(input, 'utf8') : readStdin())
 
-    const deob = new Deob(code)
-    const result = await deob.run()
+    const result = await deob(code)
 
     if (output) {
       await result.save(output)

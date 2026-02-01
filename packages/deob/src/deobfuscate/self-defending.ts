@@ -3,13 +3,10 @@ import type * as t from '@babel/types'
 import type { Transform } from '../ast-utils'
 import * as m from '@codemod/matchers'
 import {
-  codePreview,
   constMemberExpression,
-  emptyIife,
   falseMatcher,
   findParent,
-  deobLogger as logger,
-  matchIife,
+  iife,
   trueMatcher,
 } from '../ast-utils'
 
@@ -22,23 +19,10 @@ import {
 // debug protection function call: https://github.com/javascript-obfuscator/javascript-obfuscator/blob/d7f73935557b2cd15a2f7cd0b01017d9cddbd015/src/custom-code-helpers/debug-protection/templates/debug-protection-function-call/DebugProtectionFunctionCallTemplate.ts
 
 export default {
-  name: 'selfDefending',
+  name: 'self-defending',
   tags: ['safe'],
   scope: true,
   visitor() {
-    const removedSnippets: string[] = []
-    const MAX_SNIPPETS = 5
-
-    const recordRemoval = (node: t.Node, reason: string) => {
-      if (removedSnippets.length >= MAX_SNIPPETS) {
-        return
-      }
-      if (!node) {
-        return
-      }
-      removedSnippets.push(`${reason}: ${codePreview(node)}`)
-    }
-
     const callController = m.capture(m.anyString())
     const firstCall = m.capture(m.identifier())
     const rfn = m.capture(m.identifier())
@@ -49,86 +33,92 @@ export default {
     // const callControllerFunctionName = (function() { ... })();
     const matcher = m.variableDeclarator(
       m.identifier(callController),
-      matchIife([
-        // let firstCall = true;
-        m.variableDeclaration(undefined, [
-          m.variableDeclarator(firstCall, trueMatcher),
-        ]),
-        // return function (context, fn) {
-        m.returnStatement(
-          m.functionExpression(
-            null,
-            [context, fn],
-            m.blockStatement([
-              m.variableDeclaration(undefined, [
-                // const rfn = firstCall ? function() {
-                m.variableDeclarator(
-                  rfn,
-                  m.conditionalExpression(
-                    m.fromCapture(firstCall),
-                    m.functionExpression(
-                      null,
-                      [],
-                      m.blockStatement([
-                        // if (fn) {
-                        m.ifStatement(
-                          m.fromCapture(fn),
-                          m.blockStatement([
-                            // const res = fn.apply(context, arguments);
-                            m.variableDeclaration(undefined, [
-                              m.variableDeclarator(
-                                res,
-                                m.callExpression(
-                                  constMemberExpression(
-                                    m.fromCapture(fn),
-                                    'apply',
+      iife(
+        [],
+        m.blockStatement([
+          // let firstCall = true;
+          m.variableDeclaration(undefined, [
+            m.variableDeclarator(firstCall, trueMatcher),
+          ]),
+          // return function (context, fn) {
+          m.returnStatement(
+            m.functionExpression(
+              null,
+              [context, fn],
+              m.blockStatement([
+                m.variableDeclaration(undefined, [
+                  // const rfn = firstCall ? function() {
+                  m.variableDeclarator(
+                    rfn,
+                    m.conditionalExpression(
+                      m.fromCapture(firstCall),
+                      m.functionExpression(
+                        null,
+                        [],
+                        m.blockStatement([
+                          // if (fn) {
+                          m.ifStatement(
+                            m.fromCapture(fn),
+                            m.blockStatement([
+                              // const res = fn.apply(context, arguments);
+                              m.variableDeclaration(undefined, [
+                                m.variableDeclarator(
+                                  res,
+                                  m.callExpression(
+                                    constMemberExpression(
+                                      m.fromCapture(fn),
+                                      'apply',
+                                    ),
+                                    [
+                                      m.fromCapture(context),
+                                      m.identifier('arguments'),
+                                    ],
                                   ),
-                                  [
-                                    m.fromCapture(context),
-                                    m.identifier('arguments'),
-                                  ],
+                                ),
+                              ]),
+                              // fn = null;
+                              m.expressionStatement(
+                                m.assignmentExpression(
+                                  '=',
+                                  m.fromCapture(fn),
+                                  m.nullLiteral(),
                                 ),
                               ),
+                              // return res;
+                              m.returnStatement(m.fromCapture(res)),
                             ]),
-                            // fn = null;
-                            m.expressionStatement(
-                              m.assignmentExpression(
-                                '=',
-                                m.fromCapture(fn),
-                                m.nullLiteral(),
-                              ),
-                            ),
-                            // return res;
-                            m.returnStatement(m.fromCapture(res)),
-                          ]),
-                        ),
-                      ]),
+                          ),
+                        ]),
+                      ),
+                      // : function() {}
+                      m.functionExpression(null, [], m.blockStatement([])),
                     ),
-                    // : function() {}
-                    m.functionExpression(null, [], m.blockStatement([])),
+                  ),
+                ]),
+                // firstCall = false;
+                m.expressionStatement(
+                  m.assignmentExpression(
+                    '=',
+                    m.fromCapture(firstCall),
+                    falseMatcher,
                   ),
                 ),
+                // return rfn;
+                m.returnStatement(m.fromCapture(rfn)),
               ]),
-              // firstCall = false;
-              m.expressionStatement(
-                m.assignmentExpression(
-                  '=',
-                  m.fromCapture(firstCall),
-                  falseMatcher,
-                ),
-              ),
-              // return rfn;
-              m.returnStatement(m.fromCapture(rfn)),
-            ]),
+            ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     )
+
+    const emptyIife = iife([], m.blockStatement([]))
 
     return {
       VariableDeclarator(path) {
         if (!matcher.match(path.node)) return
-        const binding = path.scope.getBinding(callController.current!)!
+        const binding = path.scope.getBinding(callController.current!)
+        if (!binding) return
         // const callControllerFunctionName = (function() { ... })();
         //       ^ path/binding
 
@@ -139,37 +129,18 @@ export default {
               // callControllerFunctionName(this, function () { ... })();
               // ^ ref
               ref.parentPath.parentPath?.remove()
-              recordRemoval(
-                ref.parentPath.parentPath!.node,
-                '移除自卫入口调用',
-              )
             }
             else {
               // const selfDefendingFunctionName = callControllerFunctionName(this, function () {
               // selfDefendingFunctionName();      ^ ref
-              removeSelfDefendingRefs(
-                ref as NodePath<t.Identifier>,
-                recordRemoval,
-              )
+              removeSelfDefendingRefs(ref as NodePath<t.Identifier>)
             }
 
             // leftover (function () {})() from debug protection function call
-            const leftover = findParent(ref, emptyIife)
-            if (leftover) {
-              recordRemoval(leftover.node, '移除多余 IIFE')
-              leftover.remove()
-            }
+            findParent(ref, emptyIife)?.remove()
 
             this.changes++
           })
-
-        logger(
-          [
-            '移除自卫代码片段:',
-            ...removedSnippets,
-            removedSnippets.length >= MAX_SNIPPETS ? '...' : '',
-          ].filter(Boolean).join('\n'),
-        )
 
         path.remove()
         this.changes++
@@ -178,10 +149,7 @@ export default {
   },
 } satisfies Transform
 
-function removeSelfDefendingRefs(
-  path: NodePath<t.Identifier>,
-  recordRemoval: (node: t.Node, reason: string) => void,
-) {
+function removeSelfDefendingRefs(path: NodePath<t.Identifier>) {
   const varName = m.capture(m.anyString())
   const varMatcher = m.variableDeclarator(
     m.identifier(varName),
@@ -196,12 +164,9 @@ function removeSelfDefendingRefs(
     const binding = varDecl.scope.getBinding(varName.current!)
 
     binding?.referencePaths.forEach((ref) => {
-      if (callMatcher.match(ref.parentPath?.parent)) {
-        recordRemoval(ref.parentPath?.parentPath?.node!, '移除自卫函数调用')
+      if (callMatcher.match(ref.parentPath?.parent))
         ref.parentPath?.parentPath?.remove()
-      }
     })
-    recordRemoval(varDecl.node, '移除自卫函数声明')
     varDecl.remove()
   }
 }

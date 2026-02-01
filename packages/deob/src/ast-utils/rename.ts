@@ -6,6 +6,7 @@ import { codePreview } from './generator'
 
 export function renameFast(binding: Binding, newName: string): void {
   binding.referencePaths.forEach((ref) => {
+    if (ref.isExportDefaultDeclaration()) return
     if (!ref.isIdentifier()) {
       throw new Error(
         `Unexpected reference (${ref.type}): ${codePreview(ref.node)}`,
@@ -32,8 +33,22 @@ export function renameFast(binding: Binding, newName: string): void {
     else if (ref.isUpdateExpression() && t.isIdentifier(ref.node.argument)) {
       ref.node.argument.name = newName
     }
+    else if (
+      ref.isUnaryExpression({ operator: 'delete' })
+      && t.isIdentifier(ref.node.argument)
+    ) {
+      ref.node.argument.name = newName
+    }
     else if (ref.isVariableDeclarator() && t.isIdentifier(ref.node.id)) {
       ref.node.id.name = newName
+    }
+    else if (ref.isVariableDeclarator() && t.isArrayPattern(ref.node.id)) {
+      const ids = ref.getBindingIdentifiers()
+      for (const id in ids) {
+        if (id === binding.identifier.name) {
+          ids[id].name = newName
+        }
+      }
     }
     else if (ref.isFor() || patternMatcher.match(ref.node)) {
       traverse(ref.node, {
@@ -45,6 +60,9 @@ export function renameFast(binding: Binding, newName: string): void {
         },
         noScope: true,
       })
+    }
+    else if (ref.isFunctionDeclaration() && t.isIdentifier(ref.node.id)) {
+      ref.node.id.name = newName
     }
     else {
       throw new Error(

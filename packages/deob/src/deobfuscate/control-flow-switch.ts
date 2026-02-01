@@ -4,7 +4,7 @@ import * as m from '@codemod/matchers'
 import { constMemberExpression, infiniteLoop } from '../ast-utils'
 
 export default {
-  name: 'controlFlowSwitch',
+  name: 'control-flow-switch',
   tags: ['safe'],
   visitor() {
     const sequenceName = m.capture(m.identifier())
@@ -17,12 +17,9 @@ export default {
       m.arrayOf(
         m.switchCase(
           m.stringLiteral(m.matcher(s => /^\d+$/.test(s))),
-          m.or(
+          m.anyList(
             m.zeroOrMore(),
-            m.anyList(
-              m.zeroOrMore(),
-              m.or(m.continueStatement(), m.returnStatement()),
-            ),
+            m.or(m.continueStatement(), m.returnStatement()),
           ),
         ),
       ),
@@ -30,7 +27,6 @@ export default {
 
     const matcher = m.blockStatement(
       m.anyList<t.Statement>(
-        m.zeroOrMore(),
         // E.g. const sequence = "2|4|3|0|1".split("|")
         m.variableDeclaration(undefined, [
           m.variableDeclarator(
@@ -78,7 +74,7 @@ export default {
           const sequence = sequenceString.current!.split('|')
           const newStatements = sequence.flatMap(s => caseStatements.get(s)!)
 
-          path.node.body.splice(0, path.node.body.length, ...newStatements)
+          path.node.body.splice(0, 3, ...newStatements)
           this.changes += newStatements.length + 3
         },
       },

@@ -22,6 +22,7 @@ export default antfu({
     'ts/no-non-null-asserted-optional-chain': 'off',
     'no-unused-expressions': 'off',
     'test/consistent-test-it': 'off',
+    'test/no-identical-title': 'off',
     
     'antfu/if-newline': 'off',
   },

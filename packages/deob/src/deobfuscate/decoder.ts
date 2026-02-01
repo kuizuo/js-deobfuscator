@@ -4,7 +4,7 @@ import type { StringArray } from './string-array'
 import { expression } from '@babel/template'
 import * as m from '@codemod/matchers'
 import {
-  anyLiteral,
+  anySubList,
   findParent,
   inlineVariable,
   renameFast,
@@ -16,10 +16,16 @@ import {
  * the string with Base64 or RC4.
  */
 export class Decoder {
+  originalName: string
   name: string
   path: NodePath<t.FunctionDeclaration>
 
-  constructor(name: string, path: NodePath<t.FunctionDeclaration>) {
+  constructor(
+    originalName: string,
+    name: string,
+    path: NodePath<t.FunctionDeclaration>,
+  ) {
+    this.originalName = originalName
     this.name = name
     this.path = path
   }
@@ -80,13 +86,17 @@ export class Decoder {
         ref.parentPath!.traverse({
           ReferencedIdentifier(path) {
             const varBinding = path.scope.getBinding(path.node.name)!
-            if (!varBinding || !varBinding.constant) return
-            inlineVariable(varBinding, anyLiteral)
+            if (!varBinding) return
+            inlineVariable(varBinding, literalArgument, true)
           },
         })
         if (literalCall.match(ref.parent)) {
           calls.push(ref.parentPath as NodePath<t.CallExpression>)
         }
+      }
+      else if (ref.parentPath?.isExpressionStatement()) {
+        // `decode;` may appear on it's own in some forked obfuscators
+        ref.parentPath.remove()
       }
     }
 
@@ -103,7 +113,7 @@ export function findDecoders(stringArray: StringArray): Decoder[] {
     m.identifier(functionName),
     m.anything(),
     m.blockStatement(
-      m.anyList(
+      anySubList(
         // var array = getStringArray();
         m.variableDeclaration(undefined, [
           m.variableDeclarator(
@@ -111,13 +121,11 @@ export function findDecoders(stringArray: StringArray): Decoder[] {
             m.callExpression(m.identifier(stringArray.name)),
           ),
         ]),
-        m.zeroOrMore(),
         // var h = array[e]; return h;
         // or return array[e -= 254];
         m.containerOf(
           m.memberExpression(m.fromCapture(arrayIdentifier), undefined, true),
         ),
-        m.zeroOrMore(),
       ),
     ),
   )
@@ -130,7 +138,7 @@ export function findDecoders(stringArray: StringArray): Decoder[] {
       const newName = `__DECODE_${decoders.length}__`
       const binding = decoderFn.scope.getBinding(oldName)!
       renameFast(binding, newName)
-      decoders.push(new Decoder(newName, decoderFn))
+      decoders.push(new Decoder(oldName, newName, decoderFn))
     }
   }
 

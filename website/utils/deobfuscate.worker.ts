@@ -1,6 +1,6 @@
 import type { Options } from 'deob'
 import debug from 'debug'
-import { Deob } from 'deob'
+import { deob } from 'deob'
 
 const originalDebugLog = debug.log
 
@@ -53,20 +53,25 @@ debug.log = (...args: any[]) => {
 
 self.addEventListener(
   'message',
-  ({ data }: { data: { code: string, options: Options } }) => {
+  async ({ data }: { data: { code: string, options: Options } }) => {
     const { code, options } = data
 
     if (!code || !options)
       return
 
-    const start = performance.now()
-
-    const deob = new Deob(code, options)
-
-    const { code: output } = deob.run()
-
-    const end = performance.now()
-    self.postMessage({ type: 'result', code: output, parseTime: (end - start).toFixed(0) })
+    try {
+      const start = performance.now()
+      const { code: output } = await deob(code, options)
+      const end = performance.now()
+      self.postMessage({ type: 'result', code: output, parseTime: (end - start).toFixed(0) })
+    }
+    catch (err: any) {
+      self.postMessage({
+        type: 'error',
+        message: err?.message ?? String(err),
+        timestamp: Date.now(),
+      })
+    }
   },
   false,
 )

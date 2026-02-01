@@ -6,4 +6,3 @@ node_modules
 *.log
 .vercel
 out
-history_*.js

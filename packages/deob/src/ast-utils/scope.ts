@@ -2,9 +2,7 @@ import type { Scope } from '@babel/traverse'
 import { toIdentifier } from '@babel/types'
 
 /**
- * Generate a readable unique identifier without the leading underscore that
- * Babel normally prefixes. Ensures it doesn't collide with labels, bindings,
- * globals, or references in the current program.
+ * Like scope.generateUid from babel, but without the underscore prefix and name filters
  */
 export function generateUid(scope: Scope, name: string = 'temp'): string {
   let uid = ''
@@ -22,6 +20,5 @@ export function generateUid(scope: Scope, name: string = 'temp'): string {
   const program = scope.getProgramParent()
   program.references[uid] = true
   program.uids[uid] = true
-
   return uid
 }

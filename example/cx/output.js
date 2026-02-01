@@ -1,3 +1,4 @@
+// TOLOOK
 setInterval(function () {
   _0x142a1e();
 }, 4000);
@@ -28,9 +29,7 @@ setInterval(function () {
     try {
       var _0x5b29a1 = window.event;
       if (_0x5b29a1 === undefined) {
-        var _0x5d5dcb = arguments.callee.caller;
-        var _0x54ac12 = _0x5d5dcb;
-        for (; _0x5d5dcb != null;) {
+        for (var _0x5d5dcb = arguments.callee.caller, _0x54ac12 = _0x5d5dcb; _0x5d5dcb != null;) {
           _0x5d5dcb = (_0x54ac12 = _0x5d5dcb).caller;
         }
         _0x5b29a1 = _0x54ac12.arguments[0];
@@ -44,12 +43,7 @@ setInterval(function () {
           _0x5a209a = 2;
         }
         _0xb2c58f = _0x352066(_0x5b29a1) ? _0x5a209a != 2 ? function (_0xb2c58f) {
-          var _0x402f51 = 0;
-          var _0x2fe666 = 0;
-          var _0x259d84 = _0x352066(_0x5b29a1);
-          var _0x25e730 = 0;
-          var _0x420238 = _0xb2c58f.length;
-          for (; _0x25e730 < _0x420238; _0x25e730++) {
+          for (var _0x402f51 = 0, _0x2fe666 = 0, _0x259d84 = _0x352066(_0x5b29a1), _0x25e730 = 0, _0x420238 = _0xb2c58f.length; _0x25e730 < _0x420238; _0x25e730++) {
             if ((_0x2fe666 = (_0x402f51 = (_0x402f51 << 4) + _0xb2c58f.charCodeAt(_0x25e730)) & 1879048192) != 0) {
               _0x402f51 ^= _0x2fe666 >> (_0x259d84 ? 24 : 16);
               _0x402f51 &= ~_0x2fe666;
@@ -73,8 +67,7 @@ setInterval(function () {
           if (_0xb2c58f.length == 0) {
             return _0x402f51;
           }
-          var _0x2fe666 = 0;
-          for (; _0x2fe666 < _0xb2c58f.length; _0x2fe666++) {
+          for (var _0x2fe666 = 0; _0x2fe666 < _0xb2c58f.length; _0x2fe666++) {
             _0x402f51 = (_0x402f51 << 5) - _0x402f51 + _0xb2c58f.charCodeAt(_0x2fe666);
             _0x402f51 &= 268435455;
           }
@@ -92,9 +85,7 @@ setInterval(function () {
       if (_0x402f51 == null || _0x402f51.length <= 0) {
         return null;
       }
-      var _0x2fe666 = "";
-      var _0x259d84 = 0;
-      for (; _0x259d84 < _0x402f51.length; _0x259d84++) {
+      for (var _0x2fe666 = "", _0x259d84 = 0; _0x259d84 < _0x402f51.length; _0x259d84++) {
         _0x2fe666 += _0x402f51.charCodeAt(_0x259d84).toString();
       }
       var _0x25e730 = Math.floor(_0x2fe666.length / 5);

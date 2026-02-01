@@ -1,6 +1,8 @@
 import type { Decoder } from '../deobfuscate/decoder'
+import type { Sandbox } from '../deobfuscate/vm'
 import * as t from '@babel/types'
 import { deobLogger as logger } from '../ast-utils'
+import { evalCode } from '../deobfuscate/vm'
 
 /**
  * 执行解密器 (使用 eval 执行)
@@ -10,12 +12,12 @@ import { deobLogger as logger } from '../ast-utils'
  * ⬇️
  * 原始字符串
  */
-export function decodeStrings(decoders: Decoder[]) {
+export async function decodeStrings(sandbox: Sandbox, decoders: Decoder[]) {
   const map = new Map<string, string>() // 记录解密结果
   let failures = 0
 
-  for (const decoder of decoders) {
-    decoder?.path.scope.getBinding(decoder.name)?.referencePaths.forEach((ref) => {
+  for await (const decoder of decoders) {
+    decoder?.path.scope.getBinding(decoder.name)?.referencePaths.forEach(async (ref) => {
       if (ref?.parentKey === 'callee' && ref.parentPath?.isCallExpression()) {
         const callExpression = ref.parentPath
         try {
@@ -25,8 +27,8 @@ export function decodeStrings(decoders: Decoder[]) {
 
           const call = callExpression.toString()
 
-          const value = global.eval(call)
-          map.set(call, value)
+          const value = await evalCode(sandbox, call)
+          map.set(call, value as string)
 
           callExpression.replaceWith(t.valueToNode(value))
         }

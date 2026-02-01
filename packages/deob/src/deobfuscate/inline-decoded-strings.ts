@@ -7,7 +7,7 @@ import * as t from '@babel/types'
  * E.g. `m(199)` -> `'log'`
  */
 export default {
-  name: 'inlineDecodedStrings',
+  name: 'inline-decoded-strings',
   tags: ['unsafe'],
   scope: true,
   async run(ast, state, options) {

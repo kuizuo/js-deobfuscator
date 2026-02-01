@@ -1,13 +1,11 @@
-import type {
-  Transform,
-} from '../ast-utils'
+import type { Transform } from '../ast-utils'
 import * as m from '@codemod/matchers'
 import {
   constKey,
   constMemberExpression,
+  getPropName,
   inlineObjectProperties,
   isReadonlyObject,
-  deobLogger as logger,
 } from '../ast-utils'
 
 // TODO: move do decoder.ts collectCalls to avoid traversing the whole AST
@@ -35,7 +33,9 @@ export default {
   scope: true,
   visitor() {
     const varId = m.capture(m.identifier())
-    const propertyName = m.matcher<string>(name => /^\w+$/.test(name))
+    const propertyName = m.capture(
+      m.matcher<string>(name => /^\w+$/.test(name)),
+    )
     const propertyKey = constKey(propertyName)
     // E.g. "_0x51b74a": 0x80
     const objectProperties = m.capture(
@@ -55,8 +55,22 @@ export default {
       varId,
       m.objectExpression(objectProperties),
     )
+    // E.g. { e: 0x80 }.e
+    const literalMemberAccess = constMemberExpression(
+      m.objectExpression(objectProperties),
+      propertyName,
+    )
 
     return {
+      MemberExpression(path) {
+        if (!literalMemberAccess.match(path.node)) return
+        const property = objectProperties.current!.find(
+          p => getPropName(p.key) === propertyName.current,
+        )
+        if (!property) return
+        path.replaceWith(property.value)
+        this.changes++
+      },
       VariableDeclarator(path) {
         if (!varMatcher.match(path.node)) return
         if (objectProperties.current!.length === 0) return
@@ -71,7 +85,7 @@ export default {
             m.or(m.stringLiteral(), m.numericLiteral()),
           ),
         )
-        logger(`对象属性内联: ${varId.current!.name} -> ${objectProperties.current!.length} 个字面量属性`)
+        this.changes++
       },
     }
   },

@@ -1,13 +1,7 @@
-import type {
-  Transform,
-} from '../ast-utils'
+import type { Transform } from '../ast-utils'
 import * as m from '@codemod/matchers'
 import { ifStatement } from '@codemod/matchers'
-import {
-  constMemberExpression,
-  findParent,
-  iife,
-} from '../ast-utils'
+import { constMemberExpression, findParent, iife } from '../ast-utils'
 
 // https://github.com/javascript-obfuscator/javascript-obfuscator/blob/d7f73935557b2cd15a2f7cd0b01017d9cddbd015/src/custom-code-helpers/debug-protection/templates/debug-protection-function-interval/DebugProtectionFunctionIntervalTemplate.ts
 
@@ -18,7 +12,7 @@ import {
 // https://github.com/javascript-obfuscator/javascript-obfuscator/blob/d7f73935557b2cd15a2f7cd0b01017d9cddbd015/src/custom-code-helpers/debug-protection/templates/debug-protection-function/DebuggerTemplateNoEval.ts
 
 export default {
-  name: 'debugProtection',
+  name: 'debug-protection',
   tags: ['safe'],
   scope: true,
   visitor() {
@@ -96,11 +90,11 @@ export default {
 
         const binding = path.scope.getBinding(
           debugProtectionFunctionName.current!,
-        )!
+        )
 
-        binding.referencePaths.forEach((ref) => {
+        binding?.referencePaths.forEach((ref) => {
           if (intervalCall.match(ref.parent)) {
-            findParent(ref, iife)?.remove()
+            findParent(ref, iife())?.remove()
           }
         })
 

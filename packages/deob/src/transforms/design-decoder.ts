@@ -13,7 +13,7 @@ export function designDecoder(ast: t.Node, decoderName: string | string[]): Deco
       const name = id?.name
 
       if (name && decoderNameList.includes(name)) {
-        decoders.push(new Decoder(name, path))
+        decoders.push(new Decoder(name, name, path))
       }
     },
   })

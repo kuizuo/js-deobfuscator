@@ -1,23 +1,22 @@
-import type {
-  Node,
-  TraverseOptions,
-  Visitor,
-} from '@babel/traverse'
+import type { Node, TraverseOptions, Visitor } from '@babel/traverse'
 import traverse, { visitors } from '@babel/traverse'
+import debug from 'debug'
+
+const logger = debug('webcrack:transforms')
 
 export async function applyTransformAsync<TOptions>(
   ast: Node,
   transform: AsyncTransform<TOptions>,
   options?: TOptions,
 ): Promise<TransformState> {
-  // logger(`${transform.name}: started`)
+  logger(`${transform.name}: started`)
   const state: TransformState = { changes: 0 }
 
   await transform.run?.(ast, state, options)
   if (transform.visitor)
     traverse(ast, transform.visitor(options), undefined, state)
 
-  // logger(`${transform.name}: finished with ${state.changes} changes`)
+  logger(`${transform.name}: finished with ${state.changes} changes`)
   return state
 }
 
@@ -25,9 +24,8 @@ export function applyTransform<TOptions>(
   ast: Node,
   transform: Transform<TOptions>,
   options?: TOptions,
-  noScopeOverride?: boolean,
 ): TransformState {
-  // logger(`${transform.name}: started`)
+  logger(`${transform.name}: started`)
   const state: TransformState = { changes: 0 }
   transform.run?.(ast, state, options)
 
@@ -35,11 +33,11 @@ export function applyTransform<TOptions>(
     const visitor = transform.visitor(
       options,
     ) as TraverseOptions<TransformState>
-    visitor.noScope = noScopeOverride || !transform.scope
+    visitor.noScope = !transform.scope
     traverse(ast, visitor, undefined, state)
   }
 
-  // logger(`${transform.name}: finished with ${state.changes} changes`)
+  logger(`${transform.name}: finished with ${state.changes} changes`)
   return state
 }
 
@@ -49,6 +47,8 @@ export function applyTransforms(
   options: { noScope?: boolean, name?: string, log?: boolean } = {},
 ): TransformState {
   options.log ??= true
+  const name = options.name ?? transforms.map(t => t.name).join(', ')
+  if (options.log) logger(`${name}: started`)
   const state: TransformState = { changes: 0 }
 
   for (const transform of transforms) {
@@ -63,7 +63,25 @@ export function applyTransforms(
     traverse(ast, visitor, undefined, state)
   }
 
+  if (options.log) logger(`${name}: finished with ${state.changes} changes`)
   return state
+}
+
+export function mergeTransforms(options: {
+  name: string
+  tags: Tag[]
+  transforms: Transform[]
+}): Transform {
+  return {
+    name: options.name,
+    tags: options.tags,
+    scope: options.transforms.some(t => t.scope),
+    visitor() {
+      return visitors.merge(
+        options.transforms.flatMap(t => t.visitor?.() ?? []),
+      )
+    },
+  }
 }
 
 export interface TransformState {
@@ -79,7 +97,7 @@ export interface Transform<TOptions = unknown> {
 }
 
 export interface AsyncTransform<TOptions = unknown>
-  extends Transform<TOptions> {
+  extends Omit<Transform<TOptions>, 'run'> {
   run?: (ast: Node, state: TransformState, options?: TOptions) => Promise<void>
 }
 

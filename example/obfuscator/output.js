@@ -3,13 +3,21 @@ function hi() {
     function _0x49afe4(_0x254ae1, _0x559602, _0x3dfa50, _0x21855f, _0x13ee81) {
       return _0x4698(_0x13ee81 - -674, _0x3dfa50);
     }
+    var _0x42856f = {
+      UywnN: "VQpJl",
+      AjDZu: "FoKQm"
+    };
     var _0x7159b6 = true;
     return function (_0x330efc, _0x46a7b3) {
       var _0x7fa39c = _0x7159b6 ? function () {
-        if (_0x46a7b3) {
-          var _0x3d6c1e = _0x46a7b3.apply(_0x330efc, arguments);
-          _0x46a7b3 = null;
-          return _0x3d6c1e;
+        if (_0x42856f.UywnN !== _0x42856f.AjDZu) {
+          if (_0x46a7b3) {
+            var _0x3d6c1e = _0x46a7b3.apply(_0x330efc, arguments);
+            _0x46a7b3 = null;
+            return _0x3d6c1e;
+          }
+        } else {
+          _0x22db6b = _0x4bbd53;
         }
       } : function () {};
       _0x7159b6 = false;
@@ -29,8 +37,7 @@ function hi() {
     var _0x45bfdc = _0x2bba98();
     var _0x5d2030 = _0x45bfdc.console = _0x45bfdc.console || {};
     var _0x4a4cd0 = ["log", "warn", "info", "error", "exception", "table", "trace"];
-    var _0xbcb23b = 0;
-    for (; _0xbcb23b < _0x4a4cd0.length; _0xbcb23b++) {
+    for (var _0xbcb23b = 0; _0xbcb23b < _0x4a4cd0.length; _0xbcb23b++) {
       var _0x12c43a = _0x13918c.constructor.prototype.bind(_0x13918c);
       var _0x545650 = _0x4a4cd0[_0xbcb23b];
       var _0x1faa06 = _0x5d2030[_0x545650] || _0x12c43a;

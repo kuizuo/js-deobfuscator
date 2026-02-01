@@ -1,27 +1,17 @@
 import type { Options } from 'deob'
 
-// Keep a local copy to avoid circular init issues on client
 export const defaultOptions: Required<Options> = {
-  isStrongRemove: false,
-
-  inlineWrappersDepth: 2,
   decoderLocationMethod: 'stringArray',
   decoderCallCount: 150,
-  stringArraylength: 150,
   setupCode: '',
   designDecoderName: '',
-  isRemoveDecoder: true,
-
-  execCount: 2,
 
   isMarkEnable: true,
   keywords: ['debugger'],
 
-  isDebug: false,
   mangleMode: 'off',
   manglePattern: '',
   mangleFlags: '',
-  isMinifiedEnable: false,
 }
 
 const PREFIX = 'js-deobfuscator:'

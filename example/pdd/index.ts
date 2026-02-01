@@ -2,7 +2,7 @@ import { promises as fs } from 'node:fs'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Options } from 'deob'
-import { Deob, codePrettier, generate } from 'deob'
+import { codePrettier, deob, parseCode } from 'deob'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -17,24 +17,11 @@ const __dirname = dirname(__filename)
     decoderLocationMethod: 'evalCode',
     setupCode,
     designDecoderName: 'qt',
-    isDebug: true,
-    execCount: 3,
-    isStrongRemove: false,
   }
 
-  const deob = new Deob(rawCode, options)
+  await fs.writeFile(`${__dirname}/pretty.js`, codePrettier(parseCode(rawCode)))
 
-  await fs.writeFile(`${__dirname}/pretty.js`, codePrettier(deob.ast))
-
-  const { code, historys, save } = await deob.run()
+  const { code, save } = await deob(rawCode, options)
 
   save(__dirname)
-
-  // 输出 ast 处理历史用于调试, 需要 isDebug: true
-  for (let i = 0; i < historys.length; i++) {
-    const ast = historys[i]
-    const code = generate(ast)
-
-    await fs.writeFile(`${__dirname}/history_${i}.js`, code)
-  }
 })()

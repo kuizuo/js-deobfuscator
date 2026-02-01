@@ -1,6 +1,8 @@
 import { parse } from '@babel/parser'
 import { describe, expect, it } from 'vitest'
-import { evalCode, generate } from '../..'
+import { evalCode } from '../..'
+import { generate } from '../../ast-utils'
+import { createNodeSandbox } from '../../deobfuscate'
 import { decodeStrings } from '../decode-strings'
 import { findDecoderByArray } from '../find-decoder-by-array'
 import { findDecoderByCallCount } from '../find-decoder-by-call-count'
@@ -16,10 +18,11 @@ describe('decoder', async () => {
       decoder("ZGVidWdnZXI=")
       `)
 
+    const sandbox = createNodeSandbox()
     const { decoders, setupCode } = findDecoderByCallCount(ast, 2)
 
-    evalCode(setupCode)
-    decodeStrings(decoders)
+    evalCode(sandbox, setupCode)
+    decodeStrings(sandbox, decoders)
 
     decoders.forEach(d => d.path.remove())
 
@@ -35,18 +38,24 @@ describe('decoder', async () => {
       function decoder(i){
         return arr[i]
       }
-  
+      (function(a, b) {
+        // rotator function
+      })(arr, 0x128)
+
       decoder(0)
       decoder(1)
       `)
 
-    const { stringArray, decoders, setupCode } = findDecoderByArray(ast, 2)
+    const sandbox = createNodeSandbox()
 
-    evalCode(setupCode)
-    decodeStrings(decoders)
+    const { stringArray, decoders, rotators, setupCode } = findDecoderByArray(ast)
+
+    evalCode(sandbox, setupCode)
+    decodeStrings(sandbox, decoders)
 
     stringArray?.path.remove()
     decoders.forEach(d => d.path.remove())
+    rotators.forEach(r => r.remove())
     expect(stringArray!.name).toBe('arr')
     expect(decoders[0].name).toBe('decoder')
 

@@ -1,21 +1,8 @@
-import type { Binding } from '@babel/traverse'
+import type { Binding, NodePath } from '@babel/traverse'
 import type { Transform } from '../ast-utils'
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import { constObjectProperty } from '../ast-utils'
-
-/**
- * Only literals, arrays and objects are allowed because variable values
- * might be different in the place the object will be inlined.
- */
-const inlineableObject: m.Matcher<t.Expression> = m.matcher(
-  node =>
-    (t.isLiteral(node) && !t.isTemplateLiteral(node))
-    || m.arrayExpression(m.arrayOf(inlineableObject)).match(node)
-    || m
-      .objectExpression(m.arrayOf(constObjectProperty(inlineableObject)))
-      .match(node),
-)
+import { constObjectProperty, findParent, safeLiteral } from '../ast-utils'
 
 /**
  * Merges object assignments into the object expression.
@@ -93,6 +80,7 @@ export default {
             if (
               binding.references === 1
               && inlineableObject.match(object.current)
+              && !isRepeatedCallReference(binding, binding.referencePaths[0])
             ) {
               binding.referencePaths[0].replaceWith(object.current)
               path.remove()
@@ -116,3 +104,39 @@ function hasCircularReference(node: t.Node, binding: Binding) {
     || m.containerOf(m.callExpression()).match(node)
   )
 }
+
+const repeatedCallMatcher = m.or(
+  m.forStatement(),
+  m.forOfStatement(),
+  m.forInStatement(),
+  m.whileStatement(),
+  m.doWhileStatement(),
+  m.function(),
+  m.objectMethod(),
+  m.classBody(),
+)
+
+/**
+ * Returns true when the reference can be evaluated multiple times.
+ * In that case, the object should not be inlined to avoid creating multiple instances.
+ * Structure: Block{ binding, Repeatable{reference} }
+ */
+function isRepeatedCallReference(binding: Binding, reference: NodePath) {
+  const block = binding.scope.getBlockParent().path
+  const repeatable = findParent(reference, repeatedCallMatcher)
+  return repeatable?.isDescendant(block)
+}
+
+/**
+ * Only literals, arrays and objects are allowed because variable values
+ * might be different in the place the object will be inlined.
+ */
+const inlineableObject: m.Matcher<t.Expression> = m.matcher(node =>
+  m
+    .or(
+      safeLiteral,
+      m.arrayExpression(m.arrayOf(inlineableObject)),
+      m.objectExpression(m.arrayOf(constObjectProperty(inlineableObject))),
+    )
+    .match(node),
+)

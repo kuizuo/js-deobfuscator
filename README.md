@@ -40,18 +40,15 @@ cat path/to/input.js | pnpm exec deob > output.js
 
 ```ts
 import { readFileSync } from 'node:fs'
-import { defaultOptions, Deob } from 'deob'
+import { deob } from 'deob'
 
 const code = readFileSync('input.js', 'utf8')
-const deob = new Deob(code, {
-  ...defaultOptions,
+const { code: outputCode, save } = await deob(code, {
   decoderLocationMethod: 'callCount',
   decoderCallCount: 300,
-  inlineWrappersDepth: 3,
+  inlineWrappersDepth: 2,
   mangleMode: 'hex',
 })
-
-const { code: cleanCode, save } = deob.run()
 await save('./out') // 写入 out/output.js
 ```
 

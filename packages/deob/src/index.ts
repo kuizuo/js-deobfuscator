@@ -146,14 +146,12 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
 
       await evalCode(opts.sandbox!, setupCode)
 
-      for (let i = 0; i < opts.inlineWrappersDepth; i++) {
-        for (const decoder of decoders) {
-          applyTransform(
-            ast,
-            inlineDecoderWrappers,
-            decoder.path,
-          )
-        }
+      for (const decoder of decoders) {
+        applyTransform(
+          ast,
+          inlineDecoderWrappers,
+          decoder.path,
+        )
       }
 
       // 执行解密器

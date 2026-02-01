@@ -46,7 +46,6 @@ const code = readFileSync('input.js', 'utf8')
 const { code: outputCode, save } = await deob(code, {
   decoderLocationMethod: 'callCount',
   decoderCallCount: 300,
-  inlineWrappersDepth: 2,
   mangleMode: 'hex',
 })
 await save('./out') // 写入 out/output.js

@@ -1,7 +1,6 @@
 import type { Options } from 'deob'
 
 export const defaultOptions: Required<Options> = {
-  inlineWrappersDepth: 2,
   decoderLocationMethod: 'stringArray',
   decoderCallCount: 150,
   setupCode: '',

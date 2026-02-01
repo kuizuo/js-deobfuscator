@@ -3,15 +3,12 @@ import { createBrowserSandbox, createNodeSandbox } from './deobfuscate/vm'
 import { isBrowser } from './utils/platform'
 
 export interface Options {
-
   /** 解密器定位方式 */
   decoderLocationMethod?: 'callCount' | 'stringArray' | 'evalCode'
   /** 解密器调用次数 */
   decoderCallCount?: number
   /** 执行代码函数 */
   setupCode?: string
-  /** 解密函数包装深度 */
-  inlineWrappersDepth?: number
   /** 指明解密函数 */
   designDecoderName?: string | string[]
 
@@ -30,7 +27,6 @@ export interface Options {
 }
 
 export const defaultOptions: Required<Options> = {
-  inlineWrappersDepth: 2,
   decoderLocationMethod: 'stringArray',
   decoderCallCount: 150,
   setupCode: '',

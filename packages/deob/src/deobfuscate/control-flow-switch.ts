@@ -1,29 +1,29 @@
-import * as t from '@babel/types';
-import * as m from '@codemod/matchers';
-import type { Transform } from '../ast-utils';
-import { constMemberExpression, infiniteLoop } from '../ast-utils';
+import type { Transform } from '../ast-utils'
+import * as t from '@babel/types'
+import * as m from '@codemod/matchers'
+import { constMemberExpression, infiniteLoop } from '../ast-utils'
 
 export default {
   name: 'control-flow-switch',
   tags: ['safe'],
   visitor() {
-    const sequenceName = m.capture(m.identifier());
+    const sequenceName = m.capture(m.identifier())
     const sequenceString = m.capture(
-      m.matcher<string>((s) => /^\d+(\|\d+)*$/.test(s)),
-    );
-    const iterator = m.capture(m.identifier());
+      m.matcher<string>(s => /^\d+(\|\d+)*$/.test(s)),
+    )
+    const iterator = m.capture(m.identifier())
 
     const cases = m.capture(
       m.arrayOf(
         m.switchCase(
-          m.stringLiteral(m.matcher((s) => /^\d+$/.test(s))),
+          m.stringLiteral(m.matcher(s => /^\d+$/.test(s))),
           m.anyList(
             m.zeroOrMore(),
             m.or(m.continueStatement(), m.returnStatement()),
           ),
         ),
       ),
-    );
+    )
 
     const matcher = m.blockStatement(
       m.anyList<t.Statement>(
@@ -55,29 +55,29 @@ export default {
         ),
         m.zeroOrMore(),
       ),
-    );
+    )
 
     return {
       BlockStatement: {
         exit(path) {
-          if (!matcher.match(path.node)) return;
+          if (!matcher.match(path.node)) return
 
           const caseStatements = new Map(
-            cases.current!.map((c) => [
+            cases.current!.map(c => [
               (c.test as t.StringLiteral).value,
               t.isContinueStatement(c.consequent.at(-1))
                 ? c.consequent.slice(0, -1)
                 : c.consequent,
             ]),
-          );
+          )
 
-          const sequence = sequenceString.current!.split('|');
-          const newStatements = sequence.flatMap((s) => caseStatements.get(s)!);
+          const sequence = sequenceString.current!.split('|')
+          const newStatements = sequence.flatMap(s => caseStatements.get(s)!)
 
-          path.node.body.splice(0, 3, ...newStatements);
-          this.changes += newStatements.length + 3;
+          path.node.body.splice(0, 3, ...newStatements)
+          this.changes += newStatements.length + 3
         },
       },
-    };
+    }
   },
-} satisfies Transform;
+} satisfies Transform

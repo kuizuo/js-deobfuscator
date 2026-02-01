@@ -8,7 +8,7 @@ import { findDecoderByArray } from '../find-decoder-by-array'
 import { findDecoderByCallCount } from '../find-decoder-by-call-count'
 
 describe('decoder', async () => {
-  it('find decoder by call count', () => {
+  it('find decoder by call count', async () => {
     const ast = parse(`
       function decoder(a){
         return atob(a)
@@ -21,8 +21,8 @@ describe('decoder', async () => {
     const sandbox = createNodeSandbox()
     const { decoders, setupCode } = findDecoderByCallCount(ast, 2)
 
-    evalCode(sandbox, setupCode)
-    decodeStrings(sandbox, decoders)
+    await evalCode(sandbox, setupCode)
+    await decodeStrings(sandbox, decoders)
 
     decoders.forEach(d => d.path.remove())
 
@@ -32,7 +32,7 @@ describe('decoder', async () => {
       "debugger";"
     `)
   })
-  it('find decoder by array', () => {
+  it('find decoder by array', async () => {
     const ast = parse(`
       var arr = ["hello,world", "debugger"]
       function decoder(i){
@@ -50,8 +50,8 @@ describe('decoder', async () => {
 
     const { stringArray, decoders, rotators, setupCode } = findDecoderByArray(ast)
 
-    evalCode(sandbox, setupCode)
-    decodeStrings(sandbox, decoders)
+    await evalCode(sandbox, setupCode)
+    await decodeStrings(sandbox, decoders)
 
     stringArray?.path.remove()
     decoders.forEach(d => d.path.remove())

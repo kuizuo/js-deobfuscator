@@ -16,14 +16,15 @@ export async function decodeStrings(sandbox: Sandbox, decoders: Decoder[]) {
   const map = new Map<string, string>() // 记录解密结果
   let failures = 0
 
-  for await (const decoder of decoders) {
-    decoder?.path.scope.getBinding(decoder.name)?.referencePaths.forEach(async (ref) => {
+  for (const decoder of decoders) {
+    const refs = decoder?.path.scope.getBinding(decoder.name)?.referencePaths ?? []
+    for (const ref of refs) {
       if (ref?.parentKey === 'callee' && ref.parentPath?.isCallExpression()) {
         const callExpression = ref.parentPath
         try {
           // 如果调用解密函数中有变量参数则不替换
           const hasIdentifier = callExpression.node.arguments.some(a => t.isIdentifier(a))
-          if (hasIdentifier) return
+          if (hasIdentifier) continue
 
           const call = callExpression.toString()
 
@@ -38,7 +39,7 @@ export async function decodeStrings(sandbox: Sandbox, decoders: Decoder[]) {
           callExpression.addComment('leading', `decode_error: ${(error as any).message}`, true)
         }
       }
-    })
+    }
   }
 
   if (failures)

@@ -243,6 +243,7 @@ export function inlineFunctionAliases(binding: Binding): { changes: number } {
 export function inlineVariableAliases(
   binding: Binding,
   targetName = binding.identifier.name,
+  rootTargetName = targetName,
 ): { changes: number } {
   const state = { changes: 0 }
   const refs = [...binding.referencePaths]
@@ -267,8 +268,9 @@ export function inlineVariableAliases(
       // Avoid infinite loop from `alias = alias;` (caused by dead code injection?)
       if (ref.isIdentifier({ name: varBinding.identifier.name })) continue
 
-      // Check all further aliases (`var alias2 = alias;`)
-      state.changes += inlineVariableAliases(varBinding, targetName).changes
+      // Use current var name when recursing so we only unwind one level (e.g. alias2 -> alias).
+      // Pass rootTargetName so refs in same scope can be renamed to the root (e.g. decoder).
+      state.changes += inlineVariableAliases(varBinding, varName.current!, rootTargetName).changes
 
       if (ref.parentPath?.isAssignmentExpression()) {
         // Remove `var alias;` when the assignment happens separately
@@ -279,8 +281,11 @@ export function inlineVariableAliases(
           ref.parentPath.remove()
         }
         else {
-          // Replace `(alias = decoder)(1);` with `decoder(1);`
-          ref.parentPath.replaceWith(t.identifier(targetName))
+          // Replace `(alias = decoder)(1);` with `decoder(1);` or `(alias2 = alias)(4)` with `alias(4)`.
+          // When we're the RHS of an assignment that is a callee, use targetName so the call keeps the alias (e.g. alias(4)).
+          const isCalleeAssignment = ref.parentKey === 'right' && ref.parentPath?.parentPath?.isCallExpression()
+          const nameToUse = isCalleeAssignment ? targetName : (binding.identifier.name === targetName ? rootTargetName : targetName)
+          ref.parentPath.replaceWith(t.identifier(nameToUse))
         }
       }
       else if (ref.parentPath?.isVariableDeclarator()) {
@@ -290,9 +295,15 @@ export function inlineVariableAliases(
       state.changes++
     }
     else {
-      // Rename the reference
-      ref.replaceWith(t.identifier(targetName))
-      state.changes++
+      // Only rename when the reference is in the same scope as the binding.
+      // Direct alias of root (binding.name === targetName): use rootTargetName so alias(2) -> decoder(2).
+      // Deeper alias (e.g. alias2): use targetName so alias2(4) -> alias(4).
+      // Refs in nested scopes are left as-is so alias(4) stays.
+      if (ref.scope === binding.scope) {
+        const nameToUse = binding.identifier.name === targetName ? rootTargetName : targetName
+        ref.replaceWith(t.identifier(nameToUse))
+        state.changes++
+      }
     }
   }
 

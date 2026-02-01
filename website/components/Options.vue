@@ -146,18 +146,7 @@ defineExpose({ open })
             max="5"
             step="1"
           >
-        </label>
-      </div>
-
-      <div class="grid gap-2 text-sm">
-        <label class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
-          <span>移除解密器</span>
-          <input v-model="options.isRemoveDecoder" type="checkbox" class="h-4 w-4 accent-amber-500">
-        </label>
-        <label class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-2 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">
-          <span>强力清除(二次执行)</span>
-          <input v-model="options.isStrongRemove" type="checkbox" class="h-4 w-4 accent-amber-500">
-        </label>
+        </div>
       </div>
 
       <div class="space-y-2 rounded-lg border border-zinc-200/80 bg-white/80 px-3 py-3 shadow-sm dark:border-zinc-800/70 dark:bg-zinc-900/70">

@@ -1,6 +1,6 @@
-import type { Transform } from '../ast-utils'
-import * as t from '@babel/types'
-import * as m from '@codemod/matchers'
+import * as t from '@babel/types';
+import * as m from '@codemod/matchers';
+import type { Transform } from '../ast-utils';
 
 // Unsafe because variables may be used before they are declared, but functions are hoisted
 // Example: `console.log(a); var a = function() {}` logs `undefined`
@@ -9,11 +9,11 @@ export default {
   name: 'var-functions',
   tags: ['unsafe'],
   visitor() {
-    const name = m.capture(m.identifier())
-    const fn = m.capture(m.functionExpression(null))
+    const name = m.capture(m.identifier());
+    const fn = m.capture(m.functionExpression(null));
     const matcher = m.variableDeclaration('var', [
       m.variableDeclarator(name, fn),
-    ])
+    ]);
 
     return {
       VariableDeclaration: {
@@ -27,10 +27,10 @@ export default {
                 fn.current!.generator,
                 fn.current!.async,
               ),
-            )
+            );
           }
         },
       },
-    }
+    };
   },
-} satisfies Transform
+} satisfies Transform;

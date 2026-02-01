@@ -3,7 +3,6 @@ import type { MonacoEditor } from '#build/components'
 import type * as monaco from 'monaco-editor'
 
 import { editorStickyScroll, editorTheme, editorWordWrap } from '#imports'
-import { codePrettier, parser } from 'deob'
 
 interface Example {
   name: string
@@ -86,12 +85,6 @@ function handleFileChange(event: Event) {
   }
   reader.readAsText(file)
 }
-
-async function beautify() {
-  if (!code.value)
-    return
-  applyText(codePrettier(parser.parse(code.value)), 'Beautify')
-}
 </script>
 
 <template>
@@ -118,14 +111,6 @@ async function beautify() {
             </option>
           </select>
         </label>
-        <button
-          class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
-          title="Beautify code"
-          @click="beautify"
-        >
-          <div class="i-ri:brush-3-line" />
-          <span>美化</span>
-        </button>
         <button
           class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
           :class="editorWordWrap ? 'border-amber-300 text-amber-700 dark:text-amber-100' : ''"

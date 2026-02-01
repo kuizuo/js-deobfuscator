@@ -1,3 +1,4 @@
+import type { ParseResult } from '@babel/parser'
 import type * as t from '@babel/types'
 import type { ArrayRotator } from './deobfuscate/array-rotator'
 import type { Decoder } from './deobfuscate/decoder'
@@ -5,27 +6,31 @@ import type { StringArray } from './deobfuscate/string-array'
 import type { Options } from './options'
 import { join, normalize } from 'node:path'
 import { codeFrameColumns } from '@babel/code-frame'
-import * as parser from '@babel/parser'
-import { applyTransform, applyTransforms, codePrettier, codePreview, enableLogger, generate, deobLogger as logger } from './ast-utils'
+import { parse } from '@babel/parser'
+import { applyTransform, applyTransformAsync, applyTransforms, codePrettier, codePreview, enableLogger, generate, deobLogger as logger } from './ast-utils'
+import deobfuscate from './deobfuscate'
 import controlFlowObject from './deobfuscate/control-flow-object'
 import controlFlowSwitch from './deobfuscate/control-flow-switch'
 import deadCode from './deobfuscate/dead-code'
 import debugProtection from './deobfuscate/debug-protection'
+import evaluateGlobals from './deobfuscate/evaluate-globals'
 import inlineDecoderWrappers from './deobfuscate/inline-decoder-wrappers'
 import inlineObjectProps from './deobfuscate/inline-object-props'
 import mergeObjectAssignments from './deobfuscate/merge-object-assignments'
+import myDeobfuscate from './deobfuscate/my-deobfuscate'
+
 import selfDefending from './deobfuscate/self-defending'
 import varFunctions from './deobfuscate/var-functions'
-import { defaultOptions, mergeOptions } from './options'
 
+import { defaultOptions, mergeOptions } from './options'
 import { decodeStrings } from './transforms/decode-strings'
 import { designDecoder } from './transforms/design-decoder'
-
 import { findDecoderByArray } from './transforms/find-decoder-by-array'
 import { findDecoderByCallCount } from './transforms/find-decoder-by-call-count'
 import mangle from './transforms/mangle'
 import { markKeyword } from './transforms/mark-keyword'
-import { unminify } from './unminify'
+import transpile from './transpile'
+import unminify from './unminify'
 import { blockStatements, mergeStrings, rawLiterals, sequence, splitVariableDeclarations } from './unminify/transforms'
 
 export {
@@ -33,13 +38,12 @@ export {
   defaultOptions,
   generate,
   type Options,
-  parser,
 }
 
 interface DeobResult {
   code: string
   save: (path: string) => Promise<void>
-  historys: parser.ParseResult<t.File>[]
+  historys: ParseResult<t.File>[]
 }
 
 function handleError(error: any, rawCode: string) {
@@ -91,7 +95,7 @@ export function evalCode(code: string) {
 }
 
 export class Deob {
-  public ast: parser.ParseResult<t.File>
+  public ast: ParseResult<t.File> = null!
   private options: Required<Options>
 
   constructor(private rawCode: string, options: Options = {}) {
@@ -102,14 +106,6 @@ export class Deob {
 
     if (!rawCode)
       throw new Error('请载入js代码')
-
-    try {
-      this.ast = parser.parse(rawCode, { sourceType: 'unambiguous', allowReturnOutsideFunction: true })
-    }
-    catch (error) {
-      handleError(error, rawCode)
-      throw error
-    }
   }
 
   get code() {
@@ -117,47 +113,34 @@ export class Deob {
     return code
   }
 
-  /**
-   * 当执行替换(replace,rename等)操作时,需要执行一次更新以获取最新状态 ast
-   */
-  reParse() {
-    const jscode = generate(this.ast, {
-      minified: false,
-      jsescOption: { minimal: true },
-      compact: false,
-      comments: true,
-    })
-
-    try {
-      this.ast = parser.parse(jscode, { sourceType: 'unambiguous', allowReturnOutsideFunction: true })
-    }
-    catch (error) {
-      handleError(error, jscode)
-      throw new Error(`代码替换有误,解析失败! 请到控制台中查看 ${error}`)
-    }
-  }
-
-  prepare() {
-    return applyTransforms(this.ast, [blockStatements, sequence, splitVariableDeclarations, varFunctions, rawLiterals])
-  }
-
-  unminify() {
-    return applyTransform(this.ast, unminify)
-  }
-
-  run(): DeobResult {
+  async run(): Promise<DeobResult> {
     let outputCode = ''
 
-    const historys: parser.ParseResult<t.File>[] = []
+    this.ast = parse(this.rawCode, {
+      sourceType: 'unambiguous',
+      allowReturnOutsideFunction: true,
+      errorRecovery: true,
+      plugins: ['jsx'],
+    })
 
     const options = this.options
 
+    const historys: ParseResult<t.File>[] = []
+
     const stages = [
-      /** 格式预处理 */
-      () => this.prepare(),
-      /** 对象引用替换 */
+      // 格式预处理
+      () => {
+        applyTransforms(
+          this.ast,
+          [blockStatements, sequence, splitVariableDeclarations, varFunctions, rawLiterals],
+          { name: 'prepare' },
+        )
+      },
+      // webcrack 反混淆
+      () => applyTransformAsync(this.ast, deobfuscate, options.sandbox),
+      // 对象引用替换
       () => applyTransform(this.ast, inlineObjectProps),
-      /** 定位解密器 */
+      // 定位解密器
       () => {
         let stringArray: StringArray | undefined
         let decoders: Decoder[] = []
@@ -183,8 +166,6 @@ export class Deob {
         }
 
         logger(`${stringArray ? `字符串数组: ${stringArray?.name} (共 ${stringArray?.length} 项) 被引用 ${stringArray?.references.length} 处` : '没找到字符串数组'} | ${decoders.length ? `解密器函数: ${decoders.map(d => d.name)}` : '没找到解密器函数'}`)
-        if (rotators.length)
-          logger(`字符串数组旋转器: ${rotators.length} 个`)
 
         evalCode(setupCode)
 
@@ -202,91 +183,59 @@ export class Deob {
 
         logger(buildDecryptionSummaryLog(map))
 
-        if (options.isRemoveDecoder && !options.isStrongRemove) {
-          const removedSnippets: string[] = []
-          const MAX_SNIPPETS = 3
-          const addSnippet = (node: t.Node) => {
-            if (removedSnippets.length < MAX_SNIPPETS)
-              removedSnippets.push(codePreview(node))
-          }
+        const removedSnippets: string[] = []
+        const addSnippet = (node: t.Node) => {
+          if (removedSnippets.length < 3)
+            removedSnippets.push(codePreview(node))
+        }
 
+        if (decoders.length > 0) {
           if (stringArray?.path) {
-            addSnippet(stringArray.path.node)
             stringArray.path.remove()
           }
-          rotators.forEach((r) => {
-            addSnippet(r.node)
-            r.remove()
-          })
-          decoders.forEach((d) => {
-            addSnippet(d.path.node)
-            d.path?.remove()
-          })
-          logger(`已移除解密相关节点${removedSnippets.length ? `，片段:\n${removedSnippets.join('\n')}` : ''}`)
+          rotators.forEach(rotator => rotator.remove())
+          decoders.forEach(decoder => decoder.path.remove())
         }
-        return { changes: (map as any)?.size ?? decoders.length + rotators.length }
+
+        logger(`已移除解密相关节点${removedSnippets.length ? `，片段:\n${removedSnippets.join('\n')}` : ''}`)
+
+        return { changes: (map as any)?.size ?? decoders.length }
       },
-      /** 对象引用替换 */
+      // 对象引用替换
       () => applyTransform(this.ast, inlineObjectProps),
-      /** 控制流平坦化 */
-      () => {
-        logger(`控制流平坦化执行次数: ${options.execCount}`)
-        let changes = 0
-        for (let i = 0; i < options.execCount; i++) {
-          const state = applyTransforms(
-            this.ast,
-            [
-              mergeStrings,
-              deadCode,
-              controlFlowObject,
-              controlFlowSwitch,
-            ],
-          )
-          changes += state.changes
-        }
-        return { changes }
-      },
-      /** 合并对象 */
+      // 控制流平坦化
+      () => applyTransforms(
+        this.ast,
+        [mergeStrings, deadCode, controlFlowObject, controlFlowSwitch],
+        { noScope: true },
+      ),
+      // 合并对象
       () => applyTransform(this.ast, mergeObjectAssignments),
-      /** 去 minify */
-      () => this.unminify(),
-      /** 对象命名优化 */
-      () => {
-        const matcher = getMangleMatcher(options)
-        if (matcher) {
-          return applyTransform(this.ast, mangle, matcher)
-        }
-      },
-      /** 移除自卫代码 */
+      // unminify
+      () => applyTransforms(this.ast, [transpile, unminify]),
+      // 变量命名优化
+      () => applyTransform(this.ast, mangle, getMangleMatcher(options)),
+      // 移除自卫代码
       () => applyTransforms(
         this.ast,
         [
           [selfDefending, debugProtection],
         ].flat(),
       ),
-      /** 标记关键字 */
+      // 合并对象
+      () => applyTransforms(this.ast, [mergeObjectAssignments, evaluateGlobals]),
+
       options.isMarkEnable && (() => {
         logger(`关键字列表: [${options.keywords.join(', ')}]`)
         markKeyword(this.ast, options.keywords)
         return { changes: options.keywords.length }
       }),
-      /** 输出代码 */
-      () => {
-        outputCode = generate(this.ast)
-        logger(`输出代码长度: ${outputCode.length} 字符`)
-        return { changes: outputCode.length }
-      },
+
+      () => outputCode = generate(this.ast),
     ].filter(Boolean) as (() => unknown)[]
 
     for (let i = 0; i < stages.length; i++) {
-      stages[i]()
-    }
-
-    if (options.isStrongRemove) {
-      options.isStrongRemove = false
-      options.isRemoveDecoder = true
-      this.reParse()
-      return this.run()
+      await stages[i]()
     }
 
     return {

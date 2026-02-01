@@ -6,6 +6,7 @@ import { callExpression } from '@codemod/matchers'
 import {
   constMemberExpression,
   findParent,
+  iife,
   infiniteLoop,
 } from '../ast-utils'
 
@@ -39,30 +40,27 @@ export function findArrayRotator(
     ],
   )
 
-  const callMatcher = m.callExpression(
-    m.functionExpression(
-      null,
-      m.anything(),
-      m.blockStatement(
-        m.anyList(
-          m.zeroOrMore(),
-          infiniteLoop(
-            m.matcher((node) => {
-              return (
-                m
-                  .containerOf(callExpression(m.identifier('parseInt')))
+  const callMatcher = iife(
+    m.anything(),
+    m.blockStatement(
+      m.anyList(
+        m.zeroOrMore(),
+        infiniteLoop(
+          m.matcher((node) => {
+            return (
+              m
+                .containerOf(callExpression(m.identifier('parseInt')))
+                .match(node)
+                && m
+                  .blockStatement([
+                    m.tryStatement(
+                      m.containerOf(pushShift),
+                      m.containerOf(pushShift),
+                    ),
+                  ])
                   .match(node)
-                  && m
-                    .blockStatement([
-                      m.tryStatement(
-                        m.containerOf(pushShift),
-                        m.containerOf(pushShift),
-                      ),
-                    ])
-                    .match(node)
-              )
-            }),
-          ),
+            )
+          }),
         ),
       ),
     ),

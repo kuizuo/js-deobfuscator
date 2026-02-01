@@ -1,9 +1,5 @@
-import type {
-  AsyncTransform,
-} from '../ast-utils'
-import type {
-  Sandbox,
-} from './vm'
+import type { AsyncTransform } from '../ast-utils'
+import type { Sandbox } from './vm'
 import debug from 'debug'
 import {
   applyTransform,
@@ -20,11 +16,7 @@ import inlineDecodedStrings from './inline-decoded-strings'
 import inlineDecoderWrappers from './inline-decoder-wrappers'
 import inlineObjectProps from './inline-object-props'
 import { findStringArray } from './string-array'
-import {
-  createBrowserSandbox,
-  createNodeSandbox,
-  VMDecoder,
-} from './vm'
+import { createBrowserSandbox, createNodeSandbox, VMDecoder } from './vm'
 
 export { createBrowserSandbox, createNodeSandbox, type Sandbox }
 
@@ -36,12 +28,11 @@ export default {
   scope: true,
   async run(ast, state, sandbox) {
     if (!sandbox) return
-
     const logger = debug('webcrack:deobfuscate')
     const stringArray = findStringArray(ast)
     logger(
       stringArray
-        ? `String Array: ${stringArray.length} strings`
+        ? `String Array: ${stringArray.originalName}, length ${stringArray.length}`
         : 'String Array: no',
     )
     if (!stringArray) return
@@ -50,7 +41,11 @@ export default {
     logger(`String Array Rotate: ${rotator ? 'yes' : 'no'}`)
 
     const decoders = findDecoders(stringArray)
-    logger(`String Array Encodings: ${decoders.length}`)
+    logger(
+      `String Array Decoders: ${decoders
+        .map(d => d.originalName)
+        .join(', ')}`,
+    )
 
     state.changes += applyTransform(ast, inlineObjectProps).changes
 

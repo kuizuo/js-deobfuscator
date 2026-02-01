@@ -26,7 +26,7 @@ export default {
               path.replaceWith(parsed)
               this.changes++
             }
-            catch (error) {
+            catch {
               // ignore
             }
           }

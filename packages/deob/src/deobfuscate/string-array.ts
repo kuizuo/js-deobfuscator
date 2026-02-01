@@ -6,12 +6,14 @@ import {
   inlineArrayElements,
   isReadonlyObject,
   renameFast,
+  undefinedMatcher,
 } from '../ast-utils'
 
 export interface StringArray {
   path: NodePath<t.FunctionDeclaration>
   references: NodePath[]
   name: string
+  originalName: string
   length: number
 }
 
@@ -20,9 +22,9 @@ export function findStringArray(ast: t.Node): StringArray | undefined {
   const functionName = m.capture(m.anyString())
   const arrayIdentifier = m.capture(m.identifier())
   const arrayExpression = m.capture(
-    m.arrayExpression(m.arrayOf(m.stringLiteral())),
+    m.arrayExpression(m.arrayOf(m.or(m.stringLiteral(), undefinedMatcher))),
   )
-  // getStringArray = function () { return n; };
+  // getStringArray = function () { return array; };
   const functionAssignment = m.assignmentExpression(
     '=',
     m.identifier(m.fromCapture(functionName)),
@@ -47,7 +49,7 @@ export function findStringArray(ast: t.Node): StringArray | undefined {
         m.returnStatement(m.callExpression(functionAssignment)),
       ]),
       // var array = ["hello", "world"];
-      // getStringArray = function () { return n; });
+      // getStringArray = function () { return array; });
       // return getStringArray();
       m.blockStatement([
         variableDeclaration,
@@ -69,6 +71,7 @@ export function findStringArray(ast: t.Node): StringArray | undefined {
         result = {
           path,
           references: binding.referencePaths,
+          originalName: name,
           name: '__STRING_ARRAY__',
           length,
         }
@@ -86,7 +89,8 @@ export function findStringArray(ast: t.Node): StringArray | undefined {
         m.fromCapture(arrayIdentifier),
         m.numericLiteral(m.matcher(value => value < length)),
       )
-      if (!isReadonlyObject(binding, memberAccess)) return
+      if (!binding.referenced || !isReadonlyObject(binding, memberAccess))
+        return
 
       inlineArrayElements(arrayExpression.current!, binding.referencePaths)
       path.remove()

@@ -1,22 +1,26 @@
-# JS Deobfuscator
+<div align="center">
+  <img src="https://img.kuizuo.me/js-deobfuscator.png" alt="JS Deobfuscator Logo" width="800" />
 
-> 让混淆不再成为逆向分析中的绊脚石。基于 Babel AST 的自动化 JS 反混淆工具，提供在线 Playground、命令行与可编程 API。
+  <h1>JS Deobfuscator</h1>
 
-## 在线体验
-
-![js-deobfuscator](https://img.kuizuo.me/js-deobfuscator.png)
-
-- Playground: <https://js-deobfuscator.vercel.app/>
-- 代码在浏览器内执行，可调整参数实时查看反混淆效果。
+  <p>
+    🚀 基于 <b>Babel AST</b> 的全自动 JavaScript 反混淆工具，助你高效还原各种混淆代码。
+  </p>
+  <a href="https://js-deobfuscator.vercel.app/" style="display:inline-block;margin-top:8px;">
+    <b>💻 立即体验 Playground →</b>
+  </a>
+</div>
 
 ## 功能亮点
 
-- **解密入口定位**：按字符串数组长度、解密器调用次数或手动注入代码/解密器名称进行定位。
-- **字符串解密**：识别字符串数组与旋转器，展开解密器封装并用明文替换调用点。
-- **控制流还原**：展开控制流平坦化、移除死代码/花指令、合并对象属性与赋值。
-- **代码整形**：unminify、美化、变量重命名（hex/short/custom），可选关键字标记。
-- **自卫清理**：移除 self-defending / anti-debug 逻辑，支持多轮执行处理重度混淆。
-- **多形态使用**：CLI、浏览器 Playground、TypeScript API，并附带真实案例集合。
+| 功能 | 说明 |
+| --- | --- |
+| **解密入口定位** | 按字符串数组长度、解密器调用次数或手动注入代码/解密器名称进行定位 |
+| **字符串解密** | 识别字符串数组与旋转器，展开解密器封装并用明文替换调用点 |
+| **控制流还原** | 展开控制流平坦化、移除死代码/花指令、合并对象属性与赋值 |
+| **代码整形** | Unminify、美化、变量重命名（hex/short/custom），可选关键字标记 |
+| **自卫清理** | 移除 self-defending / anti-debug 逻辑，支持多轮执行处理重度混淆 |
+| **多形态使用** | CLI、浏览器 Playground、TypeScript API，并附带真实案例集合 |
 
 ## 快速开始
 
@@ -56,9 +60,8 @@ await save('./out') // 写入 out/output.js
 `example/` 下收录了多组真实混淆样本，每个子目录包含：
 
 - `index.ts`: 配置/驱动脚本执行。
-- `input.js` / `output.js` / `pretty.js`: 输入、还原结果与美化对比。
+- `input.js` / `output.js` : 输入、还原结果与美化对比。
 - `setupCode.js`: 运行前注入的自定义代码。
-- `errorCode.js`: 替换失败时的错误片段输出。
 
 ## 项目结构
 

@@ -7,6 +7,7 @@ export type Objects = Record<`${string}_${string}`, t.ObjectExpression>
 
 /**
  * 保存代码中所有对象用于后续替换
+ * @deprecated 该函数已弃用，请使用其他方式处理对象合并与替换
  * @example
  * var r = {
  *   "PzXHf": "0|2|4|3|1",
@@ -39,7 +40,7 @@ export function saveObjects(ast: t.Node) {
 
   traverse(ast, {
     VariableDeclaration: {
-      exit(path, state) {
+      exit(path, _state) {
         path.node.declarations.forEach((declaration) => {
           if (declaration.id.type === 'Identifier') {
             const objectName = declaration.id.name
@@ -133,8 +134,8 @@ export function saveObjects(ast: t.Node) {
             isReplace = true
           }
         }
-        catch (error) {
-          throw new Error('生成表达式失败')
+        catch (_error: any) {
+          throw new Error(`生成表达式失败${_error.message}`)
         }
 
         if (isReplace) {

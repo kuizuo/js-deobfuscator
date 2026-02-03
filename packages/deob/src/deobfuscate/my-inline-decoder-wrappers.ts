@@ -55,9 +55,6 @@ export default {
             // 调用传入参数 -57, 1080, 828, 469
             const callFn_args = ref.parentPath.node.arguments
 
-            // 实际用到的参数 _0x13ee81 - -674, _0x3dfa50
-            const realFn_args = realFn.node.arguments
-
             // 要替换的模版
             let templateCode = generate(realFn.node)
 

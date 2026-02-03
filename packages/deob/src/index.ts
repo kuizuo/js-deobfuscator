@@ -54,7 +54,7 @@ export function parseCode(code: string): ParseResult<t.File> {
 }
 
 // TODO: 错误输出处理 定位代码位置
-function handleError(error: any, rawCode: string) {
+function _handleError(error: any, rawCode: string) {
   if (error instanceof SyntaxError) {
     const codeFrame = codeFrameColumns(rawCode, {
       start: {

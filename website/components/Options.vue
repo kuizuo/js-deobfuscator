@@ -15,9 +15,6 @@ const isEvalCode = computed(
 const isCallCount = computed(
   () => options.value.decoderLocationMethod === 'callCount',
 )
-const isStringArray = computed(
-  () => options.value.decoderLocationMethod === 'stringArray',
-)
 
 const mangleModes = [
   { value: 'off', label: '关闭' },

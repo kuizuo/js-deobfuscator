@@ -6,7 +6,8 @@ import { evalCode } from '../deobfuscate/vm'
 
 /**
  * 执行解密器 (使用 eval 执行)
- * @param {*} decoder
+ * @param sandbox 执行解密代码的沙箱环境
+ * @param decoders 解密器列表
  * @example
  * _0x4698(_0x13ee81, _0x3dfa50)
  * ⬇️

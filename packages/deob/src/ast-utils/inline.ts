@@ -13,6 +13,8 @@ import { findParent } from './matcher'
  * Example with `unsafeAssignments` being `true`:
  * `let a; a = 2; console.log(a);` -> `console.log(2);`
  *
+ * @param binding Binding to inline
+ * @param value Matcher for the initializer expression
  * @param unsafeAssignments Also inline assignments to the variable (not guaranteed to be the final value)
  */
 export function inlineVariable(

@@ -3,9 +3,9 @@ import type { ConsoleLogEntry } from '~/types/logger'
 import { Pane } from 'splitpanes'
 
 const props = withDefaults(defineProps<{
-  logs: ConsoleLogEntry[]
-  size: number
-  collapsed: boolean
+  logs?: ConsoleLogEntry[]
+  size?: number
+  collapsed?: boolean
   canExpand?: boolean
 }>(), {
   logs: () => [],

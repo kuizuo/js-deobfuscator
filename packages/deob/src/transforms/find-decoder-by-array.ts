@@ -264,7 +264,6 @@ export function findDecoderByArray(ast: t.Node) {
     shouldPrintComment: () => false,
   }
   const stringArrayCode = stringArray ? generate(stringArray.path.node, generateOptions) : ''
-  console.log('🚀 ~ findDecoderByArray ~ stringArrayCode:', stringArrayCode)
   const rotatorCode = rotators
     .map(rotator => generate(rotator.node, generateOptions))
     .join(';\n')

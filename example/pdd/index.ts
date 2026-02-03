@@ -16,7 +16,7 @@ const __dirname = dirname(__filename)
   const options: Options = {
     decoderLocationMethod: 'evalCode',
     setupCode,
-    designDecoderName: 'qt',
+    decoderNames: 'qt',
   }
 
   await fs.writeFile(`${__dirname}/pretty.js`, codePrettier(parseCode(rawCode)))

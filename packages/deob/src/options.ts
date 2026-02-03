@@ -10,7 +10,7 @@ export interface Options {
   /** 执行代码函数 */
   setupCode?: string
   /** 指明解密函数 */
-  designDecoderName?: string | string[]
+  decoderNames?: string | string[]
 
   /** 是否标记关键信息 */
   isMarkEnable?: boolean
@@ -30,7 +30,7 @@ export const defaultOptions: Required<Options> = {
   decoderLocationMethod: 'stringArray',
   decoderCallCount: 150,
   setupCode: '',
-  designDecoderName: '',
+  decoderNames: '',
 
   isMarkEnable: true,
   keywords: ['debugger'],

@@ -7,8 +7,7 @@ import type { Options } from './options'
 import { join, normalize } from 'node:path'
 import { codeFrameColumns } from '@babel/code-frame'
 import { parse } from '@babel/parser'
-import { applyTransform, applyTransformAsync, applyTransforms, codePrettier, enableLogger, generate, deobLogger as logger } from './ast-utils'
-import deobfuscate from './deobfuscate'
+import { applyTransform, applyTransforms, codePrettier, enableLogger, generate, deobLogger as logger } from './ast-utils'
 import controlFlowObject from './deobfuscate/control-flow-object'
 import controlFlowSwitch from './deobfuscate/control-flow-switch'
 import deadCode from './deobfuscate/dead-code'
@@ -23,8 +22,8 @@ import varFunctions from './deobfuscate/var-functions'
 
 import { evalCode } from './deobfuscate/vm'
 import { defaultOptions, mergeOptions } from './options'
+import { collectDecoders } from './transforms/collect-decoders'
 import { decodeStrings } from './transforms/decode-strings'
-import { designDecoder } from './transforms/design-decoder'
 import { findDecoderByArray } from './transforms/find-decoder-by-array'
 import { findDecoderByCallCount } from './transforms/find-decoder-by-call-count'
 import mangle from './transforms/mangle'
@@ -113,8 +112,6 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
         { name: 'prepare' },
       )
     },
-    // webcrack 反混淆
-    () => applyTransformAsync(ast, deobfuscate, opts.sandbox),
     // 定位解密器
     async () => {
       let stringArray: StringArray | undefined
@@ -127,17 +124,17 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
 
         stringArray = s as any
         rotators = r
-        decoders = designDecoder(ast, ds.map(d => d.name))
+        decoders = collectDecoders(ast, ds.map(d => d.name))
         setupCode = scode
       }
       else if (opts.decoderLocationMethod === 'callCount') {
         const { decoders: ds, setupCode: scode } = findDecoderByCallCount(ast, opts.decoderCallCount)
-        decoders = designDecoder(ast, ds.map(d => d.name))
+        decoders = collectDecoders(ast, ds.map(d => d.name))
         setupCode = scode
       }
       else if (opts.decoderLocationMethod === 'evalCode') {
         await evalCode(opts.sandbox!, opts.setupCode!)
-        decoders = designDecoder(ast, opts.designDecoderName!)
+        decoders = collectDecoders(ast, opts.decoderNames!)
       }
 
       logger(`${stringArray ? `字符串数组: ${stringArray?.name} (共 ${stringArray?.length} 项) 被引用 ${stringArray?.references.length} 处` : '没找到字符串数组'} | ${decoders.length ? `解密器函数: ${decoders.map(d => d.name)}` : '没找到解密器函数'}`)
@@ -151,6 +148,9 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
           decoder.path,
         )
       }
+
+      // 对象引用替换
+      applyTransform(ast, inlineObjectProps)
 
       // 执行解密器
       const map = await decodeStrings(opts.sandbox!, decoders as Decoder[])
@@ -169,16 +169,12 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
 
       return { changes: (map as any)?.size ?? decoders.length }
     },
-    // 对象引用替换
-    () => applyTransform(ast, inlineObjectProps),
     // 控制流平坦化
     () => applyTransforms(
       ast,
       [mergeStrings, deadCode, controlFlowObject, controlFlowSwitch],
       { noScope: true },
     ),
-    // 合并对象
-    () => applyTransform(ast, mergeObjectAssignments),
     // unminify
     () => applyTransforms(ast, [transpile, unminify]),
     // 变量命名优化

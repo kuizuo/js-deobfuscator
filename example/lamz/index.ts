@@ -16,7 +16,7 @@ const __dirname = dirname(__filename)
   const { code, save } = await deob(rawCode, {
     decoderLocationMethod: 'evalCode',
     setupCode,
-    designDecoderName: '_0x1663',
+    decoderNames: '_0x1663',
   })
   save(__dirname)
 })()

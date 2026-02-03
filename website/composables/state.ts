@@ -4,7 +4,7 @@ export const defaultOptions: Required<Options> = {
   decoderLocationMethod: 'stringArray',
   decoderCallCount: 150,
   setupCode: '',
-  designDecoderName: '',
+  decoderNames: '',
 
   isMarkEnable: true,
   keywords: ['debugger'],

@@ -116,7 +116,7 @@ defineExpose({ open })
           <label class="flex items-center justify-between gap-3">
             <span>指定解密器(函数名)</span>
             <input
-              v-model="options.designDecoderName"
+              v-model="options.decoderNames"
               class="w-48 rounded border border-amber-200 bg-white px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400 dark:border-amber-500/40 dark:bg-zinc-900"
               type="text"
               placeholder="例如: _0xabc123"

@@ -2,3 +2,42 @@ packages:
   - packages/*
   - example
   - website
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  isolated-vm: true
+overrides:
+  '@babel/code-frame@7.28.6>@babel/helper-validator-identifier': 7.28.5
+  '@babel/generator@7.28.6>@babel/parser': 7.28.6
+  '@babel/generator@7.28.6>@babel/types': 7.28.6
+  '@babel/parser@7.28.6>@babel/types': 7.28.6
+  '@babel/template@7.28.6>@babel/code-frame': 7.28.6
+  '@babel/template@7.28.6>@babel/parser': 7.28.6
+  '@babel/template@7.28.6>@babel/types': 7.28.6
+  '@babel/traverse@7.28.6>@babel/code-frame': 7.28.6
+  '@babel/traverse@7.28.6>@babel/generator': 7.28.6
+  '@babel/traverse@7.28.6>@babel/helper-globals': 7.28.0
+  '@babel/traverse@7.28.6>@babel/parser': 7.28.6
+  '@babel/traverse@7.28.6>@babel/template': 7.28.6
+  '@babel/traverse@7.28.6>@babel/types': 7.28.6
+  '@babel/types@7.28.6>@babel/helper-string-parser': 7.27.1
+  '@babel/types@7.28.6>@babel/helper-validator-identifier': 7.28.5
+  '@codemod/matchers@1.7.1>@babel/types': 7.28.6
+  '@codemod/parser@1.4.1>@babel/parser': 7.28.6
+  '@codemod/utils@1.1.0>@babel/core': 7.29.7
+  '@codemod/utils@1.1.0>@babel/types': 7.28.6
+  '@types/babel__generator@7.27.0>@babel/types': 7.28.6
+  '@types/babel__template@7.4.4>@babel/parser': 7.28.6
+  '@types/babel__template@7.4.4>@babel/types': 7.28.6
+  '@types/babel__traverse@7.28.0>@babel/types': 7.28.6
+  'ajv@8.17.1': 8.20.0
+  'brace-expansion@2.0.2': 2.1.4
+  dompurify: 3.4.13
+  'fast-uri@3.1.0': 3.1.5
+  'lodash@4.17.23': 4.18.1
+  'minimatch@5.1.6': 5.1.9
+  'minimatch@9.0.5': 9.0.9
+  oxc-parser: 0.144.0
+  'serialize-javascript@6.0.2': 7.1.0
+  'tar@7.5.7': 7.5.22
+  'webpack@5.89.0': 5.109.2

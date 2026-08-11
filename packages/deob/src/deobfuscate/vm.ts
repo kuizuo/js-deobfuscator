@@ -8,20 +8,26 @@ import { deobLogger, generate } from '../ast-utils'
 export type Sandbox = (code: string) => Promise<unknown>
 
 export function createNodeSandbox(): Sandbox {
+  let runtime: Promise<{
+    context: import('isolated-vm').Context
+    isolate: import('isolated-vm').Isolate
+  }> | undefined
+
   return async (code: string) => {
-    const {
-      default: { Isolate },
-    } = await import('isolated-vm')
-    const isolate = new Isolate()
-    const context = await isolate.createContext()
-    const result = (await context.eval(code, {
+    runtime ??= import('isolated-vm').then(async ({ default: { Callback, Isolate } }) => {
+      const isolate = new Isolate()
+      const context = await isolate.createContext()
+      await context.global.set('atob', new Callback(atob))
+      await context.global.set('btoa', new Callback(btoa))
+      return { context, isolate }
+    })
+
+    const { context } = await runtime
+    return await context.eval(code, {
       timeout: 10_000,
       copy: true,
       filename: 'file:///obfuscated.js',
-    })) as unknown
-    context.release()
-    isolate.dispose()
-    return result
+    }) as unknown
   }
 }
 
@@ -77,7 +83,7 @@ export class VMDecoder {
     }
 
     try {
-      const result = await global.eval(code)
+      const result = await globalThis.eval(code)
       return result as unknown[]
     }
     catch (error) {
@@ -93,7 +99,7 @@ export async function evalCode(sandbox: Sandbox, code: string) {
   }
   catch (sandboxError) {
     try {
-      return global.eval(code) as unknown
+      return globalThis.eval(code) as unknown
     }
     catch (evalError) {
       deobLogger('evalCode error:', evalError)

@@ -5,10 +5,15 @@ import 'splitpanes/dist/splitpanes.css'
 
 const paneSize = ref(54)
 
-useHead(() => ({
-  title: t('meta.title'),
-  htmlAttrs: { lang: locale.value },
-}))
+useHead({
+  title: () => t('meta.title'),
+})
+
+if (import.meta.client) {
+  const syncDocumentLocale = () => document.documentElement.lang = locale.value
+  onNuxtReady(syncDocumentLocale)
+  watch(locale, () => queueMicrotask(syncDocumentLocale))
+}
 
 useSeoMeta({
   description: () => t('meta.description'),

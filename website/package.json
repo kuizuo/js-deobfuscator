@@ -12,23 +12,26 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "debug": "^4.4.3",
     "deob": "workspace:*",
-    "monaco-editor": "^0.44.0",
-    "splitpanes": "^4.0.4"
+    "monaco-editor": "^0.56.0",
+    "splitpanes": "^4.1.2"
   },
   "devDependencies": {
-    "@iconify-json/ri": "^1.2.7",
-    "@iconify-json/vscode-icons": "^1.2.40",
-    "@nuxt/devtools": "^3.1.1",
-    "@nuxtjs/seo": "3.4.0",
-    "@types/splitpanes": "^2.2.6",
-    "@unocss/nuxt": "^66.6.0",
-    "@unocss/transformer-variant-group": "^66.6.0",
-    "@vueuse/nuxt": "^14.1.0",
-    "nuxt": "^3.21.0",
-    "nuxt-monaco-editor": "^1.2.3",
-    "vite-plugin-node-polyfills": "^0.25.0",
-    "vue": "^3.5.27",
-    "vue-router": "^4.6.4"
+    "@iconify-json/ri": "^1.2.10",
+    "@iconify-json/vscode-icons": "^1.2.70",
+    "@nuxt/devtools": "^3.4.1",
+    "@nuxtjs/seo": "5.3.12",
+    "@types/debug": "^4.1.13",
+    "@unocss/nuxt": "^66.7.5",
+    "@unocss/transformer-variant-group": "^66.7.5",
+    "@vueuse/nuxt": "^14.4.0",
+    "nuxt": "^4.5.2",
+    "nuxt-monaco-editor": "^1.4.1",
+    "unocss": "^66.7.5",
+    "vite-plugin-node-polyfills": "^0.28.0",
+    "vue": "^3.5.41",
+    "vue-router": "^5.2.0",
+    "vue-tsc": "^3.3.9"
   }
 }

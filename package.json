@@ -2,7 +2,7 @@
   "name": "js-de-obfuscator",
   "type": "module",
   "version": "0.4.0",
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@11.21.0",
   "license": "MIT",
   "scripts": {
     "web:dev": "pnpm run -F website dev",
@@ -21,14 +21,14 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@antfu/eslint-config": "^7.2.0",
-    "bumpp": "^10.4.0",
+    "@antfu/eslint-config": "^9.3.0",
+    "bumpp": "^12.2.0",
     "deob": "workspace:*",
-    "eslint": "^9.39.2",
+    "eslint": "^10.8.1",
     "esm": "^3.2.25",
-    "prettier": "^3.8.1",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "vitest": "^3.1.1"
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.12",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   }
 }

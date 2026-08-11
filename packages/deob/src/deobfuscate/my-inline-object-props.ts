@@ -1,9 +1,8 @@
 import type { Transform } from '../ast-utils'
 import type { Objects } from './save-objects'
-import generate from '@babel/generator'
-
-import traverse from '@babel/traverse'
 // @ts-nocheck
+import generate from '@babel/generator'
+import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { getPropName } from '../ast-utils'
 

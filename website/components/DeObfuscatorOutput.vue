@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type * as monaco from 'monaco-editor'
+import type { SplitpanesResizedPayload } from 'splitpanes'
 import type { ConsoleLogEntry } from '~/types/logger'
 import { code, editorStickyScroll, editorWordWrap, error, loading, options, parseTime, t } from '#imports'
 import { Pane, Splitpanes } from 'splitpanes'
@@ -53,8 +54,8 @@ function clearLogs() {
   logs.value = []
 }
 
-function handleConsoleResize(panes: Array<{ size: number }>) {
-  const consolePane = panes?.[1]
+function handleConsoleResize({ panes }: SplitpanesResizedPayload) {
+  const consolePane = panes[1]
   if (!consolePane)
     return
 

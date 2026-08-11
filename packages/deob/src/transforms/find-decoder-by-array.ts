@@ -140,7 +140,7 @@ function processReferences(
         // }
         const funcDeclaration = parent?.parentPath.findParent(p => p.isFunctionDeclaration())
         if (funcDeclaration?.isFunctionDeclaration()) {
-          logger(`发现解密器 (变量派生): ${funcDeclaration.node.id!.name}`)
+          logger(`Decoder found through a derived variable: ${funcDeclaration.node.id!.name}`)
           decoders.push(new Decoder(funcDeclaration.node.id!.name, funcDeclaration.node.id!.name, funcDeclaration))
         }
       }
@@ -181,7 +181,7 @@ export function findDecoderByArray(ast: t.Node) {
 
         if (!binding) return
 
-        logger(`发现包装的字符串数组函数: ${name}`)
+        logger(`Wrapped string array function found: ${name}`)
 
         stringArray = {
           path,

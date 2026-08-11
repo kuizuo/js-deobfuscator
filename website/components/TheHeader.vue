@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { locale, t, toggleLocale } from '#imports'
+</script>
+
 <template>
   <header
     class="flex items-center justify-between gap-3 border-b border-zinc-200/80 bg-white/80 px-4 py-3 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-900/70"
@@ -11,13 +15,23 @@
           JS Deobfuscator
         </p>
         <p class="text-xs text-zinc-500 dark:text-zinc-400">
-          Turn obfuscated JavaScript into clean, readable code in seconds.
+          {{ t('header.tagline') }}
         </p>
       </div>
     </div>
     <div class="flex items-center gap-2">
       <button
+        class="inline-flex items-center rounded-lg border border-zinc-200/80 bg-white/80 px-2.5 py-1.5 text-xs font-semibold transition hover:border-amber-400 hover:text-amber-600 dark:border-zinc-700 dark:bg-zinc-900/80"
+        :title="locale === 'en' ? t('header.switchToChinese') : t('header.switchToEnglish')"
+        :aria-label="locale === 'en' ? t('header.switchToChinese') : t('header.switchToEnglish')"
+        @click="toggleLocale"
+      >
+        {{ locale === 'en' ? '中文' : 'EN' }}
+      </button>
+      <button
         class="inline-flex items-center gap-2 rounded-lg border border-zinc-200/80 bg-white/80 px-1.5 py-1.5 text-xs font-medium transition hover:border-amber-400 hover:text-amber-600 dark:border-zinc-700 dark:bg-zinc-900/80"
+        :title="t('header.toggleTheme')"
+        :aria-label="t('header.toggleTheme')"
         @click="toggleDark"
       >
         <div class="i-ri:sun-line text-base dark:i-ri:moon-line" />

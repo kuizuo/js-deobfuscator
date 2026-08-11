@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ConsoleLogEntry } from '~/types/logger'
+import { t } from '#imports'
 import { Pane } from 'splitpanes'
 
 const props = withDefaults(defineProps<{
@@ -47,7 +48,7 @@ function formatMessage(message: string) {
   // softer timing color
   html = html.replace(/\+\d+ms\b/g, '<span class="text-zinc-400">$&</span>')
   // failures/errors
-  html = html.replace(/(解密失败[^<]*|decode_error[^<]*|错误[:：][^<]*)/gi, '<span class="text-red-400">$1</span>')
+  html = html.replace(/(failed to decode[^<]*|decode_error[^<]*|errors?[:：][^<]*)/gi, '<span class="text-red-400">$1</span>')
   // line breaks
   html = html.replace(/\n/g, '<br>')
   return html
@@ -93,35 +94,35 @@ watch(
       <div class="flex items-center justify-between gap-3 border-b border-bg-zinc-200/70 px-3 py-2 text-xs font-medium text-zinc-700 dark:border-zinc-800/70 dark:text-zinc-200">
         <div class="flex items-center gap-2">
           <div class="i-ri:terminal-box-line text-lg text-amber-500" />
-          <span class="font-semibold">控制台</span>
-          <span class="text-[11px] font-normal text-zinc-500 dark:text-zinc-400">实时查看 Deob 日志</span>
+          <span class="font-semibold">{{ t('console.title') }}</span>
+          <span class="text-[11px] font-normal text-zinc-500 dark:text-zinc-400">{{ t('console.description') }}</span>
         </div>
         <div class="flex items-center gap-2">
           <button
             v-if="canExpand"
             class="inline-flex items-center gap-1 rounded-md border border-amber-200/70 bg-amber-50/80 px-2 py-1 text-[11px] font-medium text-amber-800 shadow-sm transition hover:border-amber-400 hover:bg-amber-100 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100"
-            title="展开完整解密结果"
+            :title="t('console.expandResult')"
             @click="emit('expand')"
           >
             <div class="i-ri:arrow-down-double-line text-sm" />
-            <span>展开解密结果</span>
+            <span>{{ t('console.expandResult') }}</span>
           </button>
           <button
             v-if="logs.length"
             class="inline-flex items-center gap-1 rounded-md border border-zinc-200/70 bg-white/90 px-2 py-1 text-[11px] font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
-            title="清空日志"
+            :title="t('console.clearTitle')"
             @click="emit('clear')"
           >
             <div class="i-ri:delete-bin-6-line text-sm" />
-            <span>清空</span>
+            <span>{{ t('console.clear') }}</span>
           </button>
           <button
             class="inline-flex items-center gap-1 rounded-md border border-zinc-200/70 bg-white/90 px-2 py-1 text-[11px] font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
-            title="展开或收起"
+            :title="t('console.toggleTitle')"
             @click="emit('toggle')"
           >
             <div :class="collapsed ? 'i-ri:layout-bottom-line' : 'i-ri:arrow-down-s-line'" class="text-sm" />
-            <span>{{ collapsed ? '展开' : '收起' }}</span>
+            <span>{{ collapsed ? t('console.expand') : t('console.collapse') }}</span>
           </button>
         </div>
       </div>
@@ -149,7 +150,7 @@ watch(
           v-else
           class="flex h-full items-center justify-center text-xs text-zinc-500 dark:text-zinc-400"
         >
-          运行解混淆后，这里会显示日志输出
+          {{ t('console.empty') }}
         </div>
       </div>
     </div>

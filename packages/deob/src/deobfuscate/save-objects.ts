@@ -135,7 +135,7 @@ export function saveObjects(ast: t.Node) {
           }
         }
         catch (_error: any) {
-          throw new Error(`生成表达式失败${_error.message}`)
+          throw new Error(`Failed to generate expression: ${_error.message}`)
         }
 
         if (isReplace) {

@@ -1,6 +1,8 @@
 import type { Options } from 'deob'
 
-export const defaultOptions: Required<Options> = {
+type WebsiteOptions = Omit<Required<Options>, 'sandbox'>
+
+export const defaultOptions: WebsiteOptions = {
   decoderLocationMethod: 'stringArray',
   decoderCallCount: 150,
   setupCode: '',
@@ -35,7 +37,7 @@ export const code = computed<string>({
 export const error = shallowRef<unknown>()
 export const parseTime = ref(0)
 
-const persistedOptions = useLocalStorage<Required<Options>>(
+const persistedOptions = useLocalStorage<WebsiteOptions>(
   `${PREFIX}options`,
   defaultOptions,
 )
@@ -51,7 +53,7 @@ if (
   mergedOptions.mangleMode = (persistedOptions.value as any).mangle ? 'all' : 'off'
 }
 
-export const options = ref<Required<Options>>(mergedOptions)
+export const options = ref<WebsiteOptions>(mergedOptions)
 
 watch(
   options,

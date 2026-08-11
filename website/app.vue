@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import { code } from '#imports'
+import { code, locale, t } from '#imports'
 import { Pane, Splitpanes } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
 
 const paneSize = ref(54)
+
+useHead(() => ({
+  title: t('meta.title'),
+  htmlAttrs: { lang: locale.value },
+}))
+
+useSeoMeta({
+  description: () => t('meta.description'),
+  ogTitle: () => t('meta.title'),
+  ogDescription: () => t('meta.description'),
+  twitterTitle: () => t('meta.title'),
+  twitterDescription: () => t('meta.description'),
+})
 </script>
 
 <template>

@@ -78,8 +78,8 @@ function buildDecryptionSummaryLog(map: Map<string, string>) {
 
   const preview = Array.from(map.entries()).slice(0, 5)
   return [
-    '=== 解密结果预览 ===',
-    `- 解密条目: ${map.size} 个`,
+    '=== Decryption Preview ===',
+    `- Decoded entries: ${map.size}`,
     ...preview.map(([k, v]) => `  • ${k} -> ${shorten(String(v))}`),
     '====================',
   ].join('\n')
@@ -92,7 +92,7 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
   enableLogger('Deob')
 
   if (!rawCode)
-    throw new Error('请载入js代码')
+    throw new Error('Please provide JavaScript code.')
 
   const ast: ParseResult<t.File> = parse(rawCode, {
     sourceType: 'unambiguous',
@@ -137,7 +137,7 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
         decoders = collectDecoders(ast, opts.decoderNames!)
       }
 
-      logger(`${stringArray ? `字符串数组: ${stringArray?.name} (共 ${stringArray?.length} 项) 被引用 ${stringArray?.references.length} 处` : '没找到字符串数组'} | ${decoders.length ? `解密器函数: ${decoders.map(d => d.name)}` : '没找到解密器函数'}`)
+      logger(`${stringArray ? `String array: ${stringArray.name} (${stringArray.length} items, ${stringArray.references.length} references)` : 'No string array found'} | ${decoders.length ? `Decoder functions: ${decoders.map(d => d.name)}` : 'No decoder functions found'}`)
 
       await evalCode(opts.sandbox!, setupCode)
 
@@ -190,7 +190,7 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
     () => applyTransforms(ast, [mergeObjectAssignments, evaluateGlobals]),
 
     opts.isMarkEnable && (() => {
-      logger(`关键字列表: [${opts.keywords.join(', ')}]`)
+      logger(`Keywords: [${opts.keywords.join(', ')}]`)
       markKeyword(ast, opts.keywords)
       return { changes: opts.keywords.length }
     }),

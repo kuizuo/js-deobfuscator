@@ -44,7 +44,7 @@ export async function decodeStrings(sandbox: Sandbox, decoders: Decoder[]) {
   }
 
   if (failures)
-    logger(`\x1B[31m解密失败 ${failures} 处，已在代码中标记 decode_error\x1B[0m`)
+    logger(`\x1B[31mFailed to decode ${failures} call(s); marked them with decode_error comments.\x1B[0m`)
 
   return map
 }

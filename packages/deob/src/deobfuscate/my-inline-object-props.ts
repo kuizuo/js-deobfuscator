@@ -24,7 +24,7 @@ import { getPropName } from '../ast-utils'
  * _0x3028("foo")
  */
 export default {
-  name: '对象属性引用替换',
+  name: 'inline-object-properties',
   tags: ['safe'],
   run(ast, state, objects) {
     if (!objects) return
@@ -260,9 +260,9 @@ export default {
     }
 
     if (usedMap.size > 0)
-      console.log(`已被替换对象: `, usedMap)
+      console.log('Replaced objects:', usedMap)
 
     if (removeSet.size > 0)
-      console.log(`已移除key列表:`, removeSet)
+      console.log('Removed keys:', removeSet)
   },
 } satisfies Transform<Objects>

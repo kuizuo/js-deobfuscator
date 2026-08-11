@@ -60,7 +60,7 @@ export function findDecoderByCallCount(ast: t.File, count = 100) {
         if (!binding) return
 
         if (binding.referencePaths.length >= count) {
-          logger(`根据调用次数命中解密器: ${fnName} (调用 ${binding.referencePaths.length} 次)`)
+          logger(`Decoder matched by call count: ${fnName} (${binding.referencePaths.length} calls)`)
           decoders.push(new Decoder(fnName, fnName, path))
 
           const body = (path.parentPath!.scope.block as t.Program).body
@@ -86,9 +86,9 @@ export function findDecoderByCallCount(ast: t.File, count = 100) {
   const setupCode = generate(newAst, generateOptions)
 
   if (!decoders.length)
-    logger(`未找到调用次数 >= ${count} 的解密器`)
+    logger(`No decoder found with at least ${count} calls`)
   else
-    logger(`解密器列表: ${decoders.map(d => d.name).join(', ')}`)
+    logger(`Decoders: ${decoders.map(d => d.name).join(', ')}`)
 
   return {
     setupCode,

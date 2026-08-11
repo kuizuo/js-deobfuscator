@@ -2,7 +2,7 @@
 import type { MonacoEditor } from '#build/components'
 import type * as monaco from 'monaco-editor'
 
-import { editorStickyScroll, editorTheme, editorWordWrap } from '#imports'
+import { editorStickyScroll, editorTheme, editorWordWrap, t } from '#imports'
 
 interface Example {
   name: string
@@ -75,7 +75,7 @@ function handleFileChange(event: Event) {
     return
 
   if (!file.name.endsWith('.js')) {
-    window.alert('请选择 js 文件')
+    window.alert(t('source.invalidFile'))
     return
   }
 
@@ -92,19 +92,19 @@ function handleFileChange(event: Event) {
     <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed border-amber-200/80 bg-amber-50/70 px-3 py-2 text-xs text-amber-800 dark:border-amber-500/60 dark:bg-amber-500/10 dark:text-amber-100">
       <div class="flex items-center gap-2">
         <div class="i-ri:input-method-line text-lg" />
-        <span class="font-semibold text-zinc-800 dark:text-zinc-100">源代码</span>
-        <span class="text-[11px] text-zinc-500 dark:text-zinc-400">粘贴混淆代码，或直接加载示例/上传文件。</span>
+        <span class="font-semibold text-zinc-800 dark:text-zinc-100">{{ t('source.title') }}</span>
+        <span class="text-[11px] text-zinc-500 dark:text-zinc-400">{{ t('source.description') }}</span>
       </div>
       <div class="flex flex-wrap items-center gap-2">
         <label class="flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1 text-[10px] font-medium shadow-sm transition hover:border-amber-300 dark:border-zinc-700 dark:bg-zinc-900/80">
-          <span>示例</span>
+          <span>{{ t('source.example') }}</span>
           <select
             name="example-select"
             class="min-w-36 bg-transparent text-xs focus:outline-none"
             @change="handleExampleChange"
           >
             <option value="">
-              选择一个
+              {{ t('source.selectExample') }}
             </option>
             <option v-for="e in examples" :key="e.name" :value="e.name">
               {{ e.name }}
@@ -114,18 +114,18 @@ function handleFileChange(event: Event) {
         <button
           class="inline-flex items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
           :class="editorWordWrap ? 'border-amber-300 text-amber-700 dark:text-amber-100' : ''"
-          title="切换自动换行"
+          :title="t('source.toggleWrap')"
           @click="editorWordWrap = !editorWordWrap"
         >
           <div class="i-ri:text-wrap" />
-          <span> {{ editorWordWrap ? '不' : '' }}换行</span>
+          <span>{{ editorWordWrap ? t('source.wrapOff') : t('source.wrapOn') }}</span>
         </button>
         <label
           for="fileInput"
           class="inline-flex cursor-pointer items-center gap-2 rounded-md border border-zinc-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200"
         >
           <div class="i-ri:upload-cloud-line" />
-          <span>上传</span>
+          <span>{{ t('source.upload') }}</span>
         </label>
         <input id="fileInput" type="file" class="hidden" @change="handleFileChange">
       </div>
@@ -140,7 +140,7 @@ function handleFileChange(event: Event) {
       >
         <div class="flex h-full w-full flex-col items-center justify-center gap-2">
           <div class="i-ri:loader-2-line text-4xl animate-spin" />
-          <span class="text-sm">Loading...</span>
+          <span class="text-sm">{{ t('source.loading') }}</span>
         </div>
       </MonacoEditor>
     </div>

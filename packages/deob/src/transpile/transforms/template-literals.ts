@@ -1,33 +1,17 @@
 import type { Transform } from '../../ast-utils'
 import * as t from '@babel/types'
 import * as m from '@codemod/matchers'
-import { constMemberExpression } from '../../ast-utils'
+import { constMemberExpression, escapeTemplateLiteral } from '../../ast-utils'
 
 // https://github.com/babel/babel/pull/5791
 // https://github.com/babel/babel/blob/cce807f1eb638ee3030112dc190cbee032760888/packages/babel-plugin-transform-template-literals/src/index.ts
 
 // TODO: option ignoreToPrimitiveHint (uses `+` instead of concat)
 
-function escape(str: string) {
-  return (
-    str
-      .replaceAll('\\', '\\\\')
-      .replaceAll('`', '\\`')
-      .replaceAll('$', '\\$')
-      .replaceAll('\0', '\\0')
-      .replaceAll('\b', '\\b')
-      .replaceAll('\f', '\\f')
-      // .replaceAll('\n', '\\n') // not escaped because multiline strings are preferred
-      .replaceAll('\r', '\\r')
-      .replaceAll('\t', '\\t')
-      .replaceAll('\v', '\\v')
-  )
-}
-
 function push(template: t.TemplateLiteral, value: t.Expression) {
   if (value.type === 'StringLiteral') {
     const lastQuasi = template.quasis.at(-1)!
-    lastQuasi.value.raw += escape(value.value)
+    lastQuasi.value.raw += escapeTemplateLiteral(value.value)
   }
   else if (value.type === 'TemplateLiteral') {
     const lastQuasi = template.quasis.at(-1)!
@@ -45,7 +29,7 @@ function push(template: t.TemplateLiteral, value: t.Expression) {
 function unshift(template: t.TemplateLiteral, value: t.Expression) {
   if (value.type === 'StringLiteral') {
     const firstQuasi = template.quasis[0]
-    firstQuasi.value.raw = escape(value.value) + firstQuasi.value.raw
+    firstQuasi.value.raw = escapeTemplateLiteral(value.value) + firstQuasi.value.raw
   }
   else {
     template.expressions.unshift(value)

@@ -178,7 +178,11 @@ export async function deob(rawCode: string, options: Options = {}): Promise<Deob
     // unminify
     () => applyTransforms(ast, [transpile, unminify]),
     // 变量命名优化
-    () => applyTransform(ast, mangle, getMangleMatcher(opts)),
+    () => {
+      const matcher = getMangleMatcher(opts)
+      if (matcher)
+        applyTransform(ast, mangle, matcher)
+    },
     // 移除自卫代码
     () => applyTransforms(
       ast,
